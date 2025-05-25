@@ -1,0 +1,107 @@
+/* Line colors by company - used by JavaScript-generated content */
+.autoprevoz-line {
+  border-left: 4px solid #c20202;
+}
+.pavlovic-line {
+  border-left: 4px solid #ff9f43;
+}
+.bocac-line {
+  border-left: 4px solid #54a0ff;
+}
+.aldemo-line {
+  border-left: 4px solid #e05e5e;
+}
+.rale-line {
+  border-left: 4px solid #0a7321;
+}
+
+/* Differentiate suburban lines */
+.urban-line {
+  border-left: 6px solid #2c3e50;
+}
+.suburban-line {
+  border-left: 6px solid #8e44ad;
+}
+
+.line-item {
+  padding: 10px 15px;
+  margin: 5px 0;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.line-id {
+  font-weight: bold;
+  margin-right: 15px;
+  min-width: 40px;
+  text-align: center;
+  background-color: #e74c3c; /* Red */
+}
+
+.line-name {
+  flex-grow: 1;
+}
+
+.company-section {
+  margin-bottom: 30px;
+}
+
+.company-name {
+  margin-top: 20px;
+  padding: 5px 0;
+  border-bottom: 2px solid #ddd;
+}
+
+.line-type-section {
+  margin-top: 40px;
+}
+
+.line-type-title {
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+  border-bottom: 3px solid #333;
+}
+
+.cooperating-info {
+  font-size: 0.8em;
+  font-style: italic;
+  margin-top: 5px;
+}
+
+.group-title {
+  font-size: 1.3em;
+  margin: 25px 0 15px 0;
+  padding: 8px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  border-left: 5px solid #333;
+}
+
+/* colors for different companies */
+.autoprevoz-line .line-id {
+  background-color: #c20202;
+}
+
+.pavlovic-line .line-id {
+  background-color: #ff9f43;
+}
+
+.bocac-line .line-id {
+  background-color: #54a0ff;
+}
+
+.aldemo-line .line-id {
+  background-color: #e05e5e;
+}
+
+.rale-line .line-id {
+  background-color: #0a7321;
+}
+
+/* Hide timetable buttons for suburban lines since they don't have timetables */
+#suburban-lines .timetable-btn {
+  display: none;
+}

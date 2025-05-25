@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="bs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Prevoz i Mobilnost Banja Luka | Transport & Mobility Banja Luka
+    </title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/line-styles.css" />
+  </head>
+  <body>
+    <div class="page-container">
+      <div class="content-wrap">
+        <header>
+          <div class="header__container">
+            <div class="header__top">
+              <h1 class="header__title" id="site-title">
+                Urbana Mobilnost Banja Luka
+              </h1>
+              <div class="hamburger" id="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="language-selector language-selector--desktop">
+                <button class="lang-btn" data-lang="en">EN</button>
+                <button class="lang-btn active" data-lang="bhs">BHS</button>
+              </div>
+            </div>
+            <div class="header__bottom">
+              <nav class="nav-desktop">
+                <a href="#lines" id="nav-lines-desktop">
+                  <i class="fas fa-route"></i>
+                  Linije
+                </a>
+                <a href="#price-tables" id="nav-price-tables-desktop">
+                  <i class="fas fa-tags"></i>
+                  Cjenovnik
+                </a>
+                <a href="#timetable" id="nav-timetable-desktop">
+                  <i class="fas fa-clock"></i>
+                  Red vožnje
+                </a>
+                <a href="#map" id="nav-map-desktop">
+                  <i class="fas fa-map-marked-alt"></i>
+                  Mapa
+                </a>
+                <a href="#airport" id="nav-airport-desktop">
+                  <i class="fas fa-plane"></i>
+                  Aerodromski prevoz
+                </a>
+                <a href="#contact" id="nav-contact-desktop">
+                  <i class="fas fa-address-book"></i>
+                  Kontakt
+                </a>
+              </nav>
+            </div>
+            <nav>
+              <div class="mobile-menu-options">
+                <div class="language-selector language-selector--mobile">
+                  <button class="lang-btn" data-lang="en">EN</button>
+                  <button class="lang-btn active" data-lang="bhs">BHS</button>
+                </div>
+              </div>
+              <a href="#lines" id="nav-lines">
+                <i class="fas fa-route"></i>
+                Linije
+              </a>
+              <a href="#price-tables" id="nav-price-tables">
+                <i class="fas fa-tags"></i>
+                Cjenovnik
+              </a>
+              <a href="#timetable" id="nav-timetable">
+                <i class="fas fa-clock"></i>
+                Red vožnje
+              </a>
+              <a href="#map" id="nav-map">
+                <i class="fas fa-map-marked-alt"></i>
+                Mapa
+              </a>
+              <a href="#airport" id="nav-airport">
+                <i class="fas fa-plane"></i>
+                Aerodromski prevoz
+              </a>
+              <a href="#contact" id="nav-contact">
+                <i class="fas fa-address-book"></i>
+                Kontakt
+              </a>
+            </nav>
+          </div>
+        </header>
+
+        <section class="section section--wide" id="lines">
+          <div class="container">
+            <h2 class="section__title" id="lines-title">Linije</h2>
+            <div class="lines-introduction">
+              <p id="lines-intro-text">
+                Javni prevoz u Banjoj Luci organizovan je u tri grupe linija. Za
+                svaku grupu linija potrebno je kupiti odgovarajuću kartu. Karte
+                nisu prenosive između grupa.
+              </p>
+
+              <div class="operator-legend">
+                <h4 id="operator-legend-title">Prevoznici</h4>
+                <div class="legend-items">
+                  <div class="legend-item autoprevoz-legend">
+                    <span class="color-box"></span>
+                    <span class="operator-name">AUTOPREVOZ</span>
+                  </div>
+                  <div class="legend-item pavlovic-legend">
+                    <span class="color-box"></span>
+                    <span class="operator-name">PAVLOVIĆ</span>
+                  </div>
+                  <div class="legend-item bocac-legend">
+                    <span class="color-box"></span>
+                    <span class="operator-name">BOČAC</span>
+                  </div>
+                  <div class="legend-item aldemo-legend">
+                    <span class="color-box"></span>
+                    <span class="operator-name">ALDEMO</span>
+                  </div>
+                  <div class="legend-item rale-legend">
+                    <span class="color-box"></span>
+                    <span class="operator-name">RALE</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="lines-info">
+              <!-- Lines will be loaded here dynamically -->
+            </div>
+          </div>
+        </section>
+
+        <section class="section section--narrow" id="price-tables">
+          <div class="container">
+            <h2 class="section__title" id="price-tables-title">
+              Cjenovnik karata
+            </h2>
+            <div class="price-tables">
+              <!-- Price tables will be loaded here -->
+            </div>
+          </div>
+        </section>
+
+        <section class="section section--wide" id="timetable">
+          <div class="container">
+            <h2 class="section__title" id="timetable-title">Red vožnje</h2>
+            <div class="timetable-controls">
+              <select id="line-select"></select>
+            </div>
+            <div id="timetable-display"></div>
+          </div>
+        </section>
+
+        <section class="section section--wide" id="map">
+          <div class="container">
+            <h2 class="section__title" id="map-title">Lokacije prevoza</h2>
+            <div class="map-container">
+              <div id="map-container"></div>
+            </div>
+            <div class="map-note" id="bus-stops-note">
+              <i class="map-note__icon fas fa-info-circle"></i>
+              <span id="bus-stops-note-text"
+                >Za prikaz autobuskih stajališta javnog prevoza potrebno je
+                odabrati filter "Autobuska stajališta" iz padajućeg
+                menija.</span
+              >
+            </div>
+          </div>
+        </section>
+
+        <section class="section section--wide" id="airport">
+          <div class="container">
+            <h2 class="section__title" id="airport-title">
+              Aerodromski prevoz
+            </h2>
+            <div class="airport-transfer-info">
+              <div class="airport-transfer-details">
+                <h3 id="airport-description-title">
+                  Transferi do Međunarodnog aerodroma Banja Luka
+                </h3>
+                <p id="airport-price">
+                  Cijena karte u jednom pravcu iznosi 10,00 KM
+                </p>
+                <p id="airport-departure-location">
+                  Svi polasci su sa Stare autobuske stanice (Vidovdanska ulica).
+                </p>
+                <p id="airport-more-info">
+                  Za više informacija o polascima posjetite internet stranicu
+                  prevoznika.
+                </p>
+                <a
+                  href="https://smiljiccompany.ba/avio-transferi/"
+                  target="_blank"
+                  id="airport-website-link"
+                  class="airport-link"
+                  >Smiljić Company - Avio transferi</a
+                >
+              </div>
+              <div class="map-container small-map">
+                <div id="airport-map"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section section--narrow" id="contact">
+          <div class="container">
+            <h2 class="section__title" id="contact-title">
+              Kontakt informacije
+            </h2>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <div class="footer__content">
+          <div class="footer__disclaimer">
+            <p id="disclaimer-text">
+              Ova internet stranica nije službena stranica Grada Banja Luka niti
+              bilo kojeg prevoznika. Svi podaci su dati samo u informativne
+              svrhe. Za zvanične informacije o redovima vožnje, cijenama i
+              drugim detaljima, molimo vas da kontaktirate nadležne institucije
+              ili prevoznike.
+            </p>
+          </div>
+          <div class="footer__motto">
+            <p>Made with ❤️ for Banja Luka urban mobility</p>
+          </div>
+          <div class="footer__copyright">
+            <p>
+              &copy; <span id="current-year">2023</span> Javni prevoz Banja Luka
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="data/bus_routes.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/map.js"></script>
+    <script>
+      document.getElementById("current-year").textContent =
+        new Date().getFullYear();
+    </script>
+  </body>
+</html>

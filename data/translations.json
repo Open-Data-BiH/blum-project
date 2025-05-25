@@ -1,0 +1,198 @@
+{
+  "en": {
+    "header": {
+      "title": "Urban Mobility Banja Luka",
+      "nav": {
+        "map": "Map",
+        "lines": "Lines",
+        "timetable": "Timetable",
+        "airport": "Airport Transport",
+        "contact": "Contact",
+        "prices": "Prices"
+      }
+    },
+    "sections": {
+      "map": {
+        "title": "Transport Locations"
+      },
+      "lines": {
+        "title": "Lines",
+        "ticketInfo": {
+          "urban": {
+            "title": "Urban Tickets",
+            "items": [
+              "Single ticket - 1.50 KM",
+              "Daily ticket - 5.00 KM",
+              "Monthly ticket - 40.00 KM"
+            ]
+          },
+          "suburban": {
+            "title": "Suburban Tickets",
+            "items": ["Single ticket - 2.00 KM", "Monthly ticket - 60.00 KM"]
+          },
+          "special": {
+            "title": "Special Tickets",
+            "description": "Available for specific user groups",
+            "items": ["Student ticket - 20.00 KM", "Senior ticket - 15.00 KM"]
+          },
+          "free": {
+            "title": "Free Transport",
+            "eligibleTitle": "Eligible for free transport:",
+            "eligible": ["Children under 7 years", "Persons with disabilities"],
+            "discountTitle": "Eligible for 50% discount:",
+            "discount": [
+              "Primary and secondary school students",
+              "University students",
+              "Senior citizens"
+            ]
+          }
+        }
+      },
+      "timetable": {
+        "title": "Timetable",
+        "select": "Select a bus line",
+        "loading": "Loading timetable...",
+        "notFound": "Timetable not found for the selected line.",
+        "fromTo": "Route:",
+        "selectDay": "Select day",
+        "hourLabel": "Hour",
+        "minutesLabel": "Minutes",
+        "days": {
+          "weekday": "Weekdays",
+          "saturday": "Saturday",
+          "sunday": "Sunday"
+        },
+        "notAvailable": {
+          "title": "Timetable Not Available",
+          "description": "The timetable for this line is not available in our system yet. Please call the information line:",
+          "contact": "Phone:",
+          "note": "You can also check at bus stations or operator's sales points."
+        }
+      },
+      "airport": {
+        "title": "Airport Transport",
+        "descriptionTitle": "Transfers to Banja Luka International Airport",
+        "price": "One-way ticket price is 10.00 KM",
+        "departureLocation": "All departures are from the Old Bus Station (Vidovdanska street).",
+        "moreInfo": "For more information about departures, visit the carrier's website.",
+        "websiteLink": "Smiljić Company - Airport Transfers"
+      },
+      "contact": {
+        "title": "Contact Information",
+        "email": "Email:",
+        "phone": "Phone:",
+        "timetableInfo": "Timetable Information:"
+      },
+      "prices": {
+        "title": "Ticket Prices"
+      }
+    },
+    "ui": {
+      "back": "← Back to Map",
+      "multipage": "Multi-page Mode",
+      "error": "Error loading data. Please try again.",
+      "visit": "Visit website"
+    }
+  },
+  "bhs": {
+    "header": {
+      "title": "Urbana Mobilnost Banja Luka",
+      "nav": {
+        "map": "Mapa",
+        "lines": "Linije",
+        "timetable": "Red vožnje",
+        "airport": "Aerodromski prevoz",
+        "contact": "Kontakt",
+        "prices": "Cjenovnik"
+      }
+    },
+    "sections": {
+      "map": {
+        "title": "Lokacije prevoza"
+      },
+      "lines": {
+        "title": "Linije",
+        "ticketInfo": {
+          "urban": {
+            "title": "Gradske karte",
+            "items": [
+              "Pojedinačna karta - 1,50 KM",
+              "Dnevna karta - 5,00 KM",
+              "Mjesečna karta - 40,00 KM"
+            ]
+          },
+          "suburban": {
+            "title": "Prigradske karte",
+            "items": [
+              "Pojedinačna karta - 2,00 KM",
+              "Mjesečna karta - 60,00 KM"
+            ]
+          },
+          "special": {
+            "title": "Specijalne karte",
+            "description": "Dostupne za određene grupe korisnika",
+            "items": [
+              "Studentska karta - 20,00 KM",
+              "Penzionerska karta - 15,00 KM"
+            ]
+          },
+          "free": {
+            "title": "Besplatan prevoz",
+            "eligibleTitle": "Pravo na besplatan prevoz imaju:",
+            "eligible": ["Djeca do 7 godina", "Osobe sa invaliditetom"],
+            "discountTitle": "Pravo na popust od 50% imaju:",
+            "discount": [
+              "Učenici osnovnih i srednjih škola",
+              "Studenti",
+              "Penzioneri"
+            ]
+          }
+        }
+      },
+      "timetable": {
+        "title": "Red vožnje",
+        "select": "Izaberite liniju",
+        "loading": "Učitavanje reda vožnje...",
+        "notFound": "Red vožnje nije pronađen za izabranu liniju.",
+        "fromTo": "Relacija:",
+        "selectDay": "Izaberite dan",
+        "hourLabel": "Sat",
+        "minutesLabel": "Minute",
+        "days": {
+          "weekday": "Radni dani",
+          "saturday": "Subota",
+          "sunday": "Nedjelja"
+        },
+        "notAvailable": {
+          "title": "Red vožnje nije dostupan",
+          "description": "Red vožnje za ovu liniju još nije dostupan u našem sistemu. Molimo pozovite informativnu liniju:",
+          "contact": "Telefon:",
+          "note": "Možete se informisati i na autobusnim stanicama ili prodajnim mjestima prevoznika."
+        }
+      },
+      "airport": {
+        "title": "Aerodromski prevoz",
+        "descriptionTitle": "Transferi do Međunarodnog aerodroma Banja Luka",
+        "price": "Cijena karte u jednom pravcu iznosi 10,00 KM",
+        "departureLocation": "Svi polasci su sa Stare autobuske stanice (Vidovdanska ulica).",
+        "moreInfo": "Za više informacija o polascima posjetite internet stranicu prevoznika.",
+        "websiteLink": "Smiljić Company - Avio transferi"
+      },
+      "contact": {
+        "title": "Kontakt informacije",
+        "email": "Email:",
+        "phone": "Telefon:",
+        "timetableInfo": "Informacije o redovima vožnje:"
+      },
+      "prices": {
+        "title": "Cjenovnik karata"
+      }
+    },
+    "ui": {
+      "back": "← Nazad na mapu",
+      "multipage": "Više-stranica Mod",
+      "error": "Greška pri učitavanju podataka. Molimo pokušajte ponovo.",
+      "visit": "Posjetite web stranicu"
+    }
+  }
+}

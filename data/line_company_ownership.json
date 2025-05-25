@@ -1,0 +1,557 @@
+{
+  "urban": [
+    {
+      "companyName": "\"AUTOPREVOZ GS\" d.o.o. Banja Luka",
+      "lines": [
+        {
+          "lineId": "10",
+          "lineName": {
+            "en": "Main Station - Obilićevo",
+            "bhs": "Autobuska stanica - Obilićevo"
+          },
+          "cooperatingCompanyName": null,
+          "group": "I GRUPA"
+        },
+        {
+          "lineId": "13",
+          "lineName": {
+            "en": "Lazarevo - Obilićevo (TO Bema)",
+            "bhs": "Lazarevo - Obilićevo (TO Bema)"
+          },
+          "cooperatingCompanyName": null,
+          "group": "I GRUPA"
+        },
+        {
+          "lineId": "13A",
+          "lineName": {
+            "en": "New Hospital - Centar - Zalužani",
+            "bhs": "Nova bolnica -Centar - Zalužani"
+          },
+          "cooperatingCompanyName": null,
+          "group": "I GRUPA"
+        },
+        {
+          "lineId": "17",
+          "lineName": {
+            "en": "Obilićevo - New Hospital",
+            "bhs": "Obilićevo - Nova bolnica"
+          },
+          "cooperatingCompanyName": null,
+          "group": "I GRUPA"
+        }
+      ]
+    },
+    {
+      "companyName": "\"RALE TURS\" d.o.o. Banja Luka",
+      "lines": [
+        {
+          "lineId": "13C",
+          "lineName": {
+            "en": "Centar - Tunjice - Zalužani (Nenad Kostić)",
+            "bhs": "Centar - Tunjice - Zalužani (Nenada Kostića)"
+          },
+          "cooperatingCompanyName": null,
+          "group": "I GRUPA"
+        }
+      ]
+    },
+    {
+      "companyName": "\"BOČAC TURS\" d.o.o. Banja Luka",
+      "lines": [
+        {
+          "lineId": "3",
+          "lineName": {
+            "en": "ETF (Vodovod) - Vrbanja - Zeleni Vir",
+            "bhs": "ETF (Vodovod) - Vrbanja - Zeleni Vir"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        },
+        {
+          "lineId": "6",
+          "lineName": {
+            "en": "Main Station - Lauš - Saračica",
+            "bhs": "Autobuska stanica - Lauš - Saračica"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        },
+        {
+          "lineId": "7",
+          "lineName": {
+            "en": "Lauš - Paprikovac - Centar - Obilićevo (TO Bema)",
+            "bhs": "Lauš - Paprikovac - Centar - Obilićevo (TO Bema)"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        },
+        {
+          "lineId": "8",
+          "lineName": {
+            "en": "Main Station - Podgora",
+            "bhs": "Autobuska stanica - Podgora"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        },
+        {
+          "lineId": "9B",
+          "lineName": {
+            "en": "Česma - Medeno polje - Centar",
+            "bhs": "Česma - Medeno polje - Centar"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        }
+      ]
+    },
+    {
+      "companyName": "\"ALDEMO TURS\" d.o.o. Banja Luka",
+      "lines": [
+        {
+          "lineId": "3B",
+          "lineName": {
+            "en": "ETF (Vodovod) - Debeljaci",
+            "bhs": "ETF (Vodovod) - Debeljaci"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        },
+        {
+          "lineId": "13B",
+          "lineName": {
+            "en": "Pobrđe - Lazarevo (D. S. Lazarević)",
+            "bhs": "Pobrđe - Lazarevo (D. S. Lazarevića)"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        }
+      ]
+    },
+    {
+      "companyName": "\"PAVLOVIĆ TURS\" d.o.o. Banja Luka",
+      "lines": [
+        {
+          "lineId": "1",
+          "lineName": {
+            "en": "Mađir - Ortopedija - Nova bolnica",
+            "bhs": "Mađir - Ortopedija - Nova bolnica"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "9",
+          "lineName": {
+            "en": "Kumsale - Centar - Desna Novoselija",
+            "bhs": "Kumsale - Centar - Desna Novoselija"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "12P",
+          "lineName": {
+            "en": "Centar - Paprikovac (Vidik)",
+            "bhs": "Centar - Paprikovac (Vidik)"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "13P",
+          "lineName": {
+            "en": "Obilićevo (Krfska) - Petrićevac",
+            "bhs": "Obilićevo (Krfska) - Petrićevac"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "14",
+          "lineName": {
+            "en": "Starčevica - Centar - Starčevica",
+            "bhs": "Starčevica - Centar - Starčevica"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "14B",
+          "lineName": {
+            "en": "Autobuska stanica - Borik - Starčevica",
+            "bhs": "Autobuska stanica - Borik - Starčevica"
+          },
+          "cooperatingCompanyName": "\"ALDEMO TURS\" d.o.o. Banja Luka",
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "17A",
+          "lineName": {
+            "en": "Starčevica - Nova bolnica",
+            "bhs": "Starčevica - Nova bolnica"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "19",
+          "lineName": {
+            "en": "Šargovac - Centar (Vidovdanska)",
+            "bhs": "Šargovac - Centar (Vidovdanska)"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "39",
+          "lineName": {
+            "en": "Drakulić - Centar",
+            "bhs": "Drakulić - Centar"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "39A",
+          "lineName": {
+            "en": "Drakulić (Avion) - Rakovačke bare - Centar",
+            "bhs": "Drakulić (Avion) - Rakovačke bare - Centar"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "20",
+          "lineName": {
+            "en": "Incel - Centar - Paprikovac (Ranko Šipka)",
+            "bhs": "Incel - Centar - Paprikovac (Ranka Šipke)"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        }
+      ]
+    }
+  ],
+  "suburban": [
+    {
+      "companyName": "\"AUTOPREVOZ GS\" d.o.o. Banja Luka",
+      "lines": [
+        {
+          "lineId": "P51",
+          "lineName": {
+            "en": "Banja Luka - Potkozarje - Verići škola",
+            "bhs": "Banja Luka - Potkozarje - Verići škola"
+          },
+          "cooperatingCompanyName": "\"RALE TURS\" d.o.o. Banja Luka",
+          "group": "I GRUPA"
+        },
+        {
+          "lineId": "P76",
+          "lineName": {
+            "en": "Banja Luka - Ramići (Crkva)",
+            "bhs": "Banja Luka - Ramići (Crkva)"
+          },
+          "cooperatingCompanyName": "\"RALE TURS\" d.o.o. Banja Luka",
+          "group": "I GRUPA"
+        },
+        {
+          "lineId": "P77",
+          "lineName": {
+            "en": "Zalužani - Barlovci",
+            "bhs": "Zalužani - Barlovci"
+          },
+          "cooperatingCompanyName": null,
+          "group": "I GRUPA"
+        },
+        {
+          "lineId": "P78",
+          "lineName": {
+            "en": "Zalužani - Kuljani",
+            "bhs": "Zalužani - Kuljani"
+          },
+          "cooperatingCompanyName": null,
+          "group": "I GRUPA"
+        }
+      ]
+    },
+    {
+      "companyName": "\"RALE TURS\" d.o.o. Banja Luka",
+      "lines": [
+        {
+          "lineId": "P50",
+          "lineName": {
+            "en": "Banja Luka - Potkozarje - Željeznička stanica",
+            "bhs": "Banja Luka - Potkozarje - Željeznička stanica"
+          },
+          "cooperatingCompanyName": null,
+          "group": "I GRUPA"
+        },
+        {
+          "lineId": "P52",
+          "lineName": {
+            "en": "Banja Luka - Verići - Donja Piskavica",
+            "bhs": "Banja Luka - Verići - Donja Piskavica"
+          },
+          "cooperatingCompanyName": null,
+          "group": "I GRUPA"
+        },
+        {
+          "lineId": "P74",
+          "lineName": {
+            "en": "Banja Luka - Dragočaj - Stranjani",
+            "bhs": "Banja Luka - Dragočaj - Stranjani"
+          },
+          "cooperatingCompanyName": null,
+          "group": "I GRUPA"
+        },
+        {
+          "lineId": "P75",
+          "lineName": {
+            "en": "Banja Luka - Dragočaj - Gradina",
+            "bhs": "Banja Luka - Dragočaj - Gradina"
+          },
+          "cooperatingCompanyName": null,
+          "group": "I GRUPA"
+        }
+      ]
+    },
+    {
+      "companyName": "\"BOČAC TURS\" d.o.o. Banja Luka",
+      "lines": [
+        {
+          "lineId": "P53",
+          "lineName": {
+            "en": "Banja Luka - Bronzani Majdan",
+            "bhs": "Banja Luka - Bronzani Majdan"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        },
+        {
+          "lineId": "P54",
+          "lineName": {
+            "en": "Banja Luka - Bronzani Majdan - Kmećani",
+            "bhs": "Banja Luka - Broznani Majdan - Kmećani"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        },
+        {
+          "lineId": "P55",
+          "lineName": {
+            "en": "Banja Luka - Bronzani Majdan - Gornja Slavićka",
+            "bhs": "Banja Luka - Bronzani Majdan - Gornja Slavićka"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        },
+        {
+          "lineId": "P56",
+          "lineName": {
+            "en": "Banja Luka - Bistrica - Donja Piskavica",
+            "bhs": "Banja Luka - Bistrica - Donja Piskavica"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        },
+        {
+          "lineId": "P57",
+          "lineName": {
+            "en": "Banja Luka - Borkovići - Radosavska",
+            "bhs": "Banja Luka - Borkovići - Radosavska"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        },
+        {
+          "lineId": "P58",
+          "lineName": {
+            "en": "Banja Luka - Čokorska polja - Goleši",
+            "bhs": "Banja Luka - Čokorska polja - Goleši"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        },
+        {
+          "lineId": "P59",
+          "lineName": {
+            "en": "Banja Luka - Krupa na Vrbasu - Krmine",
+            "bhs": "Banja Luka - Krupa na Vrbasu - Krmine"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        },
+        {
+          "lineId": "P60",
+          "lineName": {
+            "en": "Banja Luka - Krupa na Vrbasu - Ledenice - Racune",
+            "bhs": "Banja Luka - Krupa na Vrbasu - Ledenice - Racune"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        },
+        {
+          "lineId": "P61",
+          "lineName": {
+            "en": "Banja Luka - Bočac",
+            "bhs": "Banja Luka - Bočac"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        },
+        {
+          "lineId": "P62",
+          "lineName": {
+            "en": "Banja Luka - Bočac - Agino Selo",
+            "bhs": "Banja Luka - Bočac - Agino Selo"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        },
+        {
+          "lineId": "P79",
+          "lineName": {
+            "en": "Saračica - Bistrica - Jošikova voda",
+            "bhs": "Saračica - Bistrica - Jošikova voda"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        },
+        {
+          "lineId": "P82",
+          "lineName": {
+            "en": "Podgora - Priječani",
+            "bhs": "Podgora - Priječani"
+          },
+          "cooperatingCompanyName": null,
+          "group": "II GRUPA"
+        }
+      ]
+    },
+    {
+      "companyName": "\"PAVLOVIĆ TURS\" d.o.o. Banja Luka",
+      "lines": [
+        {
+          "lineId": "P63",
+          "lineName": {
+            "en": "Desna Novoselija - Karanovac",
+            "bhs": "Desna Novoselija - Karanovac"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "P64",
+          "lineName": {
+            "en": "Banja Luka - Karanovac - Ljubačevo (škola)",
+            "bhs": "Banja Luka - Karanovac - Ljubačevo škola"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "P80",
+          "lineName": {
+            "en": "Ortopedija - Priječani",
+            "bhs": "Ortopedija - Priječani"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "P81",
+          "lineName": { "en": "Rakovac - Motike", "bhs": "Rakovac - Motike" },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        }
+      ]
+    },
+    {
+      "companyName": "\"ALDEMO TURS\" d.o.o. Banja Luka",
+      "lines": [
+        {
+          "lineId": "P65",
+          "lineName": {
+            "en": "Banja Luka - Kola (Radulovići)",
+            "bhs": "Banja Luka - Kola (Radulovići)"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "P66",
+          "lineName": {
+            "en": "Banja Luka - Kola - Šamare",
+            "bhs": "Banja Luka - Kola - Šamare"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "P67",
+          "lineName": {
+            "en": "Banja Luka - Stričići - Lokvari - Gornji Lusići",
+            "bhs": "Banja Luka - Stričići - Lokvari - Gornji Lusići"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "P68",
+          "lineName": {
+            "en": "Banja Luka - Pavići - Stričići - Lokvari - Gornji Lusići",
+            "bhs": "Banja Luka - Pavići - Stričići - Lokvari - Gornji Lusići"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "P69",
+          "lineName": {
+            "en": "Banja Luka - Gornje Rekavice",
+            "bhs": "Banja Luka - Gornje Rekavice"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "P70",
+          "lineName": {
+            "en": "Banja Luka - Kola - Konatari",
+            "bhs": "Banja Luka - Kola - Konatari"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "P71",
+          "lineName": {
+            "en": "Banja Luka - Gornje Rekavice - Kola",
+            "bhs": "Banja Luka - Gornje Rekavice - Kola"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "P72",
+          "lineName": {
+            "en": "Banja Luka - Gornje Rekavice - Kola - Šamare",
+            "bhs": "Banja Luka - Gornje Rekavice - Kola - Šamare"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        },
+        {
+          "lineId": "P73",
+          "lineName": {
+            "en": "Banja Luka - Srpske Toplice - Suturlija - Dedić Lokva",
+            "bhs": "Banja Luka - Srpske Toplice - Suturlija - Dedić Lokva"
+          },
+          "cooperatingCompanyName": null,
+          "group": "III GRUPA"
+        }
+      ]
+    }
+  ]
+}

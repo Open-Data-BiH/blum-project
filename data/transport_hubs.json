@@ -31,7 +31,7 @@
     {
       "id": "incel-train-station",
       "type": "train-station",
-      "name": "Željeznička stanica Incel (Poslovna zona)",
+      "name": "Željeznička stanica Incel",
       "lat": 44.77247973731433,
       "lng": 17.222578981293236,
       "info": "Besplatan parking | Free parking",
@@ -45,6 +45,26 @@
       "lat": 44.83634064959971,
       "lng": 17.21963674468813,
       "info": "Nema parkinga | No parking",
+      "destinations": "Banja Luka, Prijedor - Novi Grad",
+      "website": "https://www.zrs-rs.com/red-voznje"
+    },
+    {
+      "id": "vrbanja-train-station",
+      "type": "train-station",
+      "name": "Željeznička stanica Vrbanja",
+      "lat": 44.76099516069787,
+      "lng": 17.24206946906394,
+      "info": "Besplatan parking | Free parking",
+      "destinations": "Banja Luka, Doboj",
+      "website": "https://www.zrs-rs.com/red-voznje"
+    },
+    {
+      "id": "ramici-train-station",
+      "type": "train-station",
+      "name": "Željeznička stanica Ramići",
+      "lat": 44.85350331345485,
+      "lng": 17.170945238298362,
+      "info": "Besplatan parking | Free parking",
       "destinations": "Banja Luka, Prijedor - Novi Grad",
       "website": "https://www.zrs-rs.com/red-voznje"
     },

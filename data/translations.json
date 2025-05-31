@@ -8,10 +8,15 @@
         "timetable": "Timetable",
         "airport": "Airport Transport",
         "contact": "Contact",
-        "prices": "Prices"
+        "prices": "Prices",
+        "urban_lines": "Urban Lines Map"
       }
     },
     "sections": {
+      "urban_lines": {
+        "title": "Urban Lines Map",
+        "map_note": "Use mouse wheel to zoom and drag to move around the map."
+      },
       "map": {
         "title": "Transport Locations"
       },
@@ -103,10 +108,15 @@
         "timetable": "Red vožnje",
         "airport": "Aerodromski prevoz",
         "contact": "Kontakt",
-        "prices": "Cjenovnik"
+        "prices": "Cjenovnik",
+        "urban_lines": "Mapa gradskih linija"
       }
     },
     "sections": {
+      "urban_lines": {
+        "title": "Mapa gradskih linija",
+        "map_note": "Koristite točkić miša za zumiranje i prevlačite mišem za kretanje po mapi."
+      },
       "map": {
         "title": "Lokacije prevoza"
       },

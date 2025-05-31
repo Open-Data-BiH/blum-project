@@ -2151,3 +2151,226 @@ body.translations-failed .error-message i {
     background-color: var(--color-light);
   }
 }
+
+.urban-lines-map {
+  width: 100%;
+  aspect-ratio: 16/10; /* Match the image's approximate aspect ratio */
+  min-height: 300px;
+  max-height: 80vh;
+  margin: 20px 0;
+  border: 1px solid var(--color-light-gray);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+/* Fallback for browsers that don't support aspect-ratio */
+@supports not (aspect-ratio: 16/10) {
+  .urban-lines-map {
+    height: 0;
+    padding-bottom: 62.5%; /* (10/16 * 100%) */
+    position: relative;
+  }
+
+  .urban-lines-map #urban-lines-viewer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .urban-lines-map {
+    aspect-ratio: 4/3; /* Slightly taller ratio for mobile */
+    min-height: 250px;
+    max-height: 70vh;
+    margin: 15px 0;
+  }
+}
+
+#urban-lines-viewer {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-secondary);
+}
+
+/* Leaflet specific overrides for urban lines map */
+.urban-lines-map .leaflet-container {
+  background: var(--bg-secondary);
+}
+
+.urban-lines-map .leaflet-control-zoom {
+  border: none;
+  box-shadow: var(--shadow-md);
+}
+
+.urban-lines-map .leaflet-control-zoom a {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--color-light-gray);
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 18px;
+}
+
+.urban-lines-map .leaflet-control-zoom a:hover {
+  background-color: var(--color-light);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .urban-lines-map {
+    border-color: var(--color-light-gray);
+    background: var(--bg-secondary);
+  }
+
+  .urban-lines-map .leaflet-control-zoom a {
+    background-color: var(--bg-secondary);
+    color: var(--text-light);
+    border-color: var(--color-light-gray);
+  }
+
+  .urban-lines-map .leaflet-control-zoom a:hover {
+    background-color: var(--color-light);
+  }
+}
+
+.map-note {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f6f6f6;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #52636b;
+}
+
+.map-note__icon {
+  margin-right: 8px;
+  color: #5a5b51;
+}
+
+/* Reset view button styles */
+.reset-view-control {
+  margin-top: 10px !important;
+}
+
+.reset-view-button {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--color-light-gray) !important;
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  font-size: 14px !important;
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.reset-view-button:hover {
+  background-color: var(--color-light) !important;
+  transform: scale(1.05) !important;
+}
+
+.reset-view-button i {
+  font-size: 14px !important;
+}
+
+/* Dark mode support for reset button */
+@media (prefers-color-scheme: dark) {
+  .reset-view-button {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-light) !important;
+    border-color: var(--color-light-gray) !important;
+  }
+
+  .reset-view-button:hover {
+    background-color: var(--color-light) !important;
+  }
+}
+
+/* Map controls styles */
+.map-controls-container {
+  background: none !important;
+  border: none !important;
+  margin-bottom: 20px !important;
+  margin-right: 20px !important;
+}
+
+.map-control-button {
+  display: block !important;
+  padding: 0 !important;
+  background-color: var(--color-primary) !important;
+  color: var(--text-light) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  width: 36px !important;
+  height: 36px !important;
+  line-height: 36px !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.map-control-button:first-child {
+  border-top-left-radius: var(--radius-md) !important;
+  border-top-right-radius: var(--radius-md) !important;
+}
+
+.map-control-button:last-child {
+  border-bottom-left-radius: var(--radius-md) !important;
+  border-bottom-right-radius: var(--radius-md) !important;
+}
+
+.map-control-button + .map-control-button {
+  border-top: none !important;
+}
+
+.map-control-button:hover {
+  background-color: var(--color-primary-dark) !important;
+}
+
+.map-control-button i {
+  font-size: 14px !important;
+}
+
+.map-control-button.reset-view {
+  background-color: var(--color-accent) !important;
+}
+
+.map-control-button.reset-view:hover {
+  background-color: var(--color-accent-dark) !important;
+}
+
+/* Dark mode support for map controls */
+@media (prefers-color-scheme: dark) {
+  .map-control-button {
+    background-color: var(--color-primary-dark) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .map-control-button:hover {
+    background-color: var(--color-primary) !important;
+  }
+
+  .map-control-button.reset-view {
+    background-color: var(--color-accent-dark) !important;
+  }
+
+  .map-control-button.reset-view:hover {
+    background-color: var(--color-accent) !important;
+  }
+}

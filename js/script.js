@@ -44,8 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // Setup smooth scrolling for navigation
         setupSmoothScrolling();
 
-
-
         // Setup mobile menu toggle
         setupMobileMenu();
     });
@@ -129,6 +127,7 @@ function applyTranslation(lang) {
     safelyUpdateText('nav-airport', t.header.nav.airport);
     safelyUpdateText('nav-contact', t.header.nav.contact);
     safelyUpdateText('nav-price-tables', t.header.nav.prices || (lang === 'bhs' ? 'Cjenovnik' : 'Prices'));
+    safelyUpdateText('nav-urban-lines', t.header.nav.urban_lines);
 
     // Navigation - Desktop
     safelyUpdateText('nav-map-desktop', t.header.nav.map);
@@ -137,10 +136,16 @@ function applyTranslation(lang) {
     safelyUpdateText('nav-airport-desktop', t.header.nav.airport);
     safelyUpdateText('nav-contact-desktop', t.header.nav.contact);
     safelyUpdateText('nav-price-tables-desktop', t.header.nav.prices || (lang === 'bhs' ? 'Cjenovnik' : 'Prices'));
-
-
+    safelyUpdateText('nav-urban-lines-desktop', t.header.nav.urban_lines);
 
     // Update sections
+    // Urban Lines section
+    safelyUpdateText('urban-lines-title', t.sections.urban_lines.title);
+    const mapNote = document.querySelector('#urban-lines .map-note span');
+    if (mapNote) {
+        mapNote.textContent = t.sections.urban_lines.map_note;
+    }
+
     // Map section
     safelyUpdateText('map-title', t.sections.map.title);
 
@@ -162,8 +167,6 @@ function applyTranslation(lang) {
 
     // Reload lines with new language
     loadLines();
-
-
 
     // Timetable section
     safelyUpdateText('timetable-title', t.sections.timetable.title);
@@ -201,8 +204,6 @@ function applyTranslation(lang) {
         ? 'Ova internet stranica nije službena stranica Grada Banja Luka niti bilo kojeg prevoznika. Svi podaci su dati samo u informativne svrhe. Za zvanične informacije o redovima vožnje, cijenama i drugim detaljima, molimo vas da kontaktirate nadležne institucije ili prevoznike.'
         : 'This website is not officially affiliated with the City of Banja Luka or any transport operators. All data is provided for informational purposes only. For official information about schedules, prices, and other details, please contact the relevant authorities or transport companies.';
     safelyUpdateText('disclaimer-text', disclaimerText);
-
-
 
     // Update timetable display if it has content
     updateTimetableLanguage();
@@ -1544,8 +1545,6 @@ function updateTimeHighlighting() {
         const isNextDepartureTomorrow = nextDepartureTime &&
             allDepartureTimes.every(time => time.timeInMinutes < currentTimeInMinutes);
 
-
-
         allDepartureTimes.forEach(time => {
             // Remove existing classes
             time.element.classList.remove('past', 'next', 'upcoming');
@@ -1576,12 +1575,8 @@ function updateTimeHighlighting() {
                 upcomingCount++;
             }
         });
-
-
     });
 }
-
-
 
 // Update timetable language if it's already displayed
 function updateTimetableLanguage() {
@@ -1629,8 +1624,6 @@ function setupSmoothScrolling() {
         });
     });
 }
-
-
 
 // Load and display contacts information
 function loadContacts() {

@@ -1,0 +1,292 @@
+{
+  "suburban": [
+    {
+      "lineId": "P50",
+      "lineName": "Banja Luka - Potkozarje - Željeznička stanica",
+      "group": "I",
+      "no_stops": 14,
+      "min_duration": 45,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P51",
+      "lineName": "Banja Luka - Potkozarje - Verići škola",
+      "group": "I",
+      "no_stops": 33,
+      "min_duration": 60,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P52",
+      "lineName": "Banja Luka - Verići - Donja Piskavica",
+      "group": "I",
+      "no_stops": 39,
+      "min_duration": 65,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P53",
+      "lineName": "Banja Luka - Bronzani Majdan",
+      "group": "II",
+      "no_stops": 34,
+      "min_duration": 50,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P54",
+      "lineName": "Banja Luka - Broznani Majdan - Kmećani",
+      "group": "II",
+      "no_stops": 42,
+      "min_duration": 70,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P55",
+      "lineName": "Banja Luka - Bronzani Majdan - Gornja Slavićka",
+      "group": "II",
+      "no_stops": 42,
+      "min_duration": 60,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P56",
+      "lineName": "Banja Luka - Bistrica - Donja Piskavica",
+      "group": "II",
+      "no_stops": 32,
+      "min_duration": 55,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P57",
+      "lineName": "Banja Luka - Borkovići - Radosavska",
+      "group": "II",
+      "no_stops": 35,
+      "min_duration": 57,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P58",
+      "lineName": "Banja Luka - Čokorska polja - Goleši",
+      "group": "II",
+      "no_stops": 34,
+      "min_duration": 49,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P59",
+      "lineName": "Banja Luka - Krupa na Vrbasu - Krmine",
+      "group": "II",
+      "no_stops": 31,
+      "min_duration": 65,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P60",
+      "lineName": "Banja Luka - Krupa na Vrbasu - Ledenice - Racune",
+      "group": "II",
+      "no_stops": 37,
+      "min_duration": 75,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P61",
+      "lineName": "Banja Luka - Bočac",
+      "group": "II",
+      "no_stops": 30,
+      "min_duration": 70,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P62",
+      "lineName": "Banja Luka - Bočac - Agino Selo",
+      "group": "II",
+      "no_stops": 44,
+      "min_duration": 90,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P63",
+      "lineName": "Desna Novoselija - Karanovac",
+      "group": "III",
+      "no_stops": 8,
+      "min_duration": 17,
+      "bus_type": "minibus",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P64",
+      "lineName": "Banja Luka - Karanovac - Ljubačevo škola",
+      "group": "III",
+      "no_stops": 26,
+      "min_duration": 53,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P65",
+      "lineName": "Banja Luka - Kola (Radulovići)",
+      "group": "III",
+      "no_stops": 24,
+      "min_duration": 49,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P66",
+      "lineName": "Banja Luka - Kola - Šamare",
+      "group": "III",
+      "no_stops": 31,
+      "min_duration": 53,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P67",
+      "lineName": "Banja Luka - Stričići - Lokvari - Gornji Lusići",
+      "group": "III",
+      "no_stops": 43,
+      "min_duration": 100,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P68",
+      "lineName": "Banja Luka - Pavići - Stričići - Lokvari - Gornji Lusići",
+      "group": "III",
+      "no_stops": 49,
+      "min_duration": 116,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P69",
+      "lineName": "Banja Luka - Gornje Rekavice",
+      "group": "III",
+      "no_stops": 21,
+      "min_duration": 36,
+      "bus_type": "minibus",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P70",
+      "lineName": "Banja Luka - Kola - Konatari",
+      "group": "III",
+      "no_stops": 30,
+      "min_duration": 60,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P71",
+      "lineName": "Banja Luka - Gornje Rekavice - Kola",
+      "group": "III",
+      "no_stops": 30,
+      "min_duration": 54,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P72",
+      "lineName": "Banja Luka - Gornje Rekavice - Kola - Šamare",
+      "group": "III",
+      "no_stops": 37,
+      "min_duration": 58,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P73",
+      "lineName": "Banja Luka - Srpske Toplice - Suturlija - Dedić Lokva",
+      "group": "III",
+      "no_stops": 30,
+      "min_duration": 60,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P74",
+      "lineName": "Banja Luka - Dragočaj - Stranjani",
+      "group": "I",
+      "no_stops": 23,
+      "min_duration": 36,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P75",
+      "lineName": "Banja Luka - Dragočaj - Gradina",
+      "group": "I",
+      "no_stops": 24,
+      "min_duration": 36,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P76",
+      "lineName": "Banja Luka - Ramići (Crkva)",
+      "group": "I",
+      "no_stops": 24,
+      "min_duration": 34,
+      "bus_type": "solo",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P77",
+      "lineName": "Zalužani - Barlovci",
+      "group": "I",
+      "no_stops": 8,
+      "min_duration": 15,
+      "bus_type": "minibus",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P78",
+      "lineName": "Zalužani - Kuljani",
+      "group": "I",
+      "no_stops": 9,
+      "min_duration": 15,
+      "bus_type": "minibus",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P79",
+      "lineName": "Saračica - Bistrica - Jošikova voda",
+      "group": "II",
+      "no_stops": 9,
+      "min_duration": 9,
+      "bus_type": "minibus",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P80",
+      "lineName": "Ortopedija - Priječani",
+      "group": "III",
+      "no_stops": 10,
+      "min_duration": 14,
+      "bus_type": "minibus",
+      "wheelchair_accessible": false
+    },
+    {
+      "lineId": "P81",
+      "lineName": "Rakovac - Motike",
+      "group": "III",
+      "no_stops": 10,
+      "min_duration": 12,
+      "bus_type": "minibus",
+      "wheelchair_accessible": false
+    }
+  ]
+}

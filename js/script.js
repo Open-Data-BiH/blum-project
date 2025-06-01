@@ -6,6 +6,30 @@ let currentLang = localStorage.getItem('selectedLanguage') || 'bhs'; // Get lang
 // Make currentLang available globally
 window.currentLang = currentLang;
 
+// Configuration for line types to display
+const LINE_CONFIG = {
+    urban: {
+        enabled: true,
+        dataFile: 'data/urban_company_ownership.json',
+        timetableFile: 'data/urban_timetables.json',
+        useCompanyData: true,
+        title: {
+            en: 'Urban Lines',
+            bhs: 'Gradske linije'
+        }
+    },
+    suburban: {
+        enabled: false,
+        dataFile: 'data/suburban_company_ownership.json',
+        timetableFile: 'data/suburban_timetables.json',
+        useCompanyData: true,
+        title: {
+            en: 'Suburban Lines',
+            bhs: 'Prigradske linije'
+        }
+    }
+};
+
 // Helper function to sort lines by ID
 function sortLinesByID(a, b) {
     const numA = parseInt(a.lineId);
@@ -52,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // Load translations
 async function loadTranslations() {
     try {
-        const response = await fetch('data/translations.json');
+        const response = await fetch('data/bhs_en_translations.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -70,9 +94,9 @@ function setupLanguageSwitcher() {
     // Activate the correct language button based on current language
     document.querySelectorAll('.lang-btn').forEach(btn => {
         if (btn.getAttribute('data-lang') === currentLang) {
-            btn.classList.add('active');
+            btn.classList.add('lang-btn--active');
         } else {
-            btn.classList.remove('active');
+            btn.classList.remove('lang-btn--active');
         }
 
         btn.addEventListener('click', function () {
@@ -88,7 +112,12 @@ function setupLanguageSwitcher() {
                 }
 
                 // Close mobile menu if open
-                document.body.classList.remove('mobile-nav-active');
+                const nav = document.getElementById('main-nav');
+                const menuToggle = document.getElementById('mobile-menu-toggle');
+                if (nav && menuToggle) {
+                    nav.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                }
 
                 // Store the selected language in localStorage
                 localStorage.setItem('selectedLanguage', lang);
@@ -213,6 +242,27 @@ function applyTranslation(lang) {
         renderPriceTables();
     }
 
+    // Bus stops note translation
+    const busStopsNoteText = lang === 'bhs'
+        ? 'Na mapi su prikazana autobuska stajališta, Nextbike stanice, željezničke stanice i drugi oblici urbane mobilnosti. Kontrolu prikaza možete izvršiti pomoću kontrole filtera u donjem desnom uglu mape – uključite ili isključite pojedinačne slojeve prema potrebi.'
+        : 'The map shows bus stops, Nextbike stations, railway stations, and other forms of urban mobility. You can manage the visibility of these elements using the filter control in the bottom right corner of the map – toggle individual layers as needed.';
+    safelyUpdateText('bus-stops-note-text', busStopsNoteText);
+
+    // Handle elements with data-lang attributes (show/hide based on current language)
+    document.querySelectorAll('[data-lang]').forEach(element => {
+        // Skip language switcher buttons - they should always be visible
+        if (element.classList.contains('lang-btn')) {
+            return;
+        }
+
+        const elementLang = element.getAttribute('data-lang');
+        if (elementLang === lang) {
+            element.style.display = '';
+        } else {
+            element.style.display = 'none';
+        }
+    });
+
     // Dispatch a custom event to notify other components that the language has changed
     document.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang } }));
 
@@ -223,15 +273,137 @@ function applyTranslation(lang) {
     safelyUpdateText('airport-departure-location', t.sections.airport.departureLocation);
     safelyUpdateText('airport-more-info', t.sections.airport.moreInfo);
     safelyUpdateText('airport-website-link', t.sections.airport.websiteLink);
-
-    // Bus stops note translation
-    const busStopsNoteText = lang === 'bhs'
-        ? 'Autobuska stajališta javnog prevoza prikazana su na mapi. Prikaz možete isključiti ili uključiti korištenjem kontrole filtera u donjem desnom uglu mape.'
-        : 'Public transport bus stops are shown on the map. You can toggle their visibility using the filter control in the bottom right corner of the map.';
-    safelyUpdateText('bus-stops-note-text', busStopsNoteText);
 }
 
-// Load bus lines data
+/**
+ * Modular line loading system
+ */
+class LineManager {
+    constructor(config = LINE_CONFIG) {
+        this.config = config;
+        this.loadedData = {};
+        this.enabledTypes = Object.keys(config).filter(type => config[type].enabled);
+    }
+
+    /**
+     * Get all enabled line types
+     */
+    getEnabledTypes() {
+        return this.enabledTypes;
+    }
+
+    /**
+     * Load data for a specific line type
+     */
+    async loadLineTypeData(lineType) {
+        const typeConfig = this.config[lineType];
+        if (!typeConfig || !typeConfig.enabled) {
+            throw new Error(`Line type '${lineType}' is not enabled or configured`);
+        }
+
+        try {
+            const response = await fetch(typeConfig.dataFile);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+
+            // Process data based on whether it's company data or simple line data
+            const processedLines = this.processLineData(data, lineType, typeConfig.useCompanyData);
+            this.loadedData[lineType] = processedLines;
+            return processedLines;
+        } catch (error) {
+            console.error(`Error loading ${lineType} lines:`, error);
+            throw error;
+        }
+    }
+
+    /**
+     * Process line data to standardize format
+     */
+    processLineData(data, lineType, useCompanyData) {
+        const lines = [];
+
+        if (useCompanyData) {
+            // Process company ownership data
+            const typeData = data[lineType] || [];
+            typeData.forEach(company => {
+                company.lines.forEach(line => {
+                    lines.push({
+                        lineId: line.lineId,
+                        lineName: line.lineName, // This is an object with {en, bhs}
+                        companyName: company.companyName,
+                        cooperatingCompanyName: line.cooperatingCompanyName,
+                        group: line.group,
+                        no_stops: line.no_stops,
+                        min_duration: line.min_duration,
+                        bus_type: line.bus_type,
+                        wheelchair_accessible: line.wheelchair_accessible,
+                        hasMultilingualName: true
+                    });
+                });
+            });
+        } else {
+            // Process simple line data
+            const typeData = data[lineType] || [];
+            typeData.forEach(line => {
+                lines.push({
+                    lineId: line.lineId,
+                    lineName: line.lineName, // This is a string
+                    companyName: null,
+                    cooperatingCompanyName: null,
+                    group: line.group,
+                    no_stops: line.no_stops,
+                    min_duration: line.min_duration,
+                    bus_type: line.bus_type,
+                    wheelchair_accessible: line.wheelchair_accessible,
+                    hasMultilingualName: false
+                });
+            });
+        }
+
+        // Sort lines by ID
+        return lines.sort(sortLinesByID);
+    }
+
+    /**
+     * Get line name in current language
+     */
+    getLineName(line, lang) {
+        if (line.hasMultilingualName && typeof line.lineName === 'object') {
+            return line.lineName[lang] || line.lineName.en || line.lineName.bhs;
+        }
+        return line.lineName;
+    }
+
+    /**
+     * Load all enabled line types
+     */
+    async loadAllLines() {
+        const loadPromises = this.enabledTypes.map(type => this.loadLineTypeData(type));
+        await Promise.all(loadPromises);
+        return this.loadedData;
+    }
+
+    /**
+     * Get lines for a specific type
+     */
+    getLines(lineType) {
+        return this.loadedData[lineType] || [];
+    }
+
+    /**
+     * Get title for a line type in current language
+     */
+    getTypeTitle(lineType, lang) {
+        const typeConfig = this.config[lineType];
+        return typeConfig ? typeConfig.title[lang] || typeConfig.title.en : lineType;
+    }
+}
+
+// Create global instance
+const lineManager = new LineManager();
+
 function loadLines() {
     // Create simplified lines view in the lines section
     const linesSection = document.getElementById('lines-info');
@@ -243,156 +415,31 @@ function loadLines() {
     simplifiedContainer.className = 'simplified-lines-container';
     linesSection.appendChild(simplifiedContainer);
 
-    // Get translations for urban and suburban
-    const lang = currentLang;
-    const urbanTitle = lang === 'bhs' ? 'Gradske linije' : 'Urban Lines';
-    const suburbanTitle = lang === 'bhs' ? 'Prigradske linije' : 'Suburban Lines';
+    // Get enabled line types
+    const enabledTypes = lineManager.getEnabledTypes();
 
-    // Get translations for details
-    const detailsLabel = lang === 'bhs' ? 'Detalji' : 'Details';
-    const operatorLabel = lang === 'bhs' ? 'Prevoznik' : 'Operator';
-    const viewTimetableLabel = lang === 'bhs' ? 'Pogledaj red vožnje' : 'View timetable';
+    if (enabledTypes.length === 0) {
+        simplifiedContainer.innerHTML = `
+            <div class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>No line types are configured to be displayed.</p>
+            </div>
+        `;
+        return;
+    }
 
-    // Create the tabs and content structure
-    let html = `
-        <div class="lines-tabs">
-            <button class="tab-btn active" data-tab="urban">${urbanTitle}</button>
-            <button class="tab-btn" data-tab="suburban">${suburbanTitle}</button>
+    // Show loading message
+    simplifiedContainer.innerHTML = `
+        <div class="loading-message">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>${translations[currentLang]?.ui?.loading || 'Loading lines...'}</p>
         </div>
-        <div class="lines-content">
     `;
 
-    // Fetch line ownership data
-    fetch('data/line_company_ownership.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            const urbanLines = [];
-            const suburbanLines = [];
-
-            // Process urban lines from line_company_ownership.json
-            data.urban.forEach(company => {
-                company.lines.forEach(line => {
-                    urbanLines.push({
-                        lineId: line.lineId,
-                        lineName: line.lineName,
-                        companyName: company.companyName,
-                        group: line.group
-                    });
-                });
-            });
-
-            // Process suburban lines from line_company_ownership.json
-            data.suburban.forEach(company => {
-                company.lines.forEach(line => {
-                    suburbanLines.push({
-                        lineId: line.lineId.replace('suburban_', ''),
-                        lineName: line.lineName,
-                        companyName: company.companyName,
-                        group: line.group
-                    });
-                });
-            });
-
-            // Sort lines by ID
-            urbanLines.sort(sortLinesByID);
-            suburbanLines.sort(sortLinesByID);
-
-            // Generate HTML for urban lines
-            html += `<div class="tab-content active" id="urban-lines">`;
-            urbanLines.forEach(line => {
-                const lineColor = getCompanyClass(line.companyName);
-
-                html += `
-                    <div class="line-card ${lineColor}" data-line-id="${line.lineId}">
-                        <div class="line-header">
-                            <div class="line-info">
-                                <span class="line-id">${line.lineId}</span>
-                                <span class="line-name">${line.lineName[lang]}</span>
-                            </div>
-                            <div class="line-buttons">
-                                <button class="details-btn" data-line-id="${line.lineId}">
-                                    <i class="fas fa-info-circle"></i> ${detailsLabel}
-                                </button>
-                                <button class="timetable-btn" data-line-id="${line.lineId}" onclick="scrollToTimetable('${line.lineId}')">
-                                    <i class="fas fa-clock"></i> ${viewTimetableLabel}
-                                </button>
-                            </div>
-                        </div>
-                        <div class="line-details" id="details-${line.lineId}">
-                            <p><strong>${operatorLabel}:</strong> ${line.companyName}</p>
-                            <p><strong>Group:</strong> ${line.group}</p>
-                        </div>
-                    </div>
-                `;
-            });
-            html += `</div>`;
-
-            // Generate HTML for suburban lines
-            html += `<div class="tab-content" id="suburban-lines">`;
-            suburbanLines.forEach(line => {
-                const lineColor = getCompanyClass(line.companyName);
-
-                html += `
-                    <div class="line-card ${lineColor}" data-line-id="${line.lineId}">
-                        <div class="line-header">
-                            <div class="line-info">
-                                <span class="line-id">${line.lineId}</span>
-                                <span class="line-name">${line.lineName[lang]}</span>
-                            </div>
-                            <div class="line-buttons">
-                                <button class="details-btn" data-line-id="${line.lineId}">
-                                    <i class="fas fa-info-circle"></i> ${detailsLabel}
-                                </button>
-                            </div>
-                        </div>
-                        <div class="line-details" id="details-${line.lineId}">
-                            <p><strong>${operatorLabel}:</strong> ${line.companyName}</p>
-                            <p><strong>Group:</strong> ${line.group}</p>
-                        </div>
-                    </div>
-                `;
-            });
-            html += `</div>`;
-
-            html += `</div>`; // Close lines-content div
-
-            // Set the HTML content
-            simplifiedContainer.innerHTML = html;
-
-            // Add event listeners for tabs
-            simplifiedContainer.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    // Update active tab button
-                    simplifiedContainer.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-
-                    // Show the selected tab content
-                    const tabId = this.getAttribute('data-tab');
-                    simplifiedContainer.querySelectorAll('.tab-content').forEach(content => {
-                        content.classList.remove('active');
-                    });
-                    simplifiedContainer.querySelector(`#${tabId}-lines`).classList.add('active');
-                });
-            });
-
-            // Add event listeners for detail buttons
-            simplifiedContainer.querySelectorAll('.details-btn').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    const lineId = this.getAttribute('data-line-id');
-                    const detailsElement = document.getElementById(`details-${lineId}`);
-
-                    if (detailsElement.style.display === 'block') {
-                        detailsElement.style.display = 'none';
-                    } else {
-                        detailsElement.style.display = 'block';
-                    }
-                });
-            });
+    // Load all enabled line data
+    lineManager.loadAllLines()
+        .then(() => {
+            renderLinesInterface(simplifiedContainer, enabledTypes);
         })
         .catch(error => {
             console.error('Error loading line data:', error);
@@ -407,6 +454,275 @@ function loadLines() {
                 </div>
             `;
         });
+}
+
+/**
+ * Render the lines interface based on enabled types
+ */
+function renderLinesInterface(container, enabledTypes) {
+    const lang = currentLang;
+
+    // Get translations for details
+    const detailsLabel = lang === 'bhs' ? 'Detalji' : 'Details';
+    const operatorLabel = translations[lang]?.sections?.lines?.lineDetails?.operator || (lang === 'bhs' ? 'Prevoznik' : 'Operator');
+    const viewTimetableLabel = lang === 'bhs' ? 'Pogledaj red vožnje' : 'View timetable';
+
+    // Get translations for line details
+    const lineDetailTranslations = translations[lang]?.sections?.lines?.lineDetails || {};
+    const groupLabel = lineDetailTranslations.group || (lang === 'bhs' ? 'Grupa' : 'Group');
+    const noStopsLabel = lineDetailTranslations.noStops || (lang === 'bhs' ? 'Broj stajališta' : 'Number of stops');
+    const minDurationLabel = lineDetailTranslations.minDuration || (lang === 'bhs' ? 'Minimalno vrijeme vožnje' : 'Minimum duration');
+    const busTypeLabel = lineDetailTranslations.busType || (lang === 'bhs' ? 'Tip autobusa' : 'Bus type');
+    const wheelchairLabel = lineDetailTranslations.wheelchairAccessible || (lang === 'bhs' ? 'Prilagođeno za invalidska kolica' : 'Wheelchair accessible');
+    const minutesLabel = lineDetailTranslations.minutes || (lang === 'bhs' ? 'minuta' : 'minutes');
+    const yesLabel = lineDetailTranslations.yes || (lang === 'bhs' ? 'Da' : 'Yes');
+    const noLabel = lineDetailTranslations.no || (lang === 'bhs' ? 'Ne' : 'No');
+
+    // Filter labels
+    const filterAllLabel = lang === 'bhs' ? 'Sve linije' : 'All lines';
+    const filterGroupLabel = lang === 'bhs' ? 'Grupa' : 'Group';
+
+    // Collect all unique groups from all enabled line types
+    const allGroups = new Set();
+    enabledTypes.forEach(type => {
+        const lines = lineManager.getLines(type);
+        lines.forEach(line => {
+            if (line.group) {
+                allGroups.add(line.group);
+            }
+        });
+    });
+
+    // Convert to array and sort groups
+    const sortedGroups = Array.from(allGroups).sort();
+
+    let html = '';
+
+    // Create tabs if multiple line types are enabled
+    if (enabledTypes.length > 1) {
+        html += '<div class="lines-tabs">';
+        enabledTypes.forEach((type, index) => {
+            const activeClass = index === 0 ? 'active' : '';
+            const title = lineManager.getTypeTitle(type, lang);
+            html += `<button class="tab-btn ${activeClass}" data-tab="${type}">${title}</button>`;
+        });
+        html += '</div>';
+
+        // Add group filtering controls only if there are groups and multiple line types
+        if (sortedGroups.length > 0) {
+            html += '<div class="group-filters">';
+            html += `<div class="filter-label">${lang === 'bhs' ? 'Filtriraj linije:' : 'Filter lines:'}</div>`;
+            html += '<div class="filter-buttons">';
+            html += `<button class="filter-btn active" data-filter="all">${filterAllLabel}</button>`;
+
+            // Add buttons for each unique group
+            sortedGroups.forEach(group => {
+                let groupDisplayName;
+                if (group === 'I') {
+                    groupDisplayName = `${filterGroupLabel} I`;
+                } else if (group === 'II') {
+                    groupDisplayName = `${filterGroupLabel} II`;
+                } else if (group === 'III') {
+                    groupDisplayName = `${filterGroupLabel} III`;
+                } else {
+                    // For any other group names (e.g., suburban lines might have different naming)
+                    groupDisplayName = group;
+                }
+                html += `<button class="filter-btn" data-filter="${group}">${groupDisplayName}</button>`;
+            });
+
+            html += '</div>';
+            html += '</div>';
+        }
+    }
+
+    html += '<div class="lines-content">';
+
+    // Create content for each enabled line type
+    enabledTypes.forEach((type, index) => {
+        const lines = lineManager.getLines(type);
+        const activeClass = index === 0 ? 'active' : '';
+        const title = lineManager.getTypeTitle(type, lang);
+
+        // If only one type is enabled, show title directly
+        if (enabledTypes.length === 1) {
+            html += `<h3 class="single-type-title">${title}</h3>`;
+
+            // Add group filtering controls below the header for single line type view
+            if (sortedGroups.length > 0) {
+                html += '<div class="group-filters">';
+                html += `<div class="filter-label">${lang === 'bhs' ? 'Filtriraj linije:' : 'Filter lines:'}</div>`;
+                html += '<div class="filter-buttons">';
+                html += `<button class="filter-btn active" data-filter="all">${filterAllLabel}</button>`;
+
+                // Add buttons for each unique group
+                sortedGroups.forEach(group => {
+                    let groupDisplayName;
+                    if (group === 'I') {
+                        groupDisplayName = `${filterGroupLabel} I`;
+                    } else if (group === 'II') {
+                        groupDisplayName = `${filterGroupLabel} II`;
+                    } else if (group === 'III') {
+                        groupDisplayName = `${filterGroupLabel} III`;
+                    } else {
+                        // For any other group names (e.g., suburban lines might have different naming)
+                        groupDisplayName = group;
+                    }
+                    html += `<button class="filter-btn" data-filter="${group}">${groupDisplayName}</button>`;
+                });
+
+                html += '</div>';
+                html += '</div>';
+            }
+        }
+
+        html += `<div class="tab-content ${activeClass}" id="${type}-lines">`;
+
+        if (lines.length === 0) {
+            html += `<p class="no-lines-message">No ${type} lines available.</p>`;
+        } else {
+            lines.forEach(line => {
+                const lineColor = getCompanyClass(line.companyName);
+                const wheelchairText = line.wheelchair_accessible ? yesLabel : noLabel;
+                const busTypeText = getBusTypeTranslation(line.bus_type);
+                const lineName = lineManager.getLineName(line, lang);
+
+                html += `
+                    <div class="line-card ${lineColor}" data-line-id="${line.lineId}" data-group="${line.group || ''}">
+                        <div class="line-header">
+                            <div class="line-info">
+                                <span class="line-id">${line.lineId}</span>
+                                <span class="line-name">${lineName}</span>
+                            </div>
+                            <div class="line-buttons">
+                                <button class="details-btn" data-line-id="${line.lineId}">
+                                    <i class="fas fa-info-circle"></i> ${detailsLabel}
+                                </button>
+                `;
+
+                // Show timetable button if timetables are configured for this line type
+                if (LINE_CONFIG[type] && LINE_CONFIG[type].timetableFile) {
+                    html += `
+                        <button class="timetable-btn" data-line-id="${line.lineId}" onclick="scrollToTimetable('${line.lineId}')">
+                            <i class="fas fa-clock"></i> ${viewTimetableLabel}
+                        </button>
+                    `;
+                }
+
+                html += `
+                            </div>
+                        </div>
+                        <div class="line-details" id="details-${line.lineId}">
+                `;
+
+                // Only show company info if available
+                if (line.companyName) {
+                    html += `<p><strong>${operatorLabel}:</strong> ${line.companyName}</p>`;
+                }
+
+                // Only show group if it exists
+                if (line.group) {
+                    html += `<p><strong>${groupLabel}:</strong> ${line.group}</p>`;
+                }
+
+                html += `
+                            <p><strong>${noStopsLabel}:</strong> ${line.no_stops || 'N/A'}</p>
+                            <p><strong>${minDurationLabel}:</strong> ${line.min_duration ? `${line.min_duration} ${minutesLabel}` : 'N/A'}</p>
+                            <p><strong>${busTypeLabel}:</strong> ${busTypeText || 'N/A'}</p>
+                            <p><strong>${wheelchairLabel}:</strong> 
+                                <span class="${line.wheelchair_accessible ? 'accessible-yes' : 'accessible-no'}">
+                                    <i class="fas fa-${line.wheelchair_accessible ? 'check' : 'times'}"></i> ${wheelchairText}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        html += `</div>`;
+    });
+
+    html += `</div>`; // Close lines-content div
+
+    // Set the HTML content
+    container.innerHTML = html;
+
+    // Add event listeners for tabs (if multiple types)
+    if (enabledTypes.length > 1) {
+        container.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                // Update active tab button
+                container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                // Show the selected tab content
+                const tabId = this.getAttribute('data-tab');
+                container.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                container.querySelector(`#${tabId}-lines`).classList.add('active');
+
+                // Reset filter to "all" when switching tabs
+                const allFilterBtn = container.querySelector('.filter-btn[data-filter="all"]');
+                if (allFilterBtn) {
+                    container.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                    allFilterBtn.classList.add('active');
+                    filterLinesByGroup(container, 'all');
+                }
+            });
+        });
+    }
+
+    // Add event listeners for group filters (only if filter controls exist)
+    const filterButtons = container.querySelectorAll('.filter-btn');
+    if (filterButtons.length > 0) {
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', function () {
+                // Update active filter button
+                container.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                // Filter lines by group
+                const filterValue = this.getAttribute('data-filter');
+                filterLinesByGroup(container, filterValue);
+            });
+        });
+    }
+
+    // Add event listeners for detail buttons
+    container.querySelectorAll('.details-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const lineId = this.getAttribute('data-line-id');
+            const detailsElement = document.getElementById(`details-${lineId}`);
+
+            if (detailsElement.style.display === 'block') {
+                detailsElement.style.display = 'none';
+            } else {
+                detailsElement.style.display = 'block';
+            }
+        });
+    });
+}
+
+/**
+ * Filter lines by group
+ */
+function filterLinesByGroup(container, groupFilter) {
+    const activeTabContent = container.querySelector('.tab-content.active');
+    if (!activeTabContent) return;
+
+    const lineCards = activeTabContent.querySelectorAll('.line-card');
+
+    lineCards.forEach(card => {
+        const lineGroup = card.getAttribute('data-group');
+
+        if (groupFilter === 'all' || lineGroup === groupFilter) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
 }
 
 // Function to get company class name for styling
@@ -566,114 +882,15 @@ function renderPriceTables() {
 
     // Add disclaimer
     const disclaimerText = currentLang === 'bhs'
-        ? `<p class="price-disclaimer">Prikazane cijene su informativnog karaktera. Za tačne i ažurirane cijene, kao i za cijene prigradskih linija, molimo posjetite <a href="https://www.banjaluka.rs.ba/gradjani/saobracaj/javni-prevoz/" target="_blank">zvaničnu internet stranicu Grada Banja Luka</a> ili se obratite na prodajnim mjestima prevoznika.</p>`
-        : `<p class="price-disclaimer">Displayed prices are for informational purposes only. For current and updated prices, as well as suburban line prices, please visit the <a href="https://www.banjaluka.rs.ba/gradjani/saobracaj/javni-prevoz/" target="_blank">official City of Banja Luka website</a> or inquire at operator's sales points.</p>`;
+        ? `<p class="price-disclaimer">Prikazane cijene su informativnog karaktera. Za tačne i ažurirane cijene, kao i za cijene prigradskih linija, molimo posjetite <a href="https://www.banjaluka.rs.ba/gradjani/javni-prevoz/" target="_blank">zvaničnu internet stranicu Grada Banja Luka</a> ili se obratite na prodajnim mjestima prevoznika.</p>`
+        : `<p class="price-disclaimer">Displayed prices are for informational purposes only. For current and updated prices, as well as suburban line prices, please visit the <a href="https://www.banjaluka.rs.ba/gradjani/javni-prevoz/" target="_blank">official City of Banja Luka website</a> or inquire at operator's sales points.</p>`;
 
     tableHtml += disclaimerText;
 
     priceTableContainer.innerHTML = tableHtml;
     priceTablesContainer.appendChild(priceTableContainer);
 
-    // Add CSS for the table if not already added
-    if (!document.getElementById('price-table-styles')) {
-        const styleElement = document.createElement('style');
-        styleElement.id = 'price-table-styles';
-        styleElement.textContent = `
-            .unified-price-table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-bottom: 30px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                border-radius: 8px;
-                overflow: hidden;
-            }
-            
-            .unified-price-table th {
-                background-color: #2c3e50;
-                color: white;
-                padding: 12px 15px;
-                text-align: left;
-                font-weight: 600;
-            }
-            
-            .unified-price-table td {
-                padding: 12px 15px;
-                border-bottom: 1px solid #e0e0e0;
-            }
-            
-            .unified-price-table tr:last-child td {
-                border-bottom: none;
-            }
-            
-            .unified-price-table tr:hover {
-                background-color: #f5f5f5;
-            }
-            
-            .category-header {
-                background-color: #ecf0f1;
-                font-weight: bold;
-            }
-            
-            .description {
-                font-size: 0.9em;
-                color: #7f8c8d;
-                margin-top: 4px;
-            }
-            
-            #price-tables-title {
-                margin-bottom: 20px;
-                color: #2c3e50;
-                border-bottom: 2px solid #3498db;
-                padding-bottom: 10px;
-            }
-            
-            .price-table-container {
-                background-color: white;
-                border-radius: 8px;
-                overflow: hidden;
-                max-width: 800px;
-                margin: 0 auto;
-            }
-            
-            .price-disclaimer {
-                margin-top: 20px;
-                padding: 15px;
-                background-color: #f8f9fa;
-                border-left: 4px solid rgb(250, 0, 0);
-                color: #555;
-                font-size: 0.9em;
-                line-height: 1.5;
-                border-radius: 0 4px 4px 0;
-            }
-            
-            .price-disclaimer a {
-                color: #3498db;
-                text-decoration: none;
-                font-weight: 500;
-            }
-            
-            .price-disclaimer a:hover {
-                text-decoration: underline;
-            }
-            
-            @media (max-width: 600px) {
-                .unified-price-table th, 
-                .unified-price-table td {
-                    padding: 10px;
-                }
-                
-                .description {
-                    font-size: 0.8em;
-                }
-                
-                .price-disclaimer {
-                    font-size: 0.85em;
-                    padding: 12px;
-                }
-            }
-        `;
-        document.head.appendChild(styleElement);
-    }
+    // Price table styles are now in css/price-tables.css
 }
 
 // Setup timetable selection
@@ -681,20 +898,57 @@ function setupTimetableSelection() {
     const lineSelect = document.getElementById('line-select');
     const timetableDisplay = document.getElementById('timetable-display');
 
-    // First load the real timetable data
-    fetch('data/timetables.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(timetableData => {
+    // Load timetables from all enabled line types
+    const timetablePromises = [];
+    let allTimetableData = [];
+
+    // Collect all timetable files from enabled line types
+    for (const [lineType, config] of Object.entries(LINE_CONFIG)) {
+        if (config.enabled && config.timetableFile) {
+            timetablePromises.push(
+                fetch(config.timetableFile)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Extract the array from the nested structure
+                        // The data is wrapped in an object with keys like "urban", "suburban"
+                        let timetableArray = data[lineType] || data;
+
+                        // Ensure we have an array
+                        if (!Array.isArray(timetableArray)) {
+                            console.warn(`Timetable data for ${lineType} is not an array:`, timetableArray);
+                            return [];
+                        }
+
+                        // Add line type info to each timetable entry
+                        return timetableArray.map(timetable => ({
+                            ...timetable,
+                            lineType: lineType
+                        }));
+                    })
+                    .catch(error => {
+                        console.warn(`Failed to load timetables for ${lineType}:`, error);
+                        return []; // Return empty array on error
+                    })
+            );
+        }
+    }
+
+    // Load all timetable files
+    Promise.all(timetablePromises)
+        .then(timetableArrays => {
+            // Flatten all timetable arrays into one
+            allTimetableData = timetableArrays.flat();
+
             // Store timetable data globally for later use
-            window._realTimetableData = timetableData;
+            window._realTimetableData = allTimetableData;
 
             // Update the dropdown with the timetable data
-            updateTimetableSelect(null, lineSelect, timetableData);
+            updateTimetableSelect(null, lineSelect, allTimetableData);
 
             // Add change event listener
             lineSelect.addEventListener('change', function () {
@@ -721,19 +975,19 @@ function setupTimetableSelection() {
                 window._timetableLanguageListenerAdded = true;
             }
 
-            // Initialize with first real timetable if available or restore previously selected line
+            // Initialize with first available timetable if available or restore previously selected line
             const savedLine = sessionStorage.getItem('selectedLine');
             if (savedLine) {
                 lineSelect.value = savedLine;
                 loadTimetable(savedLine);
                 sessionStorage.removeItem('selectedLine'); // Clear after use
-            } else if (timetableData && timetableData.length > 0) {
-                lineSelect.value = timetableData[0].lineId;
-                loadTimetable(timetableData[0].lineId);
+            } else if (allTimetableData && allTimetableData.length > 0) {
+                lineSelect.value = allTimetableData[0].lineId;
+                loadTimetable(allTimetableData[0].lineId);
             }
         })
         .catch(error => {
-            console.error('Error loading real timetable data:', error);
+            console.error('Error loading timetable data:', error);
             const errorMessage = translations[currentLang]?.ui?.error || 'Failed to load timetable data. Please try again later.';
             timetableDisplay.innerHTML = `
                 <div class="error-message">
@@ -753,55 +1007,50 @@ function updateTimetableSelect(data, lineSelect, realTimetableData) {
     const selectPrompt = translations[currentLang]?.sections?.timetable?.select || 'Select a bus line';
     lineSelect.innerHTML = `<option value="">${selectPrompt}</option>`;
 
-    // Check if we're working with real timetable data or line ownership data
-    // Add real lines from timetables.json
+    // Check if we're working with real timetable data
     if (realTimetableData && realTimetableData.length > 0) {
-        // Separate urban and suburban lines
-        const urbanLines = [];
-        const suburbanLines = [];
+        // Group lines by their lineType property
+        const linesByType = {};
 
         realTimetableData.forEach(line => {
-            // Check if it's a suburban line based on line ID patterns
-            if (line.lineId.match(/^(42|26|32|37|7A|40|45|41|18A|34|28|12B|12|PT1|5A|16A|AT1|AT2|AT3|AT4|ZK1|ZB1|PK1|SBJ1|DNK1|RM1|BK1)$/)) {
-                suburbanLines.push(line);
-            } else {
-                urbanLines.push(line);
+            const lineType = line.lineType || 'urban'; // fallback to urban if no lineType
+            if (!linesByType[lineType]) {
+                linesByType[lineType] = [];
             }
+            linesByType[lineType].push(line);
         });
 
-        // Sort lines by line number
-        urbanLines.sort(sortLinesByID);
-        suburbanLines.sort(sortLinesByID);
+        // Sort lines within each type by line ID
+        Object.keys(linesByType).forEach(lineType => {
+            linesByType[lineType].sort(sortLinesByID);
+        });
 
-        // Add optgroup for urban lines
-        if (urbanLines.length > 0) {
-            const urbanOptgroup = document.createElement('optgroup');
-            urbanOptgroup.label = currentLang === 'bhs' ? 'Gradske linije' : 'Urban Lines';
+        // Add optgroups for each line type
+        Object.keys(linesByType).forEach(lineType => {
+            const lines = linesByType[lineType];
+            if (lines.length > 0) {
+                const optgroup = document.createElement('optgroup');
 
-            urbanLines.forEach(line => {
-                const option = document.createElement('option');
-                option.value = line.lineId;
-                option.textContent = `${line.lineName[currentLang] || line.lineName.en}`;
-                urbanOptgroup.appendChild(option);
-            });
+                // Set the label based on line type and current language
+                if (lineType === 'urban') {
+                    optgroup.label = currentLang === 'bhs' ? 'Gradske linije' : 'Urban Lines';
+                } else if (lineType === 'suburban') {
+                    optgroup.label = currentLang === 'bhs' ? 'Prigradske linije' : 'Suburban Lines';
+                } else {
+                    // For any other potential line types
+                    optgroup.label = lineType.charAt(0).toUpperCase() + lineType.slice(1) + ' Lines';
+                }
 
-            lineSelect.appendChild(urbanOptgroup);
-        }
+                lines.forEach(line => {
+                    const option = document.createElement('option');
+                    option.value = line.lineId;
+                    option.textContent = `${line.lineName[currentLang] || line.lineName.en}`;
+                    optgroup.appendChild(option);
+                });
 
-        // Add optgroup for suburban lines
-        if (suburbanLines.length > 0) {
-            const suburbanOptgroup = document.createElement('optgroup');
-            suburbanOptgroup.label = currentLang === 'bhs' ? 'Prigradske linije' : 'Suburban Lines';
-
-            suburbanLines.forEach(line => {
-                const option = document.createElement('option');
-                option.value = line.lineId;
-                option.textContent = `${line.lineName[currentLang] || line.lineName.en}`;
-                suburbanOptgroup.appendChild(option);
-            });
-
-            lineSelect.appendChild(suburbanOptgroup);
-        }
+                lineSelect.appendChild(optgroup);
+            }
+        });
     }
 }
 
@@ -820,8 +1069,28 @@ function loadTimetable(lineId) {
         }
     }
 
-    // Otherwise, fetch timetables.json
-    fetch('data/timetables.json')
+    // Determine which timetable file to load based on line configuration
+    let timetableFile = null;
+
+    // Check which line type this lineId belongs to
+    for (const [lineType, config] of Object.entries(LINE_CONFIG)) {
+        if (config.enabled && lineManager && lineManager.getLines(lineType)) {
+            const lines = lineManager.getLines(lineType);
+            const lineExists = lines.some(line => line.lineId === lineId);
+            if (lineExists) {
+                timetableFile = config.timetableFile;
+                break;
+            }
+        }
+    }
+
+    // Fallback to urban timetables if no specific file found
+    if (!timetableFile) {
+        timetableFile = 'data/urban_timetables.json';
+    }
+
+    // Fetch the appropriate timetable file
+    fetch(timetableFile)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -860,10 +1129,9 @@ function renderTimetable(timetable, container) {
     const t = translations[currentLang]?.sections?.timetable;
     const weekdayLabel = t?.days?.weekday || 'Weekdays';
     const saturdayLabel = t?.days?.saturday || 'Saturday';
-    const sundayLabel = t?.days?.sunday || 'Sunday';
-    const directionLabel = t?.direction || 'Direction:';
-    const fromToLabel = t?.fromTo || 'From - To:';
-    const selectDayLabel = t?.selectDay || (currentLang === 'bhs' ? 'Izaberite dan' : 'Select day');
+    const sundayHolidayLabelText = t?.days?.sundayHoliday || (currentLang === 'bhs' ? 'Nedjelja i praznik' : 'Sunday and Holiday');
+    const relationLabelText = t?.relationLabel || (currentLang === 'bhs' ? 'Relacija:' : 'Relation:');
+    const timetableForLabelText = t?.timetableForLabel || (currentLang === 'bhs' ? 'Red vožnje za:' : 'Timetable for:');
     const hourLabel = t?.hourLabel || (currentLang === 'bhs' ? 'Sat' : 'Hour');
     const minutesLabel = t?.minutesLabel || (currentLang === 'bhs' ? 'Minute' : 'Minutes');
 
@@ -877,7 +1145,7 @@ function renderTimetable(timetable, container) {
         
         <div class="timetable-controls">
             <div class="direction-toggle">
-                <p id="direction-label">${fromToLabel}</p>
+                <p id="direction-label" class="timetable-control-label">${relationLabelText}</p>
                 <div class="direction-buttons" role="group" aria-labelledby="direction-label">
                     <button class="direction-btn active" data-direction="${directionAId}" aria-pressed="true" aria-label="${timetable.directions[currentLang][0]}">${timetable.directions[currentLang][0]}</button>
                     <button class="direction-btn" data-direction="${directionBId}" aria-pressed="false" aria-label="${timetable.directions[currentLang][1]}">${timetable.directions[currentLang][1]}</button>
@@ -885,11 +1153,11 @@ function renderTimetable(timetable, container) {
             </div>
             
             <div class="day-toggle">
-                <p id="day-label" class="visually-hidden">${selectDayLabel}</p>
+                <p id="day-label" class="timetable-control-label">${timetableForLabelText}</p>
                 <div role="group" aria-labelledby="day-label">
                     <button class="day-btn active" data-day="weekday" aria-pressed="true" aria-label="${weekdayLabel}">${weekdayLabel}</button>
                     <button class="day-btn" data-day="saturday" aria-pressed="false" aria-label="${saturdayLabel}">${saturdayLabel}</button>
-                    <button class="day-btn" data-day="sunday" aria-pressed="false" aria-label="${sundayLabel}">${sundayLabel}</button>
+                    <button class="day-btn" data-day="sunday" aria-pressed="false" aria-label="${sundayHolidayLabelText}">${sundayHolidayLabelText}</button>
                 </div>
             </div>
         </div>
@@ -1046,359 +1314,7 @@ function renderTimetable(timetable, container) {
     // Render the timetable
     container.innerHTML = html;
 
-    // Add styles for the timetable if not already added
-    if (!document.getElementById('timetable-styles')) {
-        const styleElement = document.createElement('style');
-        styleElement.id = 'timetable-styles';
-        styleElement.textContent = `
-            .timetable-line-name {
-                margin-bottom: 15px;
-                color: #2c3e50;
-                font-size: 20px;
-            }
-            
-            .timetable-controls {
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-                margin-bottom: 25px;
-                max-width: 100%;
-            }
-            
-            .direction-toggle, .day-toggle {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .direction-toggle p {
-                margin: 0;
-                font-weight: 600;
-                color: #555;
-                font-size: 14px;
-            }
-            
-            .direction-buttons, .day-toggle > div {
-                display: flex;
-                gap: 8px;
-                flex-wrap: wrap;
-            }
-            
-            .direction-btn, .day-btn {
-                padding: 10px 16px;
-                border: 2px solid #e1e8ed;
-                background-color: #ffffff;
-                border-radius: 8px;
-                cursor: pointer;
-                font-size: 14px;
-                font-weight: 500;
-                transition: all 0.3s ease;
-                color: #2c3e50;
-                min-width: 100px;
-                text-align: center;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-                position: relative;
-                overflow: hidden;
-            }
-            
-            .direction-btn:hover, .day-btn:hover {
-                border-color: #3498db;
-                background-color: #f8fbff;
-                transform: translateY(-1px);
-                box-shadow: 0 4px 8px rgba(52, 152, 219, 0.15);
-            }
-            
-            .direction-btn.active, .day-btn.active {
-                background-color: #3498db;
-                color: white;
-                border-color: #3498db;
-                box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
-                transform: translateY(-1px);
-            }
-            
-            .direction-btn.active:hover, .day-btn.active:hover {
-                background-color: #2980b9;
-                border-color: #2980b9;
-            }
-            
-            .visually-hidden {
-                position: absolute;
-                width: 1px;
-                height: 1px;
-                margin: -1px;
-                padding: 0;
-                overflow: hidden;
-                clip: rect(0, 0, 0, 0);
-                border: 0;
-            }
-            
-            /* Adjust day toggle to match direction toggle layout */
-            .day-toggle > div {
-                display: flex;
-                gap: 8px;
-            }
-            
-            .timetable-notes {
-                display: flex;
-                align-items: flex-start;
-                gap: 12px;
-                background-color: #fff3cd;
-                border: 1px solid #ffeaa7;
-                border-radius: 6px;
-                padding: 15px;
-                margin-bottom: 20px;
-                font-size: 14px;
-                line-height: 1.5;
-            }
-            
-            .notes-icon {
-                color: #856404;
-                font-size: 16px;
-                margin-top: 2px;
-                flex-shrink: 0;
-            }
-            
-            .notes-content {
-                flex: 1;
-            }
-            
-            .notes-content strong {
-                color: #856404;
-                display: block;
-                margin-bottom: 5px;
-            }
-            
-            .notes-content p {
-                margin: 0;
-                color: #6c5700;
-            }
-            
-            @media (min-width: 768px) {
-                .timetable-controls {
-                    flex-direction: column;
-                    max-width: 100%;
-                }
-            }
-            
-            .hours-minutes-table {
-                width: 100%;
-                max-width: 800px;
-                margin: 0 auto;
-                border-collapse: collapse;
-                box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-                border-radius: 6px;
-                overflow: hidden;
-                font-size: 14px;
-            }
-            
-            .hours-minutes-table th {
-                background-color: #2c3e50;
-                color: white;
-                padding: 8px 10px;
-                text-align: left;
-                font-size: 14px;
-            }
-            
-            .hours-minutes-table td {
-                padding: 6px 10px;
-                border-bottom: 1px solid #eee;
-            }
-            
-            .hours-minutes-table tr:last-child td {
-                border-bottom: none;
-            }
-            
-            .hour-cell {
-                font-weight: 600;
-                color: #ffffff;
-                font-size: 14px;
-                width: 50px;
-                background-color: #34495e;
-                text-align: center;
-                border-radius: 4px;
-                padding: 4px 6px;
-                box-shadow: 0 1px 3px rgba(52, 73, 94, 0.3);
-                position: relative;
-                vertical-align: middle;
-            }
-            
-            .hour-cell::before {
-                content: '';
-                position: absolute;
-                left: 0;
-                top: 0;
-                bottom: 0;
-                width: 2px;
-                background-color: #3498db;
-                border-radius: 4px 0 0 4px;
-            }
-            
-            .minutes-cell {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 5px;
-                align-items: center;
-            }
-            
-            .minute-box {
-                display: inline-block;
-                padding: 3px 6px;
-                background-color: #f1f8ff;
-                border-radius: 3px;
-                font-size: 13px;
-                color: #333;
-                border-bottom: 2px solid #3498db;
-                font-weight: 500;
-            }
-            
-            /* Added styles for past and next departures */
-            .minute-box.past {
-                background-color: #f5f5f5;
-                color: #999;
-                border-bottom: 2px solid #ccc;
-            }
-            
-            .minute-box.next {
-                background-color: #d4edda;
-                color: #155724;
-                border-bottom: 2px solid #28a745;
-                font-weight: bold;
-            }
-            
-            .minute-box.upcoming {
-                background-color: #f1f8ff;
-                color: #333;
-                border-bottom: 2px solid #3498db;
-            }
-            
-            /* Optimize number of minutes per row for better use of space */
-            @media (min-width: 768px) {
-                .timetable-container {
-                    max-width: 850px;
-                    margin: 0 auto;
-                }
-                
-                .hours-minutes-table {
-                    max-width: 750px;
-                }
-                
-                .minutes-cell {
-                    max-width: calc(100% - 50px);
-                }
-                
-                .timetable-controls {
-                    flex-direction: row;
-                    justify-content: space-between;
-                    align-items: flex-start;
-                    gap: 30px;
-                    flex-wrap: wrap;
-                }
-                
-                .direction-toggle, .day-toggle {
-                    flex: 1;
-                    min-width: 250px;
-                }
-                
-                .direction-buttons, .day-toggle > div {
-                    justify-content: flex-start;
-                }
-                
-                .direction-btn, .day-btn {
-                    min-width: 120px;
-                    padding: 12px 20px;
-                    font-size: 15px;
-                }
-            }
-            
-            @media (min-width: 1024px) {
-                .timetable-container {
-                    max-width: 900px;
-                }
-                
-                .hours-minutes-table {
-                    max-width: 800px;
-                }
-                
-                .timetable-controls {
-                    max-width: 800px;
-                    margin: 0 auto 30px auto;
-                }
-                
-                .direction-toggle, .day-toggle {
-                    flex: 0 1 auto;
-                    min-width: 300px;
-                }
-                
-                .direction-btn, .day-btn {
-                    min-width: 140px;
-                    padding: 14px 24px;
-                    font-size: 16px;
-                }
-            }
-            
-            @media (min-width: 1200px) {
-                .timetable-container {
-                    max-width: 950px;
-                }
-                
-                .hours-minutes-table {
-                    max-width: 850px;
-                }
-                
-                .timetable-controls {
-                    max-width: 900px;
-                    gap: 40px;
-                }
-                
-                .direction-btn, .day-btn {
-                    min-width: 160px;
-                    padding: 16px 28px;
-                    font-size: 16px;
-                    border-radius: 10px;
-                }
-            }
-            
-            @media (max-width: 767px) {
-                .timetable-controls {
-                    flex-direction: column;
-                    gap: 15px;
-                    margin-bottom: 20px;
-                }
-                
-                .direction-toggle, .day-toggle {
-                    gap: 8px;
-                }
-                
-                .direction-btn, .day-btn {
-                    min-width: 90px;
-                    padding: 8px 12px;
-                    font-size: 13px;
-                    border-radius: 6px;
-                }
-                
-                .hour-cell {
-                    width: 45px;
-                    font-size: 13px;
-                    padding: 3px 4px;
-                }
-                
-                .minute-box {
-                    padding: 2px 5px;
-                    font-size: 12px;
-                }
-                
-                .timetable-notes {
-                    padding: 12px;
-                    font-size: 13px;
-                }
-                
-                .notes-icon {
-                    font-size: 14px;
-                }
-            }
-        `;
-        document.head.appendChild(styleElement);
-    }
+    // Timetable styles are now in css/timetables.css
 
     // Add event listeners for direction toggle
     document.querySelectorAll('.direction-btn').forEach(button => {
@@ -1596,8 +1512,8 @@ function updateTimetableLanguage() {
 
 // Setup smooth scrolling for navigation links
 function setupSmoothScrolling() {
-    // Handle both mobile nav and desktop nav
-    document.querySelectorAll('nav a, .nav-desktop a').forEach(anchor => {
+    // Handle navigation links
+    document.querySelectorAll('.nav__link').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
 
@@ -1731,25 +1647,58 @@ function displayContacts(data) {
 
 // Setup mobile menu
 function setupMobileMenu() {
-    const hamburger = document.getElementById('mobile-menu-toggle');
-    if (hamburger) {
-        hamburger.addEventListener('click', function () {
-            document.body.classList.toggle('mobile-nav-active');
+    const menuToggle = document.getElementById('mobile-menu-toggle');
+    const nav = document.getElementById('main-nav');
+
+    if (menuToggle && nav) {
+        menuToggle.addEventListener('click', function () {
+            const isActive = nav.classList.contains('active');
+
+            if (isActive) {
+                nav.classList.remove('active');
+                menuToggle.classList.remove('active');
+            } else {
+                nav.classList.add('active');
+                menuToggle.classList.add('active');
+            }
         });
 
         // Close menu when clicking on links
-        document.querySelectorAll('nav a').forEach(link => {
+        document.querySelectorAll('.nav__link').forEach(link => {
             link.addEventListener('click', function () {
-                document.body.classList.remove('mobile-nav-active');
+                nav.classList.remove('active');
+                menuToggle.classList.remove('active');
             });
         });
 
         // Close menu when clicking outside
         document.addEventListener('click', function (event) {
-            const nav = document.querySelector('nav');
-            if (!hamburger.contains(event.target) && !nav.contains(event.target)) {
-                document.body.classList.remove('mobile-nav-active');
+            if (!menuToggle.contains(event.target) && !nav.contains(event.target)) {
+                nav.classList.remove('active');
+                menuToggle.classList.remove('active');
             }
         });
     }
+}
+
+// Function to get bus type translation
+function getBusTypeTranslation(busType) {
+    if (!busType) return '';
+
+    const translations = {
+        solo: {
+            en: 'Solo bus',
+            bhs: 'Standardni autobus'
+        },
+        minibus: {
+            en: 'Minibus',
+            bhs: 'Minibus'
+        },
+        articulated: {
+            en: 'Articulated bus',
+            bhs: 'Zglobni autobus'
+        }
+    };
+
+    return translations[busType] ? translations[busType][currentLang] || translations[busType].en : busType;
 } 

@@ -1,6 +1,15 @@
 {
   "hubs": [
     {
+      "id": "terminal-bus-station",
+      "type": "terminal-bus-station",
+      "name": "Terminal Malta",
+      "lat": 44.78484571323663,
+      "lng": 17.204853732442842,
+      "info": "Besplatan parking | Free parking",
+      "description": "Terminal za prigradske linije | Terminal for suburban lines"
+    },
+    {
       "id": "old-bus-station",
       "type": "airport-transfer",
       "name": "Airport Shuttle Stop - Stara autobuska stanica",
@@ -77,15 +86,6 @@
       "duration": "30 minutes",
       "lat": 44.75590314027775,
       "lng": 17.181865107685958
-    },
-    {
-      "id": "terminal-bus-station",
-      "type": "terminal-bus-station",
-      "name": "Terminal Malta",
-      "lat": 44.78484571323663,
-      "lng": 17.204853732442842,
-      "info": "Besplatan parking | Free parking",
-      "description": "Terminal za prigradske linije | Terminal for suburban lines"
     }
   ]
 }

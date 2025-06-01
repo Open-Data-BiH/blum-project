@@ -1,18 +1,18 @@
 /* Line colors by company - used by JavaScript-generated content */
 .autoprevoz-line {
-  border-left: 4px solid #c20202;
+  border-left: 4px solid #ed1d22;
 }
 .pavlovic-line {
   border-left: 4px solid #ff9f43;
 }
 .bocac-line {
-  border-left: 4px solid #54a0ff;
+  border-left: 4px solid #00adef;
 }
 .aldemo-line {
   border-left: 4px solid #e05e5e;
 }
 .rale-line {
-  border-left: 4px solid #0a7321;
+  border-left: 4px solid #7fd9e0;
 }
 
 /* Differentiate suburban lines */
@@ -82,7 +82,7 @@
 
 /* colors for different companies */
 .autoprevoz-line .line-id {
-  background-color: #c20202;
+  background-color: #ed1d22;
 }
 
 .pavlovic-line .line-id {
@@ -90,7 +90,7 @@
 }
 
 .bocac-line .line-id {
-  background-color: #54a0ff;
+  background-color: #00adef;
 }
 
 .aldemo-line .line-id {
@@ -98,7 +98,7 @@
 }
 
 .rale-line .line-id {
-  background-color: #0a7321;
+  background-color: #7fd9e0;
 }
 
 /* Hide timetable buttons for suburban lines since they don't have timetables */

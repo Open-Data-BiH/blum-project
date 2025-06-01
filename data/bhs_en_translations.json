@@ -15,41 +15,27 @@
     "sections": {
       "urban_lines": {
         "title": "Urban Lines Map",
-        "map_note": "Use mouse wheel to zoom and drag to move around the map."
+        "map_note": "Use the mouse scroll wheel to zoom in and out, and drag the map to move around. You can also use the +, - buttons and the Home button to reset the view. On touch devices, zoom using pinch gestures, and move around by dragging with your finger."
       },
       "map": {
-        "title": "Transport Locations"
+        "title": "Transport Map"
       },
       "lines": {
         "title": "Lines",
-        "ticketInfo": {
-          "urban": {
-            "title": "Urban Tickets",
-            "items": [
-              "Single ticket - 1.50 KM",
-              "Daily ticket - 5.00 KM",
-              "Monthly ticket - 40.00 KM"
-            ]
-          },
-          "suburban": {
-            "title": "Suburban Tickets",
-            "items": ["Single ticket - 2.00 KM", "Monthly ticket - 60.00 KM"]
-          },
-          "special": {
-            "title": "Special Tickets",
-            "description": "Available for specific user groups",
-            "items": ["Student ticket - 20.00 KM", "Senior ticket - 15.00 KM"]
-          },
-          "free": {
-            "title": "Free Transport",
-            "eligibleTitle": "Eligible for free transport:",
-            "eligible": ["Children under 7 years", "Persons with disabilities"],
-            "discountTitle": "Eligible for 50% discount:",
-            "discount": [
-              "Primary and secondary school students",
-              "University students",
-              "Senior citizens"
-            ]
+        "lineDetails": {
+          "operator": "Operator",
+          "group": "Group",
+          "noStops": "Number of stops",
+          "minDuration": "Minimum duration",
+          "busType": "Bus type",
+          "wheelchairAccessible": "Wheelchair accessible",
+          "minutes": "minutes",
+          "yes": "Yes",
+          "no": "No",
+          "busTypes": {
+            "solo": "Solo bus",
+            "articulated": "Articulated bus",
+            "minibus": "Minibus"
           }
         }
       },
@@ -59,13 +45,16 @@
         "loading": "Loading timetable...",
         "notFound": "Timetable not found for the selected line.",
         "fromTo": "Route:",
+        "relationLabel": "Relation:",
         "selectDay": "Select day",
+        "timetableForLabel": "Timetable for:",
         "hourLabel": "Hour",
         "minutesLabel": "Minutes",
         "days": {
           "weekday": "Weekdays",
           "saturday": "Saturday",
-          "sunday": "Sunday"
+          "sunday": "Sunday",
+          "sundayHoliday": "Sunday and Holiday"
         },
         "notAvailable": {
           "title": "Timetable Not Available",
@@ -115,47 +104,27 @@
     "sections": {
       "urban_lines": {
         "title": "Mapa gradskih linija",
-        "map_note": "Koristite točkić miša za zumiranje i prevlačite mišem za kretanje po mapi."
+        "map_note": "Koristite točkić miša za zumiranje, a prevlačenjem miša pomjerajte mapu. Takođe, možete koristiti dugmad +, - za zumiranje i dugme \"Home\" za povratak na početni prikaz. Na pametnim uređajima, zumiranje vršite razdvajanjem ili približavanjem prstiju, a pomjeranje dodirom i prevlačenjem prsta po ekranu."
       },
       "map": {
-        "title": "Lokacije prevoza"
+        "title": "Mapa prevoza"
       },
       "lines": {
         "title": "Linije",
-        "ticketInfo": {
-          "urban": {
-            "title": "Gradske karte",
-            "items": [
-              "Pojedinačna karta - 1,50 KM",
-              "Dnevna karta - 5,00 KM",
-              "Mjesečna karta - 40,00 KM"
-            ]
-          },
-          "suburban": {
-            "title": "Prigradske karte",
-            "items": [
-              "Pojedinačna karta - 2,00 KM",
-              "Mjesečna karta - 60,00 KM"
-            ]
-          },
-          "special": {
-            "title": "Specijalne karte",
-            "description": "Dostupne za određene grupe korisnika",
-            "items": [
-              "Studentska karta - 20,00 KM",
-              "Penzionerska karta - 15,00 KM"
-            ]
-          },
-          "free": {
-            "title": "Besplatan prevoz",
-            "eligibleTitle": "Pravo na besplatan prevoz imaju:",
-            "eligible": ["Djeca do 7 godina", "Osobe sa invaliditetom"],
-            "discountTitle": "Pravo na popust od 50% imaju:",
-            "discount": [
-              "Učenici osnovnih i srednjih škola",
-              "Studenti",
-              "Penzioneri"
-            ]
+        "lineDetails": {
+          "operator": "Prevoznik",
+          "group": "Grupa",
+          "noStops": "Broj stajališta",
+          "minDuration": "Minimalno vrijeme vožnje",
+          "busType": "Tip autobusa",
+          "wheelchairAccessible": "Prilagođeno za invalidska kolica",
+          "minutes": "minuta",
+          "yes": "Da",
+          "no": "Ne",
+          "busTypes": {
+            "solo": "Solo autobus",
+            "articulated": "Zglobni autobus",
+            "minibus": "Minibus"
           }
         }
       },
@@ -165,13 +134,16 @@
         "loading": "Učitavanje reda vožnje...",
         "notFound": "Red vožnje nije pronađen za izabranu liniju.",
         "fromTo": "Relacija:",
+        "relationLabel": "Relacija:",
         "selectDay": "Izaberite dan",
+        "timetableForLabel": "Red vožnje za:",
         "hourLabel": "Sat",
         "minutesLabel": "Minute",
         "days": {
           "weekday": "Radni dani",
           "saturday": "Subota",
-          "sunday": "Nedjelja"
+          "sunday": "Nedjelja",
+          "sundayHoliday": "Nedjelja i praznik"
         },
         "notAvailable": {
           "title": "Red vožnje nije dostupan",

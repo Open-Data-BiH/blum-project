@@ -152,7 +152,7 @@ function initializeMainMap() {
 
                 // Create a marker for this stop
                 const marker = L.marker(stop.coordinates, {
-                    icon: createFontAwesomeIcon("fa-bus-simple", "#007bff"),
+                    icon: createFontAwesomeIcon("fa-bus-simple", "#72aaff"),
                 });
 
                 // Create the popup content with the stop name, street, and lines
@@ -160,7 +160,7 @@ function initializeMainMap() {
                 <div class="hub-popup">
                     <h3>${stop.name}</h3>
                     <p>Linije | Lines: ${sortedLines.map(lineId => {
-                    const lineColor = window.bus_routes[lineId].color || window.bus_routes[lineId].colour || '#007bff';
+                    const lineColor = window.bus_routes[lineId].color || window.bus_routes[lineId].colour || '#72aaff';
                     return `<a href="#" class="line-number-link" 
                                 style="color:${lineColor}" 
                                 onclick="window.showBusLine('${lineId}'); return false;">${lineId}</a>`;
@@ -218,7 +218,7 @@ function initializeMainMap() {
                             break;
                         case 'airport-transfer':
                             L.marker([hub.lat, hub.lng], {
-                                icon: createFontAwesomeIcon("fa-shuttle-van", "#68a1d4"),
+                                icon: createFontAwesomeIcon("fa-shuttle-van", "#4d4d99"),
                             }).bindPopup(createShuttlePopup(hub.name, hub.info))
                                 .addTo(airportShuttles);
                             break;
@@ -344,7 +344,7 @@ function initializeAirportMap() {
 
         // Add airport shuttle marker with enhanced popup
         const airportIcon = L.divIcon({
-            html: `<i class="fa-solid fa-shuttle-van fa-icon-marker" style="color:#68a1d4;"></i>`,
+            html: `<i class="fa-solid fa-shuttle-van fa-icon-marker" style="color:#4d4d99;"></i>`,
             className: "",
             iconSize: [30, 30],
             iconAnchor: [15, 15],

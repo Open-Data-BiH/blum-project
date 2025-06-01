@@ -15,7 +15,7 @@
         "en": "City Administration"
       },
       "phoneDisplay": "+387 51 498-478",
-      "website": "https://www.banjaluka.rs.ba/gradjani/saobracaj/javni-prevoz/",
+      "website": "https://www.banjaluka.rs.ba/gradjani/javni-prevoz/",
       "color": "#1a5276"
     },
     {
@@ -33,8 +33,8 @@
         "en": "Transport Company"
       },
       "phoneDisplay": "+387 51 215-555",
-      "website": null,
-      "color": "#c20202"
+      "website": "https://www.autoprevoz-gs.com/",
+      "color": "#ed1d22"
     },
     {
       "id": "pavlovic",
@@ -51,7 +51,7 @@
         "en": "Transport Company"
       },
       "phoneDisplay": "+387 51 234-567",
-      "website": null,
+      "website": "https://pavlovic-turs.com/gradski-prigradski-prevoz/",
       "color": "#ff9f43"
     },
     {
@@ -69,8 +69,8 @@
         "en": "Transport Company"
       },
       "phoneDisplay": "+387 51 345-678",
-      "website": null,
-      "color": "#54a0ff"
+      "website": "https://novisajt.bocactours.com/gradski-saobracaj/",
+      "color": "#00adef"
     },
     {
       "id": "aldemo",
@@ -105,8 +105,8 @@
         "en": "Transport Company"
       },
       "phoneDisplay": "+387 51 567-890",
-      "website": null,
-      "color": "#0a7321"
+      "website": "https://raleturs.com/",
+      "color": "#7fd9e0"
     }
   ]
 }

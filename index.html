@@ -27,93 +27,47 @@
     />
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/line-styles.css" />
+    <link rel="stylesheet" href="css/price-tables.css" />
+    <link rel="stylesheet" href="css/timetables.css" />
   </head>
   <body>
     <div class="page-container">
       <div class="content-wrap">
         <header>
           <div class="header__container">
-            <div class="header__top">
+            <div class="header__content">
               <h1 class="header__title" id="site-title">
                 Urbana Mobilnost Banja Luka
               </h1>
-              <div class="hamburger" id="mobile-menu-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-              <div class="language-selector language-selector--desktop">
-                <button class="lang-btn" data-lang="en">EN</button>
-                <button class="lang-btn active" data-lang="bhs">BHS</button>
-              </div>
-            </div>
-            <div class="header__bottom">
-              <nav class="nav-desktop">
-                <a href="#urban-lines" id="nav-urban-lines-desktop">
-                  <i class="fas fa-map"></i>
-                  Mapa gradskih linija
-                </a>
-                <a href="#lines" id="nav-lines-desktop">
-                  <i class="fas fa-route"></i>
-                  Linije
-                </a>
-                <a href="#price-tables" id="nav-price-tables-desktop">
-                  <i class="fas fa-tags"></i>
-                  Cjenovnik
-                </a>
-                <a href="#timetable" id="nav-timetable-desktop">
-                  <i class="fas fa-clock"></i>
-                  Red vožnje
-                </a>
-                <a href="#map" id="nav-map-desktop">
-                  <i class="fas fa-map-marked-alt"></i>
-                  Mapa
-                </a>
-                <a href="#airport" id="nav-airport-desktop">
-                  <i class="fas fa-plane"></i>
-                  Aerodromski prevoz
-                </a>
-                <a href="#contact" id="nav-contact-desktop">
-                  <i class="fas fa-address-book"></i>
-                  Kontakt
-                </a>
-              </nav>
-            </div>
-            <nav>
-              <div class="mobile-menu-options">
-                <div class="language-selector language-selector--mobile">
+
+              <div class="header__controls">
+                <div class="language-selector">
                   <button class="lang-btn" data-lang="en">EN</button>
-                  <button class="lang-btn active" data-lang="bhs">BHS</button>
+                  <button class="lang-btn lang-btn--active" data-lang="bhs">
+                    BHS
+                  </button>
                 </div>
+
+                <button
+                  class="menu-toggle"
+                  id="mobile-menu-toggle"
+                  aria-label="Toggle navigation"
+                >
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </button>
               </div>
-              <a href="#urban-lines" id="nav-urban-lines">
-                <i class="fas fa-map"></i>
-                Mapa gradskih linija
-              </a>
-              <a href="#lines" id="nav-lines">
-                <i class="fas fa-route"></i>
-                Linije
-              </a>
-              <a href="#price-tables" id="nav-price-tables">
-                <i class="fas fa-tags"></i>
-                Cjenovnik
-              </a>
-              <a href="#timetable" id="nav-timetable">
-                <i class="fas fa-clock"></i>
-                Red vožnje
-              </a>
-              <a href="#map" id="nav-map">
-                <i class="fas fa-map-marked-alt"></i>
-                Mapa
-              </a>
-              <a href="#airport" id="nav-airport">
-                <i class="fas fa-plane"></i>
-                Aerodromski prevoz
-              </a>
-              <a href="#contact" id="nav-contact">
-                <i class="fas fa-address-book"></i>
-                Kontakt
-              </a>
+            </div>
+
+            <nav class="nav" id="main-nav">
+              <a href="#urban-lines" class="nav__link">Mapa gradskih linija</a>
+              <a href="#lines" class="nav__link">Linije</a>
+              <a href="#price-tables" class="nav__link">Cjenovnik</a>
+              <a href="#timetable" class="nav__link">Red vožnje</a>
+              <a href="#map" class="nav__link">Mapa</a>
+              <a href="#airport" class="nav__link">Aerodromski prevoz</a>
+              <a href="#contact" class="nav__link">Kontakt</a>
             </nav>
           </div>
         </header>
@@ -123,14 +77,102 @@
             <h2 class="section__title" id="urban-lines-title">
               Gradske Linije
             </h2>
+
+            <!-- Map context information -->
+            <div class="map-context">
+              <div class="map-context__content" data-lang="bhs">
+                <p>
+                  Mapa prikazuje trase linija javnog prevoza i rezultat je rada
+                  <strong
+                    >Udruženja Građana "<a
+                      href="https://www.imamoplan.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="map-context__link"
+                      >Uticajna Grupa - Imamo Plan</a
+                    >"</strong
+                  >
+                  iz Srbije, koje su osnovali
+                  <strong
+                    >Jug Cerović, Marko Njegić i Stefan Milojević 2012.
+                    godine</strong
+                  >.
+                </p>
+
+                <p>
+                  Ova mapa predstavlja
+                  <strong>poklon gradu i građanima</strong>, nastala iz
+                  entuzijazma i volonterskog angažmana, s ciljem da se
+                  unaprijedi preglednost i dostupnost informacija o javnom
+                  prevozu.
+                </p>
+
+                <div class="map-context__note">
+                  <strong>NAPOMENA:</strong> Prikazi na mapi možda nisu u
+                  potpunosti ažurni, jer informacije sa zvanične internet
+                  stranice gradske uprave nisu uvijek dostupne, potpune ili
+                  ažurirane.
+                </div>
+
+                <p>Zahvaljujemo se autorima za doprinos zajednici.</p>
+              </div>
+
+              <div
+                class="map-context__content"
+                data-lang="en"
+                style="display: none"
+              >
+                <p>
+                  This map displays public transport routes and was created by
+                  the
+                  <strong
+                    >Citizens' Association "<a
+                      href="https://www.imamoplan.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="map-context__link"
+                      >Uticajna Grupa - Imamo Plan</a
+                    >"</strong
+                  >
+                  from Serbia, founded in
+                  <strong
+                    >2012 by Jug Cerović, Marko Njegić and Stefan
+                    Milojević</strong
+                  >.
+                </p>
+
+                <p>
+                  The map is a
+                  <strong>gift to the city and its citizens</strong>, developed
+                  as a volunteer initiative aimed at improving access to and
+                  visibility of public transport information.
+                </p>
+
+                <div class="map-context__note">
+                  <strong>Note:</strong> Some route details may not be fully up
+                  to date due to limited availability or lack of accurate
+                  information on the official city administration website.
+                </div>
+
+                <p>
+                  We thank the authors for their valuable contribution to the
+                  community.
+                </p>
+              </div>
+            </div>
+
             <div class="map-container urban-lines-map">
               <div id="urban-lines-viewer"></div>
             </div>
             <div class="map-note">
               <i class="map-note__icon fas fa-info-circle"></i>
               <span
-                >Koristite točkić miša za zumiranje i prevlačite mišem za
-                kretanje po mapi.</span
+                >Koristite točkić miša za zumiranje, a prevlačenjem miša
+                pomjerajte mapu. Takođe, možete koristiti dugmad +, - za
+                zumiranje i dugme Home za povratak na početni prikaz. Na
+                pametnim uređajima, zumiranje vršite razdvajanjem ili
+                približavanjem prstiju, a pomjeranje dodirom i prevlačenjem
+                prsta po ekranu.</span
               >
             </div>
           </div>
@@ -178,7 +220,7 @@
           </div>
         </section>
 
-        <section class="section section--narrow" id="price-tables">
+        <section class="section section--wide" id="price-tables">
           <div class="container">
             <h2 class="section__title" id="price-tables-title">
               Cjenovnik karata
@@ -201,16 +243,19 @@
 
         <section class="section section--wide" id="map">
           <div class="container">
-            <h2 class="section__title" id="map-title">Lokacije prevoza</h2>
+            <h2 class="section__title" id="map-title">Mapa prevoza</h2>
+
             <div class="map-container">
               <div id="map-container"></div>
             </div>
             <div class="map-note" id="bus-stops-note">
               <i class="map-note__icon fas fa-info-circle"></i>
               <span id="bus-stops-note-text"
-                >Za prikaz autobuskih stajališta javnog prevoza potrebno je
-                odabrati filter "Autobuska stajališta" iz padajućeg
-                menija.</span
+                >Na mapi su prikazana autobuska stajališta, Nextbike stanice,
+                željezničke stanice i drugi oblici urbane mobilnosti. Kontrolu
+                prikaza možete izvršiti pomoću kontrole filtera u donjem desnom
+                uglu mape - uključite ili isključite pojedinačne slojeve prema
+                potrebi.</span
               >
             </div>
           </div>
@@ -272,7 +317,10 @@
             </p>
           </div>
           <div class="footer__motto">
-            <p>Made with ❤️ for Banja Luka urban mobility</p>
+            <p data-lang="bhs" style="display: none">
+              Napravljeno sa ❤️ za urbanu mobilnost Banje Luke
+            </p>
+            <p data-lang="en">Made with ❤️ for Banja Luka urban mobility</p>
           </div>
           <div class="footer__copyright">
             <p>
@@ -284,7 +332,7 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="data/bus_routes.js"></script>
+    <script src="data/urban_bus_routes.js"></script>
     <script src="js/script.js"></script>
     <script src="js/map.js"></script>
     <script src="js/urban-lines-viewer.js"></script>

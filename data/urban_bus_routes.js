@@ -60,7 +60,7 @@ const bus_routes = {
     },
     "3": {
         route: "ETF (Vodovod) - Vrbanja - Zeleni vir",
-        color: '#54a0ff',
+        color: '#00adef',
         directions: {
             1: {
                 route: "ETF (Vodovod) - Vrbanja - Zeleni vir",
@@ -169,7 +169,7 @@ const bus_routes = {
     },
     "6": {
         route: "Autobuska stanica - Lauš - Saračica",
-        color: '#54a0ff',
+        color: '#00adef',
         directions: {
             1: {
                 route: "Autobuska stanica - Lauš - Saračica",
@@ -230,7 +230,7 @@ const bus_routes = {
     },
     "7": {
         route: "Lauš - Paprikovac - Centar - Obilićevo (TO Bema)",
-        color: '#54a0ff',
+        color: '#00adef',
         directions: {
             1: {
                 route: "Lauš - Paprikovac - Centar - Obilićevo (TO Bema)",
@@ -286,7 +286,7 @@ const bus_routes = {
     },
     "8": {
         route: "Autobuska stanica - Podgora",
-        color: '#54a0ff',
+        color: '#00adef',
         directions: {
             1: {
                 route: "Autobuska stanica - Podgora",
@@ -402,7 +402,7 @@ const bus_routes = {
     },
     "9B": {
         route: "Česma - Medno polje - Centar",
-        color: '#54a0ff',
+        color: '#00adef',
         directions: {
             1: {
                 route: "Česma - Medno polje - Centar",
@@ -463,7 +463,7 @@ const bus_routes = {
     },
     "10": {
         route: "Autobuska stanica - Obilićevo (Krfska)",
-        color: '#c20202',
+        color: '#ed1d22',
         directions: {
             1: {
                 route: "Autobuska stanica - Obilićevo (Krfska)",
@@ -548,7 +548,7 @@ const bus_routes = {
     },
     "13": {
         route: "Lazarevo - Obilićevo (TO Bema)",
-        color: '#c20202',
+        color: '#ed1d22',
         directions: {
             1: {
                 route: "Lazarevo - Obilićevo (TO Bema)",
@@ -599,7 +599,7 @@ const bus_routes = {
     },
     "13A": {
         route: "Nova bolnica - Centar - Zalužani",
-        color: '#c20202',
+        color: '#ed1d22',
         directions: {
             1: {
                 route: "Nova bolnica - Centar (Vidovdanska) - Zalužani",
@@ -707,7 +707,7 @@ const bus_routes = {
     },
     "13C": {
         route: "Centar (Vidovdanska) - Tunjice - Zalužani (Nenada Kostića)",
-        color: '#0a7321',
+        color: '#7fd9e0',
         directions: {
             1: {
                 route: "Centar (Vidovdanska) - Tunjice - Zalužani (Nenada Kostića)",
@@ -936,7 +936,7 @@ const bus_routes = {
     },
     "17": {
         route: "Obilićevo - Nova bolnica",
-        color: '#c20202',
+        color: '#ed1d22',
         directions: {
             1: {
                 route: "Obilićevo - Nova bolnica",

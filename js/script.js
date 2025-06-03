@@ -10,8 +10,8 @@ window.currentLang = currentLang;
 const LINE_CONFIG = {
     urban: {
         enabled: true,
-        dataFile: 'data/urban_company_ownership.json',
-        timetableFile: 'data/urban_timetables.json',
+        dataFile: 'data/transport/routes/urban_company_ownership.json',
+        timetableFile: 'data/transport/timetables/urban_timetables.json',
         useCompanyData: true,
         title: {
             en: 'Urban Lines',
@@ -20,8 +20,8 @@ const LINE_CONFIG = {
     },
     suburban: {
         enabled: false,
-        dataFile: 'data/suburban_company_ownership.json',
-        timetableFile: 'data/suburban_timetables.json',
+        dataFile: 'data/transport/routes/suburban_company_ownership.json',
+        timetableFile: 'data/transport/timetables/suburban_timetables.json',
         useCompanyData: true,
         title: {
             en: 'Suburban Lines',
@@ -70,13 +70,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Setup mobile menu toggle
         setupMobileMenu();
+
+        // Setup map credits dropdown
+        setupMapCreditsDropdown();
     });
 });
 
 // Load translations
 async function loadTranslations() {
     try {
-        const response = await fetch('data/bhs_en_translations.json');
+        const response = await fetch('data/config/bhs_en_translations.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -166,6 +169,7 @@ function applyTranslation(lang) {
     safelyUpdateText('nav-contact-desktop', t.header.nav.contact);
     safelyUpdateText('nav-price-tables-desktop', t.header.nav.prices || (lang === 'bhs' ? 'Cjenovnik' : 'Prices'));
     safelyUpdateText('nav-urban-lines-desktop', t.header.nav.urban_lines);
+    safelyUpdateText('nav-faq-desktop', t.header.nav.faq);
 
     // Update sections
     // Urban Lines section
@@ -173,6 +177,19 @@ function applyTranslation(lang) {
     const mapNote = document.querySelector('#urban-lines .map-note span');
     if (mapNote) {
         mapNote.textContent = t.sections.urban_lines.map_note;
+    }
+
+    // Update map credits labels
+    const mapCreditsLabelBhs = document.querySelector('.map-credits__label[data-lang="bhs"]');
+    const mapCreditsLabelEn = document.querySelector('.map-credits__label[data-lang="en"]');
+    if (mapCreditsLabelBhs && mapCreditsLabelEn) {
+        if (lang === 'bhs') {
+            mapCreditsLabelBhs.style.display = '';
+            mapCreditsLabelEn.style.display = 'none';
+        } else {
+            mapCreditsLabelBhs.style.display = 'none';
+            mapCreditsLabelEn.style.display = '';
+        }
     }
 
     // Map section
@@ -754,7 +771,7 @@ function scrollToTimetable(lineId) {
 
 // Load prices data
 function loadPrices() {
-    fetch('data/prices.json')
+    fetch('data/transport/prices.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -955,7 +972,9 @@ function setupTimetableSelection() {
                 if (this.value) {
                     loadTimetable(this.value);
                 } else {
-                    timetableDisplay.innerHTML = `<p>${translations[currentLang]?.sections?.timetable?.select || 'Please select a bus line to view its timetable.'}</p>`;
+                    const welcomeMessage = translations[currentLang]?.sections?.timetable?.welcome ||
+                        (currentLang === 'bhs' ? 'Redovi vožnje će biti prikazani nakon izbora linije.' : 'Timetables will be displayed after selecting a line.');
+                    timetableDisplay.innerHTML = `<p class="timetable-welcome">${welcomeMessage}</p>`;
                 }
             });
 
@@ -981,9 +1000,11 @@ function setupTimetableSelection() {
                 lineSelect.value = savedLine;
                 loadTimetable(savedLine);
                 sessionStorage.removeItem('selectedLine'); // Clear after use
-            } else if (allTimetableData && allTimetableData.length > 0) {
-                lineSelect.value = allTimetableData[0].lineId;
-                loadTimetable(allTimetableData[0].lineId);
+            } else {
+                // Don't auto-select first line - let user choose
+                const welcomeMessage = translations[currentLang]?.sections?.timetable?.welcome ||
+                    (currentLang === 'bhs' ? 'Redovi vožnje će biti prikazani nakon izbora linije.' : 'Timetables will be displayed after selecting a line.');
+                timetableDisplay.innerHTML = `<p class="timetable-welcome">${welcomeMessage}</p>`;
             }
         })
         .catch(error => {
@@ -1086,7 +1107,7 @@ function loadTimetable(lineId) {
 
     // Fallback to urban timetables if no specific file found
     if (!timetableFile) {
-        timetableFile = 'data/urban_timetables.json';
+        timetableFile = 'data/transport/timetables/urban_timetables.json';
     }
 
     // Fetch the appropriate timetable file
@@ -1515,9 +1536,16 @@ function setupSmoothScrolling() {
     // Handle navigation links
     document.querySelectorAll('.nav__link').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+
+            // Only handle internal anchor links (starting with #)
+            if (!targetId.startsWith('#')) {
+                // For external links like faq.html, let the browser handle navigation normally
+                return;
+            }
+
             e.preventDefault();
 
-            const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
 
             if (targetElement) {
@@ -1543,7 +1571,7 @@ function setupSmoothScrolling() {
 
 // Load and display contacts information
 function loadContacts() {
-    fetch('data/contacts.json')
+    fetch('data/transport/contacts.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -1633,6 +1661,11 @@ function displayContacts(data) {
                 cardContent += `<p class="contact-phone"><strong>${translations[currentLang]?.sections?.contact?.phone || 'Phone:'}</strong> ${contact.phoneDisplay}</p>`;
             }
 
+            // Add email if available
+            if (contact.email) {
+                cardContent += `<p class="contact-email"><strong>${translations[currentLang]?.sections?.contact?.email || 'Email:'}</strong> <a href="mailto:${contact.email}">${contact.email}</a></p>`;
+            }
+
             // Add website if available
             if (contact.website) {
                 cardContent += `<p class="contact-website"><a href="${contact.website}" target="_blank">${translations[currentLang]?.ui?.visit || 'Visit website'}</a></p>`;
@@ -1701,4 +1734,68 @@ function getBusTypeTranslation(busType) {
     };
 
     return translations[busType] ? translations[busType][currentLang] || translations[busType].en : busType;
-} 
+}
+
+// Setup map credits dropdown functionality
+function setupMapCreditsDropdown() {
+    const toggle = document.getElementById('map-credits-toggle');
+    const content = document.getElementById('map-credits-content');
+
+    if (toggle && content) {
+        // Set initial state
+        toggle.setAttribute('aria-expanded', 'false');
+        content.classList.remove('open');
+
+        // Update context content language visibility
+        function updateContentLanguage() {
+            const bhsContent = content.querySelector('.map-context__content[data-lang="bhs"]');
+            const enContent = content.querySelector('.map-context__content[data-lang="en"]');
+
+            if (bhsContent && enContent) {
+                if (currentLang === 'bhs') {
+                    bhsContent.style.display = '';
+                    enContent.style.display = 'none';
+                } else {
+                    bhsContent.style.display = 'none';
+                    enContent.style.display = '';
+                }
+            }
+        }
+
+        // Set initial language
+        updateContentLanguage();
+
+        toggle.addEventListener('click', function () {
+            const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+
+            if (isExpanded) {
+                // Close dropdown
+                toggle.setAttribute('aria-expanded', 'false');
+                content.classList.remove('open');
+            } else {
+                // Open dropdown
+                toggle.setAttribute('aria-expanded', 'true');
+                content.classList.add('open');
+                // Update language when opening
+                updateContentLanguage();
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (event) {
+            if (!toggle.contains(event.target) && !content.contains(event.target)) {
+                toggle.setAttribute('aria-expanded', 'false');
+                content.classList.remove('open');
+            }
+        });
+
+        // Close dropdown on Escape key
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+                toggle.setAttribute('aria-expanded', 'false');
+                content.classList.remove('open');
+                toggle.focus(); // Return focus to toggle button
+            }
+        });
+    }
+}

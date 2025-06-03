@@ -3,13 +3,14 @@
     "header": {
       "title": "Urban Mobility Banja Luka",
       "nav": {
-        "map": "Map",
+        "map": "Interactive Map",
         "lines": "Lines",
         "timetable": "Timetable",
         "airport": "Airport Transport",
-        "contact": "Contact",
+        "contact": "Useful Contacts",
         "prices": "Prices",
-        "urban_lines": "Urban Lines Map"
+        "urban_lines": "Urban Lines Map",
+        "faq": "FAQ"
       }
     },
     "sections": {
@@ -18,7 +19,7 @@
         "map_note": "Use the mouse scroll wheel to zoom in and out, and drag the map to move around. You can also use the +, - buttons and the Home button to reset the view. On touch devices, zoom using pinch gestures, and move around by dragging with your finger."
       },
       "map": {
-        "title": "Transport Map"
+        "title": "Interactive Transport Map"
       },
       "lines": {
         "title": "Lines",
@@ -72,13 +73,19 @@
         "websiteLink": "Smiljić Company - Airport Transfers"
       },
       "contact": {
-        "title": "Contact Information",
+        "title": "Useful Contacts",
         "email": "Email:",
         "phone": "Phone:",
         "timetableInfo": "Timetable Information:"
       },
       "prices": {
         "title": "Ticket Prices"
+      },
+      "faq": {
+        "title": "Frequently Asked Questions",
+        "subtitle": "Find answers to the most common questions about public transport in Banja Luka",
+        "loading": "Loading FAQ...",
+        "error": "Sorry, we could not load the FAQ content at this time. Please try again later."
       }
     },
     "ui": {
@@ -92,13 +99,14 @@
     "header": {
       "title": "Urbana Mobilnost Banja Luka",
       "nav": {
-        "map": "Mapa",
+        "map": "Interaktivna mapa",
         "lines": "Linije",
         "timetable": "Red vožnje",
         "airport": "Aerodromski prevoz",
-        "contact": "Kontakt",
+        "contact": "Korisni kontakti",
         "prices": "Cjenovnik",
-        "urban_lines": "Mapa gradskih linija"
+        "urban_lines": "Mapa gradskih linija",
+        "faq": "Često postavljana pitanja"
       }
     },
     "sections": {
@@ -107,7 +115,7 @@
         "map_note": "Koristite točkić miša za zumiranje, a prevlačenjem miša pomjerajte mapu. Takođe, možete koristiti dugmad +, - za zumiranje i dugme \"Home\" za povratak na početni prikaz. Na pametnim uređajima, zumiranje vršite razdvajanjem ili približavanjem prstiju, a pomjeranje dodirom i prevlačenjem prsta po ekranu."
       },
       "map": {
-        "title": "Mapa prevoza"
+        "title": "Interaktivna mapa prevoza"
       },
       "lines": {
         "title": "Linije",
@@ -161,13 +169,19 @@
         "websiteLink": "Smiljić Company - Avio transferi"
       },
       "contact": {
-        "title": "Kontakt informacije",
+        "title": "Korisni kontakti",
         "email": "Email:",
         "phone": "Telefon:",
         "timetableInfo": "Informacije o redovima vožnje:"
       },
       "prices": {
         "title": "Cjenovnik karata"
+      },
+      "faq": {
+        "title": "Često postavljana pitanja",
+        "subtitle": "Pronađite odgovore na najčešća pitanja o javnom prevozu u Banjoj Luci",
+        "loading": "Učitavam FAQ...",
+        "error": "Izvinjavam se, nismo mogli učitati FAQ sadržaj u ovom trenutku. Molimo pokušajte kasnije."
       }
     },
     "ui": {

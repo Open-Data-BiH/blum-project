@@ -27,6 +27,73 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// Global variables for walking distance circles
+let currentWalkingCircles = [];
+let globalMap = null;
+
+// Function to clear existing walking circles
+function clearWalkingCircles() {
+    if (globalMap && currentWalkingCircles.length > 0) {
+        currentWalkingCircles.forEach(circle => {
+            globalMap.removeLayer(circle);
+        });
+        currentWalkingCircles = [];
+        console.log('Cleared existing walking circles');
+    }
+}
+
+// Function to create walking distance circles around a station
+function createWalkingCircles(coordinates, stationName) {
+    if (!globalMap) {
+        console.error('Global map not available for walking circles');
+        return;
+    }
+
+    console.log('Creating walking circles for:', stationName, 'at coordinates:', coordinates);
+    clearWalkingCircles();
+
+    // Create only 5-minute walking circle (~400m radius)
+    const circle5min = L.circle(coordinates, {
+        radius: 400,
+        color: '#4CAF50',
+        fillColor: '#4CAF50',
+        fillOpacity: 0.2,
+        weight: 2,
+        opacity: 0.7
+    });
+
+    // Add circle to map (no popup)
+    circle5min.addTo(globalMap);
+
+    // Calculate position for icon on circle boundary (bottom-right, -45 degrees)
+    const radiusInDegrees = 400 / 111320; // Convert 400m to degrees (approximate)
+    const angleInRadians = -Math.PI / 4; // -45 degrees in radians (bottom-right)
+    const iconLat = coordinates[0] + (radiusInDegrees * Math.sin(angleInRadians));
+    const iconLng = coordinates[1] + (radiusInDegrees * Math.cos(angleInRadians));
+
+    // Create walking icon marker on circle boundary
+    const walkingIcon = L.divIcon({
+        html: `<div class="walking-circle-icon">
+                 <i class="fas fa-walking"></i>
+                 <span>5min</span>
+               </div>`,
+        className: '',
+        iconSize: [60, 28],
+        iconAnchor: [30, 14]
+    });
+
+    const iconMarker = L.marker([iconLat, iconLng], {
+        icon: walkingIcon,
+        interactive: false // Make it non-interactive so it doesn't interfere with clicks
+    });
+
+    iconMarker.addTo(globalMap);
+
+    // Store both circle and icon for later removal
+    currentWalkingCircles = [circle5min, iconMarker];
+    console.log('Added 5-minute walking circle with icon to map');
+}
+
 // Initialize the main map
 function initializeMainMap() {
     try {
@@ -142,38 +209,129 @@ function initializeMainMap() {
                 }
             }
 
-            // Now create markers for each unique stop
-            uniqueStops.forEach(stop => {
-                // Convert the Set of lines to an Array and sort them
-                let sortedLines = Array.from(stop.lines);
-                sortedLines.sort((a, b) => {
-                    return orderedKeys.indexOf(a) - orderedKeys.indexOf(b);
+            // Store markers for zoom-based display
+            const busStopMarkers = new Map();
+            const busStopCircles = new Map();
+            const BUS_STOP_COLOR = "#72aaff"; // Bus stop icon color
+
+            // Function to create a simple circle marker for low zoom levels
+            function createBusStopCircle(coordinates) {
+                const currentZoom = map.getZoom();
+                // Scale radius based on zoom level - larger at higher zoom levels
+                const baseRadius = 3;
+                const scaleFactor = Math.max(1, currentZoom - 11) * 0.5;
+                const radius = Math.min(baseRadius + scaleFactor, 6); // Cap at 6px radius
+
+                return L.circleMarker(coordinates, {
+                    radius: radius,
+                    fillColor: BUS_STOP_COLOR,
+                    color: BUS_STOP_COLOR,
+                    weight: 2,
+                    opacity: 0.8,
+                    fillOpacity: 0.6
                 });
+            }
 
-                // Create a marker for this stop
-                const marker = L.marker(stop.coordinates, {
-                    icon: createFontAwesomeIcon("fa-bus-simple", "#72aaff"),
+            // Function to create full icon marker for high zoom levels
+            function createBusStopIcon(coordinates) {
+                return L.marker(coordinates, {
+                    icon: createFontAwesomeIcon("fa-bus-simple", BUS_STOP_COLOR),
                 });
+            }
 
-                // Create the popup content with the stop name, street, and lines
-                const popupContent = `
-                <div class="hub-popup">
-                    <h3>${stop.name}</h3>
-                    <p>Linije | Lines: ${sortedLines.map(lineId => {
-                    const lineColor = window.bus_routes[lineId].color || window.bus_routes[lineId].colour || '#72aaff';
-                    return `<a href="#" class="line-number-link" 
-                                style="color:${lineColor}" 
-                                onclick="window.showBusLine('${lineId}'); return false;">${lineId}</a>`;
-                }).join(', ')}</p>
-                    <a href="#timetable" class="popup-link">Pogledaj red vožnje | View timetables</a>
-                </div>
-            `;
+            // Function to update bus stop display based on zoom level
+            function updateBusStopDisplay() {
+                const currentZoom = map.getZoom();
+                const ZOOM_THRESHOLD = 15; // Switch to icons at zoom level 14 and above
 
-                marker.bindPopup(popupContent);
-                marker.addTo(layerGroup);
-            });
+                uniqueStops.forEach((stop, stopName) => {
+                    // Convert the Set of lines to an Array and sort them
+                    let sortedLines = Array.from(stop.lines);
+                    sortedLines.sort((a, b) => {
+                        return orderedKeys.indexOf(a) - orderedKeys.indexOf(b);
+                    });
 
-            console.log(`Added ${uniqueStops.size} unique bus stops to the map`);
+                    // Create the popup content with the stop name, street, and lines
+                    const popupContent = `
+                    <div class="hub-popup">
+                        <h3>${stop.name}</h3>
+                        <p>Linije | Lines: ${sortedLines.map(lineId => {
+                        const lineColor = window.bus_routes[lineId].color || window.bus_routes[lineId].colour || '#72aaff';
+                        return `<a href="#" class="line-number-link" 
+                                    style="color:${lineColor}" 
+                                    onclick="window.showBusLine('${lineId}'); return false;">${lineId}</a>`;
+                    }).join(', ')}</p>
+                        <a href="#timetable" class="popup-link">Pogledaj red vožnje | View timetables</a>
+                    </div>
+                `;
+
+                    if (currentZoom >= ZOOM_THRESHOLD) {
+                        // High zoom - show full icons
+
+                        // Remove circle if it exists
+                        if (busStopCircles.has(stopName) && layerGroup.hasLayer(busStopCircles.get(stopName))) {
+                            layerGroup.removeLayer(busStopCircles.get(stopName));
+                        }
+
+                        // Add or update icon marker
+                        if (!busStopMarkers.has(stopName)) {
+                            const marker = createBusStopIcon(stop.coordinates);
+                            marker.bindPopup(popupContent);
+
+                            // Add click event to show walking distance circles
+                            marker.on('click', function (e) {
+                                console.log('Bus stop clicked:', stop.name);
+                                // Show walking circles after a small delay to allow popup to open first
+                                setTimeout(() => {
+                                    createWalkingCircles(stop.coordinates, stop.name);
+                                }, 100);
+                            });
+
+                            busStopMarkers.set(stopName, marker);
+                            marker.addTo(layerGroup);
+                        } else if (!layerGroup.hasLayer(busStopMarkers.get(stopName))) {
+                            // Re-add existing marker if it's not on the map
+                            busStopMarkers.get(stopName).addTo(layerGroup);
+                        }
+                    } else {
+                        // Low zoom - show simple circles
+
+                        // Remove icon marker if it exists
+                        if (busStopMarkers.has(stopName) && layerGroup.hasLayer(busStopMarkers.get(stopName))) {
+                            layerGroup.removeLayer(busStopMarkers.get(stopName));
+                        }
+
+                        // Always recreate circle to ensure proper scaling based on zoom level
+                        if (busStopCircles.has(stopName) && layerGroup.hasLayer(busStopCircles.get(stopName))) {
+                            layerGroup.removeLayer(busStopCircles.get(stopName));
+                        }
+
+                        // Create new circle with updated size
+                        const circle = createBusStopCircle(stop.coordinates);
+                        circle.bindPopup(popupContent);
+
+                        // Add click event to show walking distance circles
+                        circle.on('click', function (e) {
+                            console.log('Bus stop clicked:', stop.name);
+                            // Show walking circles after a small delay to allow popup to open first
+                            setTimeout(() => {
+                                createWalkingCircles(stop.coordinates, stop.name);
+                            }, 100);
+                        });
+
+                        busStopCircles.set(stopName, circle);
+                        circle.addTo(layerGroup);
+                    }
+                });
+            }
+
+            // Initial display
+            updateBusStopDisplay();
+
+            // Add zoom event listener to update display when zoom changes
+            map.on('zoomend', updateBusStopDisplay);
+
+            console.log(`Added ${uniqueStops.size} unique bus stops to the map with zoom-based display`);
         }
 
         // Initialize Layer Groups
@@ -188,7 +346,7 @@ function initializeMainMap() {
         displayBusStops(map, busStops);
 
         // Fetch and process transport hubs
-        fetch('data/transport_hubs.json')
+        fetch('data/transport/transport_hubs.json')
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -197,37 +355,49 @@ function initializeMainMap() {
             })
             .then(data => {
                 data.hubs.forEach(hub => {
+                    let marker;
                     switch (hub.type) {
                         case 'train-station':
-                            L.marker([hub.lat, hub.lng], {
+                            marker = L.marker([hub.lat, hub.lng], {
                                 icon: createFontAwesomeIcon("fa-train", "#ff8369"),
-                            }).bindPopup(createTrainStationPopup(hub.name, hub.info, hub.destinations))
-                                .addTo(trainStations);
+                            }).bindPopup(createTrainStationPopup(hub.name, hub.info, hub.destinations));
+                            marker.addTo(trainStations);
                             break;
                         case 'bus-station':
-                            L.marker([hub.lat, hub.lng], {
+                            marker = L.marker([hub.lat, hub.lng], {
                                 icon: createFontAwesomeIcon("fa-bus", "#0e5287"),
-                            }).bindPopup(createMainBusStationPopup(hub.name, hub.info))
-                                .addTo(mainBusStations);
+                            }).bindPopup(createMainBusStationPopup(hub.name, hub.info));
+                            marker.addTo(mainBusStations);
                             break;
                         case 'terminal-bus-station':
-                            L.marker([hub.lat, hub.lng], {
+                            marker = L.marker([hub.lat, hub.lng], {
                                 icon: createFontAwesomeIcon("fa-bus", "#0e5287"),
-                            }).bindPopup(createTerminalBusStationPopup(hub.name, hub.info, hub.description))
-                                .addTo(mainBusStations);
+                            }).bindPopup(createTerminalBusStationPopup(hub.name, hub.info, hub.description));
+                            marker.addTo(mainBusStations);
                             break;
                         case 'airport-transfer':
-                            L.marker([hub.lat, hub.lng], {
+                            marker = L.marker([hub.lat, hub.lng], {
                                 icon: createFontAwesomeIcon("fa-shuttle-van", "#4d4d99"),
-                            }).bindPopup(createShuttlePopup(hub.name, hub.info))
-                                .addTo(airportShuttles);
+                            }).bindPopup(createShuttlePopup(hub.name, hub.info));
+                            marker.addTo(airportShuttles);
                             break;
                         case 'bus-terminal':
-                            L.marker([hub.lat, hub.lng], {
+                            marker = L.marker([hub.lat, hub.lng], {
                                 icon: createFontAwesomeIcon("fa-route", "#57bd6d"),
-                            }).bindPopup(createTouristBusPopup(hub.name, hub.info, hub.price, hub.duration))
-                                .addTo(touristBus);
+                            }).bindPopup(createTouristBusPopup(hub.name, hub.info, hub.price, hub.duration));
+                            marker.addTo(touristBus);
                             break;
+                    }
+
+                    // Add walking distance circles functionality to all transport hub markers
+                    if (marker) {
+                        marker.on('click', function (e) {
+                            console.log('Bus stop clicked:', hub.name);
+                            // Show walking circles after a small delay to allow popup to open first
+                            setTimeout(() => {
+                                createWalkingCircles([hub.lat, hub.lng], hub.name);
+                            }, 100);
+                        });
                     }
                 });
             })
@@ -244,7 +414,7 @@ function initializeMainMap() {
             });
 
         // Fetch and process bike stations
-        fetch('data/bike_stations.json')
+        fetch('data/transport/bike_stations.json')
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -253,10 +423,19 @@ function initializeMainMap() {
             })
             .then(data => {
                 data.forEach(station => {
-                    L.marker([station.lat, station.lon], {
+                    const marker = L.marker([station.lat, station.lon], {
                         icon: createFontAwesomeIcon("fa-bicycle", "#004899"), // Example icon and color
-                    }).bindPopup(createBikeStationPopup(station.name, station.capacity))
-                        .addTo(bikeStations);
+                    }).bindPopup(createBikeStationPopup(station.name, station.capacity));
+                    marker.addTo(bikeStations);
+
+                    // Add walking distance circles functionality to bike station markers
+                    marker.on('click', function (e) {
+                        console.log('Bike station clicked:', station.name);
+                        // Show walking circles after a small delay to allow popup to open first
+                        setTimeout(() => {
+                            createWalkingCircles([station.lat, station.lon], station.name);
+                        }, 100);
+                    });
                 });
             })
             .catch(error => {
@@ -291,6 +470,12 @@ function initializeMainMap() {
         touristBus.addTo(map);
         mainBusStations.addTo(map);
         bikeStations.addTo(map); // Add bike stations to map by default
+
+        globalMap = map;
+
+        console.log('Main map initialized successfully');
+        console.log('Walking circles functions available:', typeof createWalkingCircles === 'function');
+        console.log('Global map reference set:', globalMap !== null);
     } catch (error) {
         console.error('Error initializing main map:', error);
         // Show error message in map container

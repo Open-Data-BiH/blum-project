@@ -1,21 +1,60 @@
 {
   "contacts": [
     {
-      "id": "city-transport",
+      "id": "municipal-transportation-office",
       "name": {
         "bhs": "Grad Banja Luka - Odsjek za javni prevoz",
-        "en": "City of Banja Luka - Public Transport Department"
+        "en": "City of Banja Luka - Public Transport Division"
       },
       "department": {
         "bhs": "Odsjek za javni prevoz",
-        "en": "Public Transport Department"
+        "en": "Public Transport Division"
       },
       "type": {
         "bhs": "Gradska uprava",
         "en": "City Administration"
       },
-      "phoneDisplay": "+387 51 498-478",
+      "phoneDisplay": "+387 51 498-480",
+      "email": "javni.prevoz@banjaluka.rs.ba",
       "website": "https://www.banjaluka.rs.ba/gradjani/javni-prevoz/",
+      "color": "#1a5276"
+    },
+    {
+      "id": "municipal-inspection",
+      "name": {
+        "bhs": "Grad Banja Luka - Inspekcijske prijave",
+        "en": "City of Banja Luka - Municipal Inspection Reports"
+      },
+      "department": {
+        "bhs": "Gradska inspekcija",
+        "en": "Municipal Inspection"
+      },
+      "type": {
+        "bhs": "Gradska uprava",
+        "en": "City Administration"
+      },
+      "phoneDisplay": "+387 51 244-547",
+      "email": "inspekcija@banjaluka.rs.ba",
+      "website": "https://www.banjaluka.rs.ba/gradska-uprava/odjeljenje-za-inspekcijske-poslove/",
+      "color": "#1a5276"
+    },
+    {
+      "id": "citizens-office",
+      "name": {
+        "bhs": "Grad Banja Luka - Kancelarija za građane",
+        "en": "City of Banja Luka - Citizens' Office"
+      },
+      "department": {
+        "bhs": "Kancelarija za građane",
+        "en": "Citizens' Office"
+      },
+      "type": {
+        "bhs": "Gradska uprava",
+        "en": "City Administration"
+      },
+      "phoneDisplay": "+387 51 244-539",
+      "email": "gradjani@banjaluka.rs.ba",
+      "website": "https://www.banjaluka.rs.ba/gradjani/kancelarija-za-gradjane/",
       "color": "#1a5276"
     },
     {

@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -61,13 +61,36 @@
             </div>
 
             <nav class="nav" id="main-nav">
-              <a href="#urban-lines" class="nav__link">Mapa gradskih linija</a>
-              <a href="#lines" class="nav__link">Linije</a>
-              <a href="#price-tables" class="nav__link">Cjenovnik</a>
-              <a href="#timetable" class="nav__link">Red vožnje</a>
-              <a href="#map" class="nav__link">Mapa</a>
-              <a href="#airport" class="nav__link">Aerodromski prevoz</a>
-              <a href="#contact" class="nav__link">Kontakt</a>
+              <a
+                href="#urban-lines"
+                class="nav__link"
+                id="nav-urban-lines-desktop"
+                >Mapa gradskih linija</a
+              >
+              <a href="#lines" class="nav__link" id="nav-lines-desktop"
+                >Linije</a
+              >
+              <a
+                href="#price-tables"
+                class="nav__link"
+                id="nav-price-tables-desktop"
+                >Cjenovnik</a
+              >
+              <a href="#timetable" class="nav__link" id="nav-timetable-desktop"
+                >Red vožnje</a
+              >
+              <a href="#map" class="nav__link" id="nav-map-desktop"
+                >Interaktivna mapa</a
+              >
+              <a href="#airport" class="nav__link" id="nav-airport-desktop"
+                >Aerodromski prevoz</a
+              >
+              <a href="faq.html" class="nav__link" id="nav-faq-desktop"
+                >Često postavljana pitanja</a
+              >
+              <a href="#contact" class="nav__link" id="nav-contact-desktop"
+                >Korisni kontakti</a
+              >
             </nav>
           </div>
         </header>
@@ -77,89 +100,6 @@
             <h2 class="section__title" id="urban-lines-title">
               Gradske Linije
             </h2>
-
-            <!-- Map context information -->
-            <div class="map-context">
-              <div class="map-context__content" data-lang="bhs">
-                <p>
-                  Mapa prikazuje trase linija javnog prevoza i rezultat je rada
-                  <strong
-                    >Udruženja Građana "<a
-                      href="https://www.imamoplan.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="map-context__link"
-                      >Uticajna Grupa - Imamo Plan</a
-                    >"</strong
-                  >
-                  iz Srbije, koje su osnovali
-                  <strong
-                    >Jug Cerović, Marko Njegić i Stefan Milojević 2012.
-                    godine</strong
-                  >.
-                </p>
-
-                <p>
-                  Ova mapa predstavlja
-                  <strong>poklon gradu i građanima</strong>, nastala iz
-                  entuzijazma i volonterskog angažmana, s ciljem da se
-                  unaprijedi preglednost i dostupnost informacija o javnom
-                  prevozu.
-                </p>
-
-                <div class="map-context__note">
-                  <strong>NAPOMENA:</strong> Prikazi na mapi možda nisu u
-                  potpunosti ažurni, jer informacije sa zvanične internet
-                  stranice gradske uprave nisu uvijek dostupne, potpune ili
-                  ažurirane.
-                </div>
-
-                <p>Zahvaljujemo se autorima za doprinos zajednici.</p>
-              </div>
-
-              <div
-                class="map-context__content"
-                data-lang="en"
-                style="display: none"
-              >
-                <p>
-                  This map displays public transport routes and was created by
-                  the
-                  <strong
-                    >Citizens' Association "<a
-                      href="https://www.imamoplan.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="map-context__link"
-                      >Uticajna Grupa - Imamo Plan</a
-                    >"</strong
-                  >
-                  from Serbia, founded in
-                  <strong
-                    >2012 by Jug Cerović, Marko Njegić and Stefan
-                    Milojević</strong
-                  >.
-                </p>
-
-                <p>
-                  The map is a
-                  <strong>gift to the city and its citizens</strong>, developed
-                  as a volunteer initiative aimed at improving access to and
-                  visibility of public transport information.
-                </p>
-
-                <div class="map-context__note">
-                  <strong>Note:</strong> Some route details may not be fully up
-                  to date due to limited availability or lack of accurate
-                  information on the official city administration website.
-                </div>
-
-                <p>
-                  We thank the authors for their valuable contribution to the
-                  community.
-                </p>
-              </div>
-            </div>
 
             <div class="map-container urban-lines-map">
               <div id="urban-lines-viewer"></div>
@@ -174,6 +114,105 @@
                 približavanjem prstiju, a pomjeranje dodirom i prevlačenjem
                 prsta po ekranu.</span
               >
+            </div>
+
+            <!-- Map Credits Dropdown -->
+            <div class="map-credits">
+              <button class="map-credits__toggle" id="map-credits-toggle">
+                <span class="map-credits__label" data-lang="bhs"
+                  >Više informacija o mapi</span
+                >
+                <span
+                  class="map-credits__label"
+                  data-lang="en"
+                  style="display: none"
+                  >Map credits</span
+                >
+                <i class="map-credits__icon fas fa-chevron-down"></i>
+              </button>
+
+              <div class="map-credits__content" id="map-credits-content">
+                <div class="map-context__content" data-lang="bhs">
+                  <p>
+                    Mapa prikazuje trase linija javnog prevoza i rezultat je
+                    rada
+                    <strong
+                      >Udruženja Građana "<a
+                        href="https://www.imamoplan.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="map-context__link"
+                        >Uticajna Grupa - Imamo Plan</a
+                      >"</strong
+                    >
+                    iz Srbije, koje su osnovali
+                    <strong
+                      >Jug Cerović, Marko Njegić i Stefan Milojević 2012.
+                      godine</strong
+                    >.
+                  </p>
+
+                  <p>
+                    Ova mapa predstavlja
+                    <strong>poklon gradu i građanima</strong>, nastala iz
+                    entuzijazma i volonterskog angažmana, s ciljem da se
+                    unaprijedi preglednost i dostupnost informacija o javnom
+                    prevozu.
+                  </p>
+
+                  <div class="map-context__note">
+                    <strong>NAPOMENA:</strong> Prikazi na mapi možda nisu u
+                    potpunosti ažurni, jer informacije sa zvanične internet
+                    stranice gradske uprave nisu uvijek dostupne, potpune ili
+                    ažurirane.
+                  </div>
+
+                  <p>Zahvaljujemo se autorima za doprinos zajednici.</p>
+                </div>
+
+                <div
+                  class="map-context__content"
+                  data-lang="en"
+                  style="display: none"
+                >
+                  <p>
+                    This map displays public transport routes and was created by
+                    the
+                    <strong
+                      >Citizens' Association "<a
+                        href="https://www.imamoplan.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="map-context__link"
+                        >Uticajna Grupa - Imamo Plan</a
+                      >"</strong
+                    >
+                    from Serbia, founded in
+                    <strong
+                      >2012 by Jug Cerović, Marko Njegić and Stefan
+                      Milojević</strong
+                    >.
+                  </p>
+
+                  <p>
+                    The map is a
+                    <strong>gift to the city and its citizens</strong>,
+                    developed as a volunteer initiative aimed at improving
+                    access to and visibility of public transport information.
+                  </p>
+
+                  <div class="map-context__note">
+                    <strong>Note:</strong> Some route details may not be fully
+                    up to date due to limited availability or lack of accurate
+                    information on the official city administration website.
+                  </div>
+
+                  <p>
+                    We thank the authors for their valuable contribution to the
+                    community.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -243,7 +282,9 @@
 
         <section class="section section--wide" id="map">
           <div class="container">
-            <h2 class="section__title" id="map-title">Mapa prevoza</h2>
+            <h2 class="section__title" id="map-title">
+              Interaktivna mapa prevoza
+            </h2>
 
             <div class="map-container">
               <div id="map-container"></div>
@@ -255,7 +296,10 @@
                 željezničke stanice i drugi oblici urbane mobilnosti. Kontrolu
                 prikaza možete izvršiti pomoću kontrole filtera u donjem desnom
                 uglu mape - uključite ili isključite pojedinačne slojeve prema
-                potrebi.</span
+                potrebi.<br /><br />
+                <strong>🚶 Funkcija udaljenosti hodanja:</strong> Kliknite na
+                bilo koji marker da vidite informacije o stanici i zeleni krug
+                koji prikazuje udaljenost 5 minuta hodanja.</span
               >
             </div>
           </div>
@@ -298,9 +342,7 @@
 
         <section class="section section--narrow" id="contact">
           <div class="container">
-            <h2 class="section__title" id="contact-title">
-              Kontakt informacije
-            </h2>
+            <h2 class="section__title" id="contact-title">Korisni kontakti</h2>
           </div>
         </section>
       </div>
@@ -332,7 +374,7 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="data/urban_bus_routes.js"></script>
+    <script src="data/transport/routes/urban_bus_routes.js"></script>
     <script src="js/script.js"></script>
     <script src="js/map.js"></script>
     <script src="js/urban-lines-viewer.js"></script>

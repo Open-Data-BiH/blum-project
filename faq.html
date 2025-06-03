@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="bs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      FAQ | Prevoz i Mobilnost Banja Luka | Transport & Mobility Banja Luka
+    </title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/faq.css" />
+  </head>
+  <body>
+    <div class="page-container">
+      <div class="content-wrap">
+        <header>
+          <div class="header__container">
+            <div class="header__content">
+              <h1 class="header__title" id="site-title">
+                <a
+                  href="index.html"
+                  style="color: inherit; text-decoration: none"
+                >
+                  Urbana Mobilnost Banja Luka
+                </a>
+              </h1>
+
+              <div class="header__controls">
+                <div class="language-selector">
+                  <button class="lang-btn" data-lang="en">EN</button>
+                  <button class="lang-btn lang-btn--active" data-lang="bhs">
+                    BHS
+                  </button>
+                </div>
+
+                <button
+                  class="menu-toggle"
+                  id="mobile-menu-toggle"
+                  aria-label="Toggle navigation"
+                >
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </button>
+              </div>
+            </div>
+
+            <nav class="nav" id="main-nav">
+              <a
+                href="index.html#urban-lines"
+                class="nav__link"
+                id="nav-urban-lines-desktop"
+              >
+                Mapa gradskih linija
+              </a>
+              <a
+                href="index.html#lines"
+                class="nav__link"
+                id="nav-lines-desktop"
+              >
+                Linije
+              </a>
+              <a
+                href="index.html#price-tables"
+                class="nav__link"
+                id="nav-price-tables-desktop"
+              >
+                Cjenovnik
+              </a>
+              <a
+                href="index.html#timetable"
+                class="nav__link"
+                id="nav-timetable-desktop"
+              >
+                Red vožnje
+              </a>
+              <a href="index.html#map" class="nav__link" id="nav-map-desktop">
+                Interaktivna mapa
+              </a>
+              <a
+                href="index.html#airport"
+                class="nav__link"
+                id="nav-airport-desktop"
+              >
+                Aerodromski prevoz
+              </a>
+              <a
+                href="faq.html"
+                class="nav__link nav__link--active"
+                id="nav-faq-desktop"
+              >
+                Često postavljana pitanja
+              </a>
+              <a
+                href="index.html#contact"
+                class="nav__link"
+                id="nav-contact-desktop"
+              >
+                Korisni kontakti
+              </a>
+            </nav>
+          </div>
+        </header>
+
+        <main>
+          <section class="section section--narrow" id="faq">
+            <div class="container">
+              <h1 class="section__title" id="faq-title">
+                Često postavljana pitanja
+              </h1>
+              <p class="section__subtitle" id="faq-subtitle">
+                Pronađite odgovore na najčešća pitanja o javnom prevozu u Banjoj
+                Luci
+              </p>
+              <div id="faq-content">
+                <!-- FAQ content will be loaded here dynamically -->
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <footer class="footer">
+        <div class="footer__content">
+          <div class="footer__disclaimer">
+            <p id="disclaimer-text">
+              Ova internet stranica nije službena stranica Grada Banja Luka niti
+              bilo kojeg prevoznika. Svi podaci su dati samo u informativne
+              svrhe. Za zvanične informacije o redovima vožnje, cijenama i
+              drugim detaljima, molimo vas da kontaktirate nadležne institucije
+              ili prevoznike.
+            </p>
+          </div>
+          <div class="footer__motto">
+            <p data-lang="bhs" style="display: none">
+              Napravljeno sa ❤️ za urbanu mobilnost Banje Luke
+            </p>
+            <p data-lang="en">Made with ❤️ for Banja Luka urban mobility</p>
+          </div>
+          <div class="footer__copyright">
+            <p>
+              &copy; <span id="current-year">2023</span> Javni prevoz Banja Luka
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script src="js/components/faq.js"></script>
+    <script>
+      // Global variables for translations and current language
+      let translations = {};
+      let currentLang = localStorage.getItem("selectedLanguage") || "bhs";
+      let faqComponent = null;
+
+      // Make currentLang available globally
+      window.currentLang = currentLang;
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Load translations
+        loadTranslations().then(() => {
+          // Setup language switcher
+          setupLanguageSwitcher();
+
+          // Initialize FAQ component
+          initializeFAQ();
+
+          // Setup mobile menu toggle
+          setupMobileMenu();
+        });
+      });
+
+      // Load translations
+      async function loadTranslations() {
+        try {
+          const response = await fetch("data/config/bhs_en_translations.json");
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          translations = await response.json();
+          applyTranslation(currentLang);
+        } catch (error) {
+          console.error("Error loading translations:", error);
+          document.body.classList.add("translations-failed");
+        }
+      }
+
+      // Setup language switcher
+      function setupLanguageSwitcher() {
+        document.querySelectorAll(".lang-btn").forEach((btn) => {
+          if (btn.getAttribute("data-lang") === currentLang) {
+            btn.classList.add("lang-btn--active");
+          } else {
+            btn.classList.remove("lang-btn--active");
+          }
+
+          btn.addEventListener("click", function () {
+            const lang = this.getAttribute("data-lang");
+            if (lang !== currentLang) {
+              localStorage.setItem("selectedLanguage", lang);
+              window.location.reload();
+            }
+          });
+        });
+      }
+
+      // Apply translation to the page
+      function applyTranslation(lang) {
+        const t = translations[lang];
+        if (!t) return;
+
+        currentLang = lang;
+        window.currentLang = lang;
+
+        function safelyUpdateText(id, text) {
+          const element = document.getElementById(id);
+          if (element) {
+            element.textContent = text;
+          }
+        }
+
+        // Update page title
+        document.title = `${t.header.nav.faq || "FAQ"} | ${t.header.title}`;
+
+        // Header
+        safelyUpdateText("site-title", t.header.title);
+
+        // Navigation
+        safelyUpdateText("nav-urban-lines-desktop", t.header.nav.urban_lines);
+        safelyUpdateText("nav-lines-desktop", t.header.nav.lines);
+        safelyUpdateText("nav-price-tables-desktop", t.header.nav.prices);
+        safelyUpdateText("nav-timetable-desktop", t.header.nav.timetable);
+        safelyUpdateText("nav-map-desktop", t.header.nav.map);
+        safelyUpdateText("nav-airport-desktop", t.header.nav.airport);
+        safelyUpdateText("nav-faq-desktop", t.header.nav.faq);
+        safelyUpdateText("nav-contact-desktop", t.header.nav.contact);
+
+        // FAQ section
+        safelyUpdateText(
+          "faq-title",
+          t.sections.faq?.title ||
+            (lang === "bhs"
+              ? "Često postavljana pitanja"
+              : "Frequently Asked Questions")
+        );
+        safelyUpdateText(
+          "faq-subtitle",
+          t.sections.faq?.subtitle ||
+            (lang === "bhs"
+              ? "Pronađite odgovore na najčešća pitanja o javnom prevozu u Banjoj Luci"
+              : "Find answers to the most common questions about public transport in Banja Luka")
+        );
+
+        // Footer
+        const disclaimerText =
+          lang === "bhs"
+            ? "Ova internet stranica nije službena stranica Grada Banja Luka niti bilo kojeg prevoznika. Svi podaci su dati samo u informativne svrhe. Za zvanične informacije o redovima vožnje, cijenama i drugim detaljima, molimo vas da kontaktirate nadležne institucije ili prevoznike."
+            : "This website is not officially affiliated with the City of Banja Luka or any transport operators. All data is provided for informational purposes only. For official information about schedules, prices, and other details, please contact the relevant authorities or transport companies.";
+        safelyUpdateText("disclaimer-text", disclaimerText);
+
+        // Handle data-lang elements
+        document.querySelectorAll("[data-lang]").forEach((element) => {
+          if (element.classList.contains("lang-btn")) {
+            return;
+          }
+          const elementLang = element.getAttribute("data-lang");
+          element.style.display = elementLang === lang ? "" : "none";
+        });
+
+        // Update FAQ component language if initialized
+        if (faqComponent) {
+          faqComponent.updateLanguage(lang);
+        }
+      }
+
+      // Initialize FAQ component
+      function initializeFAQ() {
+        if (typeof FAQComponent !== "undefined") {
+          faqComponent = new FAQComponent();
+          faqComponent.init().catch((error) => {
+            console.error("Error initializing FAQ component:", error);
+          });
+        } else {
+          console.warn(
+            "FAQComponent not found - FAQ functionality will not be available"
+          );
+        }
+      }
+
+      // Setup mobile menu
+      function setupMobileMenu() {
+        const menuToggle = document.getElementById("mobile-menu-toggle");
+        const nav = document.getElementById("main-nav");
+
+        if (menuToggle && nav) {
+          menuToggle.addEventListener("click", function () {
+            const isActive = nav.classList.contains("active");
+            if (isActive) {
+              nav.classList.remove("active");
+              menuToggle.classList.remove("active");
+            } else {
+              nav.classList.add("active");
+              menuToggle.classList.add("active");
+            }
+          });
+
+          // Close menu when clicking on links
+          document.querySelectorAll(".nav__link").forEach((link) => {
+            link.addEventListener("click", function () {
+              nav.classList.remove("active");
+              menuToggle.classList.remove("active");
+            });
+          });
+
+          // Close menu when clicking outside
+          document.addEventListener("click", function (event) {
+            if (
+              !menuToggle.contains(event.target) &&
+              !nav.contains(event.target)
+            ) {
+              nav.classList.remove("active");
+              menuToggle.classList.remove("active");
+            }
+          });
+        }
+      }
+
+      // Set current year
+      document.getElementById("current-year").textContent =
+        new Date().getFullYear();
+    </script>
+  </body>
+</html>

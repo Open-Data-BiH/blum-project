@@ -1,0 +1,448 @@
+{
+  "categories": [
+    {
+      "id": "general-information",
+      "title": {
+        "bhs": "Opšte informacije",
+        "en": "General Information"
+      },
+      "questions": [
+        {
+          "id": "service-coverage",
+          "question": {
+            "bhs": "Koja područja pokriva javni prevoz u Banjoj Luci?",
+            "en": "Which areas are covered by public transport in Banja Luka?"
+          },
+          "answer": {
+            "bhs": "Javni prevoz u Banjoj Luci obuhvata gradske i prigradske linije koje povezuju različite dijelove grada i okolna naselja. Detaljnu mapu linija možete pronaći u sekciji 'Mapa gradskih linija'.",
+            "en": "Public transport in Banja Luka includes urban and suburban lines connecting various parts of the city and surrounding settlements. A detailed route map can be found in the 'Urban Lines Map' section."
+          }
+        },
+        {
+          "id": "service-hours",
+          "question": {
+            "bhs": "Koje su radne sate javnog prevoza?",
+            "en": "What are the operating hours of public transport?"
+          },
+          "answer": {
+            "bhs": "Radno vrijeme javnog prevoza varira u zavisnosti od linije. Većina linija saobraća od ranih jutarnjih sati do kasno uveče. Tačne rasporede možete pronaći u sekciji 'Red vožnje'.",
+            "en": "Operating hours of public transport vary depending on the route. Most lines operate from early morning until late evening. Exact schedules can be found in the 'Timetable' section."
+          }
+        }
+      ]
+    },
+    {
+      "id": "tickets-payment",
+      "title": {
+        "bhs": "Karte i plaćanje",
+        "en": "Tickets and Payment"
+      },
+      "questions": [
+        {
+          "id": "buy-ticket",
+          "question": {
+            "bhs": "Gdje mogu kupiti kartu za javni prevoz?",
+            "en": "Where can I buy a public transport ticket?"
+          },
+          "answer": {
+            "bhs": "Karte možete kupiti direktno u autobusu kod vozača, na kioscima u gradu, ili preko mobilne aplikacije. Preporučujemo da imate tačan iznos novca jer vozači možda neće imati kusur.",
+            "en": "You can buy tickets directly from the driver on the bus, at city kiosks, or through the mobile app. We recommend having exact change as drivers may not have change available."
+          }
+        },
+        {
+          "id": "ticket-prices",
+          "question": {
+            "bhs": "Koliko koštaju karte za javni prevoz?",
+            "en": "How much do public transport tickets cost?"
+          },
+          "answer": {
+            "bhs": "Cijene karata su sljedeće: pojedinačna karta 2,30 KM, radnička mjesečna karta 57 KM, jedinstvena radnička mjesečna karta 78 KM, mjesečna karta za studente i đake 39 KM, jedinstvena mjesečna karta za studente 51 KM, penzionerska mjesečna karta 28 KM. :contentReference[oaicite:14]{index=14}",
+            "en": "Ticket prices are as follows: single ticket 2.30 KM, worker monthly pass 57 KM, unified worker monthly pass 78 KM, student and pupil monthly pass 39 KM, unified student monthly pass 51 KM, pensioner monthly pass 28 KM. :contentReference[oaicite:15]{index=15}"
+          }
+        },
+        {
+          "id": "monthly-pass-types",
+          "question": {
+            "bhs": "Koje vrste mjesečnih karata su dostupne i kako ih mogu kupiti?",
+            "en": "What types of monthly passes are available and how can I purchase them?"
+          },
+          "answer": {
+            "bhs": "Dostupne su sljedeće vrste mjesečnih karata: radnička, penzionerska, đačka i jedinstvena mjesečna karta (JMK) koja važi na svim linijama gradskog prevoza. Karte se mogu kupiti na prodajnim mjestima prevoznika, kao što su Pavlović Turs i Autoprevoz GS. :contentReference[oaicite:12]{index=12}",
+            "en": "Available monthly passes include: worker, pensioner, student, and the unified monthly pass (JMK) valid on all city transport lines. Passes can be purchased at carriers' sales points, such as Pavlović Turs and Autoprevoz GS. :contentReference[oaicite:13]{index=13}"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fares-and-discounts",
+      "title": {
+        "bhs": "Cijene i popusti",
+        "en": "Fares and Discounts"
+      },
+      "questions": [
+        {
+          "id": "student-discounts",
+          "question": {
+            "bhs": "Postoje li popusti za učenike i studente?",
+            "en": "Are there discounts for pupils and students?"
+          },
+          "answer": {
+            "bhs": "Da, učenici i studenti imaju pravo na povlaštene cijene karata. Za više informacija o uslovima i načinu ostvarivanja popusta, posjetite sekciju 'Cjenovnik'. Mjesečna karta za studente i đake je 39 KM, a jedinstvena mjesečna karta za studente 51 KM.",
+            "en": "Yes, pupils and students are entitled to discounted fares. For more information on eligibility and how to obtain discounts, please visit the 'Prices' section. The monthly pass for students and pupils is 39 KM, and the unified monthly pass for students is 51 KM."
+          }
+        },
+        {
+          "id": "senior-free-travel",
+          "question": {
+            "bhs": "Da li penzioneri i lica starija od 65 godina imaju pravo na besplatan prevoz?",
+            "en": "Do pensioners and persons over 65 have the right to free transport?"
+          },
+          "answer": {
+            "bhs": "Penzioneri i lica starija od 65 godina imaju pravo na besplatan javni prevoz. Mjesečna karta za penzionere (koji nisu obuhvaćeni besplatnim prevozom) je 28 KM. :contentReference[oaicite:14]{index=14}",
+            "en": "Pensioners and persons over 65 years of age are entitled to free public transport. The monthly pass for pensioners (not covered by free transport) is 28 KM. :contentReference[oaicite:15]{index=15}"
+          }
+        },
+        {
+          "id": "free-transport-eligibility",
+          "question": {
+            "bhs": "Ko još ima pravo na besplatan javni prevoz u Banjoj Luci?",
+            "en": "Who else is entitled to free public transport in Banja Luka?"
+          },
+          "answer": {
+            "bhs": "Pored penzionera i lica starijih od 65 godina, pravo na besplatan javni prevoz imaju i roditelji poginulih boraca, slijepa lica sa pratiocem, djeca poginulih boraca koja pohađaju srednju školu i fakultet, supruge poginulih boraca koje nisu penzioneri, te invalidi I i II kategorije. :contentReference[oaicite:8]{index=8}",
+            "en": "In addition to pensioners and persons over 65, entitled to free public transport are parents of fallen soldiers, blind persons with an escort, children of fallen soldiers attending secondary school and university, spouses of fallen soldiers who are not pensioners, and persons with disabilities of categories I and II. :contentReference[oaicite:9]{index=9}"
+          }
+        },
+        {
+          "id": "apply-free-transport",
+          "question": {
+            "bhs": "Kako se mogu prijaviti za besplatan javni prevoz?",
+            "en": "How can I apply for free public transport?"
+          },
+          "answer": {
+            "bhs": "Za ostvarivanje prava na besplatan prevoz, potrebno je podnijeti zahtjev u Udruženju penzionera grada Banjaluka ili u prostorijama mjesnih zajednica. Potrebna dokumentacija uključuje: popunjen zahtjev, dvije fotografije, kopiju lične karte, uvjerenje o prebivalištu i ček od posljednje penzije. Lica starija od 65 godina bez penzije trebaju priložiti ovjerenu izjavu da ne primaju penziju ni u BiH ni u inostranstvu. :contentReference[oaicite:10]{index=10}",
+            "en": "To obtain the right to free transport, an application must be submitted at the Pensioners' Association of the City of Banja Luka or at local community offices. Required documents include: completed application form, two photographs, copy of ID card, proof of residence, and the latest pension check. Persons over 65 without a pension should provide a certified statement confirming they do not receive a pension in Bosnia and Herzegovina or abroad. :contentReference[oaicite:11]{index=11}"
+          }
+        },
+        {
+          "id": "children-travel",
+          "question": {
+            "bhs": "Do koje godine djeca mogu putovati besplatno?",
+            "en": "Up to what age can children travel for free?"
+          },
+          "answer": {
+            "bhs": "Djeca do 6 godina starosti mogu putovati besplatno u pratnji odrasle osobe, pod uslovom da ne zauzimaju posebno sjedište.",
+            "en": "Children up to 6 years old can travel free of charge when accompanied by an adult, provided they do not occupy a separate seat."
+          }
+        },
+        {
+          "id": "social-policy",
+          "question": {
+            "bhs": "Kako Grad Banja Luka podržava socijalno ugrožene grupe kroz javni prevoz?",
+            "en": "How does the City of Banja Luka support vulnerable groups through public transport?"
+          },
+          "answer": {
+            "bhs": "Grad, u skladu sa budžetskim mogućnostima, omogućava besplatan ili subvencionisan prevoz za penzionere, lica starija od 65 godina, porodice sa četvoro i više djece i druge kategorije stanovništva.",
+            "en": "The City, according to budget capacity, offers free or subsidised transport for pensioners, persons over 65, families with four or more children, and other vulnerable groups."
+          }
+        }
+      ]
+    },
+    {
+      "id": "routes-schedules",
+      "title": {
+        "bhs": "Rute i red vožnje",
+        "en": "Routes and Schedules"
+      },
+      "questions": [
+        {
+          "id": "route-map",
+          "question": {
+            "bhs": "Gdje mogu pronaći mapu svih autobusnih linija?",
+            "en": "Where can I find a map of all bus routes?"
+          },
+          "answer": {
+            "bhs": "Možete pronaći interaktivnu mapu svih autobusnih linija u sekciji 'Mapa gradskih linija' na vrhu ove stranice. Također imamo detaljnu interaktivnu mapu s dodatnim informacijama.",
+            "en": "You can find an interactive map of all bus routes in the 'Urban Lines Map' section at the top of this page. We also have a detailed interactive map with additional information."
+          }
+        },
+        {
+          "id": "schedule-times",
+          "question": {
+            "bhs": "Kako mogu provjeriti red vožnje za određenu liniju?",
+            "en": "How can I check the timetable for a specific route?"
+          },
+          "answer": {
+            "bhs": "Idite na sekciju 'Red vožnje' na ovoj stranici, odaberite željenu liniju iz padajućeg menija, i vidjet ćete kompletne informacije o vremenima polaska i stajališta.",
+            "en": "Go to the 'Timetable' section on this page, select your desired route from the dropdown menu, and you'll see complete departure times and stop information."
+          }
+        },
+        {
+          "id": "real-time",
+          "question": {
+            "bhs": "Postoje li informacije o kašnjenjima autobusa u realnom vremenu?",
+            "en": "Is there real-time information about bus delays?"
+          },
+          "answer": {
+            "bhs": "Trenutno ne nudimo informacije u realnom vremenu o kašnjenjima. Preporučujemo da planirate dodatno vrijeme za putovanje, posebno tokom vršnih sati.",
+            "en": "We currently don't provide real-time delay information. We recommend planning extra travel time, especially during peak hours."
+          }
+        }
+      ]
+    },
+    {
+      "id": "accessibility",
+      "title": {
+        "bhs": "Pristupačnost",
+        "en": "Accessibility"
+      },
+      "questions": [
+        {
+          "id": "wheelchair-access",
+          "question": {
+            "bhs": "Koje autobusne linije su pristupačne za korisnike invalidskih kolica?",
+            "en": "Which bus routes are wheelchair accessible?"
+          },
+          "answer": {
+            "bhs": "Informacije o pristupačnosti za korisnike invalidskih kolica možete pronaći u sekciji 'Linije' gdje je za svaku liniju označeno da li je pristupačna ili ne.",
+            "en": "Information about wheelchair accessibility can be found in the 'Lines' section where each route is marked as accessible or not accessible."
+          }
+        },
+        {
+          "id": "assistance",
+          "question": {
+            "bhs": "Mogu li dobiti pomoć pri ukrcavanju ako imam poteškoća s kretanjem?",
+            "en": "Can I get assistance boarding if I have mobility difficulties?"
+          },
+          "answer": {
+            "bhs": "Da, vozači su obučeni da pomognu putnicima s poteškoćama kretanja. Molimo javite se vozaču kad autobus stigne i on će vam pomoći.",
+            "en": "Yes, drivers are trained to assist passengers with mobility difficulties. Please let the driver know when the bus arrives and they will help you."
+          }
+        },
+        {
+          "id": "vehicle-equipment",
+          "question": {
+            "bhs": "Da li sva vozila moraju imati klima uređaj i rampu za kolica?",
+            "en": "Do all vehicles need to have air conditioning and wheelchair ramps?"
+          },
+          "answer": {
+            "bhs": "Da. Vozila u javnom gradskom prevozu moraju imati ispravan klima uređaj i pristupnu rampu za osobe sa invaliditetom.",
+            "en": "Yes. Public transport vehicles must be equipped with functional air conditioning and access ramps for persons with disabilities."
+          }
+        }
+      ]
+    },
+    {
+      "id": "service-issues-reporting",
+      "title": {
+        "bhs": "Problemi u usluzi i prijave",
+        "en": "Service Issues and Reporting"
+      },
+      "questions": [
+        {
+          "id": "bus-air-conditioning",
+          "question": {
+            "bhs": "Da li su autobusi opremljeni klima uređajima?",
+            "en": "Are buses equipped with air conditioning?"
+          },
+          "answer": {
+            "bhs": "Prema važećim propisima, svi autobusi koji saobraćaju u javnom prevozu trebali bi biti opremljeni funkcionalnim klima uređajima. Ukoliko primijetite da klima uređaj ne radi, molimo vas da prijavite nadležnim službama.",
+            "en": "According to current regulations, all public transport buses should be equipped with functional air conditioning. If you notice that the air conditioning is not working, please report it to the relevant authorities."
+          }
+        },
+        {
+          "id": "bus-cleanliness",
+          "question": {
+            "bhs": "Kome mogu prijaviti da je autobus prljav ili neuredan?",
+            "en": "Who can I contact if a bus is dirty or unclean?"
+          },
+          "answer": {
+            "bhs": "Možete prijaviti nehigijenske uslove u vozilu nadležnoj inspekciji ili prevozniku putem kontakata navedenih u sekciji 'Korisni kontakti'. Vaša prijava može doprinijeti boljoj usluzi.",
+            "en": "You can report unhygienic conditions in the vehicle to the relevant inspection service or operator via the contact information in the 'Useful Contacts' section. Your report can help improve service quality."
+          }
+        },
+        {
+          "id": "driver-behaviour",
+          "question": {
+            "bhs": "Šta da radim ako vozač vozi opasno ili se ponaša neprofesionalno?",
+            "en": "What should I do if the driver drives dangerously or behaves unprofessionally?"
+          },
+          "answer": {
+            "bhs": "U takvim slučajevima možete prijaviti incident prevozniku ili gradskoj inspekciji. Zapišite broj linije, vrijeme i, ako je moguće, registarske oznake vozila.",
+            "en": "In such cases, you can report the incident to the operator or the municipal inspection. Note the route number, time, and vehicle license plate if possible."
+          }
+        },
+        {
+          "id": "reporting-issues",
+          "question": {
+            "bhs": "Kako mogu prijaviti problem ili nedostatak u javnom prevozu?",
+            "en": "How can I report an issue or deficiency in public transport?"
+          },
+          "answer": {
+            "bhs": "Probleme ili nedostatke možete prijaviti putem kontakt informacija navedenih u sekciji 'Korisni kontakti' na ovoj stranici, ili direktno nadležnim službama putem e-maila ili telefona.",
+            "en": "You can report issues or deficiencies through the contact information listed in the 'Useful Contacts' section on this page, or directly to the relevant departments via email or phone."
+          }
+        },
+        {
+          "id": "citizen-responsibility",
+          "question": {
+            "bhs": "Da li građani imaju odgovornost da prijave probleme u prevozu?",
+            "en": "Do citizens have a responsibility to report issues in public transport?"
+          },
+          "answer": {
+            "bhs": "Da. Prijavljivanje problema (kao što su neispravna vozila, kašnjenja, nepristojno ponašanje) doprinosi boljoj usluzi za sve korisnike. Vaše učešće je važno za unapređenje sistema.",
+            "en": "Yes. Reporting issues (such as faulty vehicles, delays, rude behaviour) contributes to better service for all users. Your involvement is important for improving the system."
+          }
+        },
+        {
+          "id": "replacement-bus",
+          "question": {
+            "bhs": "Šta se dešava ako dođe do kvara autobusa?",
+            "en": "What happens if the bus breaks down?"
+          },
+          "answer": {
+            "bhs": "U slučaju kvara ili prekida prevoza, prevoznik je dužan da u najkraćem roku obezbijedi zamjensko vozilo. Ako to ne učini, može biti kažnjen od strane nadležnih organa.",
+            "en": "In case of a breakdown or service interruption, the operator must provide a replacement vehicle as soon as possible. Failure to do so may result in penalties."
+          }
+        }
+      ]
+    },
+    {
+      "id": "passenger-rights-obligations",
+      "title": {
+        "bhs": "Prava i obaveze putnika",
+        "en": "Passenger Rights and Obligations"
+      },
+      "questions": [
+        {
+          "id": "boarding-terminal-stop",
+          "question": {
+            "bhs": "Da li vozač ima pravo da ne pusti putnike u autobus na terminalnom stajalištu?",
+            "en": "Can the driver refuse to let passengers enter the bus at the terminal stop?"
+          },
+          "answer": {
+            "bhs": "Ne. Na početnim i krajnjim autobuskim stajalištima vozač je dužan da, u slučaju vremenskih neprilika (kiša, snijeg, hladnoća ili vrućina), omogući putnicima ulazak u autobus odmah nakon pristajanja.",
+            "en": "No. At starting and terminal stops, the driver is obliged to allow passengers to enter the bus immediately after arrival in case of bad weather (rain, snow, cold or heat)."
+          }
+        },
+        {
+          "id": "boarding-priority",
+          "question": {
+            "bhs": "Ko ima prednost prilikom ulaska u autobus i zauzimanja sjedišta?",
+            "en": "Who has priority when boarding the bus and taking a seat?"
+          },
+          "answer": {
+            "bhs": "Lica sa invaliditetom, slijepe osobe i njihovi pratioci, starije i vidno bolesne osobe, trudnice i putnici sa malom djecom imaju pravo prvenstva pri ulasku i zauzimanju mjesta za sjedenje.",
+            "en": "Persons with disabilities, blind passengers and their companions, elderly and visibly ill persons, pregnant women, and passengers with small children have priority when boarding and choosing seats."
+          }
+        },
+        {
+          "id": "ticket-obligation",
+          "question": {
+            "bhs": "Da li sam dužan posjedovati kartu i pokazati je kontroloru?",
+            "en": "Am I required to have a ticket and show it to the inspector?"
+          },
+          "answer": {
+            "bhs": "Putnik je dužan da u autobusu posjeduje važeću voznu kartu ili drugu putnu ispravu i da je pokaže ovlaštenom licu prevoznika na zahtjev. U suprotnom, dužan je da da podatke o identitetu. Kazna se naplaćuje prema pravilima prevoznika.",
+            "en": "Passengers must carry a valid ticket or travel document and present it upon request to the authorised representative of the operator. If not, they are required to provide identification. A penalty will be charged according to the operator's rules."
+          }
+        },
+        {
+          "id": "lost-items-found",
+          "question": {
+            "bhs": "Šta da radim ako pronađem izgubljen predmet u autobusu?",
+            "en": "What should I do if I find a lost item on the bus?"
+          },
+          "answer": {
+            "bhs": "Pronađeni predmet predajte vozaču, koji vam je dužan izdati potvrdu. Ako se vlasnik ne javi tokom vožnje, predmet se predaje službi prevoznika, a potom policiji ako se ne preuzme.",
+            "en": "Hand over the found item to the driver, who must issue a receipt. If the owner doesn't come forward during the ride, the item is handed to the transport service, and later to the police if unclaimed."
+          }
+        },
+        {
+          "id": "bus-stops",
+          "question": {
+            "bhs": "Da li vozač mora da stane na svako stajalište?",
+            "en": "Is the driver required to stop at every designated bus stop?"
+          },
+          "answer": {
+            "bhs": "Vozač je dužan da zaustavi autobus na svim registrovanim stajalištima i otvori sva vrata. Izuzetak je ako u autobusu nema putnika koji izlaze niti ima onih koji čekaju na stajalištu, ili ako je autobus potpuno popunjen.",
+            "en": "The driver must stop at all designated bus stops and open all doors. Exceptions are if no passengers are exiting, no one is waiting to board, or the bus is at full capacity."
+          }
+        },
+        {
+          "id": "bus-cleanliness-responsibility",
+          "question": {
+            "bhs": "Ko je odgovoran za čistoću autobusa?",
+            "en": "Who is responsible for keeping the bus clean?"
+          },
+          "answer": {
+            "bhs": "Autobus mora biti čist i provjetren. Prevoznik je odgovoran za higijenu vozila. Putnici su dužni da ne prljaju autobus i da pravilno odlažu otpad.",
+            "en": "Buses must be clean and well-ventilated. The operator is responsible for vehicle hygiene. Passengers must avoid littering and dispose of waste properly."
+          }
+        }
+      ]
+    },
+    {
+      "id": "rules-conduct",
+      "title": {
+        "bhs": "Pravila ponašanja",
+        "en": "Rules of Conduct"
+      },
+      "questions": [
+        {
+          "id": "passenger-conduct",
+          "question": {
+            "bhs": "Koja su pravila ponašanja u javnom prevozu?",
+            "en": "What are the rules of conduct in public transport?"
+          },
+          "answer": {
+            "bhs": "Putnici su dužni da se ponašaju pristojno, ne ometaju druge putnike i ne oštećuju imovinu. Zabranjeno je pušenje, konzumiranje alkohola i glasno ponašanje.",
+            "en": "Passengers are required to behave respectfully, not disturb other passengers, and not damage property. Smoking, alcohol consumption, and loud behavior are prohibited."
+          }
+        }
+      ]
+    },
+    {
+      "id": "support-emergencies",
+      "title": {
+        "bhs": "Podrška i hitni slučajevi",
+        "en": "Support and Emergencies"
+      },
+      "questions": [
+        {
+          "id": "lost-items",
+          "question": {
+            "bhs": "Šta da radim ako sam zaboravio/la nešto u autobusu?",
+            "en": "What should I do if I left something on the bus?"
+          },
+          "answer": {
+            "bhs": "Za pronađene predmete kontaktirajte glavnu autobusnu stanicu ili pogledajte kontakt informacije u sekciji 'Korisni kontakti' na ovoj stranici.",
+            "en": "For lost items, contact the main bus station or check the contact information in the 'Useful Contacts' section on this page."
+          }
+        },
+        {
+          "id": "complaints",
+          "question": {
+            "bhs": "Kako mogu podnijeti žalbu ili prijedlog?",
+            "en": "How can I file a complaint or suggestion?"
+          },
+          "answer": {
+            "bhs": "Žalbe i prijedloge možete poslati putem kontakt informacija navedenih u sekciji 'Korisni kontakti'. Tu ćete pronaći telefone i email adrese nadležnih službi.",
+            "en": "You can send complaints and suggestions through the contact information listed in the 'Useful Contacts' section. There you'll find phone numbers and email addresses of relevant services."
+          }
+        },
+        {
+          "id": "emergency",
+          "question": {
+            "bhs": "Koji broj da pozovem u slučaju hitne situacije u autobusu?",
+            "en": "What number should I call in case of an emergency on the bus?"
+          },
+          "answer": {
+            "bhs": "U slučaju hitne situacije pozovite 112 (hitna pomoć) ili 122 (policija). Također možete kontaktirati dispečersku službu čiji broj možete pronaći u sekciji kontakata.",
+            "en": "In case of emergency, call 112 (emergency services) or 122 (police). You can also contact the dispatch service whose number can be found in the contacts section."
+          }
+        }
+      ]
+    }
+  ]
+}

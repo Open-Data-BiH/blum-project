@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Load the urban lines image
-    const imageUrl = 'gradski-prevoz-mapa-banja-luka.png';
+    const imageUrl = 'assets/images/gradski-prevoz-mapa-banja-luka.png';
 
     // Set initial bounds based on known aspect ratio (8000×5000)
     const IMAGE_ASPECT_RATIO = 8000 / 5000;

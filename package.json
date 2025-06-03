@@ -1,0 +1,34 @@
+{
+  "name": "banja-luka-transport",
+  "version": "1.0.0",
+  "description": "Banja Luka Public Transport Information System",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 8000 -c-1",
+    "dev": "npx live-server --port=8000 --no-browser",
+    "build": "echo 'No build process yet - static files'",
+    "test": "echo 'No tests yet'"
+  },
+  "keywords": [
+    "public-transport",
+    "banja-luka",
+    "mapping",
+    "transit",
+    "leaflet"
+  ],
+  "author": "Community Project",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/username/banja-luka-transport.git"
+  },
+  "bugs": {
+    "url": "https://github.com/username/banja-luka-transport/issues"
+  },
+  "homepage": "https://github.com/username/banja-luka-transport#readme"
+}

@@ -56,12 +56,12 @@
   "bhs": {
     "ticketTypes": {
       "single": {
-        "name": "Pojedinačna karta (u autobusu)",
+        "name": "Pojedinačna karta",
         "description": "Kupuje se direktno u autobusu",
         "price": 2.3
       },
       "singleInSet": {
-        "name": "Pojedinačna karta (prodajno mjesto)",
+        "name": "Pojedinačna karta",
         "description": "Kupuje se na prodajnim mjestima prevoznika",
         "price": 1.94
       },

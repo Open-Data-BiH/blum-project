@@ -3,11 +3,13 @@
  * Handles loading and displaying FAQ content with accordion functionality
  */
 
-class FAQComponent {
+class FAQComponent extends BaseComponent {
     constructor() {
+        super('faq-content');
         this.faqData = null;
-        this.currentLang = window.currentLang || 'bhs';
-        this.container = null;
+        this.handleContainerClick = this.handleContainerClick.bind(this);
+        this.handleContainerKeydown = this.handleContainerKeydown.bind(this);
+        this.listenersBound = false;
     }
 
     /**
@@ -29,11 +31,7 @@ class FAQComponent {
      */
     async loadFAQData() {
         try {
-            const response = await fetch('data/transport/faq.json');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            this.faqData = await response.json();
+            this.faqData = await FetchHelper.fetchJSON('data/transport/faq.json');
         } catch (error) {
             console.error('Error loading FAQ data:', error);
             throw error;
@@ -44,7 +42,6 @@ class FAQComponent {
      * Render the FAQ component
      */
     render() {
-        this.container = document.getElementById('faq-content');
         if (!this.container) {
             console.error('FAQ container not found');
             return;
@@ -109,25 +106,37 @@ class FAQComponent {
      * Set up event listeners for FAQ interactions
      */
     setupEventListeners() {
-        if (!this.container) return;
+        if (!this.container) { return; }
 
-        // Add click event listeners to all FAQ questions
-        this.container.addEventListener('click', (event) => {
-            const questionButton = event.target.closest('.faq-question');
-            if (questionButton) {
-                event.preventDefault();
-                this.toggleQuestion(questionButton);
-            }
-        });
+        if (this.listenersBound) { return; }
 
-        // Add keyboard navigation support
-        this.container.addEventListener('keydown', (event) => {
-            const questionButton = event.target.closest('.faq-question');
-            if (questionButton && (event.key === 'Enter' || event.key === ' ')) {
-                event.preventDefault();
-                this.toggleQuestion(questionButton);
-            }
-        });
+        this.container.addEventListener('click', this.handleContainerClick);
+        this.container.addEventListener('keydown', this.handleContainerKeydown);
+        this.listenersBound = true;
+    }
+
+    /**
+     * Handle click events from FAQ container
+     */
+    handleContainerClick(event) {
+        const target = event.target instanceof Element ? event.target : event.target?.parentElement;
+        const questionButton = target?.closest('.faq-question');
+        if (questionButton) {
+            event.preventDefault();
+            this.toggleQuestion(questionButton);
+        }
+    }
+
+    /**
+     * Handle keyboard events from FAQ container
+     */
+    handleContainerKeydown(event) {
+        const target = event.target instanceof Element ? event.target : event.target?.parentElement;
+        const questionButton = target?.closest('.faq-question');
+        if (questionButton && (event.key === 'Enter' || event.key === ' ')) {
+            event.preventDefault();
+            this.toggleQuestion(questionButton);
+        }
     }
 
     /**
@@ -136,8 +145,6 @@ class FAQComponent {
     toggleQuestion(questionButton) {
         const faqItem = questionButton.closest('.faq-item');
         const answer = faqItem.querySelector('.faq-answer');
-        const icon = questionButton.querySelector('.faq-question__icon');
-
         const isActive = faqItem.classList.contains('active');
 
         if (isActive) {
@@ -179,59 +186,35 @@ class FAQComponent {
      * Update language and re-render
      */
     updateLanguage(newLang) {
-        this.currentLang = newLang;
+        super.updateLanguage(newLang);
         if (this.faqData) {
             this.render();
-            this.setupEventListeners();
         }
     }
 
     /**
-     * Render loading state
+     * Render loading state - override to customize message
      */
     renderLoading() {
-        if (!this.container) return;
-
-        this.container.innerHTML = `
-            <div class="faq-loading">
-                <div class="loading-spinner"></div>
-                <span>Loading FAQ...</span>
-            </div>
-        `;
+        const message = this.currentLang === 'en' ? 'Loading FAQ...' : 'Učitavanje FAQ-a...';
+        super.renderLoading(message);
     }
 
     /**
-     * Render error state
+     * Render error state - override to customize message
      */
     renderError() {
-        if (!this.container) return;
-
         const errorMessage = this.currentLang === 'en'
             ? 'Sorry, we could not load the FAQ content at this time. Please try again later.'
             : 'Izvinjavam se, nismo mogli učitati FAQ sadržaj u ovom trenutku. Molimo pokušajte kasnije.';
-
-        this.container.innerHTML = `
-            <div class="faq-error">
-                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
-                <span>${this.escapeHtml(errorMessage)}</span>
-            </div>
-        `;
-    }
-
-    /**
-     * Utility function to escape HTML
-     */
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+        super.renderError(errorMessage);
     }
 
     /**
      * Close all open questions
      */
     closeAllQuestions() {
-        if (!this.container) return;
+        if (!this.container) { return; }
 
         const activeItems = this.container.querySelectorAll('.faq-item.active');
         activeItems.forEach(item => {
@@ -244,7 +227,7 @@ class FAQComponent {
      * Open a specific question by ID
      */
     openQuestion(questionId) {
-        if (!this.container) return;
+        if (!this.container) { return; }
 
         const questionItem = this.container.querySelector(`[data-question-id="${questionId}"]`);
         if (questionItem && !questionItem.classList.contains('active')) {

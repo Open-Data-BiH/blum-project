@@ -1,10 +1,10 @@
-// Global variables for translations and current language
-let translations = {};
-let prices = {};
-let currentLang = localStorage.getItem('selectedLanguage') || 'bhs'; // Get language from localStorage or default to 'bhs'
+// DarkModeManager moved to separate file js/darkMode.js
 
-// Make currentLang available globally
-window.currentLang = currentLang;
+// ==========================================
+// Existing code below
+// ==========================================
+
+// translations, currentLang, safeGet are owned by js/i18n/i18n.js (AppI18n)
 
 // Configuration for line types to display
 const LINE_CONFIG = {
@@ -30,17 +30,16 @@ const LINE_CONFIG = {
     }
 };
 
-// Helper function to sort lines by ID
-function sortLinesByID(a, b) {
-    const numA = parseInt(a.lineId);
-    const numB = parseInt(b.lineId);
-    if (!isNaN(numA) && !isNaN(numB)) {
-        return numA - numB;
-    }
-    return a.lineId.localeCompare(b.lineId);
-}
+// debounce, sortLinesByID, normalizeForSearch moved to js/utils.js (AppUtils)
 
-document.addEventListener('DOMContentLoaded', function () {
+// Initialize application when ready
+const initializeApp = () => {
+    // Prevent double initialization
+    if (window._appInitialized) {
+        return;
+    }
+    window._appInitialized = true;
+
     // Restore scroll position if coming from a language change
     const savedScrollPosition = sessionStorage.getItem('scrollPosition');
     if (savedScrollPosition) {
@@ -48,249 +47,73 @@ document.addEventListener('DOMContentLoaded', function () {
         sessionStorage.removeItem('scrollPosition'); // Clear after use
     }
 
-    // Load translations
-    loadTranslations().then(() => {
-        // Setup language switcher
-        setupLanguageSwitcher();
+    // Load translations, then initialize all components
+    // Use .finally() to ensure components initialize even if translations fail
+    AppI18n.loadTranslations()
+        .then(() => {
+        })
+        .catch((error) => {
+            console.error('Translations failed to load:', error);
+        })
+        .finally(() => {
 
-        // Load bus lines data
-        loadLines();
+            // Setup language switcher (always, after translations are loaded)
+            AppI18n.setupLanguageSwitcher();
 
-        // Load prices data
-        loadPrices();
+            // Load bus lines data
+            loadLines();
 
-        // Load contacts data
-        loadContacts();
+            // Load prices data when pricing feature script is present
+            if (window.PricingService && typeof window.PricingService.loadPrices === 'function') {
+                window.PricingService.loadPrices();
+            }
 
-        // Setup timetable selection
-        setupTimetableSelection();
+            // Load contacts data when contacts feature script is present
+            if (window.ContactsFeature && typeof window.ContactsFeature.loadContacts === 'function') {
+                window.ContactsFeature.loadContacts();
+            }
 
-        // Setup smooth scrolling for navigation
-        setupSmoothScrolling();
+            // Setup timetable selection
+            setupTimetableSelection();
 
-        // Setup mobile menu toggle
-        setupMobileMenu();
+            // Setup smooth scrolling for navigation
+            setupSmoothScrolling();
 
-        // Setup map credits dropdown
-        setupMapCreditsDropdown();
-    });
+            // Note: Mobile menu is handled by layout.js after header loads
+
+            // Setup map credits dropdown
+            setupMapCreditsDropdown();
+
+            // Setup lines info accordion
+            setupLinesInfoAccordion();
+        });
+};
+
+// Make initializeApp available globally so layout.js can call it
+window.initializeApp = initializeApp;
+
+// Register layoutLoaded listener IMMEDIATELY (before DOMContentLoaded)
+// This ensures we catch the event even if layout.js finishes before our DOMContentLoaded handler
+document.addEventListener('layoutLoaded', function () {
+    initializeApp();
+}, { once: true });
+
+// Check if layout.js is being used (pages with dynamic header/footer)
+document.addEventListener('DOMContentLoaded', function () {
+    const hasHeaderPlaceholder = document.getElementById('header');
+    const hasFooterPlaceholder = document.getElementById('footer');
+
+    // If page doesn't use layout.js, initialize immediately
+    if (!hasHeaderPlaceholder && !hasFooterPlaceholder) {
+        initializeApp();
+    } else if (window._layoutJsLoaded) {
+        // Layout already loaded (rare case), initialize now
+        initializeApp();
+    }
+    // Otherwise, the early layoutLoaded listener will handle it
 });
 
-// Load translations
-async function loadTranslations() {
-    try {
-        const response = await fetch('data/config/bhs_en_translations.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        translations = await response.json();
-        applyTranslation(currentLang);
-    } catch (error) {
-        console.error('Error loading translations:', error);
-        // Fallback to basic functionality without translations
-        document.body.classList.add('translations-failed');
-    }
-}
-
-// Setup language switcher
-function setupLanguageSwitcher() {
-    // Activate the correct language button based on current language
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        if (btn.getAttribute('data-lang') === currentLang) {
-            btn.classList.add('lang-btn--active');
-        } else {
-            btn.classList.remove('lang-btn--active');
-        }
-
-        btn.addEventListener('click', function () {
-            const lang = this.getAttribute('data-lang');
-            if (lang !== currentLang) {
-                // Save current scroll position
-                sessionStorage.setItem('scrollPosition', window.pageYOffset);
-
-                // Save currently selected timetable line if any
-                const lineSelect = document.getElementById('line-select');
-                if (lineSelect && lineSelect.value) {
-                    sessionStorage.setItem('selectedLine', lineSelect.value);
-                }
-
-                // Close mobile menu if open
-                const nav = document.getElementById('main-nav');
-                const menuToggle = document.getElementById('mobile-menu-toggle');
-                if (nav && menuToggle) {
-                    nav.classList.remove('active');
-                    menuToggle.classList.remove('active');
-                }
-
-                // Store the selected language in localStorage
-                localStorage.setItem('selectedLanguage', lang);
-
-                // Reload the page to apply changes completely
-                window.location.reload();
-            }
-        });
-    });
-}
-
-// Apply translation to the whole page
-function applyTranslation(lang) {
-    const t = translations[lang];
-    if (!t) return;
-
-    // Update current language
-    currentLang = lang;
-    window.currentLang = lang; // Update global variable
-
-    // Helper function to safely update element text
-    function safelyUpdateText(id, text) {
-        const element = document.getElementById(id);
-        if (element) {
-            element.textContent = text;
-        }
-    }
-
-    // Header
-    safelyUpdateText('site-title', t.header.title);
-
-    // Navigation - Mobile
-    safelyUpdateText('nav-map', t.header.nav.map);
-    safelyUpdateText('nav-lines', t.header.nav.lines);
-    safelyUpdateText('nav-timetable', t.header.nav.timetable);
-    safelyUpdateText('nav-airport', t.header.nav.airport);
-    safelyUpdateText('nav-contact', t.header.nav.contact);
-    safelyUpdateText('nav-price-tables', t.header.nav.prices || (lang === 'bhs' ? 'Cjenovnik' : 'Prices'));
-    safelyUpdateText('nav-urban-lines', t.header.nav.urban_lines);
-
-    // Navigation - Desktop
-    safelyUpdateText('nav-map-desktop', t.header.nav.map);
-    safelyUpdateText('nav-lines-desktop', t.header.nav.lines);
-    safelyUpdateText('nav-timetable-desktop', t.header.nav.timetable);
-    safelyUpdateText('nav-airport-desktop', t.header.nav.airport);
-    safelyUpdateText('nav-contact-desktop', t.header.nav.contact);
-    safelyUpdateText('nav-price-tables-desktop', t.header.nav.prices || (lang === 'bhs' ? 'Cjenovnik' : 'Prices'));
-    safelyUpdateText('nav-urban-lines-desktop', t.header.nav.urban_lines);
-    safelyUpdateText('nav-faq-desktop', t.header.nav.faq);
-
-    // Update sections
-    // Urban Lines section
-    safelyUpdateText('urban-lines-title', t.sections.urban_lines.title);
-    const mapNote = document.querySelector('#urban-lines .map-note span');
-    if (mapNote) {
-        mapNote.textContent = t.sections.urban_lines.map_note;
-    }
-
-    // Update map credits labels
-    const mapCreditsLabelBhs = document.querySelector('.map-credits__label[data-lang="bhs"]');
-    const mapCreditsLabelEn = document.querySelector('.map-credits__label[data-lang="en"]');
-    if (mapCreditsLabelBhs && mapCreditsLabelEn) {
-        if (lang === 'bhs') {
-            mapCreditsLabelBhs.style.display = '';
-            mapCreditsLabelEn.style.display = 'none';
-        } else {
-            mapCreditsLabelBhs.style.display = 'none';
-            mapCreditsLabelEn.style.display = '';
-        }
-    }
-
-    // Map section
-    safelyUpdateText('map-title', t.sections.map.title);
-
-    // Lines section
-    safelyUpdateText('lines-title', t.sections.lines.title);
-    safelyUpdateText('price-tables-title', t.sections.prices?.title || (lang === 'bhs' ? 'Cjenovnik karata' : 'Ticket Prices'));
-
-    // Lines introduction and ticket note
-    const linesIntroText = lang === 'bhs'
-        ? 'Javni prevoz u Banjoj Luci organizovan je u tri grupe linija. Za svaku grupu linija potrebno je kupiti odgovarajuću kartu. Karte nisu prenosive između grupa.'
-        : 'Public transport in Banja Luka is organized into three groups of lines. For each group of lines, you need to purchase a corresponding ticket. Tickets are not transferable between groups.';
-    safelyUpdateText('lines-intro-text', linesIntroText);
-
-    // Operator legend title
-    const operatorLegendTitle = lang === 'bhs'
-        ? 'Prevoznici'
-        : 'Operators';
-    safelyUpdateText('operator-legend-title', operatorLegendTitle);
-
-    // Reload lines with new language
-    loadLines();
-
-    // Timetable section
-    safelyUpdateText('timetable-title', t.sections.timetable.title);
-
-    // Add translations for timetable if not present
-    if (t.sections && t.sections.timetable) {
-        // From-To label
-        if (!t.sections.timetable.fromTo) {
-            t.sections.timetable.fromTo = lang === 'bhs' ? 'Relacija:' : 'Route:';
-        }
-
-        // Select day label
-        if (!t.sections.timetable.selectDay) {
-            t.sections.timetable.selectDay = lang === 'bhs' ? 'Izaberite dan' : 'Select day';
-        }
-
-        // Hour and Minutes labels
-        if (!t.sections.timetable.hourLabel) {
-            t.sections.timetable.hourLabel = lang === 'bhs' ? 'Sat' : 'Hour';
-        }
-
-        if (!t.sections.timetable.minutesLabel) {
-            t.sections.timetable.minutesLabel = lang === 'bhs' ? 'Minute' : 'Minutes';
-        }
-    }
-
-    // Contact section
-    safelyUpdateText('contact-title', t.sections.contact.title);
-    safelyUpdateText('email-label', t.sections.contact.email);
-    safelyUpdateText('phone-label', t.sections.contact.phone);
-    safelyUpdateText('timetable-info-label', t.sections.contact.timetableInfo);
-
-    // Update disclaimer text
-    const disclaimerText = lang === 'bhs'
-        ? 'Ova internet stranica nije službena stranica Grada Banja Luka niti bilo kojeg prevoznika. Svi podaci su dati samo u informativne svrhe. Za zvanične informacije o redovima vožnje, cijenama i drugim detaljima, molimo vas da kontaktirate nadležne institucije ili prevoznike.'
-        : 'This website is not officially affiliated with the City of Banja Luka or any transport operators. All data is provided for informational purposes only. For official information about schedules, prices, and other details, please contact the relevant authorities or transport companies.';
-    safelyUpdateText('disclaimer-text', disclaimerText);
-
-    // Update timetable display if it has content
-    updateTimetableLanguage();
-
-    // Update pricing tables
-    if (prices && Object.keys(prices).length > 0) {
-        renderPriceTables();
-    }
-
-    // Bus stops note translation
-    const busStopsNoteText = lang === 'bhs'
-        ? 'Na mapi su prikazana autobuska stajališta, Nextbike stanice, željezničke stanice i drugi oblici urbane mobilnosti. Kontrolu prikaza možete izvršiti pomoću kontrole filtera u donjem desnom uglu mape – uključite ili isključite pojedinačne slojeve prema potrebi.'
-        : 'The map shows bus stops, Nextbike stations, railway stations, and other forms of urban mobility. You can manage the visibility of these elements using the filter control in the bottom right corner of the map – toggle individual layers as needed.';
-    safelyUpdateText('bus-stops-note-text', busStopsNoteText);
-
-    // Handle elements with data-lang attributes (show/hide based on current language)
-    document.querySelectorAll('[data-lang]').forEach(element => {
-        // Skip language switcher buttons - they should always be visible
-        if (element.classList.contains('lang-btn')) {
-            return;
-        }
-
-        const elementLang = element.getAttribute('data-lang');
-        if (elementLang === lang) {
-            element.style.display = '';
-        } else {
-            element.style.display = 'none';
-        }
-    });
-
-    // Dispatch a custom event to notify other components that the language has changed
-    document.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang } }));
-
-    // Airport shuttle section
-    safelyUpdateText('airport-title', t.sections.airport.title);
-    safelyUpdateText('airport-description-title', t.sections.airport.descriptionTitle);
-    safelyUpdateText('airport-price', t.sections.airport.price);
-    safelyUpdateText('airport-departure-location', t.sections.airport.departureLocation);
-    safelyUpdateText('airport-more-info', t.sections.airport.moreInfo);
-    safelyUpdateText('airport-website-link', t.sections.airport.websiteLink);
-}
+// loadTranslations, setupLanguageSwitcher, applyTranslation moved to js/i18n/i18n.js (AppI18n)
 
 /**
  * Modular line loading system
@@ -319,11 +142,7 @@ class LineManager {
         }
 
         try {
-            const response = await fetch(typeConfig.dataFile);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
+            const data = await FetchHelper.fetchJSON(typeConfig.dataFile);
 
             // Process data based on whether it's company data or simple line data
             const processedLines = this.processLineData(data, lineType, typeConfig.useCompanyData);
@@ -356,6 +175,7 @@ class LineManager {
                         min_duration: line.min_duration,
                         bus_type: line.bus_type,
                         wheelchair_accessible: line.wheelchair_accessible,
+                        pdf_url: line.pdf_url,
                         hasMultilingualName: true
                     });
                 });
@@ -374,13 +194,14 @@ class LineManager {
                     min_duration: line.min_duration,
                     bus_type: line.bus_type,
                     wheelchair_accessible: line.wheelchair_accessible,
+                    pdf_url: line.pdf_url,
                     hasMultilingualName: false
                 });
             });
         }
 
         // Sort lines by ID
-        return lines.sort(sortLinesByID);
+        return lines.sort(AppUtils.sortLinesByID);
     }
 
     /**
@@ -424,6 +245,10 @@ const lineManager = new LineManager();
 function loadLines() {
     // Create simplified lines view in the lines section
     const linesSection = document.getElementById('lines-info');
+    if (!linesSection) {
+        return; // Exit if element doesn't exist (e.g. on other pages)
+    }
+
     linesSection.innerHTML = ''; // Clear existing content
 
     // Create container for the simplified view
@@ -446,10 +271,11 @@ function loadLines() {
     }
 
     // Show loading message
+    const loadingText = safeGet(translations, currentLang, 'ui', 'loading') || 'Loading lines...';
     simplifiedContainer.innerHTML = `
         <div class="loading-message">
             <i class="fas fa-spinner fa-spin"></i>
-            <p>${translations[currentLang]?.ui?.loading || 'Loading lines...'}</p>
+            <p>${loadingText}</p>
         </div>
     `;
 
@@ -460,460 +286,419 @@ function loadLines() {
         })
         .catch(error => {
             console.error('Error loading line data:', error);
-            const errorMessage = translations[currentLang]?.ui?.error || 'Failed to load line data. Please try again later.';
+            const errorMessage = safeGet(translations, currentLang, 'ui', 'error') || 'Failed to load line data. Please try again later.';
+            const retryText = safeGet(translations, currentLang, 'ui', 'retry') || 'Retry';
             simplifiedContainer.innerHTML = `
                 <div class="error-message">
                     <i class="fas fa-exclamation-triangle"></i>
                     <p>${errorMessage}</p>
-                    <button class="retry-btn" onclick="loadLines()">
-                        ${translations[currentLang]?.ui?.retry || 'Retry'}
+                    <button class="retry-btn" type="button">
+                        ${retryText}
                     </button>
                 </div>
             `;
+            simplifiedContainer.querySelector('.retry-btn').addEventListener('click', loadLines);
         });
 }
 
+// normalizeForSearch moved to js/utils.js (AppUtils)
+
+/**
+ * Get short operator name from full company name
+ */
+const getShortOperatorName = (companyName) => {
+    if (!companyName) { return ''; }
+    const nameMap = {
+        'AUTOPREVOZ': 'Autoprevoz',
+        'PAVLOVIĆ': 'Pavlović',
+        'BOČAC': 'Bočac',
+        'ALDEMO': 'Aldemo',
+        'RALE': 'Rale'
+    };
+    const found = Object.entries(nameMap).find(([key]) => companyName.toUpperCase().includes(key));
+    return found ? found[1] : companyName.split('"')[1] || companyName;
+};
+
 /**
  * Render the lines interface based on enabled types
+ * Redesigned with search, compact cards, and better UX
  */
 function renderLinesInterface(container, enabledTypes) {
     const lang = currentLang;
 
-    // Get translations for details
-    const detailsLabel = lang === 'bhs' ? 'Detalji' : 'Details';
-    const operatorLabel = translations[lang]?.sections?.lines?.lineDetails?.operator || (lang === 'bhs' ? 'Prevoznik' : 'Operator');
-    const viewTimetableLabel = lang === 'bhs' ? 'Pogledaj red vožnje' : 'View timetable';
+    // Translation labels
+    const labels = {
+        search: lang === 'bhs' ? 'Pretraži liniju, odredište, naselje...' : 'Search line, destination, neighborhood...',
+        clearSearch: lang === 'bhs' ? 'Obriši pretragu' : 'Clear search',
+        filterAll: lang === 'bhs' ? 'Sve' : 'All',
+        filterGroup: lang === 'bhs' ? 'Grupa' : 'Group',
+        viewTimetable: lang === 'bhs' ? 'Red vožnje' : 'Timetable',
+        details: lang === 'bhs' ? 'Detalji' : 'Details',
+        pdf: 'PDF',
+        showing: lang === 'bhs' ? 'Prikazano' : 'Showing',
+        lines: lang === 'bhs' ? 'linija' : 'lines',
+        noResults: lang === 'bhs' ? 'Nema rezultata za vašu pretragu' : 'No lines match your search',
+        clearFilters: lang === 'bhs' ? 'Obriši filtere' : 'Clear filters',
+        stops: lang === 'bhs' ? 'stajališta' : 'stops',
+        min: 'min',
+        wheelchairAccessible: lang === 'bhs' ? 'Pristupačno za invalidska kolica' : 'Wheelchair accessible',
+        notAccessible: lang === 'bhs' ? 'Nije pristupačno' : 'Not accessible',
+        operator: lang === 'bhs' ? 'Prevoznik' : 'Operator',
+        group: lang === 'bhs' ? 'Grupa' : 'Group',
+        numberOfStops: lang === 'bhs' ? 'Broj stajališta' : 'Number of stops',
+        duration: lang === 'bhs' ? 'Trajanje vožnje' : 'Duration',
+        busType: lang === 'bhs' ? 'Tip autobusa' : 'Bus type',
+        accessibility: lang === 'bhs' ? 'Pristupačnost' : 'Accessibility',
+        minutes: lang === 'bhs' ? 'minuta' : 'minutes',
+        yes: lang === 'bhs' ? 'Da' : 'Yes',
+        no: lang === 'bhs' ? 'Ne' : 'No'
+    };
 
-    // Get translations for line details
-    const lineDetailTranslations = translations[lang]?.sections?.lines?.lineDetails || {};
-    const groupLabel = lineDetailTranslations.group || (lang === 'bhs' ? 'Grupa' : 'Group');
-    const noStopsLabel = lineDetailTranslations.noStops || (lang === 'bhs' ? 'Broj stajališta' : 'Number of stops');
-    const minDurationLabel = lineDetailTranslations.minDuration || (lang === 'bhs' ? 'Minimalno vrijeme vožnje' : 'Minimum duration');
-    const busTypeLabel = lineDetailTranslations.busType || (lang === 'bhs' ? 'Tip autobusa' : 'Bus type');
-    const wheelchairLabel = lineDetailTranslations.wheelchairAccessible || (lang === 'bhs' ? 'Prilagođeno za invalidska kolica' : 'Wheelchair accessible');
-    const minutesLabel = lineDetailTranslations.minutes || (lang === 'bhs' ? 'minuta' : 'minutes');
-    const yesLabel = lineDetailTranslations.yes || (lang === 'bhs' ? 'Da' : 'Yes');
-    const noLabel = lineDetailTranslations.no || (lang === 'bhs' ? 'Ne' : 'No');
-
-    // Filter labels
-    const filterAllLabel = lang === 'bhs' ? 'Sve linije' : 'All lines';
-    const filterGroupLabel = lang === 'bhs' ? 'Grupa' : 'Group';
-
-    // Collect all unique groups from all enabled line types
+    // Collect all lines and groups
+    const allLines = [];
     const allGroups = new Set();
+
     enabledTypes.forEach(type => {
         const lines = lineManager.getLines(type);
         lines.forEach(line => {
-            if (line.group) {
-                allGroups.add(line.group);
-            }
+            allLines.push({ ...line, lineType: type });
+            if (line.group) { allGroups.add(line.group); }
         });
     });
 
-    // Convert to array and sort groups
     const sortedGroups = Array.from(allGroups).sort();
+    const totalLines = allLines.length;
 
+    // Build HTML
     let html = '';
 
-    // Create tabs if multiple line types are enabled
-    if (enabledTypes.length > 1) {
-        html += '<div class="lines-tabs">';
-        enabledTypes.forEach((type, index) => {
-            const activeClass = index === 0 ? 'active' : '';
-            const title = lineManager.getTypeTitle(type, lang);
-            html += `<button class="tab-btn ${activeClass}" data-tab="${type}">${title}</button>`;
-        });
-        html += '</div>';
+    // Controls Row (Search + Filters) - Sticky
+    html += `
+        <div class="lines-controls">
+            <div class="lines-search">
+                <i class="fas fa-search lines-search__icon" aria-hidden="true"></i>
+                <input
+                    type="search"
+                    class="lines-search__input"
+                    id="lines-search-input"
+                    placeholder="${labels.search}"
+                    aria-label="${labels.search}"
+                    autocomplete="off"
+                >
+                <button
+                    class="lines-search__clear"
+                    id="lines-search-clear"
+                    type="button"
+                    aria-label="${labels.clearSearch}"
+                >
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="lines-filter-row">
+                <div class="filter-buttons" role="group" aria-label="${lang === 'bhs' ? 'Filtriraj po grupi' : 'Filter by group'}">
+                    <button class="filter-btn active" data-filter="all" aria-pressed="true">${labels.filterAll}</button>
+    `;
 
-        // Add group filtering controls only if there are groups and multiple line types
-        if (sortedGroups.length > 0) {
-            html += '<div class="group-filters">';
-            html += `<div class="filter-label">${lang === 'bhs' ? 'Filtriraj linije:' : 'Filter lines:'}</div>`;
-            html += '<div class="filter-buttons">';
-            html += `<button class="filter-btn active" data-filter="all">${filterAllLabel}</button>`;
-
-            // Add buttons for each unique group
-            sortedGroups.forEach(group => {
-                let groupDisplayName;
-                if (group === 'I') {
-                    groupDisplayName = `${filterGroupLabel} I`;
-                } else if (group === 'II') {
-                    groupDisplayName = `${filterGroupLabel} II`;
-                } else if (group === 'III') {
-                    groupDisplayName = `${filterGroupLabel} III`;
-                } else {
-                    // For any other group names (e.g., suburban lines might have different naming)
-                    groupDisplayName = group;
-                }
-                html += `<button class="filter-btn" data-filter="${group}">${groupDisplayName}</button>`;
-            });
-
-            html += '</div>';
-            html += '</div>';
-        }
-    }
-
-    html += '<div class="lines-content">';
-
-    // Create content for each enabled line type
-    enabledTypes.forEach((type, index) => {
-        const lines = lineManager.getLines(type);
-        const activeClass = index === 0 ? 'active' : '';
-        const title = lineManager.getTypeTitle(type, lang);
-
-        // If only one type is enabled, show title directly
-        if (enabledTypes.length === 1) {
-            html += `<h3 class="single-type-title">${title}</h3>`;
-
-            // Add group filtering controls below the header for single line type view
-            if (sortedGroups.length > 0) {
-                html += '<div class="group-filters">';
-                html += `<div class="filter-label">${lang === 'bhs' ? 'Filtriraj linije:' : 'Filter lines:'}</div>`;
-                html += '<div class="filter-buttons">';
-                html += `<button class="filter-btn active" data-filter="all">${filterAllLabel}</button>`;
-
-                // Add buttons for each unique group
-                sortedGroups.forEach(group => {
-                    let groupDisplayName;
-                    if (group === 'I') {
-                        groupDisplayName = `${filterGroupLabel} I`;
-                    } else if (group === 'II') {
-                        groupDisplayName = `${filterGroupLabel} II`;
-                    } else if (group === 'III') {
-                        groupDisplayName = `${filterGroupLabel} III`;
-                    } else {
-                        // For any other group names (e.g., suburban lines might have different naming)
-                        groupDisplayName = group;
-                    }
-                    html += `<button class="filter-btn" data-filter="${group}">${groupDisplayName}</button>`;
-                });
-
-                html += '</div>';
-                html += '</div>';
-            }
-        }
-
-        html += `<div class="tab-content ${activeClass}" id="${type}-lines">`;
-
-        if (lines.length === 0) {
-            html += `<p class="no-lines-message">No ${type} lines available.</p>`;
-        } else {
-            lines.forEach(line => {
-                const lineColor = getCompanyClass(line.companyName);
-                const wheelchairText = line.wheelchair_accessible ? yesLabel : noLabel;
-                const busTypeText = getBusTypeTranslation(line.bus_type);
-                const lineName = lineManager.getLineName(line, lang);
-
-                html += `
-                    <div class="line-card ${lineColor}" data-line-id="${line.lineId}" data-group="${line.group || ''}">
-                        <div class="line-header">
-                            <div class="line-info">
-                                <span class="line-id">${line.lineId}</span>
-                                <span class="line-name">${lineName}</span>
-                            </div>
-                            <div class="line-buttons">
-                                <button class="details-btn" data-line-id="${line.lineId}">
-                                    <i class="fas fa-info-circle"></i> ${detailsLabel}
-                                </button>
-                `;
-
-                // Show timetable button if timetables are configured for this line type
-                if (LINE_CONFIG[type] && LINE_CONFIG[type].timetableFile) {
-                    html += `
-                        <button class="timetable-btn" data-line-id="${line.lineId}" onclick="scrollToTimetable('${line.lineId}')">
-                            <i class="fas fa-clock"></i> ${viewTimetableLabel}
-                        </button>
-                    `;
-                }
-
-                html += `
-                            </div>
-                        </div>
-                        <div class="line-details" id="details-${line.lineId}">
-                `;
-
-                // Only show company info if available
-                if (line.companyName) {
-                    html += `<p><strong>${operatorLabel}:</strong> ${line.companyName}</p>`;
-                }
-
-                // Only show group if it exists
-                if (line.group) {
-                    html += `<p><strong>${groupLabel}:</strong> ${line.group}</p>`;
-                }
-
-                html += `
-                            <p><strong>${noStopsLabel}:</strong> ${line.no_stops || 'N/A'}</p>
-                            <p><strong>${minDurationLabel}:</strong> ${line.min_duration ? `${line.min_duration} ${minutesLabel}` : 'N/A'}</p>
-                            <p><strong>${busTypeLabel}:</strong> ${busTypeText || 'N/A'}</p>
-                            <p><strong>${wheelchairLabel}:</strong> 
-                                <span class="${line.wheelchair_accessible ? 'accessible-yes' : 'accessible-no'}">
-                                    <i class="fas fa-${line.wheelchair_accessible ? 'check' : 'times'}"></i> ${wheelchairText}
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        html += `</div>`;
+    sortedGroups.forEach(group => {
+        html += `<button class="filter-btn" data-filter="${group}" aria-pressed="false">${labels.filterGroup} ${group}</button>`;
     });
 
-    html += `</div>`; // Close lines-content div
+    html += `
+                </div>
+                <div class="lines-results-count" id="lines-results-count">
+                    ${labels.showing} <strong>${totalLines}</strong> ${labels.lines}
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Lines List
+    html += '<div class="lines-list" id="lines-list">';
+
+    // Empty state (hidden by default)
+    html += `
+        <div class="lines-empty-state" id="lines-empty-state" hidden>
+            <i class="fas fa-search"></i>
+            <p>${labels.noResults}</p>
+            <button class="btn btn--secondary" id="clear-all-filters">${labels.clearFilters}</button>
+        </div>
+    `;
+
+    // Tab content wrapper for compatibility
+    html += `<div class="tab-content active" id="${enabledTypes[0]}-lines">`;
+
+    // Render each line card
+    allLines.forEach(line => {
+        const companyClass = getCompanyClass(line.companyName);
+        const lineName = escapeHTML(lineManager.getLineName(line, lang));
+        const shortOperator = escapeHTML(getShortOperatorName(line.companyName));
+        const busTypeText = escapeHTML(getBusTypeTranslation(line.bus_type));
+        const accessibleText = line.wheelchair_accessible ? labels.yes : labels.no;
+        const hasTimetable = LINE_CONFIG[line.lineType] && LINE_CONFIG[line.lineType].timetableFile;
+        const safeLineId = escapeHTML(line.lineId);
+        const safeGroup = escapeHTML(line.group || '');
+        const safeCompanyName = escapeHTML(line.companyName || 'N/A');
+        const safePdfUrl = line.pdf_url ? sanitizeURL(line.pdf_url) : '';
+
+        html += `
+            <div class="line-card ${companyClass}"
+                 data-line-id="${safeLineId}"
+                 data-group="${safeGroup}"
+                 data-search-text="${AppUtils.normalizeForSearch(line.lineId + ' ' + (line.lineName?.bhs || '') + ' ' + (line.lineName?.en || '') + ' ' + (line.companyName || ''))}">
+
+                <div class="line-card__header">
+                    <div class="line-card__identity">
+                        <span class="badge badge--line-number">${safeLineId}</span>
+                        <span class="line-card__name">${lineName}</span>
+                    </div>
+                    <div class="line-card__badges">
+                        ${line.group ? `<span class="badge badge--group">${labels.filterGroup} ${safeGroup}</span>` : ''}
+                        ${line.wheelchair_accessible
+                ? `<span class="badge badge--accessible" title="${labels.wheelchairAccessible}" aria-label="${labels.wheelchairAccessible}"><i class="fas fa-wheelchair" aria-hidden="true"></i></span>`
+                : `<span class="badge badge--not-accessible" title="${labels.notAccessible}" aria-label="${labels.notAccessible}"><i class="fas fa-wheelchair" aria-hidden="true"></i></span>`
+            }
+                    </div>
+                </div>
+
+                <div class="line-card__meta">
+                    <span class="meta-item"><i class="fas fa-building" aria-hidden="true"></i> ${shortOperator}</span>
+                    <span class="meta-item"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> ${escapeHTML(String(line.no_stops || '?'))} ${labels.stops}</span>
+                    <span class="meta-item"><i class="fas fa-clock" aria-hidden="true"></i> ${escapeHTML(String(line.min_duration || '?'))} ${labels.min}</span>
+                </div>
+
+                <div class="line-card__actions">
+                    ${hasTimetable ? `
+                        <button class="btn--primary timetable-btn" data-line-id="${safeLineId}">
+                            <i class="fas fa-clock" aria-hidden="true"></i> ${labels.viewTimetable}
+                        </button>
+                    ` : ''}
+                    <button class="btn--secondary details-btn" data-line-id="${safeLineId}" aria-expanded="false" aria-controls="details-${safeLineId}">
+                        <i class="fas fa-info-circle" aria-hidden="true"></i> ${labels.details}
+                    </button>
+                    ${safePdfUrl ? `
+                        <a href="${safePdfUrl}" target="_blank" rel="noopener noreferrer" class="btn--link pdf-btn">
+                            <i class="fas fa-file-pdf" aria-hidden="true"></i> ${labels.pdf}
+                        </a>
+                    ` : ''}
+                </div>
+
+                <div class="line-card__details" id="details-${safeLineId}" hidden>
+                    <div class="detail-item">
+                        <span class="detail-item__label">${labels.operator}</span>
+                        <span class="detail-item__value">${safeCompanyName}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-item__label">${labels.group}</span>
+                        <span class="detail-item__value">${safeGroup || 'N/A'}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-item__label">${labels.numberOfStops}</span>
+                        <span class="detail-item__value">${escapeHTML(String(line.no_stops || 'N/A'))}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-item__label">${labels.duration}</span>
+                        <span class="detail-item__value">${line.min_duration ? `${escapeHTML(String(line.min_duration))} ${labels.minutes}` : 'N/A'}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-item__label">${labels.busType}</span>
+                        <span class="detail-item__value">${busTypeText || 'N/A'}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-item__label">${labels.accessibility}</span>
+                        <span class="detail-item__value ${line.wheelchair_accessible ? 'detail-item__value--accessible' : 'detail-item__value--not-accessible'}">
+                            <i class="fas fa-${line.wheelchair_accessible ? 'check' : 'times'}" aria-hidden="true"></i> ${accessibleText}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    html += '</div>'; // Close tab-content
+    html += '</div>'; // Close lines-list
 
     // Set the HTML content
     container.innerHTML = html;
 
-    // Add event listeners for tabs (if multiple types)
-    if (enabledTypes.length > 1) {
-        container.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                // Update active tab button
-                container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-
-                // Show the selected tab content
-                const tabId = this.getAttribute('data-tab');
-                container.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.remove('active');
-                });
-                container.querySelector(`#${tabId}-lines`).classList.add('active');
-
-                // Reset filter to "all" when switching tabs
-                const allFilterBtn = container.querySelector('.filter-btn[data-filter="all"]');
-                if (allFilterBtn) {
-                    container.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-                    allFilterBtn.classList.add('active');
-                    filterLinesByGroup(container, 'all');
-                }
-            });
-        });
-    }
-
-    // Add event listeners for group filters (only if filter controls exist)
-    const filterButtons = container.querySelectorAll('.filter-btn');
-    if (filterButtons.length > 0) {
-        filterButtons.forEach(btn => {
-            btn.addEventListener('click', function () {
-                // Update active filter button
-                container.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-
-                // Filter lines by group
-                const filterValue = this.getAttribute('data-filter');
-                filterLinesByGroup(container, filterValue);
-            });
-        });
-    }
-
-    // Add event listeners for detail buttons
-    container.querySelectorAll('.details-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            const lineId = this.getAttribute('data-line-id');
-            const detailsElement = document.getElementById(`details-${lineId}`);
-
-            if (detailsElement.style.display === 'block') {
-                detailsElement.style.display = 'none';
-            } else {
-                detailsElement.style.display = 'block';
-            }
-        });
-    });
+    // Initialize event listeners
+    initializeLinesEventListeners(container, labels);
 }
 
 /**
- * Filter lines by group
+ * Initialize all event listeners for the lines interface
  */
-function filterLinesByGroup(container, groupFilter) {
-    const activeTabContent = container.querySelector('.tab-content.active');
-    if (!activeTabContent) return;
+function initializeLinesEventListeners(container, labels) {
+    const searchInput = container.querySelector('#lines-search-input');
+    const clearSearchBtn = container.querySelector('#lines-search-clear');
+    const filterButtons = container.querySelectorAll('.filter-btn');
+    const linesList = container.querySelector('#lines-list');
+    const resultsCount = container.querySelector('#lines-results-count');
+    const emptyState = container.querySelector('#lines-empty-state');
+    const clearAllFiltersBtn = container.querySelector('#clear-all-filters');
 
-    const lineCards = activeTabContent.querySelectorAll('.line-card');
+    let currentSearchQuery = '';
+    let currentGroupFilter = 'all';
 
-    lineCards.forEach(card => {
-        const lineGroup = card.getAttribute('data-group');
+    // Debounced search handler
+    const handleSearch = AppUtils.debounce((query) => {
+        currentSearchQuery = query;
+        applyFilters();
+    }, 200);
 
-        if (groupFilter === 'all' || lineGroup === groupFilter) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
+    // Apply both search and group filters
+    const applyFilters = () => {
+        const lineCards = container.querySelectorAll('.line-card');
+        let visibleCount = 0;
+        const normalizedQuery = AppUtils.normalizeForSearch(currentSearchQuery);
+
+        lineCards.forEach(card => {
+            const matchesSearch = !normalizedQuery || card.dataset.searchText.includes(normalizedQuery);
+            const matchesGroup = currentGroupFilter === 'all' || card.dataset.group === currentGroupFilter;
+            const shouldShow = matchesSearch && matchesGroup;
+
+            if (shouldShow) {
+                card.hidden = false;
+                visibleCount++;
+            } else {
+                card.hidden = true;
+            }
+        });
+
+        // Update results count
+        resultsCount.innerHTML = `${labels.showing} <strong>${visibleCount}</strong> ${labels.lines}`;
+
+        // Show/hide empty state
+        emptyState.hidden = visibleCount > 0;
+    };
+
+    // Search input event
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.trim();
+        clearSearchBtn.classList.toggle('visible', query.length > 0);
+        handleSearch(query);
+    });
+
+    // Clear search button
+    clearSearchBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        clearSearchBtn.classList.remove('visible');
+        currentSearchQuery = '';
+        applyFilters();
+        searchInput.focus();
+    });
+
+    // Filter buttons
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+            filterButtons.forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-pressed', 'false');
+            });
+            this.classList.add('active');
+            this.setAttribute('aria-pressed', 'true');
+
+            currentGroupFilter = this.dataset.filter;
+            applyFilters();
+        });
+    });
+
+    // Clear all filters button (in empty state)
+    clearAllFiltersBtn.addEventListener('click', () => {
+        // Reset search
+        searchInput.value = '';
+        clearSearchBtn.classList.remove('visible');
+        currentSearchQuery = '';
+
+        // Reset group filter
+        filterButtons.forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-pressed', 'false');
+        });
+        const allBtn = container.querySelector('.filter-btn[data-filter="all"]');
+        if (allBtn) {
+            allBtn.classList.add('active');
+            allBtn.setAttribute('aria-pressed', 'true');
+        }
+        currentGroupFilter = 'all';
+
+        applyFilters();
+    });
+
+    // Event delegation for line card interactions
+    linesList.addEventListener('click', (e) => {
+        // Handle details toggle
+        const detailsBtn = e.target.closest('.details-btn');
+        if (detailsBtn) {
+            const lineId = detailsBtn.dataset.lineId;
+            const detailsPanel = container.querySelector(`#details-${lineId}`);
+            if (detailsPanel) {
+                const isExpanded = !detailsPanel.hidden;
+                detailsPanel.hidden = isExpanded;
+                detailsBtn.setAttribute('aria-expanded', !isExpanded);
+            }
+        }
+
+        // Handle timetable button
+        const timetableBtn = e.target.closest('.timetable-btn');
+        if (timetableBtn) {
+            const lineId = timetableBtn.dataset.lineId;
+            scrollToTimetable(lineId);
+        }
+    });
+
+    // Keyboard support for Escape to close details
+    container.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            // Close all open details panels
+            container.querySelectorAll('.line-card__details:not([hidden])').forEach(panel => {
+                panel.hidden = true;
+                const lineId = panel.id.replace('details-', '');
+                const btn = container.querySelector(`.details-btn[data-line-id="${lineId}"]`);
+                if (btn) { btn.setAttribute('aria-expanded', 'false'); }
+            });
         }
     });
 }
 
-// Function to get company class name for styling
-function getCompanyClass(companyName) {
-    if (companyName.includes('AUTOPREVOZ')) return 'autoprevoz-line';
-    if (companyName.includes('PAVLOVIĆ')) return 'pavlovic-line';
-    if (companyName.includes('BOČAC')) return 'bocac-line';
-    if (companyName.includes('ALDEMO')) return 'aldemo-line';
-    if (companyName.includes('RALE')) return 'rale-line';
-    return '';
-}
+/**
+ * Filter lines by group (Modern ES6+ with dataset)
+ */
+// Function to get company class name for styling (Modern ES6+)
+const getCompanyClass = (companyName) => {
+    const companyMap = {
+        'AUTOPREVOZ': 'autoprevoz-line',
+        'PAVLOVIĆ': 'pavlovic-line',
+        'BOČAC': 'bocac-line',
+        'ALDEMO': 'aldemo-line',
+        'RALE': 'rale-line'
+    };
 
-// Function to scroll to timetable and select a line
-function scrollToTimetable(lineId) {
+    const found = Object.entries(companyMap).find(([key]) => companyName.includes(key));
+    return found ? found[1] : '';
+};
+
+// Function to scroll to timetable and select a line (Modern ES6+)
+const scrollToTimetable = (lineId) => {
     const lineSelect = document.getElementById('line-select');
     if (lineSelect) {
         lineSelect.value = lineId;
-        // Trigger change event to load the timetable
-        const event = new Event('change');
-        lineSelect.dispatchEvent(event);
+        lineSelect.dispatchEvent(new Event('change'));
     }
 
     // Scroll to the timetable section
-    const timetableSection = document.getElementById('timetable');
-    if (timetableSection) {
-        timetableSection.scrollIntoView({ behavior: 'smooth' });
+    const timetableElement = document.getElementById('timetable');
+    if (timetableElement) {
+        timetableElement.scrollIntoView({ behavior: 'smooth' });
     }
-}
-
-// Load prices data
-function loadPrices() {
-    fetch('data/transport/prices.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            prices = data;
-            renderPriceTables();
-
-            // Register an event listener for language changes to update price tables
-            if (!window._priceTablesLanguageListenerAdded) {
-                document.addEventListener('languageChanged', () => {
-                    renderPriceTables();
-                });
-                window._priceTablesLanguageListenerAdded = true;
-            }
-        })
-        .catch(error => {
-            console.error('Error loading price data:', error);
-            const priceTablesContainer = document.querySelector('#price-tables .price-tables');
-            if (priceTablesContainer) {
-                const errorMessage = translations[currentLang]?.ui?.error || 'Failed to load price data. Please try again later.';
-                priceTablesContainer.innerHTML = `
-                    <div class="error-message">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <p>${errorMessage}</p>
-                        <button class="retry-btn" onclick="loadPrices()">
-                            ${translations[currentLang]?.ui?.retry || 'Retry'}
-                        </button>
-                    </div>
-                `;
-            }
-        });
-}
-
-// Render price tables
-function renderPriceTables() {
-    if (!prices || !prices[currentLang]) return;
-
-    const priceTablesContainer = document.querySelector('#price-tables .price-tables');
-    if (!priceTablesContainer) return;
-
-    priceTablesContainer.innerHTML = '';
-
-    const priceData = prices[currentLang];
-    const labels = priceData.labels;
-
-    // Create a single price table container
-    const priceTableContainer = document.createElement('div');
-    priceTableContainer.className = 'price-table-container';
-
-    // Build a single table with all price information
-    let tableHtml = `
-        <table class="unified-price-table">
-            <thead>
-                <tr>
-                    <th>${labels.ticketTypes}</th>
-                    <th>${labels.price} (${labels.km})</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Single and Daily Tickets Section -->
-                <tr class="category-header">
-                    <td colspan="2">${currentLang === 'bhs' ? 'Pojedinačne i dnevne karte' : 'Single and Daily Tickets'}</td>
-                </tr>
-                <tr>
-                    <td>
-                        ${priceData.ticketTypes.single.name}
-                        <div class="description">${priceData.ticketTypes.single.description}</div>
-                    </td>
-                    <td>${priceData.ticketTypes.single.price.toFixed(2)}</td>
-                </tr>
-                <tr>
-                    <td>
-                        ${priceData.ticketTypes.singleInSet.name}
-                        <div class="description">${priceData.ticketTypes.singleInSet.description}</div>
-                    </td>
-                    <td>${priceData.ticketTypes.singleInSet.price.toFixed(2)}</td>
-                </tr>
-                <tr>
-                    <td>
-                        ${priceData.ticketTypes.daily.name}
-                        <div class="description">${priceData.ticketTypes.daily.description}</div>
-                    </td>
-                    <td>${priceData.ticketTypes.daily.price.toFixed(2)}</td>
-                </tr>
-
-                <!-- Monthly Group Tickets Section -->
-                <tr class="category-header">
-                    <td colspan="2">${priceData.ticketTypes.monthlyGroup.name}</td>
-                </tr>
-                <tr>
-                    <td>${priceData.ticketTypes.monthlyGroup.workers.name}</td>
-                    <td>${priceData.ticketTypes.monthlyGroup.workers.price.toFixed(2)}</td>
-                </tr>
-                <tr>
-                    <td>${priceData.ticketTypes.monthlyGroup.students.name}</td>
-                    <td>${priceData.ticketTypes.monthlyGroup.students.price.toFixed(2)}</td>
-                </tr>
-                <tr>
-                    <td>${priceData.ticketTypes.monthlyGroup.pensioners.name}</td>
-                    <td>${priceData.ticketTypes.monthlyGroup.pensioners.price.toFixed(2)}</td>
-                </tr>
-
-                <!-- Unified Monthly Tickets Section -->
-                <tr class="category-header">
-                    <td colspan="2">${priceData.ticketTypes.monthlyUnified.name}</td>
-                </tr>
-                <tr>
-                    <td>${priceData.ticketTypes.monthlyUnified.workers.name}</td>
-                    <td>${priceData.ticketTypes.monthlyUnified.workers.price.toFixed(2)}</td>
-                </tr>
-                <tr>
-                    <td>${priceData.ticketTypes.monthlyUnified.students.name}</td>
-                    <td>${priceData.ticketTypes.monthlyUnified.students.price.toFixed(2)}</td>
-                </tr>
-                <tr>
-                    <td>${priceData.ticketTypes.monthlyUnified.pensioners.name}</td>
-                    <td>${priceData.ticketTypes.monthlyUnified.pensioners.price.toFixed(2)}</td>
-                </tr>
-            </tbody>
-        </table>
-    `;
-
-    // Add disclaimer
-    const disclaimerText = currentLang === 'bhs'
-        ? `<p class="price-disclaimer">Prikazane cijene su informativnog karaktera. Za tačne i ažurirane cijene, kao i za cijene prigradskih linija, molimo posjetite <a href="https://www.banjaluka.rs.ba/gradjani/javni-prevoz/" target="_blank">zvaničnu internet stranicu Grada Banja Luka</a> ili se obratite na prodajnim mjestima prevoznika.</p>`
-        : `<p class="price-disclaimer">Displayed prices are for informational purposes only. For current and updated prices, as well as suburban line prices, please visit the <a href="https://www.banjaluka.rs.ba/gradjani/javni-prevoz/" target="_blank">official City of Banja Luka website</a> or inquire at operator's sales points.</p>`;
-
-    tableHtml += disclaimerText;
-
-    priceTableContainer.innerHTML = tableHtml;
-    priceTablesContainer.appendChild(priceTableContainer);
-
-    // Price table styles are now in css/price-tables.css
-}
+};
 
 // Setup timetable selection
 function setupTimetableSelection() {
     const lineSelect = document.getElementById('line-select');
     const timetableDisplay = document.getElementById('timetable-display');
+
+    // Exit early if elements don't exist (e.g., on other pages)
+    if (!lineSelect || !timetableDisplay) { return; }
 
     // Load timetables from all enabled line types
     const timetablePromises = [];
@@ -923,17 +708,11 @@ function setupTimetableSelection() {
     for (const [lineType, config] of Object.entries(LINE_CONFIG)) {
         if (config.enabled && config.timetableFile) {
             timetablePromises.push(
-                fetch(config.timetableFile)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
+                FetchHelper.fetchJSON(config.timetableFile)
                     .then(data => {
                         // Extract the array from the nested structure
                         // The data is wrapped in an object with keys like "urban", "suburban"
-                        let timetableArray = data[lineType] || data;
+                        const timetableArray = data[lineType] || data;
 
                         // Ensure we have an array
                         if (!Array.isArray(timetableArray)) {
@@ -972,7 +751,7 @@ function setupTimetableSelection() {
                 if (this.value) {
                     loadTimetable(this.value);
                 } else {
-                    const welcomeMessage = translations[currentLang]?.sections?.timetable?.welcome ||
+                    const welcomeMessage = safeGet(translations, currentLang, 'sections', 'timetable', 'welcome') ||
                         (currentLang === 'bhs' ? 'Redovi vožnje će biti prikazani nakon izbora linije.' : 'Timetables will be displayed after selecting a line.');
                     timetableDisplay.innerHTML = `<p class="timetable-welcome">${welcomeMessage}</p>`;
                 }
@@ -1002,30 +781,32 @@ function setupTimetableSelection() {
                 sessionStorage.removeItem('selectedLine'); // Clear after use
             } else {
                 // Don't auto-select first line - let user choose
-                const welcomeMessage = translations[currentLang]?.sections?.timetable?.welcome ||
+                const welcomeMessage = safeGet(translations, currentLang, 'sections', 'timetable', 'welcome') ||
                     (currentLang === 'bhs' ? 'Redovi vožnje će biti prikazani nakon izbora linije.' : 'Timetables will be displayed after selecting a line.');
                 timetableDisplay.innerHTML = `<p class="timetable-welcome">${welcomeMessage}</p>`;
             }
         })
         .catch(error => {
             console.error('Error loading timetable data:', error);
-            const errorMessage = translations[currentLang]?.ui?.error || 'Failed to load timetable data. Please try again later.';
+            const errorMessage = safeGet(translations, currentLang, 'ui', 'error') || 'Failed to load timetable data. Please try again later.';
+            const retryText = safeGet(translations, currentLang, 'ui', 'retry') || 'Retry';
             timetableDisplay.innerHTML = `
                 <div class="error-message">
                     <i class="fas fa-exclamation-triangle"></i>
                     <p>${errorMessage}</p>
-                    <button class="retry-btn" onclick="setupTimetableSelection()">
-                        ${translations[currentLang]?.ui?.retry || 'Retry'}
+                    <button class="retry-btn" type="button">
+                        ${retryText}
                     </button>
                 </div>
             `;
+            timetableDisplay.querySelector('.retry-btn').addEventListener('click', setupTimetableSelection);
         });
 }
 
 // Update timetable select dropdown with language support
 function updateTimetableSelect(data, lineSelect, realTimetableData) {
     // Add default option
-    const selectPrompt = translations[currentLang]?.sections?.timetable?.select || 'Select a bus line';
+    const selectPrompt = safeGet(translations, currentLang, 'sections', 'timetable', 'select') || 'Select a bus line';
     lineSelect.innerHTML = `<option value="">${selectPrompt}</option>`;
 
     // Check if we're working with real timetable data
@@ -1043,7 +824,7 @@ function updateTimetableSelect(data, lineSelect, realTimetableData) {
 
         // Sort lines within each type by line ID
         Object.keys(linesByType).forEach(lineType => {
-            linesByType[lineType].sort(sortLinesByID);
+            linesByType[lineType].sort(AppUtils.sortLinesByID);
         });
 
         // Add optgroups for each line type
@@ -1078,7 +859,8 @@ function updateTimetableSelect(data, lineSelect, realTimetableData) {
 // Load timetable for selected line
 function loadTimetable(lineId) {
     const timetableDisplay = document.getElementById('timetable-display');
-    timetableDisplay.innerHTML = `<p>${translations[currentLang]?.sections?.timetable?.loading || 'Loading timetable...'}</p>`;
+    const loadingText = safeGet(translations, currentLang, 'sections', 'timetable', 'loading') || 'Loading timetable...';
+    timetableDisplay.innerHTML = `<p>${loadingText}</p>`;
 
     // Check if we have real timetable data stored
     if (window._realTimetableData) {
@@ -1111,13 +893,7 @@ function loadTimetable(lineId) {
     }
 
     // Fetch the appropriate timetable file
-    fetch(timetableFile)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
+    FetchHelper.fetchJSON(timetableFile)
         .then(data => {
             // Store for future use
             window._realTimetableData = data;
@@ -1127,58 +903,68 @@ function loadTimetable(lineId) {
             if (timetable) {
                 renderTimetable(timetable, timetableDisplay);
             } else {
-                timetableDisplay.innerHTML = `<p>${translations[currentLang]?.sections?.timetable?.notFound || 'Timetable not found for the selected line.'}</p>`;
+                const notFoundText = safeGet(translations, currentLang, 'sections', 'timetable', 'notFound') || 'Timetable not found for the selected line.';
+                timetableDisplay.innerHTML = `<p>${notFoundText}</p>`;
             }
         })
         .catch(error => {
             console.error('Error loading timetable:', error);
-            const errorMessage = translations[currentLang]?.ui?.error || 'Failed to load timetable data. Please try again later.';
+            const errorMessage = safeGet(translations, currentLang, 'ui', 'error') || 'Failed to load timetable data. Please try again later.';
+            const retryText = safeGet(translations, currentLang, 'ui', 'retry') || 'Retry';
             timetableDisplay.innerHTML = `
                 <div class="error-message">
                     <i class="fas fa-exclamation-triangle"></i>
                     <p>${errorMessage}</p>
-                    <button class="retry-btn" onclick="loadTimetable('${lineId}')">
-                        ${translations[currentLang]?.ui?.retry || 'Retry'}
+                    <button class="retry-btn" type="button">
+                        ${retryText}
                     </button>
                 </div>
             `;
+            timetableDisplay.querySelector('.retry-btn').addEventListener('click', () => loadTimetable(lineId));
         });
 }
 
 // Render timetable with language support
 function renderTimetable(timetable, container) {
-    const t = translations[currentLang]?.sections?.timetable;
-    const weekdayLabel = t?.days?.weekday || 'Weekdays';
-    const saturdayLabel = t?.days?.saturday || 'Saturday';
-    const sundayHolidayLabelText = t?.days?.sundayHoliday || (currentLang === 'bhs' ? 'Nedjelja i praznik' : 'Sunday and Holiday');
-    const relationLabelText = t?.relationLabel || (currentLang === 'bhs' ? 'Relacija:' : 'Relation:');
-    const timetableForLabelText = t?.timetableForLabel || (currentLang === 'bhs' ? 'Red vožnje za:' : 'Timetable for:');
-    const hourLabel = t?.hourLabel || (currentLang === 'bhs' ? 'Sat' : 'Hour');
-    const minutesLabel = t?.minutesLabel || (currentLang === 'bhs' ? 'Minute' : 'Minutes');
+    const t = safeGet(translations, currentLang, 'sections', 'timetable');
+    const timetableDays = t ? t.days : null;
+    const weekdayLabel = (timetableDays && timetableDays.weekday) || 'Weekdays';
+    const saturdayLabel = (timetableDays && timetableDays.saturday) || 'Saturday';
+    const sundayHolidayLabelText = (timetableDays && timetableDays.sundayHoliday) || (currentLang === 'bhs' ? 'Nedjelja i praznik' : 'Sunday and Holiday');
+    const relationLabelText = (t && t.relationLabel) || (currentLang === 'bhs' ? 'Relacija' : 'Direction');
+    const timetableForLabelText = (t && t.timetableForLabel) || (currentLang === 'bhs' ? 'Red vožnje' : 'Schedule');
+    const hourLabel = (t && t.hourLabel) || (currentLang === 'bhs' ? 'Sat' : 'Hour');
+    const minutesLabel = (t && t.minutesLabel) || (currentLang === 'bhs' ? 'Minute' : 'Minutes');
+    const swapDirectionLabel = currentLang === 'bhs' ? 'Zamijeni smjer' : 'Swap direction';
 
     // Create direction IDs based on lineId
     const directionAId = timetable.lineId + 'a';
     const directionBId = timetable.lineId + 'b';
 
-    // Create timetable HTML
+    // Create timetable HTML - Compact layout with controls on same row
     let html = `
-        <h3 class="timetable-line-name">${timetable.lineName[currentLang]}</h3>
-        
         <div class="timetable-controls">
-            <div class="direction-toggle">
-                <p id="direction-label" class="timetable-control-label">${relationLabelText}</p>
-                <div class="direction-buttons" role="group" aria-labelledby="direction-label">
-                    <button class="direction-btn active" data-direction="${directionAId}" aria-pressed="true" aria-label="${timetable.directions[currentLang][0]}">${timetable.directions[currentLang][0]}</button>
-                    <button class="direction-btn" data-direction="${directionBId}" aria-pressed="false" aria-label="${timetable.directions[currentLang][1]}">${timetable.directions[currentLang][1]}</button>
+            <div class="timetable-control-row">
+                <div class="direction-toggle">
+                    <p id="direction-label" class="timetable-control-label">${relationLabelText}</p>
+                    <div class="direction-buttons-wrapper">
+                        <div class="direction-buttons" role="group" aria-labelledby="direction-label">
+                            <button class="direction-btn active" data-direction="${escapeHTML(directionAId)}" aria-pressed="true" aria-label="${escapeHTML(timetable.directions[currentLang][0])}">${escapeHTML(timetable.directions[currentLang][0])}</button>
+                            <button class="direction-btn" data-direction="${escapeHTML(directionBId)}" aria-pressed="false" aria-label="${escapeHTML(timetable.directions[currentLang][1])}">${escapeHTML(timetable.directions[currentLang][1])}</button>
+                        </div>
+                        <button class="direction-swap-btn" aria-label="${swapDirectionLabel}" title="${swapDirectionLabel}">
+                            <i class="fas fa-exchange-alt"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="day-toggle">
-                <p id="day-label" class="timetable-control-label">${timetableForLabelText}</p>
-                <div role="group" aria-labelledby="day-label">
-                    <button class="day-btn active" data-day="weekday" aria-pressed="true" aria-label="${weekdayLabel}">${weekdayLabel}</button>
-                    <button class="day-btn" data-day="saturday" aria-pressed="false" aria-label="${saturdayLabel}">${saturdayLabel}</button>
-                    <button class="day-btn" data-day="sunday" aria-pressed="false" aria-label="${sundayHolidayLabelText}">${sundayHolidayLabelText}</button>
+
+                <div class="day-toggle">
+                    <p id="day-label" class="timetable-control-label">${timetableForLabelText}</p>
+                    <div class="day-buttons" role="group" aria-labelledby="day-label">
+                        <button class="day-btn active" data-day="weekday" aria-pressed="true" aria-label="${weekdayLabel}">${weekdayLabel}</button>
+                        <button class="day-btn" data-day="saturday" aria-pressed="false" aria-label="${saturdayLabel}">${saturdayLabel}</button>
+                        <button class="day-btn" data-day="sunday" aria-pressed="false" aria-label="${sundayHolidayLabelText}">${sundayHolidayLabelText}</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1193,7 +979,7 @@ function renderTimetable(timetable, container) {
                 </div>
                 <div class="notes-content">
                     <strong>${currentLang === 'bhs' ? 'Napomene:' : 'Notes:'}</strong>
-                    <p>${timetable.notes[currentLang]}</p>
+                    <p>${escapeHTML(timetable.notes[currentLang])}</p>
                 </div>
             </div>
         `;
@@ -1260,7 +1046,7 @@ function renderTimetable(timetable, container) {
             // Check each hour in chronological order
             Object.keys(departuresByHour).sort().forEach(hour => {
                 const hourValue = parseInt(hour);
-                if (nextDepartureHour !== null) return; // Already found next departure
+                if (nextDepartureHour !== null) { return; } // Already found next departure
 
                 // If this hour is in the future, first minute is next departure
                 if (hourValue > currentHour) {
@@ -1290,16 +1076,22 @@ function renderTimetable(timetable, container) {
                 const minutes = departuresByHour[hour].sort((a, b) => parseInt(a) - parseInt(b));
                 const hourValue = parseInt(hour);
 
+                // Add current-hour class if this is the current hour
+                const isCurrentHour = hourValue === currentHour;
+                const rowClass = isCurrentHour ? 'current-hour' : '';
+                const rowId = isCurrentHour ? `current-hour-row-${dayType}-${direction}` : '';
+
                 html += `
-                    <tr>
+                    <tr class="${rowClass}" ${rowId ? `id="${rowId}"` : ''} data-hour="${hourValue}">
                         <td class="hour-cell">${hour}</td>
                         <td class="minutes-cell">
+                            <div class="minutes-wrapper">
                 `;
 
                 // Create styled boxes for minutes
                 minutes.forEach(minute => {
                     const minuteValue = parseInt(minute);
-                    let timeClass = '';
+                    let timeClass;
 
                     // Determine status of this departure time
                     if (hourValue < currentHour || (hourValue === currentHour && minuteValue < currentMinute)) {
@@ -1313,10 +1105,11 @@ function renderTimetable(timetable, container) {
                         timeClass = 'upcoming';
                     }
 
-                    html += `<span class="minute-box ${timeClass}">${minute}</span>`;
+                    html += `<span class="minute-box ${timeClass}" data-minute="${minuteValue}">${minute}</span>`;
                 });
 
                 html += `
+                            </div>
                         </td>
                     </tr>
                 `;
@@ -1360,10 +1153,26 @@ function renderTimetable(timetable, container) {
             // Show the selected timetable view
             document.getElementById(`timetable-${activeDay}-${direction}`).style.display = 'block';
 
-            // Update time highlighting for the new view
+            // Update time highlighting and scroll to current hour
             updateTimeHighlighting();
+            scrollToCurrentHour();
         });
     });
+
+    // Add event listener for swap direction button
+    const swapBtn = document.querySelector('.direction-swap-btn');
+    if (swapBtn) {
+        swapBtn.addEventListener('click', function () {
+            const directionBtns = document.querySelectorAll('.direction-btn');
+            if (directionBtns.length === 2) {
+                // Find the currently inactive button and click it
+                const inactiveBtn = Array.from(directionBtns).find(btn => !btn.classList.contains('active'));
+                if (inactiveBtn) {
+                    inactiveBtn.click();
+                }
+            }
+        });
+    }
 
     // Add event listeners for day toggle
     document.querySelectorAll('.day-btn').forEach(button => {
@@ -1388,17 +1197,21 @@ function renderTimetable(timetable, container) {
             // Show the selected timetable view
             document.getElementById(`timetable-${day}-${activeDirection}`).style.display = 'block';
 
-            // Update time highlighting for the new view
+            // Update time highlighting and scroll to current hour
             updateTimeHighlighting();
+            scrollToCurrentHour();
         });
     });
 
     // Setup automatic time highlighting
     setupTimeHighlighting();
+
+    // Scroll to current hour on initial load (with slight delay for DOM)
+    setTimeout(scrollToCurrentHour, 100);
 }
 
-// Setup time highlighting
-function setupTimeHighlighting() {
+// Setup time highlighting (Modern ES6+ with debounce)
+const setupTimeHighlighting = () => {
     // Clear any existing interval
     if (window.timeHighlightInterval) {
         clearInterval(window.timeHighlightInterval);
@@ -1407,12 +1220,60 @@ function setupTimeHighlighting() {
     // Update immediately
     updateTimeHighlighting();
 
-    // Then update every minute
-    window.timeHighlightInterval = setInterval(updateTimeHighlighting, 60000);
-}
+    // Then update every minute with debounced function
+    const debouncedUpdate = AppUtils.debounce(updateTimeHighlighting, 300);
+    window.timeHighlightInterval = setInterval(debouncedUpdate, 60000);
+};
 
-// Global function to update time highlighting
-function updateTimeHighlighting() {
+// Scroll to current hour row in the timetable
+const scrollToCurrentHour = () => {
+    const now = new Date();
+    const currentHour = now.getHours();
+
+    // Find visible timetable view
+    let visibleView = document.querySelector('.timetable-view:not([style*="display: none"])');
+
+    if (!visibleView) {
+        // Fallback: find any visible timetable view
+        const allViews = document.querySelectorAll('.timetable-view');
+        visibleView = Array.from(allViews).find(view => {
+            const style = window.getComputedStyle(view);
+            return style.display !== 'none';
+        });
+    }
+
+    if (!visibleView) { return; }
+
+    // Find the current hour row or the next closest hour
+    let targetRow = visibleView.querySelector(`tr[data-hour="${currentHour}"]`);
+
+    // If current hour doesn't exist, find the next available hour
+    if (!targetRow) {
+        const allRows = visibleView.querySelectorAll('tbody tr[data-hour]');
+        for (const row of allRows) {
+            const rowHour = parseInt(row.getAttribute('data-hour'));
+            if (rowHour >= currentHour) {
+                targetRow = row;
+                break;
+            }
+        }
+        // If no future hours, scroll to last row
+        if (!targetRow && allRows.length > 0) {
+            targetRow = allRows[allRows.length - 1];
+        }
+    }
+
+    if (targetRow) {
+        // Smooth scroll to the target row
+        targetRow.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+    }
+};
+
+// Global function to update time highlighting (Modern ES6+)
+const updateTimeHighlighting = () => {
     const now = new Date();
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
@@ -1433,19 +1294,32 @@ function updateTimeHighlighting() {
     }
 
     visibleTimetableViews.forEach(tableView => {
+        // Update current hour row highlighting
+        tableView.querySelectorAll('tbody tr').forEach(row => {
+            const hourAttr = row.getAttribute('data-hour');
+            if (hourAttr !== null) {
+                const rowHour = parseInt(hourAttr);
+                if (rowHour === currentHour) {
+                    row.classList.add('current-hour');
+                } else {
+                    row.classList.remove('current-hour');
+                }
+            }
+        });
+
         // First pass: collect all times and find the next one
-        let allDepartureTimes = [];
+        const allDepartureTimes = [];
 
         tableView.querySelectorAll('tbody tr').forEach(row => {
             const hourCell = row.querySelector('.hour-cell');
-            if (!hourCell) return;
+            if (!hourCell) { return; }
 
             const hourValue = parseInt(hourCell.textContent);
-            if (isNaN(hourValue)) return;
+            if (isNaN(hourValue)) { return; }
 
             row.querySelectorAll('.minute-box').forEach(minuteBox => {
                 const minuteValue = parseInt(minuteBox.textContent);
-                if (isNaN(minuteValue)) return;
+                if (isNaN(minuteValue)) { return; }
 
                 const timeInMinutes = hourValue * 60 + minuteValue;
                 allDepartureTimes.push({
@@ -1476,8 +1350,6 @@ function updateTimeHighlighting() {
         }
 
         // Second pass: mark all times with appropriate classes
-        let pastCount = 0, nextCount = 0, upcomingCount = 0;
-
         // Check if next departure is tomorrow (all today's departures are past)
         const isNextDepartureTomorrow = nextDepartureTime &&
             allDepartureTimes.every(time => time.timeInMinutes < currentTimeInMinutes);
@@ -1492,233 +1364,60 @@ function updateTimeHighlighting() {
                     time.timeInMinutes === nextDepartureTime.timeInMinutes) {
                     // This is the next departure (tomorrow)
                     time.element.classList.add('next');
-                    nextCount++;
                 } else if (isNextDepartureTomorrow) {
                     // All other departures when next is tomorrow are upcoming (for tomorrow)
                     time.element.classList.add('upcoming');
-                    upcomingCount++;
                 } else {
                     // Past departure (normal case)
                     time.element.classList.add('past');
-                    pastCount++;
                 }
             } else if (nextDepartureTime && time.timeInMinutes === nextDepartureTime.timeInMinutes) {
                 // The very next departure (today)
                 time.element.classList.add('next');
-                nextCount++;
             } else {
                 // All other future departures (today)
                 time.element.classList.add('upcoming');
-                upcomingCount++;
             }
         });
     });
 }
 
 // Update timetable language if it's already displayed
-function updateTimetableLanguage() {
-    const timetableDisplay = document.getElementById('timetable-display');
-    const lineSelect = document.getElementById('line-select');
-
-    // Check if the timetable is already displayed using any of the possible indicators
-    if (timetableDisplay.querySelector('.hours-minutes-table') ||
-        timetableDisplay.querySelector('.timetable-table') ||
-        timetableDisplay.querySelector('.no-timetable') ||
-        timetableDisplay.querySelector('.timetable-view')) {
-        if (lineSelect.value) {
-            loadTimetable(lineSelect.value);
-        }
-    }
-}
-
-// Setup smooth scrolling for navigation links
-function setupSmoothScrolling() {
+// Setup smooth scrolling for navigation links (Modern ES6+)
+const setupSmoothScrolling = () => {
     // Handle navigation links
     document.querySelectorAll('.nav__link').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const targetId = this.getAttribute('href');
 
             // Only handle internal anchor links (starting with #)
-            if (!targetId.startsWith('#')) {
-                // For external links like faq.html, let the browser handle navigation normally
-                return;
-            }
+            if (!targetId.startsWith('#')) { return; }
 
             e.preventDefault();
 
             const targetElement = document.querySelector(targetId);
+            if (!targetElement) { return; }
 
-            if (targetElement) {
-                // Get header height to offset scrolling
-                const headerHeight = document.querySelector('header').offsetHeight;
+            // Get header height to offset scrolling
+            const header = document.querySelector('header');
+            const headerHeight = header ? header.offsetHeight : 0;
 
-                // For mobile view, add extra offset for the map section
-                if (targetId === '#map' && window.innerWidth <= 768) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - headerHeight - 20, // Add header height offset
-                        behavior: 'smooth'
-                    });
-                } else {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - headerHeight, // Add header height offset
-                        behavior: 'smooth'
-                    });
-                }
-            }
-        });
-    });
-}
+            // For mobile view, add extra offset for the map section
+            const extraOffset = (targetId === '#map' && window.innerWidth <= 768) ? 20 : 0;
 
-// Load and display contacts information
-function loadContacts() {
-    fetch('data/transport/contacts.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            displayContacts(data);
-        })
-        .catch(error => {
-            console.error('Error loading contacts:', error);
-            const contactSection = document.getElementById('contact');
-            const errorMessage = translations[currentLang]?.ui?.error || 'Failed to load contact data. Please try again later.';
-            contactSection.innerHTML = `
-                <h2 id="contact-title">${translations[currentLang]?.sections?.contact?.title || 'Contact Information'}</h2>
-                <div class="error-message">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <p>${errorMessage}</p>
-                    <button class="retry-btn" onclick="loadContacts()">
-                        ${translations[currentLang]?.ui?.retry || 'Retry'}
-                    </button>
-                </div>
-            `;
-        });
-}
-
-// Display contacts in contact cards
-function displayContacts(data) {
-    const contactSection = document.getElementById('contact');
-    if (!contactSection) return;
-
-    // Create or get the contact cards container
-    let contactCards = contactSection.querySelector('.contact-cards');
-    if (!contactCards) {
-        // Create container if it doesn't exist
-        contactCards = document.createElement('div');
-        contactCards.className = 'contact-cards';
-
-        // Get the existing content
-        const existingContent = contactSection.innerHTML;
-
-        // Clear the section
-        contactSection.innerHTML = '';
-
-        // Add the title back (first h2 element)
-        const titleMatch = existingContent.match(/<h2[^>]*>(.*?)<\/h2>/);
-        if (titleMatch) {
-            const titleElement = document.createElement('h2');
-            titleElement.id = 'contact-title';
-            titleElement.textContent = translations[currentLang]?.sections?.contact?.title || 'Contact Information';
-            contactSection.appendChild(titleElement);
-        }
-
-        // Add the contact cards container
-        contactSection.appendChild(contactCards);
-    } else {
-        // Just clear the cards container
-        contactCards.innerHTML = '';
-    }
-
-    // Generate contact cards
-    if (data.contacts && data.contacts.length > 0) {
-        data.contacts.forEach(contact => {
-            const card = document.createElement('div');
-            card.className = 'contact-card';
-            card.id = `contact-${contact.id}`;
-
-            // Set card style with organization color
-            if (contact.color) {
-                card.style.borderLeftColor = contact.color;
-            }
-
-            // Get translated content
-            const name = contact.name[currentLang] || contact.name.bhs;
-            const department = contact.department[currentLang] || contact.department.bhs;
-            const type = contact.type[currentLang] || contact.type.bhs;
-
-            // Generate HTML for the card
-            let cardContent = `
-                <h3>${name}</h3>
-                <p class="contact-department">${department}</p>
-                <p class="contact-type">${type}</p>
-            `;
-
-            // Add phone if available
-            if (contact.phoneDisplay) {
-                cardContent += `<p class="contact-phone"><strong>${translations[currentLang]?.sections?.contact?.phone || 'Phone:'}</strong> ${contact.phoneDisplay}</p>`;
-            }
-
-            // Add email if available
-            if (contact.email) {
-                cardContent += `<p class="contact-email"><strong>${translations[currentLang]?.sections?.contact?.email || 'Email:'}</strong> <a href="mailto:${contact.email}">${contact.email}</a></p>`;
-            }
-
-            // Add website if available
-            if (contact.website) {
-                cardContent += `<p class="contact-website"><a href="${contact.website}" target="_blank">${translations[currentLang]?.ui?.visit || 'Visit website'}</a></p>`;
-            }
-
-            // Set the card content
-            card.innerHTML = cardContent;
-            contactCards.appendChild(card);
-        });
-    }
-}
-
-// Setup mobile menu
-function setupMobileMenu() {
-    const menuToggle = document.getElementById('mobile-menu-toggle');
-    const nav = document.getElementById('main-nav');
-
-    if (menuToggle && nav) {
-        menuToggle.addEventListener('click', function () {
-            const isActive = nav.classList.contains('active');
-
-            if (isActive) {
-                nav.classList.remove('active');
-                menuToggle.classList.remove('active');
-            } else {
-                nav.classList.add('active');
-                menuToggle.classList.add('active');
-            }
-        });
-
-        // Close menu when clicking on links
-        document.querySelectorAll('.nav__link').forEach(link => {
-            link.addEventListener('click', function () {
-                nav.classList.remove('active');
-                menuToggle.classList.remove('active');
+            window.scrollTo({
+                top: targetElement.offsetTop - headerHeight - extraOffset,
+                behavior: 'smooth'
             });
         });
+    });
+};
 
-        // Close menu when clicking outside
-        document.addEventListener('click', function (event) {
-            if (!menuToggle.contains(event.target) && !nav.contains(event.target)) {
-                nav.classList.remove('active');
-                menuToggle.classList.remove('active');
-            }
-        });
-    }
-}
+// Function to get bus type translation (Modern ES6+)
+const getBusTypeTranslation = (busType) => {
+    if (!busType) { return ''; }
 
-// Function to get bus type translation
-function getBusTypeTranslation(busType) {
-    if (!busType) return '';
-
-    const translations = {
+    const busTypeTranslations = {
         solo: {
             en: 'Solo bus',
             bhs: 'Standardni autobus'
@@ -1733,11 +1432,59 @@ function getBusTypeTranslation(busType) {
         }
     };
 
-    return translations[busType] ? translations[busType][currentLang] || translations[busType].en : busType;
-}
+    const translation = busTypeTranslations[busType];
+    if (translation) {
+        return translation[currentLang] || translation.en || busType;
+    }
+    return busType;
+};
 
-// Setup map credits dropdown functionality
-function setupMapCreditsDropdown() {
+// Setup lines info accordion functionality
+const setupLinesInfoAccordion = () => {
+    const toggle = document.getElementById('lines-info-toggle');
+    const content = document.getElementById('lines-info-content');
+
+    if (!toggle || !content) { return; }
+
+    // Update content language visibility
+    const updateContentLanguage = () => {
+        const bhsElements = content.querySelectorAll('[data-lang="bhs"]');
+        const enElements = content.querySelectorAll('[data-lang="en"]');
+
+        bhsElements.forEach(el => {
+            el.style.display = currentLang === 'bhs' ? '' : 'none';
+        });
+        enElements.forEach(el => {
+            el.style.display = currentLang === 'en' ? '' : 'none';
+        });
+
+        // Also update toggle button text
+        const bhsToggleText = toggle.querySelector('[data-lang="bhs"]');
+        const enToggleText = toggle.querySelector('[data-lang="en"]');
+        if (bhsToggleText) { bhsToggleText.style.display = currentLang === 'bhs' ? '' : 'none'; }
+        if (enToggleText) { enToggleText.style.display = currentLang === 'en' ? '' : 'none'; }
+    };
+
+    // Set initial language
+    updateContentLanguage();
+
+    // Toggle accordion
+    toggle.addEventListener('click', () => {
+        const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', !isExpanded);
+        content.hidden = isExpanded;
+
+        if (!isExpanded) {
+            updateContentLanguage();
+        }
+    });
+
+    // Listen for language changes
+    document.addEventListener('languageChanged', updateContentLanguage);
+};
+
+// Setup map credits dropdown functionality (Modern ES6+)
+const setupMapCreditsDropdown = () => {
     const toggle = document.getElementById('map-credits-toggle');
     const content = document.getElementById('map-credits-content');
 
@@ -1799,3 +1546,10 @@ function setupMapCreditsDropdown() {
         });
     }
 }
+
+
+
+
+
+
+

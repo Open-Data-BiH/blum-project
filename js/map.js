@@ -1,60 +1,279 @@
-// Map initialization and functionality
-document.addEventListener('DOMContentLoaded', function () {
-    // Wait for bus_routes data to be available before initializing maps
-    if (typeof window.bus_routes !== 'undefined') {
-        initializeMainMap();
-        initializeAirportMap();
-    } else {
-        // Wait for bus_routes to load
-        const checkBusRoutes = setInterval(() => {
-            if (typeof window.bus_routes !== 'undefined') {
-                clearInterval(checkBusRoutes);
-                initializeMainMap();
-                initializeAirportMap();
-            }
-        }, 100); // Check every 100ms
-
-        // Timeout after 10 seconds
-        setTimeout(() => {
-            clearInterval(checkBusRoutes);
-            if (typeof window.bus_routes === 'undefined') {
-                console.error('Bus routes data failed to load within timeout period');
-                // Initialize maps without bus stops if data fails to load
-                initializeMainMap();
-                initializeAirportMap();
-            }
-        }, 10000);
+// ==========================================
+// Geolocation Service - Auto-select nearest bus stop
+// ==========================================
+class GeolocationService {
+    constructor() {
+        this.userLocation = null;
     }
-});
+
+    async getCurrentPosition() {
+        return new Promise((resolve, reject) => {
+            if (!navigator.geolocation) {
+                reject(new Error('Geolocation not supported'));
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    this.userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    resolve(this.userLocation);
+                },
+                (error) => {
+                    reject(error);
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                }
+            );
+        });
+    }
+
+    calculateDistance(lat1, lng1, lat2, lng2) {
+        const R = 6371; // Earth's radius in km
+        const dLat = this.toRad(lat2 - lat1);
+        const dLng = this.toRad(lng2 - lng1);
+
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(this.toRad(lat1)) * Math.cos(this.toRad(lat2)) *
+            Math.sin(dLng / 2) * Math.sin(dLng / 2);
+
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    }
+
+    toRad(degrees) {
+        return degrees * (Math.PI / 180);
+    }
+
+    findNearestStops(markers, limit = 3) {
+        if (!this.userLocation || !markers || markers.length === 0) {
+            return [];
+        }
+
+        const calculated = [];
+
+        markers.forEach(marker => {
+            const latlng = marker.getLatLng();
+            const distance = this.calculateDistance(
+                this.userLocation.lat,
+                this.userLocation.lng,
+                latlng.lat,
+                latlng.lng
+            );
+
+            // Get stop name from popup or properties if available
+            // Using a hacky way to get name if not directly available, 
+            // but markers passed here are from busStopMarkers Map where value is marker
+            // The popup content usually has the name.
+
+            calculated.push({
+                marker,
+                distance,
+                lat: latlng.lat,
+                lng: latlng.lng
+            });
+        });
+
+        // Sort by distance ascending
+        calculated.sort((a, b) => a.distance - b.distance);
+
+        // Return top N
+        return calculated.slice(0, limit);
+    }
+}
+
+// Initialize geolocation service
+const geoService = new GeolocationService();
+
+// Auto-select nearest bus stop function
+async function autoSelectNearestStop(map, busStopMarkers) {
+    if (!map || !busStopMarkers || busStopMarkers.length === 0) {
+        return;
+    }
+
+    try {
+        const position = await geoService.getCurrentPosition();
+
+        // Add user location marker
+        const userMarker = L.marker([position.lat, position.lng], {
+            icon: L.divIcon({
+                className: 'user-location-marker',
+                html: '<i class="fas fa-street-view" style="color: #007bff; font-size: 28px;"></i>',
+                iconSize: [30, 30],
+                iconAnchor: [15, 30]
+            }),
+            zIndexOffset: 1000
+        }).addTo(map);
+
+        userMarker.bindPopup('<strong>📍 Vaša lokacija / Your location</strong>').openPopup();
+
+        // Find nearest stops (top 3)
+        const nearestStops = geoService.findNearestStops(busStopMarkers, 3);
+
+        if (nearestStops.length > 0) {
+
+            // Use closest stop for main calculations/view
+            const closest = nearestStops[0];
+
+            // Pan to bounds containing user and the 3 stops
+            const bounds = L.latLngBounds([position.lat, position.lng]);
+            nearestStops.forEach(stop => bounds.extend([stop.lat, stop.lng]));
+
+            map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
+
+            // Clear any existing lines if we were storing them (we aren't currently, so they pile up - improving this)
+            if (window.currentGeoLines) {
+                window.currentGeoLines.forEach(line => map.removeLayer(line));
+            }
+            window.currentGeoLines = [];
+
+            // Draw lines to all nearest stops
+            nearestStops.forEach((stop, index) => {
+                const isClosest = index === 0;
+                const color = isClosest ? '#28a745' : '#17a2b8'; // Green for #1, Blue for others
+                const weight = isClosest ? 4 : 2;
+                const opacity = isClosest ? 0.8 : 0.5;
+
+                const line = L.polyline([
+                    [position.lat, position.lng],
+                    [stop.lat, stop.lng]
+                ], {
+                    color: color,
+                    weight: weight,
+                    opacity: opacity,
+                    dashArray: '10, 10'
+                }).addTo(map);
+
+                window.currentGeoLines.push(line);
+            });
+
+            // Open nearest stop popup after a delay
+            setTimeout(() => {
+                closest.marker.openPopup();
+            }, 1000);
+
+            // Create list for user popup
+            let stopsHtml = '<ul style="margin: 5px 0; padding-left: 20px;">';
+            nearestStops.forEach(stop => {
+                // Try to extract name from marker popup content if possible, or just show distance
+                // Note: Getting content from L.marker is tricky if it's not open.
+                // Assuming marker instance has some metadata or we extract from popup content string
+
+                // Let's rely on distance for now as name extraction is fragile without refactoring marker creation
+                stopsHtml += `<li><strong>${stop.distance.toFixed(2)} km</strong></li>`;
+            });
+            stopsHtml += '</ul>';
+
+            // Add distance info to user marker popup
+            userMarker.setPopupContent(
+                `<div style="min-width: 200px;">
+                    <strong>📍 Vaša lokacija / Your location</strong><br>
+                    <hr style="margin: 5px 0;">
+                    Najbliža stajališta / Nearest stops:<br>
+                    ${stopsHtml}
+                </div>`
+            );
+            userMarker.openPopup();
+        }
+    } catch (error) {
+        console.error('Geolocation error:', error.message);
+        throw error; // Re-throw to be handled by caller
+    }
+}
+
+// Map configuration constants
+const MAP_CONFIG = {
+    CENTER: [44.7866, 17.1975],
+    ZOOM: 13,
+    MIN_ZOOM: 12,
+    MAX_ZOOM: 17,
+    ZOOM_THRESHOLD: 15,
+    WALKING_RADIUS_5MIN: 400,
+    CHECK_INTERVAL: 100,
+    TIMEOUT_DURATION: 10000,
+    BUS_STOP_COLOR: '#72aaff'
+};
+
+// Extract ZOOM_THRESHOLD for easier reference
+const ZOOM_THRESHOLD = MAP_CONFIG.ZOOM_THRESHOLD;
 
 // Global variables for walking distance circles
 let currentWalkingCircles = [];
 let globalMap = null;
 
-// Function to clear existing walking circles
-function clearWalkingCircles() {
-    if (globalMap && currentWalkingCircles.length > 0) {
-        currentWalkingCircles.forEach(circle => {
-            globalMap.removeLayer(circle);
-        });
-        currentWalkingCircles = [];
-        console.log('Cleared existing walking circles');
-    }
-}
+// Modern Promise-based bus routes loader
+const waitForBusRoutes = () => new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => reject(new Error('Bus routes data timeout')), MAP_CONFIG.TIMEOUT_DURATION);
+    const interval = setInterval(() => {
+        if (window.bus_routes !== undefined) {
+            clearInterval(interval);
+            clearTimeout(timeout);
+            resolve();
+        }
+    }, MAP_CONFIG.CHECK_INTERVAL);
+});
 
-// Function to create walking distance circles around a station
-function createWalkingCircles(coordinates, stationName) {
+// Map initialization and functionality (Modern ES6+)
+document.addEventListener('DOMContentLoaded', () => {
+    const hasMainMap = Boolean(document.getElementById('map-container'));
+    const hasAirportMap = Boolean(document.getElementById('airport-map'));
+
+    // Wait for bus_routes data to be available before initializing maps
+    if (window.bus_routes !== undefined) {
+        if (hasMainMap) {
+            initializeMainMap();
+        }
+        if (hasAirportMap) {
+            initializeAirportMap();
+        }
+    } else {
+        waitForBusRoutes()
+            .then(() => {
+                if (hasMainMap) {
+                    initializeMainMap();
+                }
+                if (hasAirportMap) {
+                    initializeAirportMap();
+                }
+            })
+            .catch(error => {
+                console.error('Bus routes data failed to load:', error);
+                // Initialize maps without bus stops if data fails to load
+                if (hasMainMap) {
+                    initializeMainMap();
+                }
+                if (hasAirportMap) {
+                    initializeAirportMap();
+                }
+            });
+    }
+});
+
+// Function to clear existing walking circles (Modern ES6+)
+const clearWalkingCircles = () => {
+    if (globalMap && currentWalkingCircles.length > 0) {
+        currentWalkingCircles.forEach(circle => globalMap.removeLayer(circle));
+        currentWalkingCircles = [];
+    }
+};
+
+// Function to create walking distance circles around a station (Modern ES6+)
+const createWalkingCircles = (coordinates, _stationName) => {
     if (!globalMap) {
         console.error('Global map not available for walking circles');
         return;
     }
 
-    console.log('Creating walking circles for:', stationName, 'at coordinates:', coordinates);
     clearWalkingCircles();
 
     // Create only 5-minute walking circle (~400m radius)
     const circle5min = L.circle(coordinates, {
-        radius: 400,
+        radius: MAP_CONFIG.WALKING_RADIUS_5MIN,
         color: '#4CAF50',
         fillColor: '#4CAF50',
         fillOpacity: 0.2,
@@ -62,12 +281,11 @@ function createWalkingCircles(coordinates, stationName) {
         opacity: 0.7
     });
 
-    // Add circle to map (no popup)
     circle5min.addTo(globalMap);
 
     // Calculate position for icon on circle boundary (bottom-right, -45 degrees)
-    const radiusInDegrees = 400 / 111320; // Convert 400m to degrees (approximate)
-    const angleInRadians = -Math.PI / 4; // -45 degrees in radians (bottom-right)
+    const radiusInDegrees = MAP_CONFIG.WALKING_RADIUS_5MIN / 111320; // Convert to degrees
+    const angleInRadians = -Math.PI / 4; // -45 degrees in radians
     const iconLat = coordinates[0] + (radiusInDegrees * Math.sin(angleInRadians));
     const iconLng = coordinates[1] + (radiusInDegrees * Math.cos(angleInRadians));
 
@@ -84,18 +302,17 @@ function createWalkingCircles(coordinates, stationName) {
 
     const iconMarker = L.marker([iconLat, iconLng], {
         icon: walkingIcon,
-        interactive: false // Make it non-interactive so it doesn't interfere with clicks
+        interactive: false
     });
 
     iconMarker.addTo(globalMap);
 
     // Store both circle and icon for later removal
     currentWalkingCircles = [circle5min, iconMarker];
-    console.log('Added 5-minute walking circle with icon to map');
-}
+};
 
-// Initialize the main map
-function initializeMainMap() {
+// Initialize the main map (Modern ES6+)
+const initializeMainMap = () => {
     try {
         // Check if map container exists
         const mapContainer = document.getElementById("map-container");
@@ -106,25 +323,81 @@ function initializeMainMap() {
 
         // Extended bounds for Banja Luka area with more north-south coverage
         const mapBounds = L.latLngBounds([
-            [44.67794605215712, 16.90471973252053], // Southwest corner (extended more south)
+            [44.67794605215712, 16.90471973252053], // Southwest corner
             [44.996414749446565, 17.620029520676]  // Northeast corner
         ]);
 
         const map = L.map("map-container", {
-            center: [44.7866, 17.1975], // Centered on Banja Luka city center
-            zoom: 13,
+            center: MAP_CONFIG.CENTER,
+            zoom: MAP_CONFIG.ZOOM,
             maxBounds: mapBounds,
-            maxBoundsViscosity: 1.0, // Prevents panning outside bounds
-            zoomControl: false, // Remove default zoom control to reposition it
-            minZoom: 12, // Prevent zooming out too far
-            maxZoom: 17, // Limit maximum zoom to prevent going too deep
+            maxBoundsViscosity: 1.0,
+            zoomControl: false,
+            minZoom: MAP_CONFIG.MIN_ZOOM,
+            maxZoom: MAP_CONFIG.MAX_ZOOM,
         });
-
 
         // Add zoom control to bottom right
         L.control.zoom({
             position: 'bottomright'
         }).addTo(map);
+
+        // Add custom "Locate Me" control
+        const locateControl = L.Control.extend({
+            options: {
+                position: 'bottomright'
+            },
+            onAdd: function (map) {
+                const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+                const button = L.DomUtil.create('a', 'leaflet-control-locate', container);
+                button.href = '#';
+                button.title = 'Pronađi moju lokaciju | Find my location';
+                button.innerHTML = '<i class="fas fa-crosshairs"></i>';
+
+                L.DomEvent.disableClickPropagation(button);
+                L.DomEvent.on(button, 'click', function (e) {
+                    L.DomEvent.stop(e);
+
+                    // Add loading class
+                    button.classList.add('loading');
+
+                    // Access bus stops safely
+                    let markers = [];
+                    if (window.busStopMarkersMap) {
+                        markers = Array.from(window.busStopMarkersMap.values());
+                    } else {
+                        console.warn('Bus stop markers not populated yet.');
+                    }
+
+                    if (markers.length === 0) {
+                        alert("Bus stops are still loading or could not be loaded. Please wait a moment and try again.");
+                        button.classList.remove('loading');
+                        return;
+                    }
+
+                    // Call geolocation
+                    autoSelectNearestStop(map, markers)
+                        .then(() => {
+                            button.classList.remove('loading');
+                        })
+                        .catch((error) => {
+                            console.error("Geolocation failed:", error);
+                            button.classList.remove('loading');
+                            // Show friendly error
+                            if (error.code === 1) { // PERMISSION_DENIED
+                                alert("Please allow location access to use this feature.");
+                            } else if (error.message && error.message.includes("secure context")) {
+                                alert("Geolocation requires a secure connection (HTTPS) or localhost.");
+                            } else {
+                                alert("Could not determine your location. Please check your GPS settings.");
+                            }
+                        });
+                });
+
+                return container;
+            }
+        });
+        map.addControl(new locateControl());
 
         const standard = L.tileLayer('https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>'
@@ -151,26 +424,24 @@ function initializeMainMap() {
             }
         );
 
-        // Create enhanced markers with detailed information
-        function createFontAwesomeIcon(iconClass, color) {
-            return L.divIcon({
-                html: `<i class="fa-solid ${iconClass} fa-icon-marker" style="color:${color};"></i>`,
-                className: "",
-                iconSize: [30, 30],
-                iconAnchor: [15, 15],
-            });
-        }
+        // Create enhanced markers with detailed information (Modern ES6+)
+        const createFontAwesomeIcon = (iconClass, color) => L.divIcon({
+            html: `<i class="fa-solid ${iconClass} fa-icon-marker" style="color:${color};"></i>`,
+            className: "",
+            iconSize: [30, 30],
+            iconAnchor: [15, 15],
+        });
 
-        // Function to display unique bus stops from the bus_routes data
-        function displayBusStops(map, layerGroup) {
+        // Function to display unique bus stops from the bus_routes data (Modern ES6+)
+        const displayBusStops = (map, layerGroup) => {
             // Check if bus_routes data is available
-            if (typeof window.bus_routes === 'undefined') {
+            if (window.bus_routes === undefined) {
                 console.warn('Bus routes data not available, skipping bus stops display');
                 return;
             }
 
-            // Create a collection of unique stops
-            const uniqueStops = new Map(); // Using Map to store unique stops by name
+            // Create a collection of unique stops using Map
+            const uniqueStops = new Map();
 
             // Define ordered keys for sorting line numbers
             const orderedKeys = Object.keys(window.bus_routes).sort((a, b) => {
@@ -182,8 +453,6 @@ function initializeMainMap() {
             // Process each route and collect unique stops
             for (const lineId in window.bus_routes) {
                 const line = window.bus_routes[lineId];
-                const lineColor = line.color || line.colour; // Support both spellings
-
                 // Process both directions
                 for (const directionId in line.directions) {
                     const direction = line.directions[directionId];
@@ -211,42 +480,38 @@ function initializeMainMap() {
 
             // Store markers for zoom-based display
             const busStopMarkers = new Map();
+            window.busStopMarkersMap = busStopMarkers; // Expose globally for geolocation
             const busStopCircles = new Map();
-            const BUS_STOP_COLOR = "#72aaff"; // Bus stop icon color
 
             // Function to create a simple circle marker for low zoom levels
-            function createBusStopCircle(coordinates) {
+            const createBusStopCircle = (coordinates) => {
                 const currentZoom = map.getZoom();
-                // Scale radius based on zoom level - larger at higher zoom levels
                 const baseRadius = 3;
                 const scaleFactor = Math.max(1, currentZoom - 11) * 0.5;
-                const radius = Math.min(baseRadius + scaleFactor, 6); // Cap at 6px radius
+                const radius = Math.min(baseRadius + scaleFactor, 6);
 
                 return L.circleMarker(coordinates, {
-                    radius: radius,
-                    fillColor: BUS_STOP_COLOR,
-                    color: BUS_STOP_COLOR,
+                    radius,
+                    fillColor: MAP_CONFIG.BUS_STOP_COLOR,
+                    color: MAP_CONFIG.BUS_STOP_COLOR,
                     weight: 2,
                     opacity: 0.8,
                     fillOpacity: 0.6
                 });
-            }
+            };
 
             // Function to create full icon marker for high zoom levels
-            function createBusStopIcon(coordinates) {
-                return L.marker(coordinates, {
-                    icon: createFontAwesomeIcon("fa-bus-simple", BUS_STOP_COLOR),
-                });
-            }
+            const createBusStopIcon = (coordinates) => L.marker(coordinates, {
+                icon: createFontAwesomeIcon("fa-bus-simple", MAP_CONFIG.BUS_STOP_COLOR),
+            });
 
             // Function to update bus stop display based on zoom level
-            function updateBusStopDisplay() {
+            const updateBusStopDisplay = () => {
                 const currentZoom = map.getZoom();
-                const ZOOM_THRESHOLD = 15; // Switch to icons at zoom level 14 and above
 
                 uniqueStops.forEach((stop, stopName) => {
                     // Convert the Set of lines to an Array and sort them
-                    let sortedLines = Array.from(stop.lines);
+                    const sortedLines = Array.from(stop.lines);
                     sortedLines.sort((a, b) => {
                         return orderedKeys.indexOf(a) - orderedKeys.indexOf(b);
                     });
@@ -254,16 +519,27 @@ function initializeMainMap() {
                     // Create the popup content with the stop name, street, and lines
                     const popupContent = `
                     <div class="hub-popup">
-                        <h3>${stop.name}</h3>
+                        <h3>${escapeHTML(stop.name)}</h3>
                         <p>Linije | Lines: ${sortedLines.map(lineId => {
                         const lineColor = window.bus_routes[lineId].color || window.bus_routes[lineId].colour || '#72aaff';
-                        return `<a href="#" class="line-number-link" 
-                                    style="color:${lineColor}" 
-                                    onclick="window.showBusLine('${lineId}'); return false;">${lineId}</a>`;
+                        return `<a href="#" class="line-number-link"
+                                    style="color:${escapeHTML(lineColor)}"
+                                    data-line-id="${escapeHTML(lineId)}">${escapeHTML(lineId)}</a>`;
                     }).join(', ')}</p>
                         <a href="#timetable" class="popup-link">Pogledaj red vožnje | View timetables</a>
                     </div>
                 `;
+
+                    const bindPopupLineLinks = (e) => {
+                        const container = e.popup.getElement();
+                        if (!container) { return; }
+                        container.querySelectorAll('.line-number-link[data-line-id]').forEach(link => {
+                            link.addEventListener('click', (evt) => {
+                                evt.preventDefault();
+                                window.showBusLine(link.dataset.lineId);
+                            });
+                        });
+                    };
 
                     if (currentZoom >= ZOOM_THRESHOLD) {
                         // High zoom - show full icons
@@ -277,10 +553,10 @@ function initializeMainMap() {
                         if (!busStopMarkers.has(stopName)) {
                             const marker = createBusStopIcon(stop.coordinates);
                             marker.bindPopup(popupContent);
+                            marker.on('popupopen', bindPopupLineLinks);
 
                             // Add click event to show walking distance circles
-                            marker.on('click', function (e) {
-                                console.log('Bus stop clicked:', stop.name);
+                            marker.on('click', function (_e) {
                                 // Show walking circles after a small delay to allow popup to open first
                                 setTimeout(() => {
                                     createWalkingCircles(stop.coordinates, stop.name);
@@ -309,10 +585,10 @@ function initializeMainMap() {
                         // Create new circle with updated size
                         const circle = createBusStopCircle(stop.coordinates);
                         circle.bindPopup(popupContent);
+                        circle.on('popupopen', bindPopupLineLinks);
 
                         // Add click event to show walking distance circles
-                        circle.on('click', function (e) {
-                            console.log('Bus stop clicked:', stop.name);
+                        circle.on('click', function (_e) {
                             // Show walking circles after a small delay to allow popup to open first
                             setTimeout(() => {
                                 createWalkingCircles(stop.coordinates, stop.name);
@@ -331,8 +607,7 @@ function initializeMainMap() {
             // Add zoom event listener to update display when zoom changes
             map.on('zoomend', updateBusStopDisplay);
 
-            console.log(`Added ${uniqueStops.size} unique bus stops to the map with zoom-based display`);
-        }
+        };
 
         // Initialize Layer Groups
         const busStops = L.layerGroup();
@@ -346,13 +621,7 @@ function initializeMainMap() {
         displayBusStops(map, busStops);
 
         // Fetch and process transport hubs
-        fetch('data/transport/transport_hubs.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
+        FetchHelper.fetchJSON('data/transport/transport_hubs.json')
             .then(data => {
                 data.hubs.forEach(hub => {
                     let marker;
@@ -391,8 +660,7 @@ function initializeMainMap() {
 
                     // Add walking distance circles functionality to all transport hub markers
                     if (marker) {
-                        marker.on('click', function (e) {
-                            console.log('Bus stop clicked:', hub.name);
+                        marker.on('click', function (_e) {
                             // Show walking circles after a small delay to allow popup to open first
                             setTimeout(() => {
                                 createWalkingCircles([hub.lat, hub.lng], hub.name);
@@ -414,13 +682,7 @@ function initializeMainMap() {
             });
 
         // Fetch and process bike stations
-        fetch('data/transport/bike_stations.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
+        FetchHelper.fetchJSON('data/transport/bike_stations.json')
             .then(data => {
                 data.forEach(station => {
                     const marker = L.marker([station.lat, station.lon], {
@@ -429,8 +691,7 @@ function initializeMainMap() {
                     marker.addTo(bikeStations);
 
                     // Add walking distance circles functionality to bike station markers
-                    marker.on('click', function (e) {
-                        console.log('Bike station clicked:', station.name);
+                    marker.on('click', function (_e) {
                         // Show walking circles after a small delay to allow popup to open first
                         setTimeout(() => {
                             createWalkingCircles([station.lat, station.lon], station.name);
@@ -442,40 +703,33 @@ function initializeMainMap() {
                 console.error('Error loading bike_stations.json:', error);
             });
 
-        const baseMaps = {
-            "Standardni | Standard": standard,
-            "Svijetli | Light": light,
-            "Tamni | Dark": dark,
-            "Satelitski | Satellite": satellite,
+        // Initialize custom map legend control
+        const legendLayerGroups = {
+            busStops,
+            trainStations,
+            mainBusStations,
+            airportShuttles,
+            touristBus,
+            bikeStations
         };
 
-        const overlayMaps = {
-            "Autobuska stajališta | Bus Stops": busStops,
-            "Željezničke stanice | Train Stations": trainStations,
-            "Glavna autobuska stanica | Main Bus Station": mainBusStations,
-            "Aerodromski transfer | Airport Shuttle": airportShuttles,
-            "Turistički autobus | Tourist Bus": touristBus,
-            "Nextbike stanice | Nextbike Stations": bikeStations,
+        const legendBaseMaps = {
+            standard,
+            light,
+            dark,
+            satellite
         };
 
-        // Add layer control to bottom right
-        L.control.layers(baseMaps, overlayMaps, {
-            position: 'bottomright'
-        }).addTo(map);
+        // Create and initialize legend control
+        // Note: Legend will manage layer visibility based on config defaults
+        const mapLegend = new MapLegendControl(map, legendLayerGroups, legendBaseMaps);
+        mapLegend.init();
 
-        // Load default overlays
-        busStops.addTo(map);
-        trainStations.addTo(map);
-        airportShuttles.addTo(map);
-        touristBus.addTo(map);
-        mainBusStations.addTo(map);
-        bikeStations.addTo(map); // Add bike stations to map by default
+        // Store reference for external access
+        window.mapLegendControl = mapLegend;
 
         globalMap = map;
 
-        console.log('Main map initialized successfully');
-        console.log('Walking circles functions available:', typeof createWalkingCircles === 'function');
-        console.log('Global map reference set:', globalMap !== null);
     } catch (error) {
         console.error('Error initializing main map:', error);
         // Show error message in map container
@@ -491,13 +745,12 @@ function initializeMainMap() {
     }
 }
 
-// Initialize the airport map
-function initializeAirportMap() {
+// Initialize the airport map (Modern ES6+)
+const initializeAirportMap = () => {
     try {
         // Check if airport map container exists
         const airportMapContainer = document.getElementById("airport-map");
         if (!airportMapContainer) {
-            console.error('Airport map container element not found');
             return;
         }
         // Bounds for the airport area
@@ -557,95 +810,77 @@ function initializeAirportMap() {
     }
 }
 
-// Functions to create enhanced popups
-function createTrainStationPopup(name, info, destinations) {
-    return `
+// Functions to create enhanced popups (Modern ES6+)
+const createTrainStationPopup = (name, info, destinations) => `
     <div class="hub-popup">
-      <h3>${name}</h3>
-      <p>${info}</p>
-      <p>Destinacije | Destinations: <br> <strong>${destinations}</strong></p>
-      <a href="https://www.zrs-rs.com" target="_blank" class="popup-link">Official Railway Website</a>
+      <h3>${escapeHTML(name)}</h3>
+      <p>${escapeHTML(info)}</p>
+      <p>Destinacije | Destinations: <br> <strong>${escapeHTML(destinations)}</strong></p>
+      <a href="https://www.zrs-rs.com" target="_blank" rel="noopener noreferrer" class="popup-link">Official Railway Website</a>
     </div>
-  `;
-}
+`;
 
-function createShuttlePopup(name, info) {
-    return `
+const createShuttlePopup = (name, info) => `
     <div class="hub-popup">
-      <h3>${name}</h3>
-      <p>${info}</p>
+      <h3>${escapeHTML(name)}</h3>
+      <p>${escapeHTML(info)}</p>
       <p>Karte se kupuju u autobusu | Tickets are available on the bus</p>
       <a href="#airport" class="popup-link">Airport Transfer Info</a>
     </div>
-  `;
-}
+`;
 
-function createTouristBusPopup(name, info, price, duration) {
-    return `
+const createTouristBusPopup = (name, info, price, duration) => `
     <div class="hub-popup">
-      <h3>${name}</h3>
-      <p>${info}</p>
-      <p>Trajanje vožnje | Trip duration: ${duration}</p>
-      <p>Cijena | Price: ${price}</p>
-      <a href="https://www.banjaluka.rs.ba/banj-bus-na-raspolaganju-od-1-maja/" target="_blank" class="popup-link">Banj Bus Info</a>
+      <h3>${escapeHTML(name)}</h3>
+      <p>${escapeHTML(info)}</p>
+      <p>Trajanje vožnje | Trip duration: ${escapeHTML(duration)}</p>
+      <p>Cijena | Price: ${escapeHTML(price)}</p>
+      <a href="https://www.banjaluka.rs.ba/banj-bus-na-raspolaganju-od-1-maja/" target="_blank" rel="noopener noreferrer" class="popup-link">Banj Bus Info</a>
     </div>
-  `;
-}
+`;
 
-function createMainBusStationPopup(name, info) {
-    return `
+const createMainBusStationPopup = (name, info) => `
     <div class="hub-popup">
-      <h3>${name}</h3>
-      <p>${info}</p>
-      <a href="https://www.as-banjaluka.com/" target="_blank" class="popup-link">Official Website</a>
+      <h3>${escapeHTML(name)}</h3>
+      <p>${escapeHTML(info)}</p>
+      <a href="https://www.as-banjaluka.com/" target="_blank" rel="noopener noreferrer" class="popup-link">Official Website</a>
     </div>
-  `;
-}
+`;
 
-function createTerminalBusStationPopup(name, info, description) {
-    return `
+const createTerminalBusStationPopup = (name, info, description) => `
     <div class="hub-popup">
-      <h3>${name}</h3>
-      <p>${info}</p>
-      <p>${description}</p>
+      <h3>${escapeHTML(name)}</h3>
+      <p>${escapeHTML(info)}</p>
+      <p>${escapeHTML(description)}</p>
     </div>
-  `;
-}
+`;
 
-// Function to create popup for bike stations
-function createBikeStationPopup(name, capacity) {
-    return `
+// Function to create popup for bike stations (Modern ES6+)
+const createBikeStationPopup = (name, capacity) => `
     <div class="hub-popup">
-      <h3>${name}</h3>
-      <p>Kapacitet | Capacity: ${capacity}</p>
-      <a href="https://www.nextbike.ba/bs/banjaluka/" target="_blank" class="popup-link">Nextbike BL Info</a>
+      <h3>${escapeHTML(name)}</h3>
+      <p>Kapacitet | Capacity: ${escapeHTML(String(capacity))}</p>
+      <a href="https://www.nextbike.ba/bs/banjaluka/" target="_blank" rel="noopener noreferrer" class="popup-link">Nextbike BL Info</a>
     </div>
-  `;
-}
+`;
 
-// Global function to show bus line details when clicked in popup
-window.showBusLine = function (lineId) {
+// Global function to show bus line details when clicked in popup (Modern ES6+)
+window.showBusLine = (lineId) => {
     // First, scroll to the timetable section
-    const timetableSection = document.getElementById('timetable');
-    if (timetableSection) {
-        timetableSection.scrollIntoView({ behavior: 'smooth' });
+    const timetableElement = document.getElementById('timetable');
+    if (timetableElement) {
+        timetableElement.scrollIntoView({ behavior: 'smooth' });
     }
 
     // Wait a moment for the scroll to complete, then select the line
     setTimeout(() => {
         const lineSelect = document.getElementById('line-select');
-
         if (lineSelect) {
-            // Set the selected value
             lineSelect.value = lineId.toUpperCase();
-            // Trigger the change event to load the timetable
-            const changeEvent = new Event('change', { bubbles: true });
-            lineSelect.dispatchEvent(changeEvent);
+            lineSelect.dispatchEvent(new Event('change', { bubbles: true }));
         }
-    }, 500); // Small delay to ensure smooth scrolling completes
+    }, 500);
 
     // Fire an event that other scripts can listen for
-    const event = new CustomEvent('busLineSelected', { detail: { lineId } });
-    document.dispatchEvent(event);
+    document.dispatchEvent(new CustomEvent('busLineSelected', { detail: { lineId } }));
 };
-

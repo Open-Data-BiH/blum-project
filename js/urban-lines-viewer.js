@@ -1,9 +1,9 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const viewer = document.getElementById('urban-lines-viewer');
-    if (!viewer) return;
-
-    // Create the Leaflet map
-    const map = L.map('urban-lines-viewer', {
+// Urban Lines Viewer Configuration
+const VIEWER_CONFIG = {
+    IMAGE_URL: 'assets/images/gradski-prevoz-mapa-banja-luka.png',
+    IMAGE_ASPECT_RATIO: 8000 / 5000,
+    RESIZE_DEBOUNCE_DELAY: 250,
+    MAP_OPTIONS: {
         crs: L.CRS.Simple,
         zoomControl: false,
         attributionControl: false,
@@ -12,38 +12,35 @@ document.addEventListener('DOMContentLoaded', function () {
         wheelPxPerZoomLevel: 100,
         minZoom: -2,
         maxZoom: 2,
-        maxBoundsViscosity: 1.0, // Make bounds "solid"
-        bounceAtZoomLimits: false, // Prevent bouncing at zoom limits
-        keyboard: false, // Disable keyboard navigation to prevent moving with arrows
+        maxBoundsViscosity: 1.0,
+        bounceAtZoomLimits: false,
+        keyboard: false,
         dragging: true
-    });
+    }
+};
 
-    // Load the urban lines image
-    const imageUrl = 'assets/images/gradski-prevoz-mapa-banja-luka.png';
+document.addEventListener('DOMContentLoaded', () => {
+    const viewer = document.getElementById('urban-lines-viewer');
+    if (!viewer) { return; }
 
-    // Set initial bounds based on known aspect ratio (8000×5000)
-    const IMAGE_ASPECT_RATIO = 8000 / 5000;
+    // Create the Leaflet map with configuration
+    const map = L.map('urban-lines-viewer', VIEWER_CONFIG.MAP_OPTIONS);
 
-    function calculateImageBounds() {
-        const containerWidth = viewer.clientWidth;
-        const containerHeight = viewer.clientHeight;
+    // Calculate image bounds based on container size (Modern ES6+)
+    const calculateImageBounds = () => {
+        const { clientWidth: containerWidth, clientHeight: containerHeight } = viewer;
         const containerAspect = containerWidth / containerHeight;
 
-        let width, height;
-        if (containerAspect > IMAGE_ASPECT_RATIO) {
-            height = 1000;
-            width = height * IMAGE_ASPECT_RATIO;
-        } else {
-            width = 1000 * IMAGE_ASPECT_RATIO;
-            height = width / IMAGE_ASPECT_RATIO;
-        }
+        const [width, height] = containerAspect > VIEWER_CONFIG.IMAGE_ASPECT_RATIO
+            ? [1000 * VIEWER_CONFIG.IMAGE_ASPECT_RATIO, 1000]
+            : [1000 * VIEWER_CONFIG.IMAGE_ASPECT_RATIO, 1000 * VIEWER_CONFIG.IMAGE_ASPECT_RATIO / containerAspect];
 
-        return [[0, 0], [height, width]]; // Remove padding completely
-    }
+        return [[0, 0], [height, width]];
+    };
 
     // Add the image overlay with calculated bounds
     const bounds = calculateImageBounds();
-    const image = L.imageOverlay(imageUrl, bounds);
+    const image = L.imageOverlay(VIEWER_CONFIG.IMAGE_URL, bounds);
     image.addTo(map);
 
     // Set initial view to show the entire image
@@ -52,7 +49,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Set max bounds to match image bounds
     map.setMaxBounds(bounds);
 
-    // Create custom controls container
+    // Function to reset view to initial state (Modern ES6+)
+    const resetView = () => {
+        const bounds = calculateImageBounds();
+        map.fitBounds(bounds);
+    };
+
+    // Create custom controls container (Modern ES6+)
     const MapControls = L.Control.extend({
         options: {
             position: 'bottomright'
@@ -61,75 +64,57 @@ document.addEventListener('DOMContentLoaded', function () {
         onAdd: function () {
             const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control map-controls-container');
 
-            // Add zoom in button
-            const zoomInBtn = L.DomUtil.create('a', 'map-control-button zoom-in', container);
-            zoomInBtn.innerHTML = '<i class="fas fa-plus"></i>';
-            zoomInBtn.href = '#';
-            zoomInBtn.title = 'Zoom in';
+            // Control buttons configuration
+            const buttons = [
+                { class: 'zoom-in', icon: 'fa-plus', title: 'Zoom in', action: () => map.zoomIn() },
+                { class: 'zoom-out', icon: 'fa-minus', title: 'Zoom out', action: () => map.zoomOut() },
+                { class: 'reset-view', icon: 'fa-home', title: 'Reset view', action: resetView }
+            ];
 
-            // Add zoom out button
-            const zoomOutBtn = L.DomUtil.create('a', 'map-control-button zoom-out', container);
-            zoomOutBtn.innerHTML = '<i class="fas fa-minus"></i>';
-            zoomOutBtn.href = '#';
-            zoomOutBtn.title = 'Zoom out';
+            // Create buttons dynamically
+            buttons.forEach(({ class: btnClass, icon, title, action }) => {
+                const btn = L.DomUtil.create('a', `map-control-button ${btnClass}`, container);
+                btn.innerHTML = `<i class="fas ${icon}"></i>`;
+                btn.href = '#';
+                btn.title = title;
 
-            // Add reset view button
-            const resetBtn = L.DomUtil.create('a', 'map-control-button reset-view', container);
-            resetBtn.innerHTML = '<i class="fas fa-home"></i>';
-            resetBtn.href = '#';
-            resetBtn.title = 'Reset view';
-
-            // Add event listeners
-            L.DomEvent.on(zoomInBtn, 'click', function (e) {
-                L.DomEvent.preventDefault(e);
-                map.zoomIn();
-            });
-
-            L.DomEvent.on(zoomOutBtn, 'click', function (e) {
-                L.DomEvent.preventDefault(e);
-                map.zoomOut();
-            });
-
-            L.DomEvent.on(resetBtn, 'click', function (e) {
-                L.DomEvent.preventDefault(e);
-                resetView();
+                L.DomEvent.on(btn, 'click', (e) => {
+                    L.DomEvent.preventDefault(e);
+                    action();
+                });
             });
 
             return container;
         }
     });
 
-    // Function to reset view to initial state
-    function resetView() {
-        const bounds = calculateImageBounds();
-        map.fitBounds(bounds);
-    }
-
     // Add the controls to the map
     map.addControl(new MapControls());
 
-    // Handle image load for precise sizing
+    // Handle image load for precise sizing (Modern ES6+)
     const img = new Image();
-    img.onload = function () {
+    img.onload = () => {
         const bounds = calculateImageBounds();
         image.setBounds(bounds);
         map.fitBounds(bounds);
-        map.setMaxBounds(bounds); // Update max bounds after image loads
+        map.setMaxBounds(bounds);
     };
-    img.src = imageUrl;
+    img.src = VIEWER_CONFIG.IMAGE_URL;
 
-    // Handle window resize
+    // Handle window resize with debounce (Modern ES6+)
     let resizeTimeout;
-    window.addEventListener('resize', function () {
+    const handleResize = () => {
         clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(function () {
+        resizeTimeout = setTimeout(() => {
             if (img.complete) {
                 const bounds = calculateImageBounds();
                 image.setBounds(bounds);
                 map.invalidateSize();
                 map.fitBounds(bounds);
-                map.setMaxBounds(bounds); // Update max bounds after resize
+                map.setMaxBounds(bounds);
             }
-        }, 250);
-    });
+        }, VIEWER_CONFIG.RESIZE_DEBOUNCE_DELAY);
+    };
+
+    window.addEventListener('resize', handleResize);
 }); 

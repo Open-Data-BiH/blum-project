@@ -1,39 +1,47 @@
-# Banja Luka Public Transport Information System
+# BLum
 
-A comprehensive web application providing real-time information about public transportation in Banja Luka, including urban and suburban bus lines, schedules, prices, and interactive maps.
+### Urbana mobilnost Banja Luka
+
+Nezavisna open-source platforma za informacije o javnom prevozu i urbanoj mobilnosti u Banjoj Luci.
+
+## Misija
+
+Omogućiti jednostavan i transparentan pristup informacijama o javnom prevozu građanima i posjetiocima grada.
+
+> BLum nije zvanična stranica javnog prevoza.
 
 ## Features
 
-- 🗺️ Interactive maps showing bus routes and stops
-- 🚌 Urban and suburban bus line information
-- ⏰ Real-time timetables and schedules
-- 💰 Current ticket prices and fare information
-- 🌐 Bilingual support (Bosnian/Serbian/Croatian and English)
-- 📱 Mobile-responsive design
-- 🚴 Bike station locations (Nextbike integration)
-- ✈️ Airport transfer information
+- ðŸ—ºï¸ Interactive maps showing bus routes and stops
+- ðŸšŒ Urban and suburban bus line information
+- â° Real-time timetables and schedules
+- ðŸ’° Current ticket prices and fare information
+- ðŸŒ Bilingual support (Bosnian/Serbian/Croatian and English)
+- ðŸ“± Mobile-responsive design
+- ðŸš´ Bike station locations (Nextbike integration)
+- âœˆï¸ Airport transfer information
 
 ## Project Structure
 
 ```
 /
-├── index.html                 # Main HTML file
-├── assets/                    # Static assets
-│   ├── images/               # Images and graphics
-│   └── documents/            # PDF documents and studies
-├── css/                      # Stylesheets
-│   ├── components/          # Component-specific styles
-│   ├── layout/              # Layout and grid styles
-│   └── vendor/              # Third-party CSS
-├── js/                       # JavaScript files
-│   ├── components/          # Modular JS components
-│   ├── utils/               # Utility functions
-│   └── vendor/              # Third-party JavaScript
-├── data/                     # JSON data files
-│   ├── routes/              # Bus route information
-│   ├── timetables/          # Schedule data
-│   └── config/              # Configuration files
-└── docs/                     # Documentation
+â”œâ”€â”€ index.html                 # Main HTML file
+â”œâ”€â”€ assets/                    # Static assets
+â”‚   â”œâ”€â”€ images/               # Images and graphics
+â”‚   â””â”€â”€ documents/            # PDF documents and studies
+â”œâ”€â”€ css/                      # Stylesheets
+â”‚   â”œâ”€â”€ components/          # Component-specific styles
+â”‚   â”œâ”€â”€ layout/              # Layout and grid styles
+â”‚   â””â”€â”€ vendor/              # Third-party CSS
+â”œâ”€â”€ js/                       # JavaScript files
+â”‚   â”œâ”€â”€ components/          # Modular JS components
+â”‚   â”œâ”€â”€ utils/               # Utility functions
+â”‚   â””â”€â”€ vendor/              # Third-party JavaScript
+â”œâ”€â”€ data/                     # JSON data files
+â”‚   â”œâ”€â”€ routes/              # Bus route information
+â”‚   â”œâ”€â”€ timetables/          # Schedule data
+â”‚   â””â”€â”€ config/              # Configuration files
+â””â”€â”€ docs/                     # Documentation
 ```
 
 ## Technologies Used
@@ -47,12 +55,14 @@ A comprehensive web application providing real-time information about public tra
 ## Setup and Installation
 
 1. Clone the repository:
+
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Open-Data-BiH/blum-project.git
    cd blum
    ```
 
 2. Serve the files using a local web server:
+
    ```bash
    # Using Python 3
    python -m http.server 8000
@@ -69,8 +79,9 @@ A comprehensive web application providing real-time information about public tra
 ## Data Sources
 
 The transportation data is sourced from:
+
 - Official Banja Luka city administration
-- Local transport companies (AUTOPREVOZ, PAVLOVIĆ, BOČAC, ALDEMO, RALE)
+- Local transport companies (AUTOPREVOZ, PAVLOVIÄ†, BOÄŒAC, ALDEMO, RALE)
 - Community contributions
 
 ## Contributing
@@ -80,9 +91,10 @@ This is a community project aimed at improving public transport accessibility in
 ## Credits
 
 Map visualization created by **Uticajna Grupa - Imamo Plan** (Serbia):
-- Jug Cerović
-- Marko Njegić  
-- Stefan Milojević
+
+- Jug CeroviÄ‡
+- Marko NjegiÄ‡  
+- Stefan MilojeviÄ‡
 
 ## Disclaimer
 
@@ -90,4 +102,4 @@ This is not an official website of the City of Banja Luka or any transport compa
 
 ## License
 
-This project is a gift to the city and its citizens, developed as a volunteer initiative. 
+This project is a gift to the city and its citizens, developed as a volunteer initiative.

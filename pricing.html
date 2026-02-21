@@ -9,7 +9,7 @@
       content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self' https://unpkg.com https://cdnjs.cloudflare.com; base-uri 'self'; form-action 'self';"
     />
     <title>BLum - Urbana mobilnost Banja Luka</title>
-    <link rel="canonical" href="https://blum.ba/faq.html" />
+    <link rel="canonical" href="https://blum.ba/pricing.html" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,7 +17,6 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -53,21 +52,20 @@
     <link rel="stylesheet" href="css/components.css" />
     <link rel="stylesheet" href="css/utilities.css" />
     <!-- Page-specific CSS -->
-    <link rel="stylesheet" href="css/faq.css" />
+    <link rel="stylesheet" href="css/price-tables.css" />
   </head>
-  <body data-page="faq">
+  <body data-page="pricing">
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <div class="page-container">
       <div id="header"></div>
 
       <main id="main-content" class="content-wrap">
-        <section class="section section--narrow" id="faq">
+        <section class="section section--wide" id="price-tables">
           <div class="container">
-            <h1 class="section__title" id="faq-title"></h1>
-            <p class="section__subtitle" id="faq-subtitle"></p>
-            <div id="faq-content">
-              <!-- FAQ content will be loaded here dynamically -->
+            <h2 class="section__title" id="price-tables-title"></h2>
+            <div class="price-tables">
+              <!-- Price tables will be loaded here -->
             </div>
           </div>
         </section>
@@ -76,7 +74,6 @@
       <div id="footer"></div>
     </div>
 
-    <!-- Scripts -->
     <!-- DOMPurify for XSS protection -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js"
@@ -86,13 +83,12 @@
     <script src="js/sanitize.js"></script>
     <script src="js/fetchHelper.js"></script>
     <script src="js/darkMode.js"></script>
-    <script src="js/components/BaseComponent.js"></script>
-    <script src="js/components/faq.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/i18n/i18n.js"></script>
     <script src="js/layout.js"></script>
+    <script src="js/features/pricing/pricing.service.js"></script>
+    <script src="js/features/pricing/pricing.ui.js"></script>
     <script src="js/script.js"></script>
-    <script src="js/pages/faq.js"></script>
     <script src="js/page-init.js"></script>
   </body>
 </html>

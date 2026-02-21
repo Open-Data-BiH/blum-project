@@ -9,7 +9,7 @@
       content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self' https://unpkg.com https://cdnjs.cloudflare.com; base-uri 'self'; form-action 'self';"
     />
     <title>BLum - Urbana mobilnost Banja Luka</title>
-    <link rel="canonical" href="https://blum.ba/faq.html" />
+    <link rel="canonical" href="https://blum.ba/updates.html" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -53,21 +53,28 @@
     <link rel="stylesheet" href="css/components.css" />
     <link rel="stylesheet" href="css/utilities.css" />
     <!-- Page-specific CSS -->
-    <link rel="stylesheet" href="css/faq.css" />
+    <link rel="stylesheet" href="css/updates.css" />
   </head>
-  <body data-page="faq">
+  <body data-page="updates">
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <div class="page-container">
       <div id="header"></div>
 
       <main id="main-content" class="content-wrap">
-        <section class="section section--narrow" id="faq">
+        <section class="section section--narrow" id="updates">
           <div class="container">
-            <h1 class="section__title" id="faq-title"></h1>
-            <p class="section__subtitle" id="faq-subtitle"></p>
-            <div id="faq-content">
-              <!-- FAQ content will be loaded here dynamically -->
+            <h1 class="section__title" id="updates-title"></h1>
+            <p class="section__subtitle" id="updates-subtitle"></p>
+
+            <!-- Filter buttons -->
+            <div class="updates-filters" id="updates-filters">
+              <!-- Filters will be loaded dynamically -->
+            </div>
+
+            <!-- Updates content -->
+            <div id="updates-content">
+              <!-- Updates will be loaded here dynamically -->
             </div>
           </div>
         </section>
@@ -87,12 +94,12 @@
     <script src="js/fetchHelper.js"></script>
     <script src="js/darkMode.js"></script>
     <script src="js/components/BaseComponent.js"></script>
-    <script src="js/components/faq.js"></script>
+    <script src="js/components/updates.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/i18n/i18n.js"></script>
     <script src="js/layout.js"></script>
     <script src="js/script.js"></script>
-    <script src="js/pages/faq.js"></script>
+    <script src="js/pages/updates.js"></script>
     <script src="js/page-init.js"></script>
   </body>
 </html>

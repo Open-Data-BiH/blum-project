@@ -1,11 +1,24 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="bs">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      Prevoz i Mobilnost Banja Luka | Transport & Mobility Banja Luka
-    </title>
+    <!-- Content Security Policy -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https://*.tile.openstreetmap.org https://basemaps.cartocdn.com https://tiles.stadiamaps.com https://server.arcgisonline.com; connect-src 'self' https://unpkg.com https://cdnjs.cloudflare.com; base-uri 'self'; form-action 'self';"
+    />
+    <title>BLum - Urbana mobilnost Banja Luka</title>
+    <link rel="canonical" href="https://blum.ba/" />
+    <meta
+      name="description"
+      content="BLum je nezavisna platforma za informacije o javnom prevozu i urbanoj mobilnosti u Banjoj Luci."
+    />
+    <meta property="og:title" content="BLum - Urbana mobilnost Banja Luka" />
+    <meta
+      property="og:description"
+      content="Informacije za lakše kretanje gradom."
+    />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,6 +29,8 @@
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha512-Zcn6bjR/8RZbLEpLIeOwNtzREBAJnUKESxces60Mpoj+2okopSAcSUIUOseddDm0cxnGQzxIR7vJgsLZbdLE3w=="
+      crossorigin="anonymous"
     />
 
     <link
@@ -25,258 +40,82 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/line-styles.css" />
-    <link rel="stylesheet" href="css/price-tables.css" />
-    <link rel="stylesheet" href="css/timetables.css" />
+
+    <!-- Favicons -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/images/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/images/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/images/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
+
+    <!-- Modular CSS -->
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/map-legend.css" />
+    <link rel="stylesheet" href="css/utilities.css" />
   </head>
-  <body>
+  <body data-page="home">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <div class="page-container">
-      <div class="content-wrap">
-        <header>
-          <div class="header__container">
-            <div class="header__content">
-              <h1 class="header__title" id="site-title">
-                Urbana Mobilnost Banja Luka
-              </h1>
+      <div id="header"></div>
 
-              <div class="header__controls">
-                <div class="language-selector">
-                  <button class="lang-btn" data-lang="en">EN</button>
-                  <button class="lang-btn lang-btn--active" data-lang="bhs">
-                    BHS
-                  </button>
-                </div>
-
-                <button
-                  class="menu-toggle"
-                  id="mobile-menu-toggle"
-                  aria-label="Toggle navigation"
-                >
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </button>
-              </div>
-            </div>
-
-            <nav class="nav" id="main-nav">
-              <a
-                href="#urban-lines"
-                class="nav__link"
-                id="nav-urban-lines-desktop"
-                >Mapa gradskih linija</a
-              >
-              <a href="#lines" class="nav__link" id="nav-lines-desktop"
-                >Linije</a
-              >
-              <a
-                href="#price-tables"
-                class="nav__link"
-                id="nav-price-tables-desktop"
-                >Cjenovnik</a
-              >
-              <a href="#timetable" class="nav__link" id="nav-timetable-desktop"
-                >Red vožnje</a
-              >
-              <a href="#map" class="nav__link" id="nav-map-desktop"
-                >Interaktivna mapa</a
-              >
-              <a href="#airport" class="nav__link" id="nav-airport-desktop"
-                >Aerodromski prevoz</a
-              >
-              <a href="faq.html" class="nav__link" id="nav-faq-desktop"
-                >Često postavljana pitanja</a
-              >
-              <a href="#contact" class="nav__link" id="nav-contact-desktop"
-                >Korisni kontakti</a
-              >
-            </nav>
-          </div>
-        </header>
-
-        <section class="section section--wide" id="urban-lines">
+      <main id="main-content" class="content-wrap">
+        <section class="hero">
           <div class="container">
-            <h2 class="section__title" id="urban-lines-title">
-              Gradske Linije
-            </h2>
-
-            <div class="map-container urban-lines-map">
-              <div id="urban-lines-viewer"></div>
-            </div>
-            <div class="map-note">
-              <i class="map-note__icon fas fa-info-circle"></i>
-              <span
-                >Koristite točkić miša za zumiranje, a prevlačenjem miša
-                pomjerajte mapu. Takođe, možete koristiti dugmad +, - za
-                zumiranje i dugme Home za povratak na početni prikaz. Na
-                pametnim uređajima, zumiranje vršite razdvajanjem ili
-                približavanjem prstiju, a pomjeranje dodirom i prevlačenjem
-                prsta po ekranu.</span
-              >
-            </div>
-
-            <!-- Map Credits Dropdown -->
-            <div class="map-credits">
-              <button class="map-credits__toggle" id="map-credits-toggle">
-                <span class="map-credits__label" data-lang="bhs"
-                  >Više informacija o mapi</span
-                >
-                <span
-                  class="map-credits__label"
-                  data-lang="en"
-                  style="display: none"
-                  >Map credits</span
-                >
-                <i class="map-credits__icon fas fa-chevron-down"></i>
-              </button>
-
-              <div class="map-credits__content" id="map-credits-content">
-                <div class="map-context__content" data-lang="bhs">
-                  <p>
-                    Mapa prikazuje trase linija javnog prevoza i rezultat je
-                    rada
-                    <strong
-                      >Udruženja Građana "<a
-                        href="https://www.imamoplan.com/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="map-context__link"
-                        >Uticajna Grupa - Imamo Plan</a
-                      >"</strong
-                    >
-                    iz Srbije, koje su osnovali
-                    <strong
-                      >Jug Cerović, Marko Njegić i Stefan Milojević 2012.
-                      godine</strong
-                    >.
-                  </p>
-
-                  <p>
-                    Ova mapa predstavlja
-                    <strong>poklon gradu i građanima</strong>, nastala iz
-                    entuzijazma i volonterskog angažmana, s ciljem da se
-                    unaprijedi preglednost i dostupnost informacija o javnom
-                    prevozu.
-                  </p>
-
-                  <div class="map-context__note">
-                    <strong>NAPOMENA:</strong> Prikazi na mapi možda nisu u
-                    potpunosti ažurni, jer informacije sa zvanične internet
-                    stranice gradske uprave nisu uvijek dostupne, potpune ili
-                    ažurirane.
-                  </div>
-
-                  <p>Zahvaljujemo se autorima za doprinos zajednici.</p>
-                </div>
-
-                <div
-                  class="map-context__content"
-                  data-lang="en"
-                  style="display: none"
-                >
-                  <p>
-                    This map displays public transport routes and was created by
-                    the
-                    <strong
-                      >Citizens' Association "<a
-                        href="https://www.imamoplan.com/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="map-context__link"
-                        >Uticajna Grupa - Imamo Plan</a
-                      >"</strong
-                    >
-                    from Serbia, founded in
-                    <strong
-                      >2012 by Jug Cerović, Marko Njegić and Stefan
-                      Milojević</strong
-                    >.
-                  </p>
-
-                  <p>
-                    The map is a
-                    <strong>gift to the city and its citizens</strong>,
-                    developed as a volunteer initiative aimed at improving
-                    access to and visibility of public transport information.
-                  </p>
-
-                  <div class="map-context__note">
-                    <strong>Note:</strong> Some route details may not be fully
-                    up to date due to limited availability or lack of accurate
-                    information on the official city administration website.
-                  </div>
-
-                  <p>
-                    We thank the authors for their valuable contribution to the
-                    community.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="section section--wide" id="lines">
-          <div class="container">
-            <h2 class="section__title" id="lines-title">Linije</h2>
-            <div class="lines-introduction">
-              <p id="lines-intro-text">
-                Javni prevoz u Banjoj Luci organizovan je u tri grupe linija. Za
-                svaku grupu linija potrebno je kupiti odgovarajuću kartu. Karte
-                nisu prenosive između grupa.
+            <h1 id="hero-title">BLum</h1>
+            <p class="hero__subtitle" id="hero-subtitle">
+              Informacije za lakše kretanje gradom.
+            </p>
+            <p class="hero__description" id="hero-description">
+              Nezavisna platforma za linije, red vožnje i obavještenja o javnom
+              prevozu u Banjoj Luci.
+            </p>
+            <div class="hero__details" aria-label="Ključne informacije">
+              <p class="hero__detail" id="hero-detail-1">
+                <i class="fas fa-map-signs" aria-hidden="true"></i>
+                <span>Linije i red vožnje na jednom mjestu</span>
               </p>
-
-              <div class="operator-legend">
-                <h4 id="operator-legend-title">Prevoznici</h4>
-                <div class="legend-items">
-                  <div class="legend-item autoprevoz-legend">
-                    <span class="color-box"></span>
-                    <span class="operator-name">AUTOPREVOZ</span>
-                  </div>
-                  <div class="legend-item pavlovic-legend">
-                    <span class="color-box"></span>
-                    <span class="operator-name">PAVLOVIĆ</span>
-                  </div>
-                  <div class="legend-item bocac-legend">
-                    <span class="color-box"></span>
-                    <span class="operator-name">BOČAC</span>
-                  </div>
-                  <div class="legend-item aldemo-legend">
-                    <span class="color-box"></span>
-                    <span class="operator-name">ALDEMO</span>
-                  </div>
-                  <div class="legend-item rale-legend">
-                    <span class="color-box"></span>
-                    <span class="operator-name">RALE</span>
-                  </div>
-                </div>
-              </div>
+              <p class="hero__detail" id="hero-detail-2">
+                <i class="fas fa-code-branch" aria-hidden="true"></i>
+                <span>Otvoren (open-source) i dostupan za dopune</span>
+              </p>
             </div>
-            <div id="lines-info">
-              <!-- Lines will be loaded here dynamically -->
+            <div class="hero__actions">
+              <a
+                href="lines.html#timetable"
+                class="btn btn--primary btn--lg"
+                id="hero-btn-timetables"
+                ><i class="fas fa-clock" aria-hidden="true"></i>
+                <span class="btn__label">Red vožnje</span></a
+              >
+              <a
+                href="airport.html"
+                class="btn btn--secondary btn--lg"
+                id="hero-btn-airport"
+                ><i class="fas fa-plane-departure" aria-hidden="true"></i>
+                <span class="btn__label">Transfer do aerodroma</span></a
+              >
             </div>
-          </div>
-        </section>
-
-        <section class="section section--wide" id="price-tables">
-          <div class="container">
-            <h2 class="section__title" id="price-tables-title">
-              Cjenovnik karata
-            </h2>
-            <div class="price-tables">
-              <!-- Price tables will be loaded here -->
+            <div class="hero__disclaimer" id="hero-disclaimer">
+              <i class="fas fa-info-circle" aria-hidden="true"></i>
+              <span>BLum nije zvanična stranica javnog prevoza.</span>
             </div>
-          </div>
-        </section>
-
-        <section class="section section--wide" id="timetable">
-          <div class="container">
-            <h2 class="section__title" id="timetable-title">Red vožnje</h2>
-            <div class="timetable-controls">
-              <select id="line-select"></select>
-            </div>
-            <div id="timetable-display"></div>
           </div>
         </section>
 
@@ -291,50 +130,21 @@
             </div>
             <div class="map-note" id="bus-stops-note">
               <i class="map-note__icon fas fa-info-circle"></i>
-              <span id="bus-stops-note-text"
-                >Na mapi su prikazana autobuska stajališta, Nextbike stanice,
-                željezničke stanice i drugi oblici urbane mobilnosti. Kontrolu
-                prikaza možete izvršiti pomoću kontrole filtera u donjem desnom
-                uglu mape - uključite ili isključite pojedinačne slojeve prema
-                potrebi.<br /><br />
-                <strong>🚶 Funkcija udaljenosti hodanja:</strong> Kliknite na
-                bilo koji marker da vidite informacije o stanici i zeleni krug
-                koji prikazuje udaljenost 5 minuta hodanja.</span
-              >
-            </div>
-          </div>
-        </section>
-
-        <section class="section section--wide" id="airport">
-          <div class="container">
-            <h2 class="section__title" id="airport-title">
-              Aerodromski prevoz
-            </h2>
-            <div class="airport-transfer-info">
-              <div class="airport-transfer-details">
-                <h3 id="airport-description-title">
-                  Transferi do Međunarodnog aerodroma Banja Luka
-                </h3>
-                <p id="airport-price">
-                  Cijena karte u jednom pravcu iznosi 10,00 KM
+              <div class="map-note__content">
+                <ul class="map-note__list">
+                  <li id="map-note-item-stops">
+                    Autobuska stajališta i linije
+                  </li>
+                  <li id="map-note-item-bike">Nextbike stanice</li>
+                  <li id="map-note-item-rail">Željezničke stanice</li>
+                </ul>
+                <p class="map-note__tip">
+                  <strong id="map-note-tip-label">Savjet:</strong>
+                  <span id="map-note-tip-text"
+                    >Kliknite na bilo koji marker da vidite udaljenost hodanja
+                    (radijus 5 min).</span
+                  >
                 </p>
-                <p id="airport-departure-location">
-                  Svi polasci su sa Stare autobuske stanice (Vidovdanska ulica).
-                </p>
-                <p id="airport-more-info">
-                  Za više informacija o polascima posjetite internet stranicu
-                  prevoznika.
-                </p>
-                <a
-                  href="https://smiljiccompany.ba/avio-transferi/"
-                  target="_blank"
-                  id="airport-website-link"
-                  class="airport-link"
-                  >Smiljić Company - Avio transferi</a
-                >
-              </div>
-              <div class="map-container small-map">
-                <div id="airport-map"></div>
               </div>
             </div>
           </div>
@@ -343,44 +153,58 @@
         <section class="section section--narrow" id="contact">
           <div class="container">
             <h2 class="section__title" id="contact-title">Korisni kontakti</h2>
+
+            <div class="contact-group">
+              <h3
+                class="contact-group__title"
+                id="contact-group-authorities-title"
+              >
+                Gradske službe
+              </h3>
+              <div class="contact-cards" id="authority-contacts"></div>
+            </div>
+
+            <div class="contact-group">
+              <h3
+                class="contact-group__title"
+                id="contact-group-operators-title"
+              >
+                Prevoznici
+              </h3>
+              <div class="contact-cards" id="operator-contacts"></div>
+            </div>
           </div>
         </section>
-      </div>
+      </main>
 
-      <footer class="footer">
-        <div class="footer__content">
-          <div class="footer__disclaimer">
-            <p id="disclaimer-text">
-              Ova internet stranica nije službena stranica Grada Banja Luka niti
-              bilo kojeg prevoznika. Svi podaci su dati samo u informativne
-              svrhe. Za zvanične informacije o redovima vožnje, cijenama i
-              drugim detaljima, molimo vas da kontaktirate nadležne institucije
-              ili prevoznike.
-            </p>
-          </div>
-          <div class="footer__motto">
-            <p data-lang="bhs" style="display: none">
-              Napravljeno sa ❤️ za urbanu mobilnost Banje Luke
-            </p>
-            <p data-lang="en">Made with ❤️ for Banja Luka urban mobility</p>
-          </div>
-          <div class="footer__copyright">
-            <p>
-              &copy; <span id="current-year">2023</span> Javni prevoz Banja Luka
-            </p>
-          </div>
-        </div>
-      </footer>
+      <div id="footer"></div>
     </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha512-BwHfrr4c9kmRkLw6iXFdzcdWV/PGkVgiIyIWLLlTSXzWQzxuSg4DiQUCpauz/EWjgk5TYQqX/kvn9pG1NpYfqg=="
+      crossorigin="anonymous"
+    ></script>
+    <!-- DOMPurify for XSS protection -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="js/sanitize.js"></script>
+    <script src="js/fetchHelper.js"></script>
+    <script src="js/components/BaseComponent.js"></script>
+    <script src="js/components/MapLegendControl.js"></script>
     <script src="data/transport/routes/urban_bus_routes.js"></script>
+    <script src="js/darkMode.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/i18n/i18n.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/features/pricing/pricing.service.js"></script>
+    <script src="js/features/pricing/pricing.ui.js"></script>
+    <script src="js/features/contacts/contacts.js"></script>
     <script src="js/script.js"></script>
     <script src="js/map.js"></script>
-    <script src="js/urban-lines-viewer.js"></script>
-    <script>
-      document.getElementById("current-year").textContent =
-        new Date().getFullYear();
-    </script>
+    <script src="js/page-init.js"></script>
   </body>
 </html>

@@ -14,7 +14,8 @@
           "no_stops": 11,
           "min_duration": 19,
           "bus_type": "minibus",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/10-Аутобуска-станица-Обилићево.pdf"
         },
         {
           "lineId": "13",
@@ -27,7 +28,8 @@
           "no_stops": 15,
           "min_duration": 29,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/13-Лазарево-Обилићево-1.pdf"
         },
         {
           "lineId": "13A",
@@ -40,7 +42,8 @@
           "no_stops": 20,
           "min_duration": 30,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/13-A-Нова-болница-Залужани-1.pdf"
         },
         {
           "lineId": "17",
@@ -53,7 +56,8 @@
           "no_stops": 11,
           "min_duration": 19,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/17-Обилићево-Нова-болница.pdf"
         }
       ]
     },
@@ -71,7 +75,8 @@
           "no_stops": 21,
           "min_duration": 30,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/13-Ц-Центар-Туњице-Залужани-Ненада-Костића.pdf"
         }
       ]
     },
@@ -89,7 +94,8 @@
           "no_stops": 16,
           "min_duration": 28,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/3-ЕТФ-Центар-Врбања-Зелени-Вир.pdf"
         },
         {
           "lineId": "6",
@@ -102,7 +108,8 @@
           "no_stops": 20,
           "min_duration": 30,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/6-Аутобуска-станица-Лауш-Сарачица.pdf"
         },
         {
           "lineId": "7",
@@ -115,7 +122,8 @@
           "no_stops": 16,
           "min_duration": 28,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/7-Лауш-Паприковац-Центар-Обилићево-ТО-Бема.pdf"
         },
         {
           "lineId": "8",
@@ -128,7 +136,8 @@
           "no_stops": 20,
           "min_duration": 35,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/12/8-Аутобуска-станица-Подгора.pdf"
         },
         {
           "lineId": "9B",
@@ -141,7 +150,8 @@
           "no_stops": 20,
           "min_duration": 30,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/9-Б-Чесма-Медено-поље-Центар.pdf"
         }
       ]
     },
@@ -159,7 +169,8 @@
           "no_stops": 17,
           "min_duration": 30,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/3-Б-ЕТФ-Центар-Дебељаци.pdf"
         },
         {
           "lineId": "13B",
@@ -172,7 +183,8 @@
           "no_stops": 18,
           "min_duration": 30,
           "bus_type": "minibus",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/13-Б-Ново-гробље-Лазарево-Пословна-школа.pdf"
         }
       ]
     },
@@ -190,7 +202,8 @@
           "no_stops": 19,
           "min_duration": 35,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/1-Мађир-Ортопедија-Нова-болница-1.pdf"
         },
         {
           "lineId": "9",
@@ -203,7 +216,8 @@
           "no_stops": 19,
           "min_duration": 30,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/11/9-Кумсале-Центар-Десна-Новоселија.pdf"
         },
         {
           "lineId": "12P",
@@ -216,7 +230,8 @@
           "no_stops": 11,
           "min_duration": 18,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2026/02/12-Паприковац-Видик-Центар-Ребровац.pdf"
         },
         {
           "lineId": "13P",
@@ -229,7 +244,8 @@
           "no_stops": 18,
           "min_duration": 28,
           "bus_type": "minibus",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/12/13-П-Обилићево-Крфска-Петрићевац.pdf"
         },
         {
           "lineId": "14",
@@ -242,7 +258,8 @@
           "no_stops": 15,
           "min_duration": 30,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/14-Старчевица-Центар-Старчевица.pdf"
         },
         {
           "lineId": "14B",
@@ -255,7 +272,8 @@
           "no_stops": 19,
           "min_duration": 30,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/14-Б-Аутобуска-станица-Борик-Старчевица.pdf"
         },
         {
           "lineId": "17A",
@@ -268,7 +286,8 @@
           "no_stops": 16,
           "min_duration": 29,
           "bus_type": "minibus",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/11/17-А-Старчевица-Нова-болница.pdf"
         },
         {
           "lineId": "19",
@@ -281,7 +300,8 @@
           "no_stops": 17,
           "min_duration": 30,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/12/19-Шарговац-Центар.pdf"
         },
         {
           "lineId": "20",
@@ -294,7 +314,8 @@
           "no_stops": 11,
           "min_duration": 22,
           "bus_type": "minibus",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/20-Инцел-Центар-Паприковац-Ранка-Шипке.pdf"
         },
         {
           "lineId": "39",
@@ -307,7 +328,8 @@
           "no_stops": 15,
           "min_duration": 24,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/39-Дракулић-Центар.pdf"
         },
         {
           "lineId": "39A",
@@ -320,7 +342,8 @@
           "no_stops": 15,
           "min_duration": 24,
           "bus_type": "solo",
-          "wheelchair_accessible": true
+          "wheelchair_accessible": true,
+          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/39-А-Дракулић-Авион-Раковачке-баре-Центар.pdf"
         }
       ]
     }

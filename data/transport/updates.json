@@ -1,0 +1,87 @@
+﻿{
+  "categories": [
+    {
+      "id": "line_change",
+      "icon": "fa-route",
+      "label": {
+        "bhs": "Promjene linija",
+        "en": "Route Changes"
+      }
+    },
+    {
+      "id": "closure",
+      "icon": "fa-road-barrier",
+      "label": {
+        "bhs": "Zatvaranja",
+        "en": "Closures"
+      }
+    },
+    {
+      "id": "schedule_change",
+      "icon": "fa-clock",
+      "label": {
+        "bhs": "Izmjene reda voznje",
+        "en": "Schedule Changes"
+      }
+    }
+  ],
+  "updates": [
+    {
+      "id": "template-001",
+      "type": "line_change",
+      "severity": "warning",
+      "title": {
+        "bhs": "[TEMPLATE] Privremena izmjena trase linije X",
+        "en": "[TEMPLATE] Temporary Route Change for Line X"
+      },
+      "description": {
+        "bhs": "[TEMPLATE] Zbog radova ili dogadjaja, linija X saobraca izmijenjenom trasom od DD.MM.GGGG do DD.MM.GGGG.",
+        "en": "[TEMPLATE] Due to works or an event, line X operates on an altered route from YYYY-MM-DD to YYYY-MM-DD."
+      },
+      "affectedLines": ["X"],
+      "datePublished": "2026-02-21",
+      "dateExpiry": "2026-12-31",
+      "isActive": false,
+      "source": "Template Source",
+      "sourceUrl": ""
+    },
+    {
+      "id": "template-002",
+      "type": "closure",
+      "severity": "urgent",
+      "title": {
+        "bhs": "[TEMPLATE] Privremena obustava saobracaja u ulici Y",
+        "en": "[TEMPLATE] Temporary Traffic Closure on Street Y"
+      },
+      "description": {
+        "bhs": "[TEMPLATE] Ulica Y zatvorena je za saobracaj zbog manifestacije/radova. Preusmjerenje ide preko ulice Z.",
+        "en": "[TEMPLATE] Street Y is closed to traffic due to an event/works. Diversion is routed via Street Z."
+      },
+      "affectedLines": [],
+      "datePublished": "2026-02-21",
+      "dateExpiry": "2026-12-31",
+      "isActive": false,
+      "source": "Template Source",
+      "sourceUrl": ""
+    },
+    {
+      "id": "template-003",
+      "type": "schedule_change",
+      "severity": "info",
+      "title": {
+        "bhs": "[TEMPLATE] Izmjena reda voznje za praznike",
+        "en": "[TEMPLATE] Holiday Timetable Adjustment"
+      },
+      "description": {
+        "bhs": "[TEMPLATE] Tokom praznika vazi posebni red voznje. Provjerite tacne polaske po linijama.",
+        "en": "[TEMPLATE] A special timetable applies during holidays. Check exact departures by line."
+      },
+      "affectedLines": [],
+      "datePublished": "2026-02-21",
+      "dateExpiry": "2026-12-31",
+      "isActive": false,
+      "source": "Template Source",
+      "sourceUrl": ""
+    }
+  ]
+}

@@ -58,46 +58,46 @@
       "single": {
         "name": "Pojedinačna karta",
         "description": "Kupuje se direktno u autobusu",
-        "price": 2.3
+        "price": 2.30
       },
       "singleInSet": {
-        "name": "Pojedinačna karta",
-        "description": "Kupuje se na prodajnim mjestima prevoznika",
-        "price": 1.94
+        "name": "Set od 5 pojedinačnih karti",
+        "description": "Kupuje se direktno u autobusu ili na prodajnim mjestima prevoznika",
+        "price": 9.70
       },
       "daily": {
         "name": "Dnevna karta",
         "description": "Važi za jedan dan na svim gradskim linijama",
-        "price": 7.1
+        "price": 7.10
       },
       "monthlyGroup": {
         "name": "Mjesečne karte po grupama",
         "workers": {
           "name": "Radnička mjesečna karta",
-          "price": 57.0
+          "price": 57.00
         },
         "students": {
           "name": "Đačka mjesečna karta",
-          "price": 39.0
+          "price": 39.00
         },
         "pensioners": {
           "name": "Penzionerska mjesečna karta",
-          "price": 18.0
+          "price": 18.00
         }
       },
       "monthlyUnified": {
         "name": "Jedinstvene mjesečne karte (sve grupe)",
         "workers": {
           "name": "Jedinstvena radnička mjesečna karta",
-          "price": 78.0
+          "price": 78.00
         },
         "students": {
           "name": "Jedinstvena đačka mjesečna karta",
-          "price": 51.0
+          "price": 51.00
         },
         "pensioners": {
           "name": "Jedinstvena penzionerska mjesečna karta",
-          "price": 28.0
+          "price": 28.00
         }
       }
     },

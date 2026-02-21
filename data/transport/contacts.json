@@ -22,8 +22,8 @@
     {
       "id": "municipal-inspection",
       "name": {
-        "bhs": "Grad Banja Luka - Inspekcijske prijave",
-        "en": "City of Banja Luka - Municipal Inspection Reports"
+        "bhs": "Grad Banja Luka - Odjeljenje za inspekcijske poslove",
+        "en": "City of Banja Luka - Inspection Department"
       },
       "department": {
         "bhs": "Gradska inspekcija",
@@ -36,25 +36,6 @@
       "phoneDisplay": "+387 51 244-547",
       "email": "inspekcija@banjaluka.rs.ba",
       "website": "https://www.banjaluka.rs.ba/gradska-uprava/odjeljenje-za-inspekcijske-poslove/",
-      "color": "#1a5276"
-    },
-    {
-      "id": "citizens-office",
-      "name": {
-        "bhs": "Grad Banja Luka - Kancelarija za građane",
-        "en": "City of Banja Luka - Citizens' Office"
-      },
-      "department": {
-        "bhs": "Kancelarija za građane",
-        "en": "Citizens' Office"
-      },
-      "type": {
-        "bhs": "Gradska uprava",
-        "en": "City Administration"
-      },
-      "phoneDisplay": "+387 51 244-539",
-      "email": "gradjani@banjaluka.rs.ba",
-      "website": "https://www.banjaluka.rs.ba/gradjani/kancelarija-za-gradjane/",
       "color": "#1a5276"
     },
     {

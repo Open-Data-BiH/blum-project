@@ -1,16 +1,17 @@
 {
   "en": {
     "header": {
-      "title": "Urban Mobility Banja Luka",
+      "title": "BLum",
       "nav": {
-        "map": "Interactive Map",
+        "map": "Map",
         "lines": "Lines",
         "timetable": "Timetable",
-        "airport": "Airport Transport",
+        "airport": "Airport",
         "contact": "Useful Contacts",
         "prices": "Prices",
         "urban_lines": "Urban Lines Map",
-        "faq": "FAQ"
+        "faq": "FAQ",
+        "updates": "Updates"
       }
     },
     "sections": {
@@ -23,6 +24,12 @@
       },
       "lines": {
         "title": "Lines",
+        "urbanLinesTitle": "Urban Lines",
+        "timetableTitle": "Timetable",
+        "mapNote": "Use the mouse scroll wheel to zoom in and out, and drag the map to move around. You can also use the +, - buttons and the Home button to reset the view. On touch devices, zoom using pinch gestures, and move around by dragging with your finger.",
+        "mapCreditsToggle": "Map credits",
+        "accordionToggle": "About ticket groups & operators",
+        "accordionText": "Public transport in Banja Luka is organized into three line groups. You need to purchase the appropriate ticket for each group. Tickets are not transferable between groups.",
         "lineDetails": {
           "operator": "Operator",
           "group": "Group",
@@ -86,6 +93,21 @@
         "subtitle": "Find answers to the most common questions about public transport in Banja Luka",
         "loading": "Loading FAQ...",
         "error": "Sorry, we could not load the FAQ content at this time. Please try again later."
+      },
+      "updates": {
+        "title": "Updates",
+        "subtitle": "Notices about transport changes, street closures, and timetable updates"
+      },
+      "home": {
+        "hero": {
+          "title": "BLum",
+          "subtitle": "Informacije za lakše kretanje gradom.",
+          "description": "Independent platform for routes, timetables, and public transport information.",
+          "buttons": {
+            "timetables": "Timetables",
+            "airport": "Airport transfer"
+          }
+        }
       }
     },
     "ui": {
@@ -97,16 +119,17 @@
   },
   "bhs": {
     "header": {
-      "title": "Urbana Mobilnost Banja Luka",
+      "title": "BLum",
       "nav": {
-        "map": "Interaktivna mapa",
+        "map": "Mapa",
         "lines": "Linije",
         "timetable": "Red vožnje",
-        "airport": "Aerodromski prevoz",
+        "airport": "Aerodrom",
         "contact": "Korisni kontakti",
         "prices": "Cjenovnik",
         "urban_lines": "Mapa gradskih linija",
-        "faq": "Često postavljana pitanja"
+        "faq": "Često postavljana pitanja",
+        "updates": "Obavještenja"
       }
     },
     "sections": {
@@ -119,6 +142,12 @@
       },
       "lines": {
         "title": "Linije",
+        "urbanLinesTitle": "Gradske Linije",
+        "timetableTitle": "Red vožnje",
+        "mapNote": "Koristite točkić miša za zumiranje, a prevlačenjem miša pomjerajte mapu. Takođe, možete koristiti dugmad +, - za zumiranje i dugme Home za povratak na početni prikaz. Na pametnim uređajima, zumiranje vršite razdvajanjem ili približavanjem prstiju, a pomjeranje dodirom i prevlačenjem prsta po ekranu.",
+        "mapCreditsToggle": "Više informacija o mapi",
+        "accordionToggle": "O grupama karata i prevoznicima",
+        "accordionText": "Javni prevoz u Banjoj Luci organizovan je u tri grupe linija. Za svaku grupu linija potrebno je kupiti odgovarajuću kartu. Karte nisu prenosive između grupa.",
         "lineDetails": {
           "operator": "Prevoznik",
           "group": "Grupa",
@@ -182,6 +211,21 @@
         "subtitle": "Pronađite odgovore na najčešća pitanja o javnom prevozu u Banjoj Luci",
         "loading": "Učitavam FAQ...",
         "error": "Izvinjavam se, nismo mogli učitati FAQ sadržaj u ovom trenutku. Molimo pokušajte kasnije."
+      },
+      "updates": {
+        "title": "Obavještenja",
+        "subtitle": "Obavještenja o promjenama u prevozu, zatvaranjima ulica i izmjenama reda vožnje"
+      },
+      "home": {
+        "hero": {
+          "title": "BLum",
+          "subtitle": "Informacije za lakše kretanje gradom.",
+          "description": "Nezavisna platforma za pregled linija, redova vožnje i informacija o javnom prevozu.",
+          "buttons": {
+            "timetables": "Red vožnje",
+            "airport": "Aerodromski transfer"
+          }
+        }
       }
     },
     "ui": {

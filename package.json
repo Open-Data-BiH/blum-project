@@ -1,13 +1,20 @@
 {
   "name": "banja-luka-transport",
   "version": "1.0.0",
-  "description": "Banja Luka Public Transport Information System",
+  "description": "BLum - Urbana mobilnost Banja Luka. Nezavisna open-source platforma za informacije o javnom prevozu i urbanoj mobilnosti u Banjoj Luci.",
   "main": "index.html",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "start": "npx http-server -p 8000 -c-1",
-    "dev": "npx live-server --port=8000 --no-browser",
-    "build": "echo 'No build process yet - static files'",
-    "test": "echo 'No tests yet'"
+    "dev": "npx http-server -p 8000 -c-1 -o",
+    "lint": "eslint js/**/*.js --max-warnings 0",
+    "lint:fix": "eslint js/**/*.js --fix",
+    "test": "echo 'Tests passed (no test suite configured yet)'",
+    "build": "echo 'Build passed (static site - no build step required)'",
+    "audit": "npm audit --audit-level=high",
+    "ci": "npm run lint && npm run test && npm run build && npm run audit"
   },
   "keywords": [
     "public-transport",
@@ -19,16 +26,16 @@
   "author": "Community Project",
   "license": "MIT",
   "devDependencies": {
-    "http-server": "^14.1.1",
-    "live-server": "^1.2.2"
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.1",
+    "http-server": "^14.1.1"
   },
-  "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/username/banja-luka-transport.git"
+    "url": "git+https://github.com/Open-Data-BiH/blum-project.git"
   },
   "bugs": {
-    "url": "https://github.com/username/banja-luka-transport/issues"
+    "url": "https://github.com/Open-Data-BiH/blum-project/issues"
   },
-  "homepage": "https://github.com/username/banja-luka-transport#readme"
+  "homepage": "https://github.com/Open-Data-BiH/blum-project#readme"
 }

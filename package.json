@@ -1,41 +1,48 @@
 {
-  "name": "banja-luka-transport",
-  "version": "1.0.0",
-  "description": "BLum - Urbana mobilnost Banja Luka. Nezavisna open-source platforma za informacije o javnom prevozu i urbanoj mobilnosti u Banjoj Luci.",
-  "main": "index.html",
-  "engines": {
-    "node": ">=20.0.0"
-  },
-  "scripts": {
-    "start": "npx http-server -p 8000 -c-1",
-    "dev": "npx http-server -p 8000 -c-1 -o",
-    "lint": "eslint js/**/*.js --max-warnings 0",
-    "lint:fix": "eslint js/**/*.js --fix",
-    "test": "echo 'Tests passed (no test suite configured yet)'",
-    "build": "echo 'Build passed (static site - no build step required)'",
-    "audit": "npm audit --audit-level=high",
-    "ci": "npm run lint && npm run test && npm run build && npm run audit"
-  },
-  "keywords": [
-    "public-transport",
-    "banja-luka",
-    "mapping",
-    "transit",
-    "leaflet"
-  ],
-  "author": "Community Project",
-  "license": "MIT",
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "eslint": "^10.0.1",
-    "http-server": "^14.1.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Open-Data-BiH/blum-project.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Open-Data-BiH/blum-project/issues"
-  },
-  "homepage": "https://github.com/Open-Data-BiH/blum-project#readme"
+    "name": "banja-luka-transport",
+    "version": "1.0.0",
+    "description": "BLum - Urbana mobilnost Banja Luka. Nezavisna open-source platforma za informacije o javnom prevozu i urbanoj mobilnosti u Banjoj Luci.",
+    "main": "index.html",
+    "engines": {
+        "node": ">=20.0.0"
+    },
+    "scripts": {
+        "start": "npx http-server -p 8000 -c-1",
+        "dev": "npx http-server -p 8000 -c-1 -o",
+        "format": "prettier . --write",
+        "format:check": "prettier . --check",
+        "lint": "eslint js/**/*.js --max-warnings 0",
+        "lint:fix": "eslint js/**/*.js --fix",
+        "check:sri": "node scripts/check-sri.mjs",
+        "check:head": "node scripts/check-shared-head.mjs",
+        "test": "vitest run",
+        "build": "echo 'Build passed (static site - no build step required)'",
+        "audit": "npm audit --audit-level=high",
+        "ci": "npm run format:check && npm run lint && npm run check:sri && npm run check:head && npm run test && npm run build && npm run audit"
+    },
+    "keywords": [
+        "public-transport",
+        "banja-luka",
+        "mapping",
+        "transit",
+        "leaflet"
+    ],
+    "author": "Community Project",
+    "license": "MIT",
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "eslint": "^10.0.1",
+        "happy-dom": "^18.0.1",
+        "http-server": "^14.1.1",
+        "prettier": "^3.3.3",
+        "vitest": "^3.2.4"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Open-Data-BiH/blum-project.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Open-Data-BiH/blum-project/issues"
+    },
+    "homepage": "https://github.com/Open-Data-BiH/blum-project#readme"
 }

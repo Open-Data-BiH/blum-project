@@ -358,18 +358,18 @@ export const initializeMainMap = async () => {
                 '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>',
         });
 
-        const light = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
+        const light = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             attribution:
-                '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, ' +
-                '&copy; <a href="https://openmaptiles.org/">OpenMapTiles</a>, ' +
-                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+                '&copy; <a href="https://carto.com/attribution">CARTO</a>',
+            subdomains: 'abcd',
         }).addTo(map);
 
-        const dark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+        const dark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
             attribution:
-                '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, ' +
-                '&copy; <a href="https://openmaptiles.org/">OpenMapTiles</a>, ' +
-                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+                '&copy; <a href="https://carto.com/attribution">CARTO</a>',
+            subdomains: 'abcd',
         });
 
         const satellite = L.tileLayer(

@@ -1,6 +1,6 @@
 // Urban Lines Viewer Configuration
 const VIEWER_CONFIG = {
-    IMAGE_URL: 'assets/images/gradski-prevoz-mapa-banja-luka.png',
+    IMAGE_URL: 'assets/images/gradski-prevoz-mapa-banja-luka.webp',
     IMAGE_ASPECT_RATIO: 8000 / 5000,
     RESIZE_DEBOUNCE_DELAY: 250,
     MAP_OPTIONS: {
@@ -37,9 +37,9 @@ const initUrbanLinesViewer = () => {
             containerAspect > VIEWER_CONFIG.IMAGE_ASPECT_RATIO
                 ? [1000 * VIEWER_CONFIG.IMAGE_ASPECT_RATIO, 1000]
                 : [
-                      1000 * VIEWER_CONFIG.IMAGE_ASPECT_RATIO,
-                      (1000 * VIEWER_CONFIG.IMAGE_ASPECT_RATIO) / containerAspect,
-                  ];
+                    1000 * VIEWER_CONFIG.IMAGE_ASPECT_RATIO,
+                    (1000 * VIEWER_CONFIG.IMAGE_ASPECT_RATIO) / containerAspect,
+                ];
 
         return [
             [0, 0],

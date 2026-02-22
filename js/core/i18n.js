@@ -14,7 +14,7 @@ const safeGet = (obj, ...keys) => {
 };
 
 const SEO_DEFAULTS = {
-    image: 'https://blum.ba/assets/images/gradski-prevoz-mapa-banja-luka.png',
+    image: 'https://blum.ba/assets/images/gradski-prevoz-mapa-banja-luka.webp',
     type: 'website',
     twitterCard: 'summary_large_image',
 };

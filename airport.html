@@ -1,167 +1,143 @@
 <!doctype html>
 <html lang="bs">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Content Security Policy -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https://*.tile.openstreetmap.org https://basemaps.cartocdn.com https://tiles.stadiamaps.com https://server.arcgisonline.com; connect-src 'self' https://unpkg.com https://cdnjs.cloudflare.com; base-uri 'self'; form-action 'self';"
-    />
-    <title>BLum - Urbana mobilnost Banja Luka</title>
-    <link rel="canonical" href="https://blum.ba/airport.html" />
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha512-Zcn6bjR/8RZbLEpLIeOwNtzREBAJnUKESxces60Mpoj+2okopSAcSUIUOseddDm0cxnGQzxIR7vJgsLZbdLE3w=="
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Content Security Policy -->
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https://*.tile.openstreetmap.org https://basemaps.cartocdn.com https://tiles.stadiamaps.com https://server.arcgisonline.com; connect-src 'self' https://unpkg.com https://cdnjs.cloudflare.com; base-uri 'self'; form-action 'self';"
+        />
+        <title>Aerodromski prevoz | BLum</title>
+        <link rel="canonical" href="https://blum.ba/airport.html" />
+        <meta
+            name="description"
+            content="Informacije o prevozu do i od Medjunarodnog aerodroma Banja Luka, ukljucujuci cijene, stajalista i polaske."
+        />
+        <meta property="og:title" content="Aerodromski prevoz | BLum" />
+        <meta
+            property="og:description"
+            content="Informacije o prevozu do i od Medjunarodnog aerodroma Banja Luka, ukljucujuci cijene, stajalista i polaske."
+        />
+        <meta property="og:image" content="https://blum.ba/assets/images/gradski-prevoz-mapa-banja-luka.png" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://blum.ba/airport.html" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha512-Zcn6bjR/8RZbLEpLIeOwNtzREBAJnUKESxces60Mpoj+2okopSAcSUIUOseddDm0cxnGQzxIR7vJgsLZbdLE3w=="
+            crossorigin="anonymous"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+            integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
 
-    <!-- Favicons -->
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="assets/images/favicon/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="assets/images/favicon/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="assets/images/favicon/favicon-16x16.png"
-    />
-    <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
+        <!-- Favicons -->
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon/favicon-16x16.png" />
+        <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
 
-    <!-- Modular CSS -->
-    <link rel="stylesheet" href="css/variables.css" />
-    <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/layout.css" />
-    <link rel="stylesheet" href="css/components.css" />
-    <link rel="stylesheet" href="css/map-legend.css" />
-    <link rel="stylesheet" href="css/utilities.css" />
-  </head>
-  <body data-page="airport">
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+        <!-- Modular CSS -->
+        <link rel="stylesheet" href="css/variables.css" />
+        <link rel="stylesheet" href="css/base.css" />
+        <link rel="stylesheet" href="css/layout.css" />
+        <link rel="stylesheet" href="css/components.css" />
+        <link rel="stylesheet" href="css/pages/map-legend.css" />
+        <link rel="stylesheet" href="css/utilities.css" />
+    </head>
+    <body data-page="airport">
+        <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <div class="page-container">
-      <div id="header"></div>
+        <div class="page-container">
+            <div id="header"></div>
 
-      <main id="main-content" class="content-wrap">
-        <section class="section section--wide" id="airport">
-          <div class="container">
-            <h2 class="section__title" id="airport-title">
-              Aerodromski prevoz
-            </h2>
-            <div class="airport-transfer-info">
-              <div class="airport-transfer-details">
-                <h3 id="airport-description-title">
-                  Transferi do Međunarodnog aerodroma Banja Luka
-                </h3>
-                <div class="airport-info-block airport-info-block--price">
-                  <div class="airport-info-block__icon" aria-hidden="true">
-                    <i class="fa-solid fa-credit-card"></i>
-                  </div>
-                  <div class="airport-info-block__content">
-                    <p class="airport-info-block__label">
-                      <span data-lang="bhs">Cijena</span>
-                      <span data-lang="en" style="display: none">Price</span>
-                    </p>
-                    <p id="airport-price" class="airport-info-block__value">
-                      Cijena karte u jednom pravcu iznosi 10,00 KM
-                    </p>
-                  </div>
-                </div>
-                <div class="airport-info-block airport-info-block--departure">
-                  <div class="airport-info-block__icon" aria-hidden="true">
-                    <i class="fa-solid fa-location-dot"></i>
-                  </div>
-                  <div class="airport-info-block__content">
-                    <p class="airport-info-block__label">
-                      <span data-lang="bhs">Polazište</span>
-                      <span data-lang="en" style="display: none"
-                        >Departure point</span
-                      >
-                    </p>
-                    <p
-                      id="airport-departure-location"
-                      class="airport-info-block__value"
-                    >
-                      Svi polasci su sa Stare autobuske stanice (Vidovdanska
-                      ulica).
-                    </p>
-                  </div>
-                </div>
-                <p id="airport-more-info">
-                  Za više informacija o polascima posjetite internet stranicu
-                  prevoznika.
-                </p>
-                <a
-                  href="https://smiljiccompany.ba/avio-transferi/"
-                  target="_blank"
-                  id="airport-website-link"
-                  class="airport-link"
-                  rel="noopener noreferrer"
-                  >Smiljić Company - Avio transferi</a
-                >
-              </div>
-              <div class="map-container small-map">
-                <div id="airport-map" aria-label="Departure location map"></div>
-                <p class="airport-map-caption">
-                  <span data-lang="bhs">Lokacija polaska u Banjoj Luci</span>
-                  <span data-lang="en" style="display: none"
-                    >Departure location in Banja Luka</span
-                  >
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
+            <main id="main-content" class="content-wrap">
+                <section class="section section--wide" id="airport">
+                    <div class="container">
+                        <h2 class="section__title" id="airport-title">Aerodromski prevoz</h2>
+                        <div class="airport-transfer-info">
+                            <div class="airport-transfer-details">
+                                <h3 id="airport-description-title">Transferi do Međunarodnog aerodroma Banja Luka</h3>
+                                <div class="airport-info-block airport-info-block--price">
+                                    <div class="airport-info-block__icon" aria-hidden="true">
+                                        <i class="fa-solid fa-credit-card"></i>
+                                    </div>
+                                    <div class="airport-info-block__content">
+                                        <p class="airport-info-block__label">
+                                            <span data-lang="bhs">Cijena</span>
+                                            <span data-lang="en" style="display: none">Price</span>
+                                        </p>
+                                        <p id="airport-price" class="airport-info-block__value">
+                                            Cijena karte u jednom pravcu iznosi 10,00 KM
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="airport-info-block airport-info-block--departure">
+                                    <div class="airport-info-block__icon" aria-hidden="true">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </div>
+                                    <div class="airport-info-block__content">
+                                        <p class="airport-info-block__label">
+                                            <span data-lang="bhs">Polazište</span>
+                                            <span data-lang="en" style="display: none">Departure point</span>
+                                        </p>
+                                        <p id="airport-departure-location" class="airport-info-block__value">
+                                            Svi polasci su sa Stare autobuske stanice (Vidovdanska ulica).
+                                        </p>
+                                    </div>
+                                </div>
+                                <p id="airport-more-info">
+                                    Za više informacija o polascima posjetite internet stranicu prevoznika.
+                                </p>
+                                <a
+                                    href="https://smiljiccompany.ba/avio-transferi/"
+                                    target="_blank"
+                                    id="airport-website-link"
+                                    class="airport-link"
+                                    rel="noopener noreferrer"
+                                    >Smiljić Company - Avio transferi</a
+                                >
+                            </div>
+                            <div class="map-container small-map">
+                                <div id="airport-map" aria-label="Departure location map"></div>
+                                <p class="airport-map-caption">
+                                    <span data-lang="bhs">Lokacija polaska u Banjoj Luci</span>
+                                    <span data-lang="en" style="display: none">Departure location in Banja Luka</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
 
-      <div id="footer"></div>
-    </div>
+            <div id="footer"></div>
+        </div>
 
-    <script
-      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-      integrity="sha512-BwHfrr4c9kmRkLw6iXFdzcdWV/PGkVgiIyIWLLlTSXzWQzxuSg4DiQUCpauz/EWjgk5TYQqX/kvn9pG1NpYfqg=="
-      crossorigin="anonymous"
-    ></script>
-    <!-- DOMPurify for XSS protection -->
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js"
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="js/sanitize.js"></script>
-    <script src="js/fetchHelper.js"></script>
-    <script src="js/components/BaseComponent.js"></script>
-    <script src="js/components/MapLegendControl.js"></script>
-    <script src="data/transport/routes/urban_bus_routes.js"></script>
-    <script src="js/darkMode.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/i18n/i18n.js"></script>
-    <script src="js/layout.js"></script>
-    <script src="js/script.js"></script>
-    <script src="js/map.js"></script>
-    <script src="js/page-init.js"></script>
-  </body>
+        <script
+            src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha512-BwHfrr4c9kmRkLw6iXFdzcdWV/PGkVgiIyIWLLlTSXzWQzxuSg4DiQUCpauz/EWjgk5TYQqX/kvn9pG1NpYfqg=="
+            crossorigin="anonymous"
+        ></script>
+        <!-- DOMPurify for XSS protection -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js"
+            integrity="sha256-0kaYYq3qitkkVZpP/6uKTJwfTpqFNM6OHDbsaYzw9Uw="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script type="module" src="js/main.js"></script>
+    </body>
 </html>

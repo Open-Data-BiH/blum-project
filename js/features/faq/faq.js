@@ -1,3 +1,6 @@
+import BaseComponent from '../../components/base-component.js';
+import { FetchHelper } from '../../core/fetch-helper.js';
+
 /**
  * FAQ Component
  * Handles loading and displaying FAQ content with accordion functionality
@@ -55,7 +58,7 @@ class FAQComponent extends BaseComponent {
         const faqHTML = `
             <div class="faq-container">
                 <div class="faq-categories">
-                    ${this.faqData.categories.map(category => this.renderCategory(category)).join('')}
+                    ${this.faqData.categories.map((category) => this.renderCategory(category)).join('')}
                 </div>
             </div>
         `;
@@ -74,7 +77,7 @@ class FAQComponent extends BaseComponent {
             <div class="faq-category" data-category-id="${category.id}">
                 <h3 class="faq-category__title">${this.escapeHtml(title)}</h3>
                 <div class="faq-questions">
-                    ${questions.map(question => this.renderQuestion(question, category.id)).join('')}
+                    ${questions.map((question) => this.renderQuestion(question, category.id)).join('')}
                 </div>
             </div>
         `;
@@ -106,9 +109,13 @@ class FAQComponent extends BaseComponent {
      * Set up event listeners for FAQ interactions
      */
     setupEventListeners() {
-        if (!this.container) { return; }
+        if (!this.container) {
+            return;
+        }
 
-        if (this.listenersBound) { return; }
+        if (this.listenersBound) {
+            return;
+        }
 
         this.container.addEventListener('click', this.handleContainerClick);
         this.container.addEventListener('keydown', this.handleContainerKeydown);
@@ -177,7 +184,7 @@ class FAQComponent extends BaseComponent {
         if (!isVisible) {
             faqItem.scrollIntoView({
                 behavior: 'smooth',
-                block: 'start'
+                block: 'start',
             });
         }
     }
@@ -204,9 +211,10 @@ class FAQComponent extends BaseComponent {
      * Render error state - override to customize message
      */
     renderError() {
-        const errorMessage = this.currentLang === 'en'
-            ? 'Sorry, we could not load the FAQ content at this time. Please try again later.'
-            : 'Izvinjavam se, nismo mogli učitati FAQ sadržaj u ovom trenutku. Molimo pokušajte kasnije.';
+        const errorMessage =
+            this.currentLang === 'en'
+                ? 'Sorry, we could not load the FAQ content at this time. Please try again later.'
+                : 'Izvinjavam se, nismo mogli učitati FAQ sadržaj u ovom trenutku. Molimo pokušajte kasnije.';
         super.renderError(errorMessage);
     }
 
@@ -214,10 +222,12 @@ class FAQComponent extends BaseComponent {
      * Close all open questions
      */
     closeAllQuestions() {
-        if (!this.container) { return; }
+        if (!this.container) {
+            return;
+        }
 
         const activeItems = this.container.querySelectorAll('.faq-item.active');
-        activeItems.forEach(item => {
+        activeItems.forEach((item) => {
             const questionButton = item.querySelector('.faq-question');
             this.toggleQuestion(questionButton);
         });
@@ -227,7 +237,9 @@ class FAQComponent extends BaseComponent {
      * Open a specific question by ID
      */
     openQuestion(questionId) {
-        if (!this.container) { return; }
+        if (!this.container) {
+            return;
+        }
 
         const questionItem = this.container.querySelector(`[data-question-id="${questionId}"]`);
         if (questionItem && !questionItem.classList.contains('active')) {
@@ -237,10 +249,4 @@ class FAQComponent extends BaseComponent {
     }
 }
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = FAQComponent;
-}
-
-// Make available globally
-window.FAQComponent = FAQComponent; 
+export default FAQComponent;

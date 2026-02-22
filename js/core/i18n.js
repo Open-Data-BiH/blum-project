@@ -1,3 +1,5 @@
+import { FetchHelper } from './fetch-helper.js';
+
 // ==========================================
 // Internationalization (i18n) Module
 // Language state, translations, and DOM text updates
@@ -6,12 +8,148 @@
 let translations = {};
 let currentLang = localStorage.getItem('selectedLanguage') || 'bhs';
 
-// Make currentLang available globally
-window.currentLang = currentLang;
-
 // Helper function for safe nested property access
 const safeGet = (obj, ...keys) => {
-    return keys.reduce((acc, key) => (acc && acc[key] !== undefined) ? acc[key] : null, obj);
+    return keys.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : null), obj);
+};
+
+const SEO_DEFAULTS = {
+    image: 'https://blum.ba/assets/images/gradski-prevoz-mapa-banja-luka.png',
+    type: 'website',
+    twitterCard: 'summary_large_image',
+};
+
+const HTML_LANG_BY_APP_LANG = {
+    bhs: 'bs',
+    en: 'en',
+};
+
+const PAGE_SEO = {
+    home: {
+        url: 'https://blum.ba/',
+        title: {
+            bhs: 'Pocetna | BLum',
+            en: 'Home | BLum',
+        },
+        description: {
+            bhs: 'BLum je nezavisna platforma za informacije o javnom prevozu, linijama i urbanoj mobilnosti u Banjoj Luci.',
+            en: 'BLum is an independent platform for public transport routes, timetables, and urban mobility information in Banja Luka.',
+        },
+    },
+    lines: {
+        url: 'https://blum.ba/lines.html',
+        title: {
+            bhs: 'Red voznje i linije | BLum',
+            en: 'Lines & Timetables | BLum',
+        },
+        description: {
+            bhs: 'Pregled gradskih i prigradskih linija, mape trasa i reda voznje javnog prevoza u Banjoj Luci.',
+            en: 'Explore urban and suburban routes, map overlays, and timetable information for public transport in Banja Luka.',
+        },
+    },
+    pricing: {
+        url: 'https://blum.ba/pricing.html',
+        title: {
+            bhs: 'Cjenovnik | BLum',
+            en: 'Prices | BLum',
+        },
+        description: {
+            bhs: 'Aktuelne cijene karata i pretplatnih opcija za javni prevoz u Banjoj Luci na jednom mjestu.',
+            en: 'Check current ticket prices and subscription options for public transport in Banja Luka.',
+        },
+    },
+    airport: {
+        url: 'https://blum.ba/airport.html',
+        title: {
+            bhs: 'Aerodromski prevoz | BLum',
+            en: 'Airport Transport | BLum',
+        },
+        description: {
+            bhs: 'Informacije o prevozu do i od Medjunarodnog aerodroma Banja Luka, ukljucujuci cijene, stajalista i polaske.',
+            en: 'Find airport transfer details for Banja Luka International Airport, including prices, stops, and departures.',
+        },
+    },
+    faq: {
+        url: 'https://blum.ba/faq.html',
+        title: {
+            bhs: 'FAQ | BLum',
+            en: 'FAQ | BLum',
+        },
+        description: {
+            bhs: 'Najcesca pitanja i odgovori o koristenju BLum platforme, linijama, kartama i javnom prevozu u Banjoj Luci.',
+            en: 'Read frequently asked questions about BLum, routes, tickets, and public transport in Banja Luka.',
+        },
+    },
+    updates: {
+        url: 'https://blum.ba/updates.html',
+        title: {
+            bhs: 'Obavjestenja | BLum',
+            en: 'Updates | BLum',
+        },
+        description: {
+            bhs: 'Najnovija obavjestenja o izmjenama linija, redu voznje i servisnim informacijama javnog prevoza u Banjoj Luci.',
+            en: 'Latest updates on route changes, timetable adjustments, and service notices for public transport in Banja Luka.',
+        },
+    },
+};
+
+const resolvePageKey = () => {
+    const pageKey = safeGet(document, 'body', 'dataset', 'page');
+    if (pageKey && PAGE_SEO[pageKey]) {
+        return pageKey;
+    }
+
+    const path = window.location.pathname.toLowerCase();
+    if (path.endsWith('/lines.html')) {
+        return 'lines';
+    }
+    if (path.endsWith('/pricing.html')) {
+        return 'pricing';
+    }
+    if (path.endsWith('/airport.html')) {
+        return 'airport';
+    }
+    if (path.endsWith('/faq.html')) {
+        return 'faq';
+    }
+    if (path.endsWith('/updates.html')) {
+        return 'updates';
+    }
+
+    return 'home';
+};
+
+const setMetaContent = (attr, key, content) => {
+    if (!content) {
+        return;
+    }
+
+    let metaTag = document.head.querySelector(`meta[${attr}="${key}"]`);
+    if (!metaTag) {
+        metaTag = document.createElement('meta');
+        metaTag.setAttribute(attr, key);
+        document.head.appendChild(metaTag);
+    }
+    metaTag.setAttribute('content', content);
+};
+
+const updateSeoTags = (lang) => {
+    const pageKey = resolvePageKey();
+    const pageSeo = PAGE_SEO[pageKey] || PAGE_SEO.home;
+    const title = safeGet(pageSeo, 'title', lang) || safeGet(pageSeo, 'title', 'bhs');
+    const description = safeGet(pageSeo, 'description', lang) || safeGet(pageSeo, 'description', 'bhs');
+
+    if (title) {
+        document.title = title;
+    }
+
+    setMetaContent('name', 'description', description);
+    setMetaContent('property', 'og:title', title);
+    setMetaContent('property', 'og:description', description);
+    setMetaContent('property', 'og:image', SEO_DEFAULTS.image);
+    setMetaContent('property', 'og:type', SEO_DEFAULTS.type);
+    setMetaContent('property', 'og:url', pageSeo.url || PAGE_SEO.home.url);
+    setMetaContent('name', 'twitter:card', SEO_DEFAULTS.twitterCard);
 };
 
 // Load translations (Modern async/await)
@@ -29,7 +167,7 @@ const loadTranslations = async () => {
 
 // Setup language switcher (Modern ES6+)
 const setupLanguageSwitcher = () => {
-    document.querySelectorAll('.lang-btn').forEach(btn => {
+    document.querySelectorAll('.lang-btn').forEach((btn) => {
         const btnLang = btn.dataset.lang;
         btn.classList.toggle('lang-btn--active', btnLang === currentLang);
 
@@ -60,21 +198,28 @@ const setupLanguageSwitcher = () => {
 // Apply translation to the whole page (Modern ES6+)
 const applyTranslation = (lang) => {
     const t = translations[lang];
-    if (!t) { return; }
+    if (!t) {
+        return;
+    }
 
     currentLang = lang;
-    window.currentLang = lang;
+    document.documentElement.lang = HTML_LANG_BY_APP_LANG[lang] || 'bs';
+    updateSeoTags(lang);
 
     const safelyUpdateText = (id, text) => {
         const element = document.getElementById(id);
-        if (!element || text === null || text === undefined) { return; }
+        if (!element || text === null || text === undefined) {
+            return;
+        }
         element.textContent = text;
     };
 
     // Keep icon markup in hero CTA buttons while updating only the label text.
     const safelyUpdateButtonLabel = (id, text) => {
         const element = document.getElementById(id);
-        if (!element || text === null || text === undefined) { return; }
+        if (!element || text === null || text === undefined) {
+            return;
+        }
         const label = element.querySelector('.btn__label');
         if (label) {
             label.textContent = text;
@@ -129,27 +274,30 @@ const applyTranslation = (lang) => {
     }
 
     // Hero section
-    const heroDefaults = lang === 'bhs'
-        ? {
-            title: 'BLum',
-            subtitle: 'Informacije za lakše kretanje gradom.',
-            description: 'Nezavisna platforma za linije, red vožnje i obavještenja o javnom prevozu u Banjoj Luci.',
-            detail1: 'Linije i red vožnje na jednom mjestu',
-            detail2: 'Otvoren (open-source) i dostupan za dopune',
-            disclaimer: 'BLum nije zvanična stranica javnog prevoza.',
-            timetables: 'Red vožnje',
-            airport: 'Transfer do aerodroma'
-        }
-        : {
-            title: 'BLum',
-            subtitle: 'Information for easier movement through the city.',
-            description: 'Independent platform for routes, timetables, and public transport notices in Banja Luka.',
-            detail1: 'Routes and timetables in one place',
-            detail2: 'Open-source and open to contributions',
-            disclaimer: 'BLum is not an official public transport website.',
-            timetables: 'Timetables',
-            airport: 'Airport transfer'
-        };
+    const heroDefaults =
+        lang === 'bhs'
+            ? {
+                  title: 'BLum',
+                  subtitle: 'Informacije za lakše kretanje gradom.',
+                  description:
+                      'Nezavisna platforma za linije, red vožnje i obavještenja o javnom prevozu u Banjoj Luci.',
+                  detail1: 'Linije i red vožnje na jednom mjestu',
+                  detail2: 'Otvoren (open-source) i dostupan za dopune',
+                  disclaimer: 'BLum nije zvanična stranica javnog prevoza.',
+                  timetables: 'Red vožnje',
+                  airport: 'Transfer do aerodroma',
+              }
+            : {
+                  title: 'BLum',
+                  subtitle: 'Information for easier movement through the city.',
+                  description:
+                      'Independent platform for routes, timetables, and public transport notices in Banja Luka.',
+                  detail1: 'Routes and timetables in one place',
+                  detail2: 'Open-source and open to contributions',
+                  disclaimer: 'BLum is not an official public transport website.',
+                  timetables: 'Timetables',
+                  airport: 'Airport transfer',
+              };
 
     safelyUpdateText('hero-title', heroDefaults.title);
     safelyUpdateText('hero-subtitle', heroDefaults.subtitle);
@@ -158,9 +306,15 @@ const applyTranslation = (lang) => {
     // Detail cards contain icons — update only the text span
     const updateDetailText = (id, text) => {
         const el = document.getElementById(id);
-        if (!el || !text) return;
+        if (!el || !text) {
+            return;
+        }
         const span = el.querySelector('span');
-        if (span) { span.textContent = text; } else { el.textContent = text; }
+        if (span) {
+            span.textContent = text;
+        } else {
+            el.textContent = text;
+        }
     };
     updateDetailText('hero-detail-1', heroDefaults.detail1);
     updateDetailText('hero-detail-2', heroDefaults.detail2);
@@ -169,7 +323,9 @@ const applyTranslation = (lang) => {
     const disclaimerEl = document.getElementById('hero-disclaimer');
     if (disclaimerEl) {
         const span = disclaimerEl.querySelector('span');
-        if (span) { span.textContent = heroDefaults.disclaimer; }
+        if (span) {
+            span.textContent = heroDefaults.disclaimer;
+        }
     }
 
     safelyUpdateButtonLabel('hero-btn-timetables', heroDefaults.timetables);
@@ -183,13 +339,19 @@ const applyTranslation = (lang) => {
 
     // Lines section
     safelyUpdateText('lines-title', t.sections.lines.title);
-    const pricesTitle = t.sections.prices && t.sections.prices.title ? t.sections.prices.title : (lang === 'bhs' ? 'Cjenovnik karata' : 'Ticket Prices');
+    const pricesTitle =
+        t.sections.prices && t.sections.prices.title
+            ? t.sections.prices.title
+            : lang === 'bhs'
+              ? 'Cjenovnik karata'
+              : 'Ticket Prices';
     safelyUpdateText('price-tables-title', pricesTitle);
 
     // Lines introduction and ticket note
-    const linesIntroText = lang === 'bhs'
-        ? 'Javni prevoz u Banjoj Luci organizovan je u tri grupe linija. Za svaku grupu linija potrebno je kupiti odgovarajuću kartu. Karte nisu prenosive između grupa.'
-        : 'Public transport in Banja Luka is organized into three groups of lines. For each group of lines, you need to purchase a corresponding ticket. Tickets are not transferable between groups.';
+    const linesIntroText =
+        lang === 'bhs'
+            ? 'Javni prevoz u Banjoj Luci organizovan je u tri grupe linija. Za svaku grupu linija potrebno je kupiti odgovarajuću kartu. Karte nisu prenosive između grupa.'
+            : 'Public transport in Banja Luka is organized into three groups of lines. For each group of lines, you need to purchase a corresponding ticket. Tickets are not transferable between groups.';
     safelyUpdateText('lines-intro-text', linesIntroText);
 
     // Operator legend title
@@ -226,12 +388,14 @@ const applyTranslation = (lang) => {
     safelyUpdateText('timetable-info-label', t.sections.contact.timetableInfo);
 
     // Footer
-    const footerMissionText = lang === 'bhs'
-        ? 'BLum je open-source projekat razvijen radi bolje dostupnosti informacija o javnom prevozu.'
-        : 'BLum is an open-source project created to improve access to public transport information.';
-    const footerDisclaimerText = lang === 'bhs'
-        ? 'BLum nije zvanična stranica javnog prevoza. Za zvanične informacije obratite se nadležnim institucijama.'
-        : 'BLum is not an official public transport website. For official information, contact the relevant institutions.';
+    const footerMissionText =
+        lang === 'bhs'
+            ? 'BLum je open-source projekat razvijen radi bolje dostupnosti informacija o javnom prevozu.'
+            : 'BLum is an open-source project created to improve access to public transport information.';
+    const footerDisclaimerText =
+        lang === 'bhs'
+            ? 'BLum nije zvanična stranica javnog prevoza. Za zvanične informacije obratite se nadležnim institucijama.'
+            : 'BLum is not an official public transport website. For official information, contact the relevant institutions.';
     safelyUpdateText('footer-mission-text', footerMissionText);
     safelyUpdateText('footer-disclaimer-text', footerDisclaimerText);
     safelyUpdateText('footer-link-issues', lang === 'bhs' ? 'Prijavi grešku' : 'Report issue');
@@ -249,8 +413,10 @@ const applyTranslation = (lang) => {
     safelyUpdateText('map-note-tip-text', safeGet(t, 'sections', 'map', 'note', 'tipText'));
 
     // Handle elements with data-lang attributes
-    document.querySelectorAll('[data-lang]').forEach(element => {
-        if (element.classList.contains('lang-btn')) { return; }
+    document.querySelectorAll('[data-lang]').forEach((element) => {
+        if (element.classList.contains('lang-btn')) {
+            return;
+        }
         const elementLang = element.getAttribute('data-lang');
         if (elementLang === lang) {
             element.style.display = '';
@@ -272,7 +438,12 @@ const applyTranslation = (lang) => {
 
     // Updates page section
     safelyUpdateText('updates-title', safeGet(t, 'sections', 'updates', 'title'));
-    safelyUpdateText('updates-subtitle', (lang === 'bhs' ? 'Obavještenja o promjenama u prevozu, zatvaranjima ulica i izmjenama reda vožnje' : 'Notices about transport changes, street closures, and timetable updates'));
+    safelyUpdateText(
+        'updates-subtitle',
+        lang === 'bhs'
+            ? 'Obavještenja o promjenama u prevozu, zatvaranjima ulica i izmjenama reda vožnje'
+            : 'Notices about transport changes, street closures, and timetable updates',
+    );
 
     // Lines page specific elements
     safelyUpdateText('lines-map-note', safeGet(t, 'sections', 'lines', 'mapNote'));
@@ -287,14 +458,26 @@ const applyTranslation = (lang) => {
 };
 
 // Expose as namespaced global
-window.AppI18n = {
-    get currentLang() { return currentLang; },
-    set currentLang(val) { currentLang = val; window.currentLang = val; },
-    get translations() { return translations; },
-    set translations(val) { translations = val; },
+const AppI18n = {
+    get currentLang() {
+        return currentLang;
+    },
+    set currentLang(val) {
+        currentLang = val;
+    },
+    get translations() {
+        return translations;
+    },
+    set translations(val) {
+        translations = val;
+    },
     safeGet,
     loadTranslations,
     setupLanguageSwitcher,
-    applyTranslation
+    applyTranslation,
 };
 
+const getCurrentLanguage = () => currentLang;
+const getTranslations = () => translations;
+
+export { AppI18n, safeGet, loadTranslations, setupLanguageSwitcher, applyTranslation, getCurrentLanguage, getTranslations };

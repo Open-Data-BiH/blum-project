@@ -1,3 +1,7 @@
+import BaseComponent from '../../components/base-component.js';
+import { FetchHelper } from '../../core/fetch-helper.js';
+import { sanitizeURL } from '../../core/sanitize.js';
+
 /**
  * Updates Component
  * Handles loading and displaying transport updates and alerts
@@ -51,15 +55,19 @@ class UpdatesManager extends BaseComponent {
         now.setHours(0, 0, 0, 0);
 
         return this.updatesData.updates
-            .filter(update => {
+            .filter((update) => {
                 // Check if active
-                if (!update.isActive) { return false; }
+                if (!update.isActive) {
+                    return false;
+                }
 
                 // Check expiry date
                 if (update.dateExpiry) {
                     const expiryDate = new Date(update.dateExpiry);
                     expiryDate.setHours(23, 59, 59, 999);
-                    if (expiryDate < now) { return false; }
+                    if (expiryDate < now) {
+                        return false;
+                    }
                 }
 
                 // Apply current filter
@@ -73,7 +81,9 @@ class UpdatesManager extends BaseComponent {
                 // Sort by severity first (urgent > warning > info)
                 const severityOrder = { urgent: 0, warning: 1, info: 2 };
                 const severityDiff = (severityOrder[a.severity] || 2) - (severityOrder[b.severity] || 2);
-                if (severityDiff !== 0) { return severityDiff; }
+                if (severityDiff !== 0) {
+                    return severityDiff;
+                }
 
                 // Then sort by date (newest first)
                 return new Date(b.datePublished) - new Date(a.datePublished);
@@ -99,7 +109,9 @@ class UpdatesManager extends BaseComponent {
      * Render filter buttons
      */
     renderFilters() {
-        if (!this.filtersContainer || !this.updatesData) { return; }
+        if (!this.filtersContainer || !this.updatesData) {
+            return;
+        }
 
         const allLabel = this.currentLang === 'en' ? 'All' : 'Sve';
 
@@ -108,12 +120,16 @@ class UpdatesManager extends BaseComponent {
                 <i class="fas fa-list" aria-hidden="true"></i>
                 <span>${allLabel}</span>
             </button>
-            ${this.updatesData.categories.map(cat => `
+            ${this.updatesData.categories
+                .map(
+                    (cat) => `
                 <button class="updates-filter-btn ${this.currentFilter === cat.id ? 'active' : ''}" data-filter="${cat.id}">
                     <i class="fas ${cat.icon}" aria-hidden="true"></i>
                     <span>${cat.label[this.currentLang] || cat.label.bhs}</span>
                 </button>
-            `).join('')}
+            `,
+                )
+                .join('')}
         `;
 
         this.filtersContainer.innerHTML = filtersHTML;
@@ -123,7 +139,9 @@ class UpdatesManager extends BaseComponent {
      * Render update cards
      */
     renderUpdates() {
-        if (!this.container) { return; }
+        if (!this.container) {
+            return;
+        }
 
         const activeUpdates = this.getActiveUpdates();
 
@@ -134,7 +152,7 @@ class UpdatesManager extends BaseComponent {
 
         const updatesHTML = `
             <div class="updates-list">
-                ${activeUpdates.map(update => this.renderUpdate(update)).join('')}
+                ${activeUpdates.map((update) => this.renderUpdate(update)).join('')}
             </div>
         `;
 
@@ -148,7 +166,7 @@ class UpdatesManager extends BaseComponent {
         const title = update.title[this.currentLang] || update.title.bhs;
         const description = update.description[this.currentLang] || update.description.bhs;
         const category = this.getCategoryById(update.type);
-        const categoryLabel = category ? (category.label[this.currentLang] || category.label.bhs) : update.type;
+        const categoryLabel = category ? category.label[this.currentLang] || category.label.bhs : update.type;
         const categoryIcon = category ? category.icon : 'fa-info-circle';
 
         const publishedLabel = this.currentLang === 'en' ? 'Published' : 'Objavljeno';
@@ -159,11 +177,12 @@ class UpdatesManager extends BaseComponent {
         const severityLabels = {
             info: this.currentLang === 'en' ? 'Info' : 'Info',
             warning: this.currentLang === 'en' ? 'Warning' : 'Upozorenje',
-            urgent: this.currentLang === 'en' ? 'Urgent' : 'Hitno'
+            urgent: this.currentLang === 'en' ? 'Urgent' : 'Hitno',
         };
 
         const formattedPublishDate = this.formatDate(update.datePublished);
         const formattedExpiryDate = update.dateExpiry ? this.formatDate(update.dateExpiry) : null;
+        const sanitizedSourceUrl = update.sourceUrl ? sanitizeURL(update.sourceUrl) : '';
 
         return `
             <article class="update-card update-card--${update.severity}" data-update-id="${update.id}">
@@ -186,31 +205,48 @@ class UpdatesManager extends BaseComponent {
                 <h3 class="update-card__title">${this.escapeHtml(title)}</h3>
                 <p class="update-card__description">${this.escapeHtml(description)}</p>
 
-                ${update.affectedLines && update.affectedLines.length > 0 ? `
+                ${
+                    update.affectedLines && update.affectedLines.length > 0
+                        ? `
                     <div class="update-card__lines">
                         <span class="update-card__lines-label">${affectedLinesLabel}</span>
-                        ${update.affectedLines.map(line => `
-                            <a href="lines.html?line=${line}" class="line-badge">${this.escapeHtml(line)}</a>
-                        `).join('')}
+                        ${update.affectedLines
+                            .map((line) => {
+                                const safeLine = encodeURIComponent(String(line));
+                                return `
+                            <a href="lines.html?line=${safeLine}" class="line-badge">${this.escapeHtml(line)}</a>
+                        `;
+                            })
+                            .join('')}
                     </div>
-                ` : ''}
+                `
+                        : ''
+                }
 
                 <div class="update-card__footer">
                     <div class="update-card__source">
                         ${sourceLabel}
-                        ${update.sourceUrl ? `
-                            <a href="${this.escapeHtml(update.sourceUrl)}" target="_blank" rel="noopener noreferrer">
+                        ${
+                            sanitizedSourceUrl
+                                ? `
+                            <a href="${this.escapeHtml(sanitizedSourceUrl)}" target="_blank" rel="noopener noreferrer">
                                 ${this.escapeHtml(update.source)}
                                 <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                             </a>
-                        ` : this.escapeHtml(update.source)}
+                        `
+                                : this.escapeHtml(update.source)
+                        }
                     </div>
-                    ${formattedExpiryDate ? `
+                    ${
+                        formattedExpiryDate
+                            ? `
                         <div class="update-card__expiry">
                             <i class="fas fa-clock" aria-hidden="true"></i>
                             <span>${validUntilLabel}: ${formattedExpiryDate}</span>
                         </div>
-                    ` : ''}
+                    `
+                            : ''
+                    }
                 </div>
             </article>
         `;
@@ -220,14 +256,15 @@ class UpdatesManager extends BaseComponent {
      * Render empty state
      */
     renderEmpty() {
-        if (!this.container) { return; }
+        if (!this.container) {
+            return;
+        }
 
-        const title = this.currentLang === 'en'
-            ? 'No Active Updates'
-            : 'Nema aktivnih obavještenja';
-        const text = this.currentLang === 'en'
-            ? 'There are currently no active transport updates or announcements.'
-            : 'Trenutno nema aktivnih obavještenja o prevozu.';
+        const title = this.currentLang === 'en' ? 'No Active Updates' : 'Nema aktivnih obavještenja';
+        const text =
+            this.currentLang === 'en'
+                ? 'There are currently no active transport updates or announcements.'
+                : 'Trenutno nema aktivnih obavještenja o prevozu.';
 
         this.container.innerHTML = `
             <div class="updates-empty">
@@ -242,9 +279,7 @@ class UpdatesManager extends BaseComponent {
      * Render loading state - override to customize message
      */
     renderLoading() {
-        const loadingText = this.currentLang === 'en'
-            ? 'Loading updates...'
-            : 'Učitavanje obavještenja...';
+        const loadingText = this.currentLang === 'en' ? 'Loading updates...' : 'Učitavanje obavještenja...';
         super.renderLoading(loadingText);
     }
 
@@ -252,9 +287,10 @@ class UpdatesManager extends BaseComponent {
      * Render error state - override to customize message
      */
     renderError() {
-        const errorMessage = this.currentLang === 'en'
-            ? 'Sorry, we could not load the updates at this time. Please try again later.'
-            : 'Nažalost, nismo mogli učitati obavještenja. Molimo pokušajte kasnije.';
+        const errorMessage =
+            this.currentLang === 'en'
+                ? 'Sorry, we could not load the updates at this time. Please try again later.'
+                : 'Nažalost, nismo mogli učitati obavještenja. Molimo pokušajte kasnije.';
         super.renderError(errorMessage);
     }
 
@@ -307,8 +343,10 @@ class UpdatesManager extends BaseComponent {
      * Get category object by ID
      */
     getCategoryById(categoryId) {
-        if (!this.updatesData || !this.updatesData.categories) { return null; }
-        return this.updatesData.categories.find(cat => cat.id === categoryId);
+        if (!this.updatesData || !this.updatesData.categories) {
+            return null;
+        }
+        return this.updatesData.categories.find((cat) => cat.id === categoryId);
     }
 
     /**
@@ -319,7 +357,7 @@ class UpdatesManager extends BaseComponent {
         const options = {
             day: '2-digit',
             month: '2-digit',
-            year: 'numeric'
+            year: 'numeric',
         };
         return date.toLocaleDateString(this.currentLang === 'en' ? 'en-GB' : 'bs-BA', options);
     }
@@ -338,10 +376,4 @@ class UpdatesManager extends BaseComponent {
     }
 }
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = UpdatesManager;
-}
-
-// Make available globally
-window.UpdatesManager = UpdatesManager;
+export default UpdatesManager;

@@ -1,105 +1,95 @@
 <!doctype html>
 <html lang="bs">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Content Security Policy -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self' https://unpkg.com https://cdnjs.cloudflare.com; base-uri 'self'; form-action 'self';"
-    />
-    <title>BLum - Urbana mobilnost Banja Luka</title>
-    <link rel="canonical" href="https://blum.ba/updates.html" />
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Content Security Policy -->
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https://*.tile.openstreetmap.org https://basemaps.cartocdn.com https://tiles.stadiamaps.com https://server.arcgisonline.com; connect-src 'self' https://unpkg.com https://cdnjs.cloudflare.com; base-uri 'self'; form-action 'self';"
+        />
+        <title>Obavjestenja | BLum</title>
+        <link rel="canonical" href="https://blum.ba/updates.html" />
+        <meta
+            name="description"
+            content="Najnovija obavjestenja o izmjenama linija, redu voznje i servisnim informacijama javnog prevoza u Banjoj Luci."
+        />
+        <meta property="og:title" content="Obavjestenja | BLum" />
+        <meta
+            property="og:description"
+            content="Najnovija obavjestenja o izmjenama linija, redu voznje i servisnim informacijama javnog prevoza u Banjoj Luci."
+        />
+        <meta property="og:image" content="https://blum.ba/assets/images/gradski-prevoz-mapa-banja-luka.png" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://blum.ba/updates.html" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+            integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
 
-    <!-- Favicons -->
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="assets/images/favicon/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="assets/images/favicon/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="assets/images/favicon/favicon-16x16.png"
-    />
-    <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
+        <!-- Favicons -->
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon/favicon-16x16.png" />
+        <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
 
-    <!-- Modular CSS -->
-    <link rel="stylesheet" href="css/variables.css" />
-    <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/layout.css" />
-    <link rel="stylesheet" href="css/components.css" />
-    <link rel="stylesheet" href="css/utilities.css" />
-    <!-- Page-specific CSS -->
-    <link rel="stylesheet" href="css/updates.css" />
-  </head>
-  <body data-page="updates">
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+        <!-- Modular CSS -->
+        <link rel="stylesheet" href="css/variables.css" />
+        <link rel="stylesheet" href="css/base.css" />
+        <link rel="stylesheet" href="css/layout.css" />
+        <link rel="stylesheet" href="css/components.css" />
+        <link rel="stylesheet" href="css/utilities.css" />
+        <!-- Page-specific CSS -->
+        <link rel="stylesheet" href="css/pages/updates.css" />
+    </head>
+    <body data-page="updates">
+        <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <div class="page-container">
-      <div id="header"></div>
+        <div class="page-container">
+            <div id="header"></div>
 
-      <main id="main-content" class="content-wrap">
-        <section class="section section--narrow" id="updates">
-          <div class="container">
-            <h1 class="section__title" id="updates-title"></h1>
-            <p class="section__subtitle" id="updates-subtitle"></p>
+            <main id="main-content" class="content-wrap">
+                <section class="section section--narrow" id="updates">
+                    <div class="container">
+                        <h1 class="section__title" id="updates-title"></h1>
+                        <p class="section__subtitle" id="updates-subtitle"></p>
 
-            <!-- Filter buttons -->
-            <div class="updates-filters" id="updates-filters">
-              <!-- Filters will be loaded dynamically -->
-            </div>
+                        <!-- Filter buttons -->
+                        <div class="updates-filters" id="updates-filters">
+                            <!-- Filters will be loaded dynamically -->
+                        </div>
 
-            <!-- Updates content -->
-            <div id="updates-content">
-              <!-- Updates will be loaded here dynamically -->
-            </div>
-          </div>
-        </section>
-      </main>
+                        <!-- Updates content -->
+                        <div id="updates-content">
+                            <!-- Updates will be loaded here dynamically -->
+                        </div>
+                    </div>
+                </section>
+            </main>
 
-      <div id="footer"></div>
-    </div>
+            <div id="footer"></div>
+        </div>
 
-    <!-- Scripts -->
-    <!-- DOMPurify for XSS protection -->
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js"
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="js/sanitize.js"></script>
-    <script src="js/fetchHelper.js"></script>
-    <script src="js/darkMode.js"></script>
-    <script src="js/components/BaseComponent.js"></script>
-    <script src="js/components/updates.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/i18n/i18n.js"></script>
-    <script src="js/layout.js"></script>
-    <script src="js/script.js"></script>
-    <script src="js/pages/updates.js"></script>
-    <script src="js/page-init.js"></script>
-  </body>
+        <!-- Scripts -->
+        <!-- DOMPurify for XSS protection -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js"
+            integrity="sha256-0kaYYq3qitkkVZpP/6uKTJwfTpqFNM6OHDbsaYzw9Uw="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script type="module" src="js/main.js"></script>
+    </body>
 </html>

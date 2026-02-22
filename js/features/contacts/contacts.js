@@ -1,3 +1,7 @@
+import { FetchHelper } from '../../core/fetch-helper.js';
+import { AppI18n } from '../../core/i18n.js';
+import { escapeHTML, sanitizeURL } from '../../core/sanitize.js';
+
 // ==========================================
 // Contacts Feature Module
 // Load, display, and render contact cards
@@ -5,7 +9,9 @@
 
 const loadContacts = async () => {
     const contactSection = document.getElementById('contact');
-    if (!contactSection) { return; }
+    if (!contactSection) {
+        return;
+    }
 
     try {
         const data = await FetchHelper.fetchJSON('data/transport/contacts.json');
@@ -13,8 +19,12 @@ const loadContacts = async () => {
     } catch (error) {
         console.error('Error loading contacts:', error);
         const section = document.getElementById('contact');
-        const errorMessage = AppI18n.safeGet(AppI18n.translations, AppI18n.currentLang, 'ui', 'error') || 'Failed to load contact data. Please try again later.';
-        const contactTitle = AppI18n.safeGet(AppI18n.translations, AppI18n.currentLang, 'sections', 'contact', 'title') || 'Contact Information';
+        const errorMessage =
+            AppI18n.safeGet(AppI18n.translations, AppI18n.currentLang, 'ui', 'error') ||
+            'Failed to load contact data. Please try again later.';
+        const contactTitle =
+            AppI18n.safeGet(AppI18n.translations, AppI18n.currentLang, 'sections', 'contact', 'title') ||
+            'Contact Information';
         const retryText = AppI18n.safeGet(AppI18n.translations, AppI18n.currentLang, 'ui', 'retry') || 'Retry';
         section.innerHTML = `
             <h2 id="contact-title">${contactTitle}</h2>
@@ -32,7 +42,9 @@ const loadContacts = async () => {
 
 function displayContacts(data) {
     const contactSection = document.getElementById('contact');
-    if (!contactSection) { return; }
+    if (!contactSection) {
+        return;
+    }
 
     let container = contactSection.querySelector('.container');
     if (!container) {
@@ -54,7 +66,7 @@ function displayContacts(data) {
             contactCards.innerHTML = '';
         }
 
-        (data.contacts || []).forEach(contact => {
+        (data.contacts || []).forEach((contact) => {
             contactCards.appendChild(createContactCard(contact));
         });
         return;
@@ -69,7 +81,7 @@ function displayContacts(data) {
         return typeBhs === 'Gradska uprava' || typeEn === 'City Administration';
     };
 
-    (data.contacts || []).forEach(contact => {
+    (data.contacts || []).forEach((contact) => {
         const card = createContactCard(contact);
         if (isAuthorityType(contact)) {
             authorityContainer.appendChild(card);
@@ -119,5 +131,4 @@ function createContactCard(contact) {
     return card;
 }
 
-// Expose as namespaced global
-window.ContactsFeature = { loadContacts };
+export { loadContacts };

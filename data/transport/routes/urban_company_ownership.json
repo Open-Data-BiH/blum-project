@@ -1,351 +1,351 @@
 {
-  "urban": [
-    {
-      "companyName": "\"AUTOPREVOZ GS\" d.o.o. Banja Luka",
-      "lines": [
+    "urban": [
         {
-          "lineId": "10",
-          "lineName": {
-            "en": "Main Station - Obilićevo",
-            "bhs": "Autobuska stanica - Obilićevo"
-          },
-          "cooperatingCompanyName": null,
-          "group": "I",
-          "no_stops": 11,
-          "min_duration": 19,
-          "bus_type": "minibus",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/10-Аутобуска-станица-Обилићево.pdf"
+            "companyName": "\"AUTOPREVOZ GS\" d.o.o. Banja Luka",
+            "lines": [
+                {
+                    "lineId": "10",
+                    "lineName": {
+                        "en": "Main Station - Obilićevo",
+                        "bhs": "Autobuska stanica - Obilićevo"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "I",
+                    "no_stops": 11,
+                    "min_duration": 19,
+                    "bus_type": "minibus",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/10-Аутобуска-станица-Обилићево.pdf"
+                },
+                {
+                    "lineId": "13",
+                    "lineName": {
+                        "en": "Lazarevo - Obilićevo (TO Bema)",
+                        "bhs": "Lazarevo - Obilićevo (TO Bema)"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "I",
+                    "no_stops": 15,
+                    "min_duration": 29,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/13-Лазарево-Обилићево-1.pdf"
+                },
+                {
+                    "lineId": "13A",
+                    "lineName": {
+                        "en": "New Hospital - Centar - Zalužani",
+                        "bhs": "Nova bolnica -Centar - Zalužani"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "I",
+                    "no_stops": 20,
+                    "min_duration": 30,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/13-A-Нова-болница-Залужани-1.pdf"
+                },
+                {
+                    "lineId": "17",
+                    "lineName": {
+                        "en": "Obilićevo - New Hospital",
+                        "bhs": "Obilićevo - Nova bolnica"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "I",
+                    "no_stops": 11,
+                    "min_duration": 19,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/17-Обилићево-Нова-болница.pdf"
+                }
+            ]
         },
         {
-          "lineId": "13",
-          "lineName": {
-            "en": "Lazarevo - Obilićevo (TO Bema)",
-            "bhs": "Lazarevo - Obilićevo (TO Bema)"
-          },
-          "cooperatingCompanyName": null,
-          "group": "I",
-          "no_stops": 15,
-          "min_duration": 29,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/13-Лазарево-Обилићево-1.pdf"
+            "companyName": "\"RALE TURS\" d.o.o. Banja Luka",
+            "lines": [
+                {
+                    "lineId": "13C",
+                    "lineName": {
+                        "en": "Centar - Tunjice - Zalužani (Nenad Kostić)",
+                        "bhs": "Centar - Tunjice - Zalužani (Nenada Kostića)"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "I",
+                    "no_stops": 21,
+                    "min_duration": 30,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/13-Ц-Центар-Туњице-Залужани-Ненада-Костића.pdf"
+                }
+            ]
         },
         {
-          "lineId": "13A",
-          "lineName": {
-            "en": "New Hospital - Centar - Zalužani",
-            "bhs": "Nova bolnica -Centar - Zalužani"
-          },
-          "cooperatingCompanyName": null,
-          "group": "I",
-          "no_stops": 20,
-          "min_duration": 30,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/13-A-Нова-болница-Залужани-1.pdf"
+            "companyName": "\"BOČAC TURS\" d.o.o. Banja Luka",
+            "lines": [
+                {
+                    "lineId": "3",
+                    "lineName": {
+                        "en": "ETF (Vodovod) - Vrbanja - Zeleni Vir",
+                        "bhs": "ETF (Vodovod) - Vrbanja - Zeleni Vir"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "II",
+                    "no_stops": 16,
+                    "min_duration": 28,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/3-ЕТФ-Центар-Врбања-Зелени-Вир.pdf"
+                },
+                {
+                    "lineId": "6",
+                    "lineName": {
+                        "en": "Main Station - Lauš - Saračica",
+                        "bhs": "Autobuska stanica - Lauš - Saračica"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "II",
+                    "no_stops": 20,
+                    "min_duration": 30,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/6-Аутобуска-станица-Лауш-Сарачица.pdf"
+                },
+                {
+                    "lineId": "7",
+                    "lineName": {
+                        "en": "Lauš - Paprikovac - Centar - Obilićevo (TO Bema)",
+                        "bhs": "Lauš - Paprikovac - Centar - Obilićevo (TO Bema)"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "II",
+                    "no_stops": 16,
+                    "min_duration": 28,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/7-Лауш-Паприковац-Центар-Обилићево-ТО-Бема.pdf"
+                },
+                {
+                    "lineId": "8",
+                    "lineName": {
+                        "en": "Main Station - Podgora",
+                        "bhs": "Autobuska stanica - Podgora"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "II",
+                    "no_stops": 20,
+                    "min_duration": 35,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/12/8-Аутобуска-станица-Подгора.pdf"
+                },
+                {
+                    "lineId": "9B",
+                    "lineName": {
+                        "en": "Česma - Medeno polje - Centar",
+                        "bhs": "Česma - Medeno polje - Centar"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "II",
+                    "no_stops": 20,
+                    "min_duration": 30,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/9-Б-Чесма-Медено-поље-Центар.pdf"
+                }
+            ]
         },
         {
-          "lineId": "17",
-          "lineName": {
-            "en": "Obilićevo - New Hospital",
-            "bhs": "Obilićevo - Nova bolnica"
-          },
-          "cooperatingCompanyName": null,
-          "group": "I",
-          "no_stops": 11,
-          "min_duration": 19,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/17-Обилићево-Нова-болница.pdf"
+            "companyName": "\"ALDEMO TURS\" d.o.o. Banja Luka",
+            "lines": [
+                {
+                    "lineId": "3B",
+                    "lineName": {
+                        "en": "ETF (Vodovod) - Debeljaci",
+                        "bhs": "ETF (Vodovod) - Debeljaci"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "II",
+                    "no_stops": 17,
+                    "min_duration": 30,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/3-Б-ЕТФ-Центар-Дебељаци.pdf"
+                },
+                {
+                    "lineId": "13B",
+                    "lineName": {
+                        "en": "Pobrđe - Lazarevo (D. S. Lazarević)",
+                        "bhs": "Pobrđe - Lazarevo (D. S. Lazarevića)"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "III",
+                    "no_stops": 18,
+                    "min_duration": 30,
+                    "bus_type": "minibus",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/13-Б-Ново-гробље-Лазарево-Пословна-школа.pdf"
+                }
+            ]
+        },
+        {
+            "companyName": "\"PAVLOVIĆ TURS\" d.o.o. Banja Luka",
+            "lines": [
+                {
+                    "lineId": "1",
+                    "lineName": {
+                        "en": "Mađir - Ortopedija - Nova bolnica",
+                        "bhs": "Mađir - Ortopedija - Nova bolnica"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "III",
+                    "no_stops": 19,
+                    "min_duration": 35,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/1-Мађир-Ортопедија-Нова-болница-1.pdf"
+                },
+                {
+                    "lineId": "9",
+                    "lineName": {
+                        "en": "Kumsale - Centar - Desna Novoselija",
+                        "bhs": "Kumsale - Centar - Desna Novoselija"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "III",
+                    "no_stops": 19,
+                    "min_duration": 30,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/11/9-Кумсале-Центар-Десна-Новоселија.pdf"
+                },
+                {
+                    "lineId": "12P",
+                    "lineName": {
+                        "en": "Centar - Paprikovac (Vidik)",
+                        "bhs": "Centar - Paprikovac (Vidik)"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "III",
+                    "no_stops": 11,
+                    "min_duration": 18,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2026/02/12-Паприковац-Видик-Центар-Ребровац.pdf"
+                },
+                {
+                    "lineId": "13P",
+                    "lineName": {
+                        "en": "Obilićevo (Krfska) - Petrićevac",
+                        "bhs": "Obilićevo (Krfska) - Petrićevac"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "III",
+                    "no_stops": 18,
+                    "min_duration": 28,
+                    "bus_type": "minibus",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/12/13-П-Обилићево-Крфска-Петрићевац.pdf"
+                },
+                {
+                    "lineId": "14",
+                    "lineName": {
+                        "en": "Starčevica - Centar - Starčevica",
+                        "bhs": "Starčevica - Centar - Starčevica"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "III",
+                    "no_stops": 15,
+                    "min_duration": 30,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/14-Старчевица-Центар-Старчевица.pdf"
+                },
+                {
+                    "lineId": "14B",
+                    "lineName": {
+                        "en": "Autobuska stanica - Borik - Starčevica",
+                        "bhs": "Autobuska stanica - Borik - Starčevica"
+                    },
+                    "cooperatingCompanyName": "\"ALDEMO TURS\" d.o.o. Banja Luka",
+                    "group": "III",
+                    "no_stops": 19,
+                    "min_duration": 30,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/14-Б-Аутобуска-станица-Борик-Старчевица.pdf"
+                },
+                {
+                    "lineId": "17A",
+                    "lineName": {
+                        "en": "Starčevica - Nova bolnica",
+                        "bhs": "Starčevica - Nova bolnica"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "III",
+                    "no_stops": 16,
+                    "min_duration": 29,
+                    "bus_type": "minibus",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/11/17-А-Старчевица-Нова-болница.pdf"
+                },
+                {
+                    "lineId": "19",
+                    "lineName": {
+                        "en": "Šargovac - Centar (Vidovdanska)",
+                        "bhs": "Šargovac - Centar (Vidovdanska)"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "III",
+                    "no_stops": 17,
+                    "min_duration": 30,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/12/19-Шарговац-Центар.pdf"
+                },
+                {
+                    "lineId": "20",
+                    "lineName": {
+                        "en": "Incel - Centar - Paprikovac (Ranko Šipka)",
+                        "bhs": "Incel - Centar - Paprikovac (Ranka Šipke)"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "III",
+                    "no_stops": 11,
+                    "min_duration": 22,
+                    "bus_type": "minibus",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/20-Инцел-Центар-Паприковац-Ранка-Шипке.pdf"
+                },
+                {
+                    "lineId": "39",
+                    "lineName": {
+                        "en": "Drakulić - Centar",
+                        "bhs": "Drakulić - Centar"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "III",
+                    "no_stops": 15,
+                    "min_duration": 24,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/39-Дракулић-Центар.pdf"
+                },
+                {
+                    "lineId": "39A",
+                    "lineName": {
+                        "en": "Drakulić (Avion) - Rakovačke bare - Centar",
+                        "bhs": "Drakulić (Avion) - Rakovačke bare - Centar"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "III",
+                    "no_stops": 15,
+                    "min_duration": 24,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/39-А-Дракулић-Авион-Раковачке-баре-Центар.pdf"
+                }
+            ]
         }
-      ]
-    },
-    {
-      "companyName": "\"RALE TURS\" d.o.o. Banja Luka",
-      "lines": [
-        {
-          "lineId": "13C",
-          "lineName": {
-            "en": "Centar - Tunjice - Zalužani (Nenad Kostić)",
-            "bhs": "Centar - Tunjice - Zalužani (Nenada Kostića)"
-          },
-          "cooperatingCompanyName": null,
-          "group": "I",
-          "no_stops": 21,
-          "min_duration": 30,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/13-Ц-Центар-Туњице-Залужани-Ненада-Костића.pdf"
-        }
-      ]
-    },
-    {
-      "companyName": "\"BOČAC TURS\" d.o.o. Banja Luka",
-      "lines": [
-        {
-          "lineId": "3",
-          "lineName": {
-            "en": "ETF (Vodovod) - Vrbanja - Zeleni Vir",
-            "bhs": "ETF (Vodovod) - Vrbanja - Zeleni Vir"
-          },
-          "cooperatingCompanyName": null,
-          "group": "II",
-          "no_stops": 16,
-          "min_duration": 28,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/3-ЕТФ-Центар-Врбања-Зелени-Вир.pdf"
-        },
-        {
-          "lineId": "6",
-          "lineName": {
-            "en": "Main Station - Lauš - Saračica",
-            "bhs": "Autobuska stanica - Lauš - Saračica"
-          },
-          "cooperatingCompanyName": null,
-          "group": "II",
-          "no_stops": 20,
-          "min_duration": 30,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/6-Аутобуска-станица-Лауш-Сарачица.pdf"
-        },
-        {
-          "lineId": "7",
-          "lineName": {
-            "en": "Lauš - Paprikovac - Centar - Obilićevo (TO Bema)",
-            "bhs": "Lauš - Paprikovac - Centar - Obilićevo (TO Bema)"
-          },
-          "cooperatingCompanyName": null,
-          "group": "II",
-          "no_stops": 16,
-          "min_duration": 28,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/7-Лауш-Паприковац-Центар-Обилићево-ТО-Бема.pdf"
-        },
-        {
-          "lineId": "8",
-          "lineName": {
-            "en": "Main Station - Podgora",
-            "bhs": "Autobuska stanica - Podgora"
-          },
-          "cooperatingCompanyName": null,
-          "group": "II",
-          "no_stops": 20,
-          "min_duration": 35,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/12/8-Аутобуска-станица-Подгора.pdf"
-        },
-        {
-          "lineId": "9B",
-          "lineName": {
-            "en": "Česma - Medeno polje - Centar",
-            "bhs": "Česma - Medeno polje - Centar"
-          },
-          "cooperatingCompanyName": null,
-          "group": "II",
-          "no_stops": 20,
-          "min_duration": 30,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/9-Б-Чесма-Медено-поље-Центар.pdf"
-        }
-      ]
-    },
-    {
-      "companyName": "\"ALDEMO TURS\" d.o.o. Banja Luka",
-      "lines": [
-        {
-          "lineId": "3B",
-          "lineName": {
-            "en": "ETF (Vodovod) - Debeljaci",
-            "bhs": "ETF (Vodovod) - Debeljaci"
-          },
-          "cooperatingCompanyName": null,
-          "group": "II",
-          "no_stops": 17,
-          "min_duration": 30,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/3-Б-ЕТФ-Центар-Дебељаци.pdf"
-        },
-        {
-          "lineId": "13B",
-          "lineName": {
-            "en": "Pobrđe - Lazarevo (D. S. Lazarević)",
-            "bhs": "Pobrđe - Lazarevo (D. S. Lazarevića)"
-          },
-          "cooperatingCompanyName": null,
-          "group": "III",
-          "no_stops": 18,
-          "min_duration": 30,
-          "bus_type": "minibus",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/13-Б-Ново-гробље-Лазарево-Пословна-школа.pdf"
-        }
-      ]
-    },
-    {
-      "companyName": "\"PAVLOVIĆ TURS\" d.o.o. Banja Luka",
-      "lines": [
-        {
-          "lineId": "1",
-          "lineName": {
-            "en": "Mađir - Ortopedija - Nova bolnica",
-            "bhs": "Mađir - Ortopedija - Nova bolnica"
-          },
-          "cooperatingCompanyName": null,
-          "group": "III",
-          "no_stops": 19,
-          "min_duration": 35,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/1-Мађир-Ортопедија-Нова-болница-1.pdf"
-        },
-        {
-          "lineId": "9",
-          "lineName": {
-            "en": "Kumsale - Centar - Desna Novoselija",
-            "bhs": "Kumsale - Centar - Desna Novoselija"
-          },
-          "cooperatingCompanyName": null,
-          "group": "III",
-          "no_stops": 19,
-          "min_duration": 30,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/11/9-Кумсале-Центар-Десна-Новоселија.pdf"
-        },
-        {
-          "lineId": "12P",
-          "lineName": {
-            "en": "Centar - Paprikovac (Vidik)",
-            "bhs": "Centar - Paprikovac (Vidik)"
-          },
-          "cooperatingCompanyName": null,
-          "group": "III",
-          "no_stops": 11,
-          "min_duration": 18,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2026/02/12-Паприковац-Видик-Центар-Ребровац.pdf"
-        },
-        {
-          "lineId": "13P",
-          "lineName": {
-            "en": "Obilićevo (Krfska) - Petrićevac",
-            "bhs": "Obilićevo (Krfska) - Petrićevac"
-          },
-          "cooperatingCompanyName": null,
-          "group": "III",
-          "no_stops": 18,
-          "min_duration": 28,
-          "bus_type": "minibus",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/12/13-П-Обилићево-Крфска-Петрићевац.pdf"
-        },
-        {
-          "lineId": "14",
-          "lineName": {
-            "en": "Starčevica - Centar - Starčevica",
-            "bhs": "Starčevica - Centar - Starčevica"
-          },
-          "cooperatingCompanyName": null,
-          "group": "III",
-          "no_stops": 15,
-          "min_duration": 30,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/14-Старчевица-Центар-Старчевица.pdf"
-        },
-        {
-          "lineId": "14B",
-          "lineName": {
-            "en": "Autobuska stanica - Borik - Starčevica",
-            "bhs": "Autobuska stanica - Borik - Starčevica"
-          },
-          "cooperatingCompanyName": "\"ALDEMO TURS\" d.o.o. Banja Luka",
-          "group": "III",
-          "no_stops": 19,
-          "min_duration": 30,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/14-Б-Аутобуска-станица-Борик-Старчевица.pdf"
-        },
-        {
-          "lineId": "17A",
-          "lineName": {
-            "en": "Starčevica - Nova bolnica",
-            "bhs": "Starčevica - Nova bolnica"
-          },
-          "cooperatingCompanyName": null,
-          "group": "III",
-          "no_stops": 16,
-          "min_duration": 29,
-          "bus_type": "minibus",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/11/17-А-Старчевица-Нова-болница.pdf"
-        },
-        {
-          "lineId": "19",
-          "lineName": {
-            "en": "Šargovac - Centar (Vidovdanska)",
-            "bhs": "Šargovac - Centar (Vidovdanska)"
-          },
-          "cooperatingCompanyName": null,
-          "group": "III",
-          "no_stops": 17,
-          "min_duration": 30,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/12/19-Шарговац-Центар.pdf"
-        },
-        {
-          "lineId": "20",
-          "lineName": {
-            "en": "Incel - Centar - Paprikovac (Ranko Šipka)",
-            "bhs": "Incel - Centar - Paprikovac (Ranka Šipke)"
-          },
-          "cooperatingCompanyName": null,
-          "group": "III",
-          "no_stops": 11,
-          "min_duration": 22,
-          "bus_type": "minibus",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/20-Инцел-Центар-Паприковац-Ранка-Шипке.pdf"
-        },
-        {
-          "lineId": "39",
-          "lineName": {
-            "en": "Drakulić - Centar",
-            "bhs": "Drakulić - Centar"
-          },
-          "cooperatingCompanyName": null,
-          "group": "III",
-          "no_stops": 15,
-          "min_duration": 24,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/39-Дракулић-Центар.pdf"
-        },
-        {
-          "lineId": "39A",
-          "lineName": {
-            "en": "Drakulić (Avion) - Rakovačke bare - Centar",
-            "bhs": "Drakulić (Avion) - Rakovačke bare - Centar"
-          },
-          "cooperatingCompanyName": null,
-          "group": "III",
-          "no_stops": 15,
-          "min_duration": 24,
-          "bus_type": "solo",
-          "wheelchair_accessible": true,
-          "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/39-А-Дракулић-Авион-Раковачке-баре-Центар.pdf"
-        }
-      ]
-    }
-  ]
+    ]
 }

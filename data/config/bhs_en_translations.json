@@ -1,238 +1,238 @@
 {
-  "en": {
-    "header": {
-      "title": "BLum",
-      "nav": {
-        "map": "Map",
-        "lines": "Lines",
-        "timetable": "Timetable",
-        "airport": "Airport",
-        "contact": "Useful Contacts",
-        "prices": "Prices",
-        "urban_lines": "Urban Lines Map",
-        "faq": "FAQ",
-        "updates": "Updates"
-      }
-    },
-    "sections": {
-      "urban_lines": {
-        "title": "Urban Lines Map",
-        "map_note": "Use the mouse scroll wheel to zoom in and out, and drag the map to move around. You can also use the +, - buttons and the Home button to reset the view. On touch devices, zoom using pinch gestures, and move around by dragging with your finger."
-      },
-      "map": {
-        "title": "Interactive Transport Map"
-      },
-      "lines": {
-        "title": "Lines",
-        "urbanLinesTitle": "Urban Lines",
-        "timetableTitle": "Timetable",
-        "mapNote": "Use the mouse scroll wheel to zoom in and out, and drag the map to move around. You can also use the +, - buttons and the Home button to reset the view. On touch devices, zoom using pinch gestures, and move around by dragging with your finger.",
-        "mapCreditsToggle": "Map credits",
-        "accordionToggle": "About ticket groups & operators",
-        "accordionText": "Public transport in Banja Luka is organized into three line groups. You need to purchase the appropriate ticket for each group. Tickets are not transferable between groups.",
-        "lineDetails": {
-          "operator": "Operator",
-          "group": "Group",
-          "noStops": "Number of stops",
-          "minDuration": "Minimum duration",
-          "busType": "Bus type",
-          "wheelchairAccessible": "Wheelchair accessible",
-          "minutes": "minutes",
-          "yes": "Yes",
-          "no": "No",
-          "busTypes": {
-            "solo": "Solo bus",
-            "articulated": "Articulated bus",
-            "minibus": "Minibus"
-          }
-        }
-      },
-      "timetable": {
-        "title": "Timetable",
-        "select": "Select a bus line",
-        "loading": "Loading timetable...",
-        "notFound": "Timetable not found for the selected line.",
-        "fromTo": "Route:",
-        "relationLabel": "Relation:",
-        "selectDay": "Select day",
-        "timetableForLabel": "Timetable for:",
-        "hourLabel": "Hour",
-        "minutesLabel": "Minutes",
-        "days": {
-          "weekday": "Weekdays",
-          "saturday": "Saturday",
-          "sunday": "Sunday",
-          "sundayHoliday": "Sunday and Holiday"
+    "en": {
+        "header": {
+            "title": "BLum",
+            "nav": {
+                "map": "Map",
+                "lines": "Lines",
+                "timetable": "Timetable",
+                "airport": "Airport",
+                "contact": "Useful Contacts",
+                "prices": "Prices",
+                "urban_lines": "Urban Lines Map",
+                "faq": "FAQ",
+                "updates": "Updates"
+            }
         },
-        "notAvailable": {
-          "title": "Timetable Not Available",
-          "description": "The timetable for this line is not available in our system yet. Please call the information line:",
-          "contact": "Phone:",
-          "note": "You can also check at bus stations or operator's sales points."
-        }
-      },
-      "airport": {
-        "title": "Airport Transport",
-        "descriptionTitle": "Transfers to Banja Luka International Airport",
-        "price": "One-way ticket price is 10.00 KM",
-        "departureLocation": "All departures are from the Old Bus Station (Vidovdanska street).",
-        "moreInfo": "For more information about departures, visit the carrier's website.",
-        "websiteLink": "Smiljić Company - Airport Transfers"
-      },
-      "contact": {
-        "title": "Useful Contacts",
-        "email": "Email:",
-        "phone": "Phone:",
-        "timetableInfo": "Timetable Information:"
-      },
-      "prices": {
-        "title": "Ticket Prices"
-      },
-      "faq": {
-        "title": "Frequently Asked Questions",
-        "subtitle": "Find answers to the most common questions about public transport in Banja Luka",
-        "loading": "Loading FAQ...",
-        "error": "Sorry, we could not load the FAQ content at this time. Please try again later."
-      },
-      "updates": {
-        "title": "Updates",
-        "subtitle": "Notices about transport changes, street closures, and timetable updates"
-      },
-      "home": {
-        "hero": {
-          "title": "BLum",
-          "subtitle": "Informacije za lakše kretanje gradom.",
-          "description": "Independent platform for routes, timetables, and public transport information.",
-          "buttons": {
-            "timetables": "Timetables",
-            "airport": "Airport transfer"
-          }
-        }
-      }
-    },
-    "ui": {
-      "back": "← Back to Map",
-      "multipage": "Multi-page Mode",
-      "error": "Error loading data. Please try again.",
-      "visit": "Visit website"
-    }
-  },
-  "bhs": {
-    "header": {
-      "title": "BLum",
-      "nav": {
-        "map": "Mapa",
-        "lines": "Linije",
-        "timetable": "Red vožnje",
-        "airport": "Aerodrom",
-        "contact": "Korisni kontakti",
-        "prices": "Cjenovnik",
-        "urban_lines": "Mapa gradskih linija",
-        "faq": "Često postavljana pitanja",
-        "updates": "Obavještenja"
-      }
-    },
-    "sections": {
-      "urban_lines": {
-        "title": "Mapa gradskih linija",
-        "map_note": "Koristite točkić miša za zumiranje, a prevlačenjem miša pomjerajte mapu. Takođe, možete koristiti dugmad +, - za zumiranje i dugme \"Home\" za povratak na početni prikaz. Na pametnim uređajima, zumiranje vršite razdvajanjem ili približavanjem prstiju, a pomjeranje dodirom i prevlačenjem prsta po ekranu."
-      },
-      "map": {
-        "title": "Interaktivna mapa prevoza"
-      },
-      "lines": {
-        "title": "Linije",
-        "urbanLinesTitle": "Gradske Linije",
-        "timetableTitle": "Red vožnje",
-        "mapNote": "Koristite točkić miša za zumiranje, a prevlačenjem miša pomjerajte mapu. Takođe, možete koristiti dugmad +, - za zumiranje i dugme Home za povratak na početni prikaz. Na pametnim uređajima, zumiranje vršite razdvajanjem ili približavanjem prstiju, a pomjeranje dodirom i prevlačenjem prsta po ekranu.",
-        "mapCreditsToggle": "Više informacija o mapi",
-        "accordionToggle": "O grupama karata i prevoznicima",
-        "accordionText": "Javni prevoz u Banjoj Luci organizovan je u tri grupe linija. Za svaku grupu linija potrebno je kupiti odgovarajuću kartu. Karte nisu prenosive između grupa.",
-        "lineDetails": {
-          "operator": "Prevoznik",
-          "group": "Grupa",
-          "noStops": "Broj stajališta",
-          "minDuration": "Minimalno vrijeme vožnje",
-          "busType": "Tip autobusa",
-          "wheelchairAccessible": "Prilagođeno za invalidska kolica",
-          "minutes": "minuta",
-          "yes": "Da",
-          "no": "Ne",
-          "busTypes": {
-            "solo": "Solo autobus",
-            "articulated": "Zglobni autobus",
-            "minibus": "Minibus"
-          }
-        }
-      },
-      "timetable": {
-        "title": "Red vožnje",
-        "select": "Izaberite liniju",
-        "loading": "Učitavanje reda vožnje...",
-        "notFound": "Red vožnje nije pronađen za izabranu liniju.",
-        "fromTo": "Relacija:",
-        "relationLabel": "Relacija:",
-        "selectDay": "Izaberite dan",
-        "timetableForLabel": "Red vožnje za:",
-        "hourLabel": "Sat",
-        "minutesLabel": "Minute",
-        "days": {
-          "weekday": "Radni dani",
-          "saturday": "Subota",
-          "sunday": "Nedjelja",
-          "sundayHoliday": "Nedjelja i praznik"
+        "sections": {
+            "urban_lines": {
+                "title": "Urban Lines Map",
+                "map_note": "Use the mouse scroll wheel to zoom in and out, and drag the map to move around. You can also use the +, - buttons and the Home button to reset the view. On touch devices, zoom using pinch gestures, and move around by dragging with your finger."
+            },
+            "map": {
+                "title": "Interactive Transport Map"
+            },
+            "lines": {
+                "title": "Lines",
+                "urbanLinesTitle": "Urban Lines",
+                "timetableTitle": "Timetable",
+                "mapNote": "Use the mouse scroll wheel to zoom in and out, and drag the map to move around. You can also use the +, - buttons and the Home button to reset the view. On touch devices, zoom using pinch gestures, and move around by dragging with your finger.",
+                "mapCreditsToggle": "Map credits",
+                "accordionToggle": "About ticket groups & operators",
+                "accordionText": "Public transport in Banja Luka is organized into three line groups. You need to purchase the appropriate ticket for each group. Tickets are not transferable between groups.",
+                "lineDetails": {
+                    "operator": "Operator",
+                    "group": "Group",
+                    "noStops": "Number of stops",
+                    "minDuration": "Minimum duration",
+                    "busType": "Bus type",
+                    "wheelchairAccessible": "Wheelchair accessible",
+                    "minutes": "minutes",
+                    "yes": "Yes",
+                    "no": "No",
+                    "busTypes": {
+                        "solo": "Solo bus",
+                        "articulated": "Articulated bus",
+                        "minibus": "Minibus"
+                    }
+                }
+            },
+            "timetable": {
+                "title": "Timetable",
+                "select": "Select a bus line",
+                "loading": "Loading timetable...",
+                "notFound": "Timetable not found for the selected line.",
+                "fromTo": "Route:",
+                "relationLabel": "Relation:",
+                "selectDay": "Select day",
+                "timetableForLabel": "Timetable for:",
+                "hourLabel": "Hour",
+                "minutesLabel": "Minutes",
+                "days": {
+                    "weekday": "Weekdays",
+                    "saturday": "Saturday",
+                    "sunday": "Sunday",
+                    "sundayHoliday": "Sunday and Holiday"
+                },
+                "notAvailable": {
+                    "title": "Timetable Not Available",
+                    "description": "The timetable for this line is not available in our system yet. Please call the information line:",
+                    "contact": "Phone:",
+                    "note": "You can also check at bus stations or operator's sales points."
+                }
+            },
+            "airport": {
+                "title": "Airport Transport",
+                "descriptionTitle": "Transfers to Banja Luka International Airport",
+                "price": "One-way ticket price is 10.00 KM",
+                "departureLocation": "All departures are from the Old Bus Station (Vidovdanska street).",
+                "moreInfo": "For more information about departures, visit the carrier's website.",
+                "websiteLink": "Smiljić Company - Airport Transfers"
+            },
+            "contact": {
+                "title": "Useful Contacts",
+                "email": "Email:",
+                "phone": "Phone:",
+                "timetableInfo": "Timetable Information:"
+            },
+            "prices": {
+                "title": "Ticket Prices"
+            },
+            "faq": {
+                "title": "Frequently Asked Questions",
+                "subtitle": "Find answers to the most common questions about public transport in Banja Luka",
+                "loading": "Loading FAQ...",
+                "error": "Sorry, we could not load the FAQ content at this time. Please try again later."
+            },
+            "updates": {
+                "title": "Updates",
+                "subtitle": "Notices about transport changes, street closures, and timetable updates"
+            },
+            "home": {
+                "hero": {
+                    "title": "BLum",
+                    "subtitle": "Informacije za lakše kretanje gradom.",
+                    "description": "Independent platform for routes, timetables, and public transport information.",
+                    "buttons": {
+                        "timetables": "Timetables",
+                        "airport": "Airport transfer"
+                    }
+                }
+            }
         },
-        "notAvailable": {
-          "title": "Red vožnje nije dostupan",
-          "description": "Red vožnje za ovu liniju još nije dostupan u našem sistemu. Molimo pozovite informativnu liniju:",
-          "contact": "Telefon:",
-          "note": "Možete se informisati i na autobusnim stanicama ili prodajnim mjestima prevoznika."
+        "ui": {
+            "back": "← Back to Map",
+            "multipage": "Multi-page Mode",
+            "error": "Error loading data. Please try again.",
+            "visit": "Visit website"
         }
-      },
-      "airport": {
-        "title": "Aerodromski prevoz",
-        "descriptionTitle": "Transferi do Međunarodnog aerodroma Banja Luka",
-        "price": "Cijena karte u jednom pravcu iznosi 10,00 KM",
-        "departureLocation": "Svi polasci su sa Stare autobuske stanice (Vidovdanska ulica).",
-        "moreInfo": "Za više informacija o polascima posjetite internet stranicu prevoznika.",
-        "websiteLink": "Smiljić Company - Avio transferi"
-      },
-      "contact": {
-        "title": "Korisni kontakti",
-        "email": "Email:",
-        "phone": "Telefon:",
-        "timetableInfo": "Informacije o redovima vožnje:"
-      },
-      "prices": {
-        "title": "Cjenovnik karata"
-      },
-      "faq": {
-        "title": "Često postavljana pitanja",
-        "subtitle": "Pronađite odgovore na najčešća pitanja o javnom prevozu u Banjoj Luci",
-        "loading": "Učitavam FAQ...",
-        "error": "Izvinjavam se, nismo mogli učitati FAQ sadržaj u ovom trenutku. Molimo pokušajte kasnije."
-      },
-      "updates": {
-        "title": "Obavještenja",
-        "subtitle": "Obavještenja o promjenama u prevozu, zatvaranjima ulica i izmjenama reda vožnje"
-      },
-      "home": {
-        "hero": {
-          "title": "BLum",
-          "subtitle": "Informacije za lakše kretanje gradom.",
-          "description": "Nezavisna platforma za pregled linija, redova vožnje i informacija o javnom prevozu.",
-          "buttons": {
-            "timetables": "Red vožnje",
-            "airport": "Aerodromski transfer"
-          }
-        }
-      }
     },
-    "ui": {
-      "back": "← Nazad na mapu",
-      "multipage": "Više-stranica Mod",
-      "error": "Greška pri učitavanju podataka. Molimo pokušajte ponovo.",
-      "visit": "Posjetite web stranicu"
+    "bhs": {
+        "header": {
+            "title": "BLum",
+            "nav": {
+                "map": "Mapa",
+                "lines": "Linije",
+                "timetable": "Red vožnje",
+                "airport": "Aerodrom",
+                "contact": "Korisni kontakti",
+                "prices": "Cjenovnik",
+                "urban_lines": "Mapa gradskih linija",
+                "faq": "Često postavljana pitanja",
+                "updates": "Obavještenja"
+            }
+        },
+        "sections": {
+            "urban_lines": {
+                "title": "Mapa gradskih linija",
+                "map_note": "Koristite točkić miša za zumiranje, a prevlačenjem miša pomjerajte mapu. Takođe, možete koristiti dugmad +, - za zumiranje i dugme \"Home\" za povratak na početni prikaz. Na pametnim uređajima, zumiranje vršite razdvajanjem ili približavanjem prstiju, a pomjeranje dodirom i prevlačenjem prsta po ekranu."
+            },
+            "map": {
+                "title": "Interaktivna mapa prevoza"
+            },
+            "lines": {
+                "title": "Linije",
+                "urbanLinesTitle": "Gradske Linije",
+                "timetableTitle": "Red vožnje",
+                "mapNote": "Koristite točkić miša za zumiranje, a prevlačenjem miša pomjerajte mapu. Takođe, možete koristiti dugmad +, - za zumiranje i dugme Home za povratak na početni prikaz. Na pametnim uređajima, zumiranje vršite razdvajanjem ili približavanjem prstiju, a pomjeranje dodirom i prevlačenjem prsta po ekranu.",
+                "mapCreditsToggle": "Više informacija o mapi",
+                "accordionToggle": "O grupama karata i prevoznicima",
+                "accordionText": "Javni prevoz u Banjoj Luci organizovan je u tri grupe linija. Za svaku grupu linija potrebno je kupiti odgovarajuću kartu. Karte nisu prenosive između grupa.",
+                "lineDetails": {
+                    "operator": "Prevoznik",
+                    "group": "Grupa",
+                    "noStops": "Broj stajališta",
+                    "minDuration": "Minimalno vrijeme vožnje",
+                    "busType": "Tip autobusa",
+                    "wheelchairAccessible": "Prilagođeno za invalidska kolica",
+                    "minutes": "minuta",
+                    "yes": "Da",
+                    "no": "Ne",
+                    "busTypes": {
+                        "solo": "Solo autobus",
+                        "articulated": "Zglobni autobus",
+                        "minibus": "Minibus"
+                    }
+                }
+            },
+            "timetable": {
+                "title": "Red vožnje",
+                "select": "Izaberite liniju",
+                "loading": "Učitavanje reda vožnje...",
+                "notFound": "Red vožnje nije pronađen za izabranu liniju.",
+                "fromTo": "Relacija:",
+                "relationLabel": "Relacija:",
+                "selectDay": "Izaberite dan",
+                "timetableForLabel": "Red vožnje za:",
+                "hourLabel": "Sat",
+                "minutesLabel": "Minute",
+                "days": {
+                    "weekday": "Radni dani",
+                    "saturday": "Subota",
+                    "sunday": "Nedjelja",
+                    "sundayHoliday": "Nedjelja i praznik"
+                },
+                "notAvailable": {
+                    "title": "Red vožnje nije dostupan",
+                    "description": "Red vožnje za ovu liniju još nije dostupan u našem sistemu. Molimo pozovite informativnu liniju:",
+                    "contact": "Telefon:",
+                    "note": "Možete se informisati i na autobusnim stanicama ili prodajnim mjestima prevoznika."
+                }
+            },
+            "airport": {
+                "title": "Aerodromski prevoz",
+                "descriptionTitle": "Transferi do Međunarodnog aerodroma Banja Luka",
+                "price": "Cijena karte u jednom pravcu iznosi 10,00 KM",
+                "departureLocation": "Svi polasci su sa Stare autobuske stanice (Vidovdanska ulica).",
+                "moreInfo": "Za više informacija o polascima posjetite internet stranicu prevoznika.",
+                "websiteLink": "Smiljić Company - Avio transferi"
+            },
+            "contact": {
+                "title": "Korisni kontakti",
+                "email": "Email:",
+                "phone": "Telefon:",
+                "timetableInfo": "Informacije o redovima vožnje:"
+            },
+            "prices": {
+                "title": "Cjenovnik karata"
+            },
+            "faq": {
+                "title": "Često postavljana pitanja",
+                "subtitle": "Pronađite odgovore na najčešća pitanja o javnom prevozu u Banjoj Luci",
+                "loading": "Učitavam FAQ...",
+                "error": "Izvinjavam se, nismo mogli učitati FAQ sadržaj u ovom trenutku. Molimo pokušajte kasnije."
+            },
+            "updates": {
+                "title": "Obavještenja",
+                "subtitle": "Obavještenja o promjenama u prevozu, zatvaranjima ulica i izmjenama reda vožnje"
+            },
+            "home": {
+                "hero": {
+                    "title": "BLum",
+                    "subtitle": "Informacije za lakše kretanje gradom.",
+                    "description": "Nezavisna platforma za pregled linija, redova vožnje i informacija o javnom prevozu.",
+                    "buttons": {
+                        "timetables": "Red vožnje",
+                        "airport": "Aerodromski transfer"
+                    }
+                }
+            }
+        },
+        "ui": {
+            "back": "← Nazad na mapu",
+            "multipage": "Više-stranica Mod",
+            "error": "Greška pri učitavanju podataka. Molimo pokušajte ponovo.",
+            "visit": "Posjetite web stranicu"
+        }
     }
-  }
 }

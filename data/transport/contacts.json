@@ -1,132 +1,132 @@
 {
-  "contacts": [
-    {
-      "id": "municipal-transportation-office",
-      "name": {
-        "bhs": "Grad Banja Luka - Odsjek za javni prevoz",
-        "en": "City of Banja Luka - Public Transport Division"
-      },
-      "department": {
-        "bhs": "Odsjek za javni prevoz",
-        "en": "Public Transport Division"
-      },
-      "type": {
-        "bhs": "Gradska uprava",
-        "en": "City Administration"
-      },
-      "phoneDisplay": "+387 51 498-480",
-      "email": "javni.prevoz@banjaluka.rs.ba",
-      "website": "https://www.banjaluka.rs.ba/gradjani/javni-prevoz/",
-      "color": "#1a5276"
-    },
-    {
-      "id": "municipal-inspection",
-      "name": {
-        "bhs": "Grad Banja Luka - Odjeljenje za inspekcijske poslove",
-        "en": "City of Banja Luka - Inspection Department"
-      },
-      "department": {
-        "bhs": "Gradska inspekcija",
-        "en": "Municipal Inspection"
-      },
-      "type": {
-        "bhs": "Gradska uprava",
-        "en": "City Administration"
-      },
-      "phoneDisplay": "+387 51 244-547",
-      "email": "inspekcija@banjaluka.rs.ba",
-      "website": "https://www.banjaluka.rs.ba/gradska-uprava/odjeljenje-za-inspekcijske-poslove/",
-      "color": "#1a5276"
-    },
-    {
-      "id": "autoprevoz",
-      "name": {
-        "bhs": "AUTOPREVOZ GS d.o.o. Banja Luka",
-        "en": "AUTOPREVOZ GS Ltd. Banja Luka"
-      },
-      "department": {
-        "bhs": "Prevoznik - I grupa linija",
-        "en": "Transport Operator - Group I lines"
-      },
-      "type": {
-        "bhs": "Prevozno preduzeće",
-        "en": "Transport Company"
-      },
-      "phoneDisplay": "+387 51 215-555",
-      "website": "https://www.autoprevoz-gs.com/",
-      "color": "#ed1d22"
-    },
-    {
-      "id": "pavlovic",
-      "name": {
-        "bhs": "PAVLOVIĆ TURS d.o.o. Banja Luka",
-        "en": "PAVLOVIĆ TURS Ltd. Banja Luka"
-      },
-      "department": {
-        "bhs": "Prevoznik - III grupa linija",
-        "en": "Transport Operator - Group III lines"
-      },
-      "type": {
-        "bhs": "Prevozno preduzeće",
-        "en": "Transport Company"
-      },
-      "phoneDisplay": "+387 51 234-567",
-      "website": "https://pavlovic-turs.com/gradski-prigradski-prevoz/",
-      "color": "#ff9f43"
-    },
-    {
-      "id": "bocac",
-      "name": {
-        "bhs": "BOČAC TURS d.o.o. Banja Luka",
-        "en": "BOČAC TURS Ltd. Banja Luka"
-      },
-      "department": {
-        "bhs": "Prevoznik - II grupa linija",
-        "en": "Transport Operator - Group II lines"
-      },
-      "type": {
-        "bhs": "Prevozno preduzeće",
-        "en": "Transport Company"
-      },
-      "phoneDisplay": "+387 51 345-678",
-      "website": "https://novisajt.bocactours.com/gradski-saobracaj/",
-      "color": "#00adef"
-    },
-    {
-      "id": "aldemo",
-      "name": {
-        "bhs": "ALDEMO TURS d.o.o. Banja Luka",
-        "en": "ALDEMO TURS Ltd. Banja Luka"
-      },
-      "department": {
-        "bhs": "Prevoznik - II i III grupa linija",
-        "en": "Transport Operator - Group II and III lines"
-      },
-      "type": {
-        "bhs": "Prevozno preduzeće",
-        "en": "Transport Company"
-      },
-      "phoneDisplay": "+387 51 456-789",
-      "website": null,
-      "color": "#e05e5e"
-    },
-    {
-      "id": "rale",
-      "name": {
-        "bhs": "RALE TURS d.o.o. Banja Luka",
-        "en": "RALE TURS Ltd. Banja Luka"
-      },
-      "department": {
-        "bhs": "Prevoznik - I grupa linija",
-        "en": "Transport Operator - Group I lines"
-      },
-      "type": {
-        "bhs": "Prevozno preduzeće",
-        "en": "Transport Company"
-      },
-      "phoneDisplay": "+387 51 567-890",
-      "website": "https://raleturs.com/",
-      "color": "#7fd9e0"
-    }
-  ]
+    "contacts": [
+        {
+            "id": "municipal-transportation-office",
+            "name": {
+                "bhs": "Grad Banja Luka - Odsjek za javni prevoz",
+                "en": "City of Banja Luka - Public Transport Division"
+            },
+            "department": {
+                "bhs": "Odsjek za javni prevoz",
+                "en": "Public Transport Division"
+            },
+            "type": {
+                "bhs": "Gradska uprava",
+                "en": "City Administration"
+            },
+            "phoneDisplay": "+387 51 498-480",
+            "email": "javni.prevoz@banjaluka.rs.ba",
+            "website": "https://www.banjaluka.rs.ba/gradjani/javni-prevoz/",
+            "color": "#1a5276"
+        },
+        {
+            "id": "municipal-inspection",
+            "name": {
+                "bhs": "Grad Banja Luka - Odjeljenje za inspekcijske poslove",
+                "en": "City of Banja Luka - Inspection Department"
+            },
+            "department": {
+                "bhs": "Gradska inspekcija",
+                "en": "Municipal Inspection"
+            },
+            "type": {
+                "bhs": "Gradska uprava",
+                "en": "City Administration"
+            },
+            "phoneDisplay": "+387 51 244-547",
+            "email": "inspekcija@banjaluka.rs.ba",
+            "website": "https://www.banjaluka.rs.ba/gradska-uprava/odjeljenje-za-inspekcijske-poslove/",
+            "color": "#1a5276"
+        },
+        {
+            "id": "autoprevoz",
+            "name": {
+                "bhs": "AUTOPREVOZ GS d.o.o. Banja Luka",
+                "en": "AUTOPREVOZ GS Ltd. Banja Luka"
+            },
+            "department": {
+                "bhs": "Prevoznik - I grupa linija",
+                "en": "Transport Operator - Group I lines"
+            },
+            "type": {
+                "bhs": "Prevozno preduzeće",
+                "en": "Transport Company"
+            },
+            "phoneDisplay": "+387 51 215-555",
+            "website": "https://www.autoprevoz-gs.com/",
+            "color": "#ed1d22"
+        },
+        {
+            "id": "pavlovic",
+            "name": {
+                "bhs": "PAVLOVIĆ TURS d.o.o. Banja Luka",
+                "en": "PAVLOVIĆ TURS Ltd. Banja Luka"
+            },
+            "department": {
+                "bhs": "Prevoznik - III grupa linija",
+                "en": "Transport Operator - Group III lines"
+            },
+            "type": {
+                "bhs": "Prevozno preduzeće",
+                "en": "Transport Company"
+            },
+            "phoneDisplay": "+387 51 234-567",
+            "website": "https://pavlovic-turs.com/gradski-prigradski-prevoz/",
+            "color": "#ff9f43"
+        },
+        {
+            "id": "bocac",
+            "name": {
+                "bhs": "BOČAC TURS d.o.o. Banja Luka",
+                "en": "BOČAC TURS Ltd. Banja Luka"
+            },
+            "department": {
+                "bhs": "Prevoznik - II grupa linija",
+                "en": "Transport Operator - Group II lines"
+            },
+            "type": {
+                "bhs": "Prevozno preduzeće",
+                "en": "Transport Company"
+            },
+            "phoneDisplay": "+387 51 345-678",
+            "website": "https://novisajt.bocactours.com/gradski-saobracaj/",
+            "color": "#00adef"
+        },
+        {
+            "id": "aldemo",
+            "name": {
+                "bhs": "ALDEMO TURS d.o.o. Banja Luka",
+                "en": "ALDEMO TURS Ltd. Banja Luka"
+            },
+            "department": {
+                "bhs": "Prevoznik - II i III grupa linija",
+                "en": "Transport Operator - Group II and III lines"
+            },
+            "type": {
+                "bhs": "Prevozno preduzeće",
+                "en": "Transport Company"
+            },
+            "phoneDisplay": "+387 51 456-789",
+            "website": null,
+            "color": "#e05e5e"
+        },
+        {
+            "id": "rale",
+            "name": {
+                "bhs": "RALE TURS d.o.o. Banja Luka",
+                "en": "RALE TURS Ltd. Banja Luka"
+            },
+            "department": {
+                "bhs": "Prevoznik - I grupa linija",
+                "en": "Transport Operator - Group I lines"
+            },
+            "type": {
+                "bhs": "Prevozno preduzeće",
+                "en": "Transport Company"
+            },
+            "phoneDisplay": "+387 51 567-890",
+            "website": "https://raleturs.com/",
+            "color": "#7fd9e0"
+        }
+    ]
 }

@@ -1,32 +1,32 @@
 [
-  {
-    "name": "Centar - Gradska uprava",
-    "lat": 44.772429,
-    "lon": 17.191002,
-    "capacity": 12
-  },
-  {
-    "name": "Akvana",
-    "lat": 44.774554,
-    "lon": 17.207068,
-    "capacity": 10
-  },
-  {
-    "name": "Park Mladen Stojanović",
-    "lat": 44.780773,
-    "lon": 17.200019,
-    "capacity": 8
-  },
-  {
-    "name": "Studenski dom - Venecija most",
-    "lat": 44.764572,
-    "lon": 17.200298,
-    "capacity": 10
-  },
-  {
-    "name": "Obilićevo",
-    "lat": 44.757662,
-    "lon": 17.194177,
-    "capacity": 10
-  }
+    {
+        "name": "Centar - Gradska uprava",
+        "lat": 44.772429,
+        "lon": 17.191002,
+        "capacity": 12
+    },
+    {
+        "name": "Akvana",
+        "lat": 44.774554,
+        "lon": 17.207068,
+        "capacity": 10
+    },
+    {
+        "name": "Park Mladen Stojanović",
+        "lat": 44.780773,
+        "lon": 17.200019,
+        "capacity": 8
+    },
+    {
+        "name": "Studenski dom - Venecija most",
+        "lat": 44.764572,
+        "lon": 17.200298,
+        "capacity": 10
+    },
+    {
+        "name": "Obilićevo",
+        "lat": 44.757662,
+        "lon": 17.194177,
+        "capacity": 10
+    }
 ]

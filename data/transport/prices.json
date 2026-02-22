@@ -1,110 +1,110 @@
 {
-  "en": {
-    "ticketTypes": {
-      "single": {
-        "name": "Single ticket (on bus)",
-        "description": "Purchased directly on the bus",
-        "price": 2.3
-      },
-      "singleInSet": {
-        "name": "Single ticket (sales point)",
-        "description": "Purchased at operator's sales points",
-        "price": 1.94
-      },
-      "daily": {
-        "name": "Daily ticket",
-        "description": "Valid for one day on all urban lines",
-        "price": 7.1
-      },
-      "monthlyGroup": {
-        "name": "Monthly tickets by groups",
-        "workers": {
-          "name": "Worker monthly ticket",
-          "price": 57.0
+    "en": {
+        "ticketTypes": {
+            "single": {
+                "name": "Single ticket (on bus)",
+                "description": "Purchased directly on the bus",
+                "price": 2.3
+            },
+            "singleInSet": {
+                "name": "Single ticket (sales point)",
+                "description": "Purchased at operator's sales points",
+                "price": 1.94
+            },
+            "daily": {
+                "name": "Daily ticket",
+                "description": "Valid for one day on all urban lines",
+                "price": 7.1
+            },
+            "monthlyGroup": {
+                "name": "Monthly tickets by groups",
+                "workers": {
+                    "name": "Worker monthly ticket",
+                    "price": 57.0
+                },
+                "students": {
+                    "name": "Student monthly ticket",
+                    "price": 39.0
+                },
+                "pensioners": {
+                    "name": "Senior monthly ticket",
+                    "price": 18.0
+                }
+            },
+            "monthlyUnified": {
+                "name": "Unified monthly tickets (all groups)",
+                "workers": {
+                    "name": "Unified worker monthly ticket",
+                    "price": 78.0
+                },
+                "students": {
+                    "name": "Unified student monthly ticket",
+                    "price": 51.0
+                },
+                "pensioners": {
+                    "name": "Unified senior monthly ticket",
+                    "price": 28.0
+                }
+            }
         },
-        "students": {
-          "name": "Student monthly ticket",
-          "price": 39.0
-        },
-        "pensioners": {
-          "name": "Senior monthly ticket",
-          "price": 18.0
+        "labels": {
+            "ticketTypes": "Ticket Type",
+            "price": "Price",
+            "km": "KM"
         }
-      },
-      "monthlyUnified": {
-        "name": "Unified monthly tickets (all groups)",
-        "workers": {
-          "name": "Unified worker monthly ticket",
-          "price": 78.0
-        },
-        "students": {
-          "name": "Unified student monthly ticket",
-          "price": 51.0
-        },
-        "pensioners": {
-          "name": "Unified senior monthly ticket",
-          "price": 28.0
-        }
-      }
     },
-    "labels": {
-      "ticketTypes": "Ticket Type",
-      "price": "Price",
-      "km": "KM"
-    }
-  },
-  "bhs": {
-    "ticketTypes": {
-      "single": {
-        "name": "Pojedinačna karta",
-        "description": "Kupuje se direktno u autobusu",
-        "price": 2.30
-      },
-      "singleInSet": {
-        "name": "Set od 5 pojedinačnih karti",
-        "description": "Kupuje se direktno u autobusu ili na prodajnim mjestima prevoznika",
-        "price": 9.70
-      },
-      "daily": {
-        "name": "Dnevna karta",
-        "description": "Važi za jedan dan na svim gradskim linijama",
-        "price": 7.10
-      },
-      "monthlyGroup": {
-        "name": "Mjesečne karte po grupama",
-        "workers": {
-          "name": "Radnička mjesečna karta",
-          "price": 57.00
+    "bhs": {
+        "ticketTypes": {
+            "single": {
+                "name": "Pojedinačna karta",
+                "description": "Kupuje se direktno u autobusu",
+                "price": 2.3
+            },
+            "singleInSet": {
+                "name": "Set od 5 pojedinačnih karti",
+                "description": "Kupuje se direktno u autobusu ili na prodajnim mjestima prevoznika",
+                "price": 9.7
+            },
+            "daily": {
+                "name": "Dnevna karta",
+                "description": "Važi za jedan dan na svim gradskim linijama",
+                "price": 7.1
+            },
+            "monthlyGroup": {
+                "name": "Mjesečne karte po grupama",
+                "workers": {
+                    "name": "Radnička mjesečna karta",
+                    "price": 57.0
+                },
+                "students": {
+                    "name": "Đačka mjesečna karta",
+                    "price": 39.0
+                },
+                "pensioners": {
+                    "name": "Penzionerska mjesečna karta",
+                    "price": 18.0
+                }
+            },
+            "monthlyUnified": {
+                "name": "Jedinstvene mjesečne karte (sve grupe)",
+                "workers": {
+                    "name": "Jedinstvena radnička mjesečna karta",
+                    "price": 78.0
+                },
+                "students": {
+                    "name": "Jedinstvena đačka mjesečna karta",
+                    "price": 51.0
+                },
+                "pensioners": {
+                    "name": "Jedinstvena penzionerska mjesečna karta",
+                    "price": 28.0
+                }
+            }
         },
-        "students": {
-          "name": "Đačka mjesečna karta",
-          "price": 39.00
-        },
-        "pensioners": {
-          "name": "Penzionerska mjesečna karta",
-          "price": 18.00
+        "labels": {
+            "ticketTypes": "Vrsta karte",
+            "price": "Cijena",
+            "km": "KM"
         }
-      },
-      "monthlyUnified": {
-        "name": "Jedinstvene mjesečne karte (sve grupe)",
-        "workers": {
-          "name": "Jedinstvena radnička mjesečna karta",
-          "price": 78.00
-        },
-        "students": {
-          "name": "Jedinstvena đačka mjesečna karta",
-          "price": 51.00
-        },
-        "pensioners": {
-          "name": "Jedinstvena penzionerska mjesečna karta",
-          "price": 28.00
-        }
-      }
-    },
-    "labels": {
-      "ticketTypes": "Vrsta karte",
-      "price": "Cijena",
-      "km": "KM"
     }
-  }
 }

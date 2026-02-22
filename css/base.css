@@ -8,9 +8,9 @@
    ========================================================================== */
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 /* ==========================================================================
@@ -18,37 +18,37 @@
    ========================================================================== */
 
 .skip-link {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: var(--color-primary);
-  color: var(--color-white);
-  padding: var(--space-3) var(--space-5);
-  text-decoration: none;
-  z-index: 100;
-  font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-base);
-  border-radius: 0 0 var(--radius-sm) 0;
-  transition: top var(--transition-fast);
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--color-primary);
+    color: var(--color-white);
+    padding: var(--space-3) var(--space-5);
+    text-decoration: none;
+    z-index: 100;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-base);
+    border-radius: 0 0 var(--radius-sm) 0;
+    transition: top var(--transition-fast);
 }
 
 .skip-link:focus {
-  top: 0;
-  outline: 3px solid var(--color-warning);
-  outline-offset: 2px;
+    top: 0;
+    outline: 3px solid var(--color-warning);
+    outline-offset: 2px;
 }
 
 /* Screen reader only class */
 .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
 }
 
 /* ==========================================================================
@@ -56,15 +56,15 @@
    ========================================================================== */
 
 body {
-  font-family: var(--font-family-primary);
-  line-height: var(--line-height-normal);
-  background-color: var(--bg);
-  color: var(--text-primary);
-  transition:
-    background-color var(--transition-normal),
-    color var(--transition-normal);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-family: var(--font-family-primary);
+    line-height: var(--line-height-normal);
+    background-color: var(--bg);
+    color: var(--text-primary);
+    transition:
+        background-color var(--transition-normal),
+        color var(--transition-normal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* ==========================================================================
@@ -72,19 +72,19 @@ body {
    ========================================================================== */
 
 a {
-  color: var(--link-color);
-  text-decoration: none;
-  transition: color var(--transition-fast);
+    color: var(--link-color);
+    text-decoration: none;
+    transition: color var(--transition-fast);
 }
 
 a:hover {
-  color: var(--link-hover);
+    color: var(--link-hover);
 }
 
 a:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
 }
 
 /* ==========================================================================
@@ -97,35 +97,35 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-family-headings);
-  font-weight: var(--font-weight-bold);
-  line-height: var(--line-height-tight);
-  color: var(--text-primary);
-  margin-bottom: var(--space-4);
+    font-family: var(--font-family-headings);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+    margin-bottom: var(--space-4);
 }
 
 h1 {
-  font-size: var(--font-size-4xl);
+    font-size: var(--font-size-4xl);
 }
 
 h2 {
-  font-size: var(--font-size-3xl);
+    font-size: var(--font-size-3xl);
 }
 
 h3 {
-  font-size: var(--font-size-2xl);
+    font-size: var(--font-size-2xl);
 }
 
 h4 {
-  font-size: var(--font-size-xl);
+    font-size: var(--font-size-xl);
 }
 
 h5 {
-  font-size: var(--font-size-lg);
+    font-size: var(--font-size-lg);
 }
 
 h6 {
-  font-size: var(--font-size-base);
+    font-size: var(--font-size-base);
 }
 
 /* ==========================================================================
@@ -133,30 +133,30 @@ h6 {
    ========================================================================== */
 
 p {
-  margin-bottom: var(--space-4);
-  line-height: var(--line-height-relaxed);
+    margin-bottom: var(--space-4);
+    line-height: var(--line-height-relaxed);
 }
 
 strong,
 b {
-  font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
 }
 
 em,
 i {
-  font-style: italic;
+    font-style: italic;
 }
 
 small {
-  font-size: var(--font-size-sm);
+    font-size: var(--font-size-sm);
 }
 
 code,
 kbd,
 pre,
 samp {
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-sm);
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
 }
 
 /* ==========================================================================
@@ -165,12 +165,12 @@ samp {
 
 ul,
 ol {
-  margin-bottom: var(--space-4);
-  padding-left: var(--space-6);
+    margin-bottom: var(--space-4);
+    padding-left: var(--space-6);
 }
 
 li {
-  margin-bottom: var(--space-2);
+    margin-bottom: var(--space-2);
 }
 
 /* ==========================================================================
@@ -178,30 +178,30 @@ li {
    ========================================================================== */
 
 table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: var(--surface-2);
-  border-color: var(--border-color);
-  transition: background-color var(--transition-normal);
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--surface-2);
+    border-color: var(--border-color);
+    transition: background-color var(--transition-normal);
 }
 
 th {
-  background-color: var(--surface-1);
-  color: var(--text-primary);
-  font-weight: var(--font-weight-semibold);
-  text-align: left;
-  padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--border-color);
+    background-color: var(--surface-1);
+    color: var(--text-primary);
+    font-weight: var(--font-weight-semibold);
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--border-color);
 }
 
 td {
-  padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-primary);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
 }
 
 tr:last-child td {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 /* ==========================================================================
@@ -212,54 +212,54 @@ input,
 select,
 textarea,
 button {
-  font-family: inherit;
-  font-size: var(--font-size-base);
-  line-height: inherit;
+    font-family: inherit;
+    font-size: var(--font-size-base);
+    line-height: inherit;
 }
 
 input,
 select,
 textarea {
-  background-color: var(--surface-2);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: var(--space-2) var(--space-3);
-  transition: all var(--transition-fast);
-  width: 100%;
+    background-color: var(--surface-2);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-3);
+    transition: all var(--transition-fast);
+    width: 100%;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 0;
-  border-color: var(--color-primary);
+    outline: 2px solid var(--color-primary);
+    outline-offset: 0;
+    border-color: var(--color-primary);
 }
 
 button {
-  background-color: var(--surface-2);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: var(--space-2) var(--space-4);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  font-weight: var(--font-weight-medium);
+    background-color: var(--surface-2);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-4);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-weight: var(--font-weight-medium);
 }
 
 button:hover {
-  background-color: var(--nav-hover);
+    background-color: var(--nav-hover);
 }
 
 button:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
 }
 
 button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 /* ==========================================================================
@@ -267,14 +267,14 @@ button:disabled {
    ========================================================================== */
 
 img {
-  max-width: 100%;
-  height: auto;
-  display: block;
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
 svg {
-  max-width: 100%;
-  height: auto;
+    max-width: 100%;
+    height: auto;
 }
 
 /* ==========================================================================
@@ -282,31 +282,31 @@ svg {
    ========================================================================== */
 
 .section {
-  background-color: var(--bg);
-  transition: background-color var(--transition-normal);
-  padding: var(--space-16) 0;
+    background-color: var(--bg);
+    transition: background-color var(--transition-normal);
+    padding: var(--space-16) 0;
 }
 
 .section--narrow {
-  max-width: var(--content-max-width);
-  margin: 0 auto;
-  padding-left: var(--space-4);
-  padding-right: var(--space-4);
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
 }
 
 .section__title {
-  font-size: 1.75rem;
-  font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
-  margin-bottom: var(--space-8);
-  text-align: center;
+    font-size: 1.75rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    margin-bottom: var(--space-8);
+    text-align: center;
 }
 
 .section__subtitle {
-  font-size: var(--font-size-lg);
-  color: var(--text-secondary);
-  margin-bottom: var(--space-8);
-  text-align: center;
+    font-size: var(--font-size-lg);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-8);
+    text-align: center;
 }
 
 /* ==========================================================================
@@ -314,29 +314,29 @@ svg {
    ========================================================================== */
 
 @media (max-width: 768px) {
-  h1 {
-    font-size: var(--font-size-3xl);
-  }
+    h1 {
+        font-size: var(--font-size-3xl);
+    }
 
-  h2 {
-    font-size: var(--font-size-2xl);
-  }
+    h2 {
+        font-size: var(--font-size-2xl);
+    }
 
-  h3 {
-    font-size: var(--font-size-xl);
-  }
+    h3 {
+        font-size: var(--font-size-xl);
+    }
 
-  .section__title {
-    font-size: var(--font-size-2xl);
-  }
+    .section__title {
+        font-size: var(--font-size-2xl);
+    }
 
-  .section__subtitle {
-    font-size: var(--font-size-base);
-  }
+    .section__subtitle {
+        font-size: var(--font-size-base);
+    }
 
-  .section {
-    padding: var(--space-10) 0;
-  }
+    .section {
+        padding: var(--space-10) 0;
+    }
 }
 
 /* ==========================================================================
@@ -344,12 +344,12 @@ svg {
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }

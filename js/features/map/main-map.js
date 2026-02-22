@@ -206,10 +206,6 @@ let busStopMarkersMap = null;
 let busStopCirclesMap = null;
 let getBusStopLayersForGeolocationFn = null;
 
-const showBusLine = (lineId) => {
-    document.dispatchEvent(new CustomEvent('mapBusLineSelected', { detail: { lineId } }));
-};
-
 const loadBusRoutes = async () => {
     try {
         busRoutes = await FetchHelper.fetchJSON(MAP_CONFIG.BUS_ROUTES_URL);
@@ -490,12 +486,12 @@ export const initializeMainMap = async () => {
                             .map((lineId) => {
                                 const lineColor =
                                     busRoutes[lineId].color || busRoutes[lineId].colour || '#72aaff';
-                                return `<a href="#" class="line-number-link"
+                                return `<a href="lines.html#timetable" class="line-number-link"
                                     style="color:${escapeHTML(lineColor)}"
                                     data-line-id="${escapeHTML(lineId)}">${escapeHTML(lineId)}</a>`;
                             })
                             .join(', ')}</p>
-                        <a href="#timetable" class="popup-link">Pogledaj red vožnje | View timetables</a>
+                        <a href="lines.html#timetable" class="popup-link">Pogledaj red vožnje | View timetables</a>
                     </div>
                 `;
 
@@ -505,9 +501,8 @@ export const initializeMainMap = async () => {
                             return;
                         }
                         container.querySelectorAll('.line-number-link[data-line-id]').forEach((link) => {
-                            link.addEventListener('click', (evt) => {
-                                evt.preventDefault();
-                                showBusLine(link.dataset.lineId);
+                            link.addEventListener('click', () => {
+                                sessionStorage.setItem('selectedLine', link.dataset.lineId);
                             });
                         });
                     };

@@ -15,13 +15,15 @@ const VIEWER_CONFIG = {
         maxBoundsViscosity: 1.0,
         bounceAtZoomLimits: false,
         keyboard: false,
-        dragging: true
-    }
+        dragging: true,
+    },
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+const initUrbanLinesViewer = () => {
     const viewer = document.getElementById('urban-lines-viewer');
-    if (!viewer) { return; }
+    if (!viewer) {
+        return;
+    }
 
     // Create the Leaflet map with configuration
     const map = L.map('urban-lines-viewer', VIEWER_CONFIG.MAP_OPTIONS);
@@ -31,11 +33,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const { clientWidth: containerWidth, clientHeight: containerHeight } = viewer;
         const containerAspect = containerWidth / containerHeight;
 
-        const [width, height] = containerAspect > VIEWER_CONFIG.IMAGE_ASPECT_RATIO
-            ? [1000 * VIEWER_CONFIG.IMAGE_ASPECT_RATIO, 1000]
-            : [1000 * VIEWER_CONFIG.IMAGE_ASPECT_RATIO, 1000 * VIEWER_CONFIG.IMAGE_ASPECT_RATIO / containerAspect];
+        const [width, height] =
+            containerAspect > VIEWER_CONFIG.IMAGE_ASPECT_RATIO
+                ? [1000 * VIEWER_CONFIG.IMAGE_ASPECT_RATIO, 1000]
+                : [
+                      1000 * VIEWER_CONFIG.IMAGE_ASPECT_RATIO,
+                      (1000 * VIEWER_CONFIG.IMAGE_ASPECT_RATIO) / containerAspect,
+                  ];
 
-        return [[0, 0], [height, width]];
+        return [
+            [0, 0],
+            [height, width],
+        ];
     };
 
     // Add the image overlay with calculated bounds
@@ -58,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Create custom controls container (Modern ES6+)
     const MapControls = L.Control.extend({
         options: {
-            position: 'bottomright'
+            position: 'bottomright',
         },
 
         onAdd: function () {
@@ -68,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const buttons = [
                 { class: 'zoom-in', icon: 'fa-plus', title: 'Zoom in', action: () => map.zoomIn() },
                 { class: 'zoom-out', icon: 'fa-minus', title: 'Zoom out', action: () => map.zoomOut() },
-                { class: 'reset-view', icon: 'fa-home', title: 'Reset view', action: resetView }
+                { class: 'reset-view', icon: 'fa-home', title: 'Reset view', action: resetView },
             ];
 
             // Create buttons dynamically
@@ -85,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             return container;
-        }
+        },
     });
 
     // Add the controls to the map
@@ -117,4 +126,16 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.addEventListener('resize', handleResize);
-}); 
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener(
+        'DOMContentLoaded',
+        () => {
+            initUrbanLinesViewer();
+        },
+        { once: true },
+    );
+} else {
+    initUrbanLinesViewer();
+}

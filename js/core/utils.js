@@ -19,16 +19,16 @@ const debounce = (func, wait) => {
 const sortLinesByID = (a, b) => {
     const numA = parseInt(a.lineId);
     const numB = parseInt(b.lineId);
-    return (!isNaN(numA) && !isNaN(numB))
-        ? numA - numB
-        : a.lineId.localeCompare(b.lineId);
+    return !isNaN(numA) && !isNaN(numB) ? numA - numB : a.lineId.localeCompare(b.lineId);
 };
 
 /**
  * Normalize text for search - removes diacritics and handles special characters
  */
 const normalizeForSearch = (text) => {
-    if (!text) { return ''; }
+    if (!text) {
+        return '';
+    }
     return text
         .toLowerCase()
         .normalize('NFD')
@@ -38,5 +38,4 @@ const normalizeForSearch = (text) => {
         .replace(/ł/g, 'l');
 };
 
-// Expose as namespaced global
-window.AppUtils = { debounce, sortLinesByID, normalizeForSearch };
+export { debounce, sortLinesByID, normalizeForSearch };

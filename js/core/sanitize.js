@@ -6,9 +6,43 @@
 // Sanitization configuration
 const SANITIZE_CONFIG = {
     // Allow safe HTML tags for content
-    ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br', 'ul', 'ol', 'li', 'span', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'code', 'pre'],
+    ALLOWED_TAGS: [
+        'b',
+        'i',
+        'em',
+        'strong',
+        'a',
+        'p',
+        'br',
+        'ul',
+        'ol',
+        'li',
+        'span',
+        'div',
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+        'hr',
+        'code',
+        'pre',
+    ],
     // Allow safe attributes
-    ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'id', 'style', 'aria-label', 'aria-hidden', 'aria-expanded', 'aria-controls', 'data-*'],
+    ALLOWED_ATTR: [
+        'href',
+        'target',
+        'rel',
+        'class',
+        'id',
+        'style',
+        'aria-label',
+        'aria-hidden',
+        'aria-expanded',
+        'aria-controls',
+        'data-*',
+    ],
     // Allow data attributes
     ALLOW_DATA_ATTR: true,
     // Force target="_blank" links to have rel="noopener noreferrer"
@@ -72,22 +106,22 @@ function sanitizeURL(url) {
 
     // Check for dangerous protocols
     const lowerUrl = url.toLowerCase();
-    if (lowerUrl.startsWith('javascript:') ||
-        lowerUrl.startsWith('data:') ||
-        lowerUrl.startsWith('vbscript:')) {
+    if (lowerUrl.startsWith('javascript:') || lowerUrl.startsWith('data:') || lowerUrl.startsWith('vbscript:')) {
         console.warn('Blocked dangerous URL protocol:', url);
         return '';
     }
 
     // Allow relative URLs, http, https, mailto, tel
-    if (url.startsWith('/') ||
+    if (
+        url.startsWith('/') ||
         url.startsWith('#') ||
         url.startsWith('./') ||
         url.startsWith('../') ||
         lowerUrl.startsWith('http://') ||
         lowerUrl.startsWith('https://') ||
         lowerUrl.startsWith('mailto:') ||
-        lowerUrl.startsWith('tel:')) {
+        lowerUrl.startsWith('tel:')
+    ) {
         return url;
     }
 
@@ -124,7 +158,7 @@ function sanitizeObject(obj) {
     }
 
     if (Array.isArray(obj)) {
-        return obj.map(item => sanitizeObject(item));
+        return obj.map((item) => sanitizeObject(item));
     }
 
     const sanitized = {};
@@ -143,22 +177,12 @@ function sanitizeObject(obj) {
     return sanitized;
 }
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        sanitizeHTML,
-        escapeHTML,
-        sanitizeURL,
-        safeInnerHTML,
-        sanitizeObject,
-        SANITIZE_CONFIG,
-        STRICT_CONFIG
-    };
-}
-
-// Make available globally
-window.sanitizeHTML = sanitizeHTML;
-window.escapeHTML = escapeHTML;
-window.sanitizeURL = sanitizeURL;
-window.safeInnerHTML = safeInnerHTML;
-window.sanitizeObject = sanitizeObject;
+export {
+    sanitizeHTML,
+    escapeHTML,
+    sanitizeURL,
+    safeInnerHTML,
+    sanitizeObject,
+    SANITIZE_CONFIG,
+    STRICT_CONFIG,
+};

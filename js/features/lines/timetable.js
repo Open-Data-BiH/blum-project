@@ -214,7 +214,15 @@ function loadTimetable(lineId) {
         });
 }
 
+function getTodayDayType() {
+    const day = new Date().getDay(); // JS standard: 0=Sunday, 1=Mon, ..., 6=Saturday
+    if (day === 0) return 'sunday';
+    if (day === 6) return 'saturday';
+    return 'weekday';
+}
+
 function renderTimetable(timetable, container) {
+    const todayDayType = getTodayDayType();
     const t = AppI18n.safeGet(AppI18n.translations, AppI18n.currentLang, 'sections', 'timetable');
     const timetableDays = t ? t.days : null;
     const weekdayLabel = (timetableDays && timetableDays.weekday) || 'Weekdays';
@@ -250,9 +258,9 @@ function renderTimetable(timetable, container) {
                 <div class="day-toggle">
                     <p id="day-label" class="timetable-control-label">${timetableForLabelText}</p>
                     <div class="day-buttons" role="group" aria-labelledby="day-label">
-                        <button class="day-btn active" data-day="weekday" aria-pressed="true" aria-label="${weekdayLabel}">${weekdayLabel}</button>
-                        <button class="day-btn" data-day="saturday" aria-pressed="false" aria-label="${saturdayLabel}">${saturdayLabel}</button>
-                        <button class="day-btn" data-day="sunday" aria-pressed="false" aria-label="${sundayHolidayLabelText}">${sundayHolidayLabelText}</button>
+                        <button class="day-btn${todayDayType === 'weekday' ? ' active' : ''}" data-day="weekday" aria-pressed="${todayDayType === 'weekday'}" aria-label="${weekdayLabel}">${weekdayLabel}</button>
+                        <button class="day-btn${todayDayType === 'saturday' ? ' active' : ''}" data-day="saturday" aria-pressed="${todayDayType === 'saturday'}" aria-label="${saturdayLabel}">${saturdayLabel}</button>
+                        <button class="day-btn${todayDayType === 'sunday' ? ' active' : ''}" data-day="sunday" aria-pressed="${todayDayType === 'sunday'}" aria-label="${sundayHolidayLabelText}">${sundayHolidayLabelText}</button>
                     </div>
                 </div>
             </div>
@@ -278,9 +286,9 @@ function renderTimetable(timetable, container) {
     const dayTypes = ['weekday', 'saturday', 'sunday'];
     const directions = [directionAId, directionBId];
 
-    dayTypes.forEach((dayType, dayIndex) => {
+    dayTypes.forEach((dayType) => {
         directions.forEach((direction, dirIndex) => {
-            const isActive = dayIndex === 0 && dirIndex === 0 ? '' : 'style="display: none;"';
+            const isActive = dayType === todayDayType && dirIndex === 0 ? '' : 'style="display: none;"';
             const tableId = `timetable-${dayType}-${direction}`;
 
             html += `

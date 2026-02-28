@@ -1,0 +1,43 @@
+---
+// Homepage interactive map container
+// Loads Leaflet styles via ESM import to avoid CDN dependency
+import 'leaflet/dist/leaflet.css';
+---
+
+<section class="section section--wide" id="map">
+  <div class="container">
+    <h2 class="section__title" id="map-title">Interaktivna mapa prevoza</h2>
+
+    <div class="map-container" aria-live="polite">
+      <div id="map-container" aria-label="Interaktivna mapa prevoza" role="application"></div>
+      <noscript class="map-note">
+        <i class="map-note__icon fas fa-info-circle" aria-hidden="true"></i>
+        <div class="map-note__content">
+          <p>
+            JavaScript je potreban za prikaz interaktivne mape. Omogućite JavaScript u pregledaču kako biste vidjeli
+            stajališta i linije.
+          </p>
+        </div>
+      </noscript>
+    </div>
+    <div class="map-note" id="bus-stops-note">
+      <i class="map-note__icon fas fa-info-circle"></i>
+      <div class="map-note__content">
+        <ul class="map-note__list">
+          <li id="map-note-item-stops">Autobuska stajališta i linije</li>
+          <li id="map-note-item-bike">Nextbike stanice</li>
+          <li id="map-note-item-rail">Željezničke stanice</li>
+        </ul>
+        <p class="map-note__tip">
+          <strong id="map-note-tip-label">Savjet:</strong>
+          <span id="map-note-tip-text">Kliknite na bilo koji marker da vidite udaljenost hodanja (radijus 5 min).</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initMainMap } from '../../scripts/features/map/main-map';
+  initMainMap();
+</script>

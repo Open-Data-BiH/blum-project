@@ -23,14 +23,14 @@ export const safeGet = <T = string>(
 };
 
 const SEO_DEFAULTS = {
-  image: 'https://blum.ba/assets/images/gradski-prevoz-mapa-banja-luka.webp',
+  image: 'https://open-data-bih.github.io/blum-project/assets/images/gradski-prevoz-mapa-banja-luka.webp',
   type: 'website',
   twitterCard: 'summary_large_image',
 };
 
 const PAGE_SEO: Record<string, { url: string; title: Record<Language, string>; description: Record<Language, string> }> = {
   home: {
-    url: 'https://blum.ba/',
+    url: 'https://open-data-bih.github.io/blum-project/',
     title: { bhs: 'Pocetna | BLum', en: 'Home | BLum' },
     description: {
       bhs: 'BLum je nezavisna platforma za informacije o javnom prevozu, linijama i urbanoj mobilnosti u Banjoj Luci.',
@@ -38,7 +38,7 @@ const PAGE_SEO: Record<string, { url: string; title: Record<Language, string>; d
     },
   },
   lines: {
-    url: 'https://blum.ba/lines/',
+    url: 'https://open-data-bih.github.io/blum-project/lines/',
     title: { bhs: 'Red voznje i linije | BLum', en: 'Lines & Timetables | BLum' },
     description: {
       bhs: 'Pregled gradskih i prigradskih linija, mape trasa i reda voznje javnog prevoza u Banjoj Luci.',
@@ -46,7 +46,7 @@ const PAGE_SEO: Record<string, { url: string; title: Record<Language, string>; d
     },
   },
   pricing: {
-    url: 'https://blum.ba/pricing/',
+    url: 'https://open-data-bih.github.io/blum-project/pricing/',
     title: { bhs: 'Cjenovnik | BLum', en: 'Prices | BLum' },
     description: {
       bhs: 'Aktuelne cijene karata i pretplatnih opcija za javni prevoz u Banjoj Luci na jednom mjestu.',
@@ -54,7 +54,7 @@ const PAGE_SEO: Record<string, { url: string; title: Record<Language, string>; d
     },
   },
   airport: {
-    url: 'https://blum.ba/airport/',
+    url: 'https://open-data-bih.github.io/blum-project/airport/',
     title: { bhs: 'Aerodromski prevoz | BLum', en: 'Airport Transport | BLum' },
     description: {
       bhs: 'Informacije o prevozu do i od Medjunarodnog aerodroma Banja Luka, ukljucujuci cijene, stajalista i polaske.',
@@ -62,7 +62,7 @@ const PAGE_SEO: Record<string, { url: string; title: Record<Language, string>; d
     },
   },
   faq: {
-    url: 'https://blum.ba/faq/',
+    url: 'https://open-data-bih.github.io/blum-project/faq/',
     title: { bhs: 'FAQ | BLum', en: 'FAQ | BLum' },
     description: {
       bhs: 'Najcesca pitanja i odgovori o koristenju BLum platforme, linijama, kartama i javnom prevozu u Banjoj Luci.',
@@ -70,7 +70,7 @@ const PAGE_SEO: Record<string, { url: string; title: Record<Language, string>; d
     },
   },
   updates: {
-    url: 'https://blum.ba/updates/',
+    url: 'https://open-data-bih.github.io/blum-project/updates/',
     title: { bhs: 'Obavjestenja | BLum', en: 'Updates | BLum' },
     description: {
       bhs: 'Najnovija obavjestenja o izmjenama linija, redu voznje i servisnim informacijama javnog prevoza u Banjoj Luci.',
@@ -169,25 +169,25 @@ export const applyTranslation = (lang: Language): void => {
   const heroDefaults =
     lang === 'bhs'
       ? {
-          title: 'BLum',
-          subtitle: 'Informacije za lakše kretanje gradom.',
-          description: 'Nezavisna platforma za linije, red vožnje i obavještenja o javnom prevozu u Banjoj Luci.',
-          detail1: 'Linije i red vožnje na jednom mjestu',
-          detail2: 'Otvoren (open-source) i dostupan za dopune',
-          disclaimer: 'BLum nije zvanična stranica javnog prevoza.',
-          timetables: 'Red vožnje',
-          airport: 'Transfer do aerodroma',
-        }
+        title: 'BLum',
+        subtitle: 'Informacije za lakše kretanje gradom.',
+        description: 'Nezavisna platforma za linije, red vožnje i obavještenja o javnom prevozu u Banjoj Luci.',
+        detail1: 'Linije i red vožnje na jednom mjestu',
+        detail2: 'Otvoren (open-source) i dostupan za dopune',
+        disclaimer: 'BLum nije zvanična stranica javnog prevoza.',
+        timetables: 'Red vožnje',
+        airport: 'Transfer do aerodroma',
+      }
       : {
-          title: 'BLum',
-          subtitle: 'Information for easier movement through the city.',
-          description: 'Independent platform for routes, timetables, and public transport notices in Banja Luka.',
-          detail1: 'Routes and timetables in one place',
-          detail2: 'Open-source and open to contributions',
-          disclaimer: 'BLum is not an official public transport website.',
-          timetables: 'Timetables',
-          airport: 'Airport transfer',
-        };
+        title: 'BLum',
+        subtitle: 'Information for easier movement through the city.',
+        description: 'Independent platform for routes, timetables, and public transport notices in Banja Luka.',
+        detail1: 'Routes and timetables in one place',
+        detail2: 'Open-source and open to contributions',
+        disclaimer: 'BLum is not an official public transport website.',
+        timetables: 'Timetables',
+        airport: 'Airport transfer',
+      };
 
   safelyUpdateText('hero-title', heroDefaults.title);
   safelyUpdateText('hero-subtitle', heroDefaults.subtitle);

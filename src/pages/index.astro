@@ -1,13 +1,84 @@
 ---
-// Placeholder - will be replaced in Phase 2
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<html lang="bs">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BLum - Placeholder</title>
-  </head>
-  <body>
-    <h1>BLum scaffold in progress</h1>
-  </body>
-</html>
+
+<BaseLayout
+  pageKey="home"
+  title="Pocetna | BLum"
+  description="BLum je nezavisna platforma za informacije o javnom prevozu, linijama i urbanoj mobilnosti u Banjoj Luci."
+  canonicalUrl="https://blum.ba/"
+>
+  <section class="hero">
+    <div class="container">
+      <h1 id="hero-title">BLum</h1>
+      <p class="hero__subtitle" id="hero-subtitle">Informacije za lakše kretanje gradom.</p>
+      <p class="hero__description" id="hero-description">
+        Nezavisna platforma za linije, red vožnje i obavještenja o javnom prevozu u Banjoj Luci.
+      </p>
+      <div class="hero__details" aria-label="Ključne informacije">
+        <p class="hero__detail" id="hero-detail-1">
+          <i class="fas fa-map-signs" aria-hidden="true"></i>
+          <span>Linije i red vožnje na jednom mjestu</span>
+        </p>
+        <p class="hero__detail" id="hero-detail-2">
+          <i class="fas fa-code-branch" aria-hidden="true"></i>
+          <span>Otvoren (open-source) i dostupan za dopune</span>
+        </p>
+      </div>
+      <div class="hero__actions">
+        <a href="/lines/#timetable" class="btn btn--primary btn--lg" id="hero-btn-timetables">
+          <i class="fas fa-clock" aria-hidden="true"></i>
+          <span class="btn__label">Red vožnje</span>
+        </a>
+        <a href="/airport/" class="btn btn--secondary btn--lg" id="hero-btn-airport">
+          <i class="fas fa-plane-departure" aria-hidden="true"></i>
+          <span class="btn__label">Transfer do aerodroma</span>
+        </a>
+      </div>
+      <div class="hero__disclaimer" id="hero-disclaimer">
+        <i class="fas fa-info-circle" aria-hidden="true"></i>
+        <span>BLum nije zvanična stranica javnog prevoza.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--wide" id="map">
+    <div class="container">
+      <h2 class="section__title" id="map-title">Interaktivna mapa prevoza</h2>
+
+      <div class="map-container">
+        <div id="map-container"></div>
+      </div>
+      <div class="map-note" id="bus-stops-note">
+        <i class="map-note__icon fas fa-info-circle"></i>
+        <div class="map-note__content">
+          <ul class="map-note__list">
+            <li id="map-note-item-stops">Autobuska stajališta i linije</li>
+            <li id="map-note-item-bike">Nextbike stanice</li>
+            <li id="map-note-item-rail">Željezničke stanice</li>
+          </ul>
+          <p class="map-note__tip">
+            <strong id="map-note-tip-label">Savjet:</strong>
+            <span id="map-note-tip-text">Kliknite na bilo koji marker da vidite udaljenost hodanja (radijus 5 min).</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--narrow" id="contact">
+    <div class="container">
+      <h2 class="section__title" id="contact-title">Korisni kontakti</h2>
+
+      <div class="contact-group">
+        <h3 class="contact-group__title" id="contact-group-authorities-title">Gradske službe</h3>
+        <div class="contact-cards" id="authority-contacts"></div>
+      </div>
+
+      <div class="contact-group">
+        <h3 class="contact-group__title" id="contact-group-operators-title">Prevoznici</h3>
+        <div class="contact-cards" id="operator-contacts"></div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

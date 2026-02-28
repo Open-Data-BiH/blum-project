@@ -29,6 +29,7 @@
     "author": "Community Project",
     "license": "MIT",
     "devDependencies": {
+        "@astrojs/check": "^0.9.6",
         "@eslint/js": "^10.0.1",
         "astro": "^5.18.0",
         "eslint": "^10.0.1",

@@ -6,16 +6,16 @@ const createMailtoLink = (subject: string, body: string): string =>
   `mailto:${maintainerEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
 const timetableReportLink = createMailtoLink(
-  'BLum - Prijava netacnog reda voznje',
+  'BLum - Prijava netačnog reda vožnje',
   [
     'Pozdrav,',
     '',
-    'Prijavljujem netacne informacije o redu voznje:',
+    'Prijavljujem netačne informacije o redu vožnje:',
     '- Linija:',
     '- Smjer:',
     '- Stanica/lokacija:',
     '- Datum i vrijeme:',
-    '- Ocekivano vrijeme:',
+    '- Očekivano vrijeme:',
     '- Stvarno stanje:',
     '',
     'Dodatne informacije:',
@@ -23,15 +23,15 @@ const timetableReportLink = createMailtoLink(
 );
 
 const technicalIssueLink = createMailtoLink(
-  'BLum - Prijava tehnickog problema',
+  'BLum - Prijava tehničkog problema',
   [
     'Pozdrav,',
     '',
-    'Prijavljujem tehnicki problem na sajtu:',
+    'Prijavljujem tehnički problem na sajtu:',
     '- Stranica/URL:',
-    '- Uredjaj i browser:',
+    '- Uređaj i browser:',
     '- Koraci za reprodukciju:',
-    '- Ocekivani rezultat:',
+    '- Očekivani rezultat:',
     '- Stvarni rezultat:',
     '',
     'Dodatne informacije:',
@@ -45,25 +45,25 @@ const contactMaintainerLink = createMailtoLink('BLum - Kontakt', 'Pozdrav,\n\n')
   <div class="footer__content">
     <div class="footer__mission">
       <p id="footer-mission-text">
-        BLum je open-source projekat razvijen radi bolje dostupnosti informacija o javnom prevozu.
+        BLum je nezavisna platforma razvijena radi bolje dostupnosti informacija o javnom prevozu.
       </p>
     </div>
 
     <div class="footer__disclaimer-box">
       <i class="fas fa-info-circle" aria-hidden="true"></i>
       <p id="footer-disclaimer-text">
-        BLum nije zvanična stranica javnog prevoza. Za zvanične informacije obratite se nadležnim institucijama.
+        BLUM je nezavisna platforma za informisanje o gradskom prevozu. Zvanične i ažurirane informacije provjerite kod nadležnih gradskih organa i prevoznika.
       </p>
     </div>
 
     <nav class="footer__links" aria-label="Footer links">
-      <a href={timetableReportLink} id="footer-link-timetable-report">Prijavi red voznje</a>
+      <a href={timetableReportLink} id="footer-link-timetable-report">Prijavi red vožnje</a>
       <span class="footer__separator" aria-hidden="true">&middot;</span>
-      <a href={technicalIssueLink} id="footer-link-technical-report">Prijavi tehnicki problem</a>
+      <a href={technicalIssueLink} id="footer-link-technical-report">Prijavi tehnički problem</a>
       <span class="footer__separator" aria-hidden="true">&middot;</span>
       <a href="/faq/" id="footer-link-faq">FAQ</a>
       <span class="footer__separator" aria-hidden="true">&middot;</span>
-      <a href={contactMaintainerLink} id="footer-link-contact">Kontakt odrzavaoca</a>
+      <a href={contactMaintainerLink} id="footer-link-contact">Kontakt</a>
     </nav>
 
     <div class="footer__copyright">

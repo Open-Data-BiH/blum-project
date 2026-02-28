@@ -50,7 +50,7 @@ export async function initAirportMap(): Promise<void> {
         const createOldStationPopup = (): string => `
             <div class="hub-popup">
                 <h3>${langText('Stajalište aerodromskog shuttle-a - Stara autobuska stanica', 'Airport Shuttle Stop - Old Bus Station')}</h3>
-                <p>${langText('Plaćeni parking', 'Paid parking')}</p>
+                <p>${langText('Dostupan parking uz naplatu', 'Paid parking available')}</p>
                 <p>${langText('Karte se kupuju u autobusu', 'Tickets are available on the bus')}</p>
                 <a href="/airport/#airport" class="popup-link">${langText('Informacije o aerodromskom prevozu', 'Airport Transfer Info')}</a>
             </div>`;
@@ -58,7 +58,7 @@ export async function initAirportMap(): Promise<void> {
         const createMainStationPopup = (): string => `
             <div class="hub-popup">
                 <h3>${langText('Stajalište aerodromskog shuttle-a - Glavna autobuska stanica', 'Airport Shuttle Stop - Main Bus Station')}</h3>
-                <p>${langText('Plaćeni parking', 'Paid parking')}</p>
+                <p>${langText('Dostupan parking uz naplatu', 'Paid parking available')}</p>
                 <p>${langText('Karte se kupuju u autobusu', 'Tickets are available on the bus')}</p>
                 <a href="/airport/#airport" class="popup-link">${langText('Informacije o aerodromskom prevozu', 'Airport Transfer Info')}</a>
             </div>`;

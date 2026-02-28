@@ -71,7 +71,7 @@ export function setupTimetableSelection(): void {
                     const welcomeMessage =
                         safeGet(getTranslations(), lang, 'sections', 'timetable', 'welcome') ||
                         (lang === 'bhs'
-                            ? 'Redovi voznje ce biti prikazani nakon izbora linije.'
+                            ? 'Redovi vožnje će biti prikazani nakon izbora linije.'
                             : 'Timetables will be displayed after selecting a line.');
                     timetableDisplay.innerHTML = `<p class="timetable-welcome">${welcomeMessage}</p>`;
                 }
@@ -99,7 +99,7 @@ export function setupTimetableSelection(): void {
                 const welcomeMessage =
                     safeGet(getTranslations(), lang, 'sections', 'timetable', 'welcome') ||
                     (lang === 'bhs'
-                        ? 'Redovi voznje ce biti prikazani nakon izbora linije.'
+                        ? 'Redovi vožnje će biti prikazani nakon izbora linije.'
                         : 'Timetables will be displayed after selecting a line.');
                 timetableDisplay.innerHTML = `<p class="timetable-welcome">${welcomeMessage}</p>`;
             }
@@ -270,7 +270,7 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
     const sundayHolidayLabelText =
         timetableDays?.sundayHoliday || (lang === 'bhs' ? 'Nedjelja i praznik' : 'Sunday and Holiday');
     const relationLabelText = (t?.relationLabel as string) || (lang === 'bhs' ? 'Relacija' : 'Direction');
-    const timetableForLabelText = (t?.timetableForLabel as string) || (lang === 'bhs' ? 'Red voznje' : 'Schedule');
+    const timetableForLabelText = (t?.timetableForLabel as string) || (lang === 'bhs' ? 'Red vožnje' : 'Schedule');
     const hourLabel = (t?.hourLabel as string) || (lang === 'bhs' ? 'Sat' : 'Hour');
     const minutesLabel = (t?.minutesLabel as string) || (lang === 'bhs' ? 'Minute' : 'Minutes');
     const swapDirectionLabel = lang === 'bhs' ? 'Zamijeni smjer' : 'Swap direction';

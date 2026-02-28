@@ -3,7 +3,7 @@
         "header": {
             "title": "BLum",
             "nav": {
-                "map": "Map",
+                "map": "Home",
                 "lines": "Lines",
                 "timetable": "Timetable",
                 "airport": "Airport",
@@ -111,7 +111,7 @@
             }
         },
         "ui": {
-            "back": "← Back to Map",
+            "back": "← Back to Home",
             "multipage": "Multi-page Mode",
             "error": "Error loading data. Please try again.",
             "visit": "Visit website"
@@ -121,7 +121,7 @@
         "header": {
             "title": "BLum",
             "nav": {
-                "map": "Mapa",
+                "map": "Početna",
                 "lines": "Linije",
                 "timetable": "Red vožnje",
                 "airport": "Aerodrom",
@@ -229,7 +229,7 @@
             }
         },
         "ui": {
-            "back": "← Nazad na mapu",
+            "back": "← Nazad na početnu",
             "multipage": "Više-stranica Mod",
             "error": "Greška pri učitavanju podataka. Molimo pokušajte ponovo.",
             "visit": "Posjetite web stranicu"

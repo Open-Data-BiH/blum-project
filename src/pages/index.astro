@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeMap from '../components/map/HomeMap.astro';
 ---
 
 <BaseLayout
@@ -42,29 +43,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <section class="section section--wide" id="map">
-    <div class="container">
-      <h2 class="section__title" id="map-title">Interaktivna mapa prevoza</h2>
-
-      <div class="map-container">
-        <div id="map-container"></div>
-      </div>
-      <div class="map-note" id="bus-stops-note">
-        <i class="map-note__icon fas fa-info-circle"></i>
-        <div class="map-note__content">
-          <ul class="map-note__list">
-            <li id="map-note-item-stops">Autobuska stajališta i linije</li>
-            <li id="map-note-item-bike">Nextbike stanice</li>
-            <li id="map-note-item-rail">Željezničke stanice</li>
-          </ul>
-          <p class="map-note__tip">
-            <strong id="map-note-tip-label">Savjet:</strong>
-            <span id="map-note-tip-text">Kliknite na bilo koji marker da vidite udaljenost hodanja (radijus 5 min).</span>
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
+  <HomeMap />
 
   <section class="section section--narrow" id="contact">
     <div class="container">

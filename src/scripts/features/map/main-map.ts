@@ -86,6 +86,8 @@ const ensureNotificationRegion = (): HTMLElement => {
 
 let notificationTimer: number | null = null;
 
+const langText = (bhs: string, en: string): string => (getCurrentLanguage() === 'en' ? en : bhs);
+
 const showMapNotification = (message: string): void => {
     if (!message) {
         return;
@@ -174,7 +176,7 @@ const autoSelectNearestStop = async (
         zIndexOffset: 1000,
     }).addTo(map);
 
-    userMarker.bindPopup('<strong>📍 Vaša lokacija / Your location</strong>').openPopup();
+    userMarker.bindPopup(`<strong>📍 ${langText('Vaša lokacija', 'Your location')}</strong>`).openPopup();
 
     const nearestStops = geoService.findNearestStops(busStopLayers, 3);
     if (nearestStops.length === 0) {
@@ -215,14 +217,14 @@ const autoSelectNearestStop = async (
     });
     stopsHtml += '</ul>';
 
-    userMarker.setPopupContent(
-        `<div style="min-width: 200px;">
-      <strong>📍 Vaša lokacija / Your location</strong><br>
+    userMarker.setPopupContent(`
+    <div style="min-width: 200px;">
+      <strong>📍 ${langText('Vaša lokacija', 'Your location')}</strong><br>
       <hr style="margin: 5px 0;">
-      Najbliža stajališta / Nearest stops:<br>
+      ${langText('Najbliža stajališta', 'Nearest stops')}:<br>
       ${stopsHtml}
-    </div>`,
-    );
+    </div>
+  `);
     userMarker.openPopup();
 };
 
@@ -233,7 +235,7 @@ const createLocateControl = (L: LeafletNS, map: Map, getBusStopLayers: () => Arr
             const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
             const button = L.DomUtil.create('a', 'leaflet-control-locate', container);
             button.href = '#';
-            button.title = 'Pronađi moju lokaciju | Find my location';
+            button.title = langText('Pronađi moju lokaciju', 'Find my location');
             button.innerHTML = '<i class="fas fa-crosshairs"></i>';
 
             L.DomEvent.disableClickPropagation(button);
@@ -345,12 +347,12 @@ const buildBusStopsLayer = (
             .join(', ');
 
         return `
-      <div class="hub-popup">
-        <h3>${stopName}</h3>
-        <p>Linije | Lines: ${linesMarkup}</p>
-        <a href="/lines/#timetable" class="popup-link">Pogledaj red vožnje | View timetables</a>
-      </div>
-    `;
+            <div class="hub-popup">
+                <h3>${stopName}</h3>
+                <p>${langText('Linije', 'Lines')}: ${linesMarkup}</p>
+                <a href="/lines/#timetable" class="popup-link">${langText('Pogledaj red vožnje', 'View timetables')}</a>
+            </div>
+        `;
     };
 
     const createBusStopCircle = (coordinates: LatLngExpression): CircleMarker => {
@@ -379,7 +381,6 @@ const buildBusStopsLayer = (
 
         uniqueStops.forEach((stop, stopName) => {
             const sortedLines = Array.from(stop.lines).sort((a, b) => orderedKeys.indexOf(a) - orderedKeys.indexOf(b));
-            const popupContent = createPopupContent(stop.name, sortedLines);
 
             const bindPopupLineLinks = (e: { popup: { getElement: () => HTMLElement | null } }): void => {
                 const container = e.popup.getElement();
@@ -403,7 +404,7 @@ const buildBusStopsLayer = (
 
                 if (!busStopMarkers.has(stopName)) {
                     const marker = createBusStopIcon(stop.coordinates);
-                    marker.bindPopup(popupContent);
+                    marker.bindPopup(() => createPopupContent(stop.name, sortedLines));
                     marker.on('popupopen', bindPopupLineLinks);
                     marker.on('click', () => {
                         window.setTimeout(() => createWalkingCircles(L, map, stop.coordinates), 100);
@@ -423,7 +424,7 @@ const buildBusStopsLayer = (
                 }
 
                 const circle = createBusStopCircle(stop.coordinates);
-                circle.bindPopup(popupContent);
+                circle.bindPopup(() => createPopupContent(stop.name, sortedLines));
                 circle.on('popupopen', bindPopupLineLinks);
                 circle.on('click', () => {
                     window.setTimeout(() => createWalkingCircles(L, map, stop.coordinates), 100);
@@ -453,31 +454,31 @@ const loadTransportHubs = (
             case 'train-station':
                 marker = L.marker([hub.lat, hub.lng], {
                     icon: createFontAwesomeIcon(L, 'fa-train', '#ff8369'),
-                }).bindPopup(createTrainStationPopup(hub));
+                }).bindPopup(() => createTrainStationPopup(hub));
                 marker.addTo(groups.trainStations);
                 break;
             case 'bus-station':
                 marker = L.marker([hub.lat, hub.lng], {
                     icon: createFontAwesomeIcon(L, 'fa-bus', '#0e5287'),
-                }).bindPopup(createMainBusStationPopup(hub));
+                }).bindPopup(() => createMainBusStationPopup(hub));
                 marker.addTo(groups.mainBusStations);
                 break;
             case 'terminal-bus-station':
                 marker = L.marker([hub.lat, hub.lng], {
                     icon: createFontAwesomeIcon(L, 'fa-bus', '#0e5287'),
-                }).bindPopup(createTerminalBusStationPopup(hub));
+                }).bindPopup(() => createTerminalBusStationPopup(hub));
                 marker.addTo(groups.mainBusStations);
                 break;
             case 'airport-transfer':
                 marker = L.marker([hub.lat, hub.lng], {
                     icon: createFontAwesomeIcon(L, 'fa-shuttle-van', '#4d4d99'),
-                }).bindPopup(createShuttlePopup(hub));
+                }).bindPopup(() => createShuttlePopup(hub));
                 marker.addTo(groups.airportShuttles);
                 break;
             case 'bus-terminal':
                 marker = L.marker([hub.lat, hub.lng], {
                     icon: createFontAwesomeIcon(L, 'fa-route', '#57bd6d'),
-                }).bindPopup(createTouristBusPopup(hub));
+                }).bindPopup(() => createTouristBusPopup(hub));
                 marker.addTo(groups.touristBus);
                 break;
             default:
@@ -494,7 +495,7 @@ const loadBikeStations = (L: LeafletNS, map: Map, stations: BikeStation[], group
     stations.forEach((station) => {
         const marker = L.marker([station.lat, station.lon], {
             icon: createFontAwesomeIcon(L, 'fa-bicycle', '#004899'),
-        }).bindPopup(createBikeStationPopup(station.name, station.capacity));
+        }).bindPopup(() => createBikeStationPopup(station.name, station.capacity));
 
         marker.on('click', () =>
             window.setTimeout(() => createWalkingCircles(L, map, [station.lat, station.lon]), 100),

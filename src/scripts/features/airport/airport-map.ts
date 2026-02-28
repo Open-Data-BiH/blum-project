@@ -2,6 +2,9 @@
 // Uses Leaflet to show two shuttle stop markers on a CARTO basemap.
 
 import type { Map, LatLngBoundsExpression } from 'leaflet';
+import { getCurrentLanguage } from '../../core/i18n';
+
+const langText = (bhs: string, en: string): string => (getCurrentLanguage() === 'en' ? en : bhs);
 
 export async function initAirportMap(): Promise<void> {
     const container = document.getElementById('airport-map');
@@ -44,24 +47,24 @@ export async function initAirportMap(): Promise<void> {
             iconAnchor: [15, 15],
         });
 
-        const popupOld = `
-      <div class="hub-popup">
-        <h3>Airport Shuttle Stop - Stara autobuska stanica</h3>
-        <p>Plaćeni parking | Paid parking</p>
-        <p>Karte se kupuju u autobusu | Tickets are available on the bus</p>
-        <a href="/airport/#airport" class="popup-link">Airport Transfer Info</a>
-      </div>`;
+        const createOldStationPopup = (): string => `
+            <div class="hub-popup">
+                <h3>${langText('Stajalište aerodromskog shuttle-a - Stara autobuska stanica', 'Airport Shuttle Stop - Old Bus Station')}</h3>
+                <p>${langText('Plaćeni parking', 'Paid parking')}</p>
+                <p>${langText('Karte se kupuju u autobusu', 'Tickets are available on the bus')}</p>
+                <a href="/airport/#airport" class="popup-link">${langText('Informacije o aerodromskom prevozu', 'Airport Transfer Info')}</a>
+            </div>`;
 
-        const popupMain = `
-      <div class="hub-popup">
-        <h3>Airport Shuttle Stop - Glavna autobuska stanica</h3>
-        <p>Plaćeni parking | Paid parking</p>
-        <p>Karte se kupuju u autobusu | Tickets are available on the bus</p>
-        <a href="/airport/#airport" class="popup-link">Airport Transfer Info</a>
-      </div>`;
+        const createMainStationPopup = (): string => `
+            <div class="hub-popup">
+                <h3>${langText('Stajalište aerodromskog shuttle-a - Glavna autobuska stanica', 'Airport Shuttle Stop - Main Bus Station')}</h3>
+                <p>${langText('Plaćeni parking', 'Paid parking')}</p>
+                <p>${langText('Karte se kupuju u autobusu', 'Tickets are available on the bus')}</p>
+                <a href="/airport/#airport" class="popup-link">${langText('Informacije o aerodromskom prevozu', 'Airport Transfer Info')}</a>
+            </div>`;
 
-        L.marker([44.7722, 17.191], { icon: shuttleIcon }).bindPopup(popupOld).addTo(map);
-        L.marker([44.788, 17.21], { icon: shuttleIcon }).bindPopup(popupMain).addTo(map);
+        L.marker([44.7722, 17.191], { icon: shuttleIcon }).bindPopup(createOldStationPopup).addTo(map);
+        L.marker([44.788, 17.21], { icon: shuttleIcon }).bindPopup(createMainStationPopup).addTo(map);
     } catch (error) {
         console.error('Error initializing airport map:', error);
         const el = document.getElementById('airport-map');

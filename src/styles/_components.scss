@@ -15,7 +15,8 @@
     min-height: clamp(280px, 40vh, 400px);
     display: flex;
     align-items: center;
-    background: radial-gradient(circle at 12% 15%, rgba(42, 95, 138, 0.28) 0%, rgba(42, 95, 138, 0) 44%),
+    background:
+        radial-gradient(circle at 12% 15%, rgba(42, 95, 138, 0.28) 0%, rgba(42, 95, 138, 0) 44%),
         radial-gradient(circle at 88% 2%, rgba(26, 124, 154, 0.25) 0%, rgba(26, 124, 154, 0) 40%),
         linear-gradient(140deg, #eaf3fa 0%, #f5fbff 45%, #e2eef7 100%);
     overflow: hidden;
@@ -104,7 +105,8 @@
 }
 
 [data-theme='dark'] .hero {
-    background: radial-gradient(circle at 14% 14%, rgba(43, 110, 168, 0.2) 0%, rgba(43, 110, 168, 0) 46%),
+    background:
+        radial-gradient(circle at 14% 14%, rgba(43, 110, 168, 0.2) 0%, rgba(43, 110, 168, 0) 46%),
         radial-gradient(circle at 86% 4%, rgba(43, 110, 168, 0.14) 0%, rgba(43, 110, 168, 0) 44%),
         linear-gradient(160deg, #0f141a 0%, #12324a 48%, #121417 100%);
 }

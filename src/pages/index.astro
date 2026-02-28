@@ -2,6 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeMap from '../components/map/HomeMap.astro';
 import ContactsSection from '../components/contacts/ContactsSection.astro';
+
+const baseUrl = import.meta.env.BASE_URL;
+const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
 ---
 
 <BaseLayout
@@ -28,11 +31,11 @@ import ContactsSection from '../components/contacts/ContactsSection.astro';
         </p>
       </div>
       <div class="hero__actions">
-        <a href="/lines/#timetable" class="btn btn--primary btn--lg" id="hero-btn-timetables">
+        <a href={withBase('lines/#timetable')} class="btn btn--primary btn--lg" id="hero-btn-timetables">
           <i class="fas fa-clock" aria-hidden="true"></i>
           <span class="btn__label">Red vožnje</span>
         </a>
-        <a href="/airport/" class="btn btn--secondary btn--lg" id="hero-btn-airport">
+        <a href={withBase('airport/')} class="btn btn--secondary btn--lg" id="hero-btn-airport">
           <i class="fas fa-plane-departure" aria-hidden="true"></i>
           <span class="btn__label">Transfer do aerodroma</span>
         </a>

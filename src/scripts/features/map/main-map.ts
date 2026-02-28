@@ -31,6 +31,8 @@ import type {
 } from './types';
 
 type LeafletNS = typeof import('leaflet');
+const BASE_URL = import.meta.env.BASE_URL;
+const withBase = (path: string): string => `${BASE_URL}${path.replace(/^\/+/, '')}`;
 
 const MAP_CONFIG = {
     CENTER: [44.7866, 17.1975] as LatLngExpression,
@@ -39,7 +41,7 @@ const MAP_CONFIG = {
     MAX_ZOOM: 17,
     ZOOM_THRESHOLD: 15,
     WALKING_RADIUS_5MIN: 400,
-    BUS_ROUTES_URL: '/data/transport/routes/urban_bus_routes.json',
+    BUS_ROUTES_URL: withBase('data/transport/routes/urban_bus_routes.json'),
 };
 
 const MAP_NOTIFICATION_MESSAGES = {
@@ -348,7 +350,7 @@ const buildBusStopsLayer = (
             .map((lineId) => {
                 const line = busRoutes[lineId];
                 const lineColor = line?.color || line?.colour || '#72aaff';
-                return `<a href="/lines/#timetable" class="line-number-link" style="color:${lineColor}" data-line-id="${lineId}">${lineId}</a>`;
+                return `<a href="${withBase('lines/#timetable')}" class="line-number-link" style="color:${lineColor}" data-line-id="${lineId}">${lineId}</a>`;
             })
             .join(', ');
 
@@ -356,7 +358,7 @@ const buildBusStopsLayer = (
             <div class="hub-popup">
                 <h3>${stopName}</h3>
                 <p>${langText('Linije', 'Lines')}: ${linesMarkup}</p>
-                <a href="/lines/#timetable" class="popup-link">${langText('Pogledaj red vožnje', 'View timetables')}</a>
+                <a href="${withBase('lines/#timetable')}" class="popup-link">${langText('Pogledaj red vožnje', 'View timetables')}</a>
             </div>
         `;
     };
@@ -549,10 +551,10 @@ export const initMainMap = async (): Promise<void> => {
     try {
         const [L, legendConfig, busRoutes, hubsFile, bikeStations] = await Promise.all([
             import('leaflet').then((mod) => mod.default),
-            fetchJson<LegendConfig>('/data/legend-config.json'),
+            fetchJson<LegendConfig>(withBase('data/legend-config.json')),
             fetchJson<BusRoutesFile>(MAP_CONFIG.BUS_ROUTES_URL),
-            fetchJson<TransportHubsFile>('/data/transport/transport_hubs.json'),
-            fetchJson<BikeStation[]>('/data/transport/bike_stations.json'),
+            fetchJson<TransportHubsFile>(withBase('data/transport/transport_hubs.json')),
+            fetchJson<BikeStation[]>(withBase('data/transport/bike_stations.json')),
         ]);
 
         const baseLayers = buildBaseLayers(L);

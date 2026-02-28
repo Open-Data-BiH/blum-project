@@ -3,8 +3,11 @@
 
 import L from 'leaflet';
 
+const BASE_URL = import.meta.env.BASE_URL;
+const withBase = (path: string): string => `${BASE_URL}${path.replace(/^\/+/, '')}`;
+
 const VIEWER_CONFIG = {
-    IMAGE_URL: '/assets/images/gradski-prevoz-mapa-banja-luka.webp',
+    IMAGE_URL: withBase('assets/images/gradski-prevoz-mapa-banja-luka.webp'),
     IMAGE_ASPECT_RATIO: 8000 / 5000,
     RESIZE_DEBOUNCE_DELAY: 250,
     MAP_OPTIONS: {

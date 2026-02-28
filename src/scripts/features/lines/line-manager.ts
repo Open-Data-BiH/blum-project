@@ -4,6 +4,9 @@
 import { sortLinesByID } from '../../core/utils';
 import type { CompanyOwnership, Line } from '../../../types/lines';
 
+const BASE_URL = import.meta.env.BASE_URL;
+const withBase = (path: string): string => `${BASE_URL}${path.replace(/^\/+/, '')}`;
+
 export interface LineConfig {
     enabled: boolean;
     dataFile: string;
@@ -21,8 +24,8 @@ export interface ProcessedLineData extends Line {
 export const LINE_CONFIG: Record<string, LineConfig> = {
     urban: {
         enabled: true,
-        dataFile: '/data/transport/routes/urban_company_ownership.json',
-        timetableFile: '/data/transport/timetables/urban_timetables.json',
+        dataFile: withBase('data/transport/routes/urban_company_ownership.json'),
+        timetableFile: withBase('data/transport/timetables/urban_timetables.json'),
         useCompanyData: true,
         title: {
             en: 'Urban Lines',

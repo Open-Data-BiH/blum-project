@@ -9,6 +9,9 @@ import { safeGet, getTranslations, getCurrentLanguage } from '../../core/i18n';
 import { LINE_CONFIG, lineManager } from './line-manager';
 import type { TimetableEntry } from '../../../types/timetable';
 
+const BASE_URL = import.meta.env.BASE_URL;
+const withBase = (path: string): string => `${BASE_URL}${path.replace(/^\/+/, '')}`;
+
 let realTimetableData: (TimetableEntry & { lineType: string })[] | null = null;
 let timetableLanguageListenerAdded = false;
 let timeHighlightInterval: ReturnType<typeof setInterval> | null = null;
@@ -206,7 +209,7 @@ export function loadTimetable(lineId: string): void {
         }
     }
     if (!timetableFile) {
-        timetableFile = '/data/transport/timetables/urban_timetables.json';
+        timetableFile = withBase('data/transport/timetables/urban_timetables.json');
     }
 
     fetch(timetableFile)

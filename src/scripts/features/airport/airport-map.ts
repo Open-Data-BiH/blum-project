@@ -5,6 +5,8 @@ import type { Map, LatLngBoundsExpression } from 'leaflet';
 import { getCurrentLanguage } from '../../core/i18n';
 
 const langText = (bhs: string, en: string): string => (getCurrentLanguage() === 'en' ? en : bhs);
+const BASE_URL = import.meta.env.BASE_URL;
+const withBase = (path: string): string => `${BASE_URL}${path.replace(/^\/+/, '')}`;
 
 export async function initAirportMap(): Promise<void> {
     const container = document.getElementById('airport-map');
@@ -52,7 +54,7 @@ export async function initAirportMap(): Promise<void> {
                 <h3>${langText('Stajalište aerodromskog shuttle-a - Stara autobuska stanica', 'Airport Shuttle Stop - Old Bus Station')}</h3>
                 <p>${langText('Dostupan parking uz naplatu', 'Paid parking available')}</p>
                 <p>${langText('Karte se kupuju u autobusu', 'Tickets are available on the bus')}</p>
-                <a href="/airport/#airport" class="popup-link">${langText('Informacije o aerodromskom prevozu', 'Airport Transfer Info')}</a>
+                <a href="${withBase('airport/#airport')}" class="popup-link">${langText('Informacije o aerodromskom prevozu', 'Airport Transfer Info')}</a>
             </div>`;
 
         const createMainStationPopup = (): string => `
@@ -60,7 +62,7 @@ export async function initAirportMap(): Promise<void> {
                 <h3>${langText('Stajalište aerodromskog shuttle-a - Glavna autobuska stanica', 'Airport Shuttle Stop - Main Bus Station')}</h3>
                 <p>${langText('Dostupan parking uz naplatu', 'Paid parking available')}</p>
                 <p>${langText('Karte se kupuju u autobusu', 'Tickets are available on the bus')}</p>
-                <a href="/airport/#airport" class="popup-link">${langText('Informacije o aerodromskom prevozu', 'Airport Transfer Info')}</a>
+                <a href="${withBase('airport/#airport')}" class="popup-link">${langText('Informacije o aerodromskom prevozu', 'Airport Transfer Info')}</a>
             </div>`;
 
         L.marker([44.7722, 17.191], { icon: shuttleIcon }).bindPopup(createOldStationPopup).addTo(map);

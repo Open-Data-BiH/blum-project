@@ -8,14 +8,16 @@ interface Props {
 }
 
 const { currentPage } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL;
+const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
 
 const navLinks: { key: PageKey; href: string; id: string }[] = [
-  { key: 'home',    href: '/',         id: 'nav-map-desktop' },
-  { key: 'lines',   href: '/lines/',   id: 'nav-lines-desktop' },
-  { key: 'pricing', href: '/pricing/', id: 'nav-prices-desktop' },
-  { key: 'airport', href: '/airport/', id: 'nav-airport-desktop' },
-  { key: 'updates', href: '/updates/', id: 'nav-updates-desktop' },
-  { key: 'faq',     href: '/faq/',     id: 'nav-faq-desktop' },
+  { key: 'home',    href: withBase(''),           id: 'nav-map-desktop' },
+  { key: 'lines',   href: withBase('lines/'),     id: 'nav-lines-desktop' },
+  { key: 'pricing', href: withBase('pricing/'),   id: 'nav-prices-desktop' },
+  { key: 'airport', href: withBase('airport/'),   id: 'nav-airport-desktop' },
+  { key: 'updates', href: withBase('updates/'),   id: 'nav-updates-desktop' },
+  { key: 'faq',     href: withBase('faq/'),       id: 'nav-faq-desktop' },
 ];
 ---
 
@@ -23,7 +25,7 @@ const navLinks: { key: PageKey; href: string; id: string }[] = [
   <div class="header__container">
     <div class="header__content">
       <div class="header__brand">
-        <a href="/" class="header__brand-link">
+        <a href={withBase('')} class="header__brand-link">
           <Image
             src={logo}
             alt="BLum logo"

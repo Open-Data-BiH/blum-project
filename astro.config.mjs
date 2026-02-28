@@ -1,7 +1,8 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-    site: 'https://open-data-bih.github.io/blum-project',
+    site: 'https://open-data-bih.github.io/blum-project/',
+    base: '/blum-project',
     output: 'static',
     trailingSlash: 'always',
     vite: {

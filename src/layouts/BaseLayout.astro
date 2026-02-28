@@ -14,7 +14,12 @@ interface Props {
 }
 
 const { pageKey, title, description, canonicalUrl, pageStyles } = Astro.props;
-const ogImage = 'https://open-data-bih.github.io/blum-project/assets/images/gradski-prevoz-mapa-banja-luka.webp';
+const baseUrl = import.meta.env.BASE_URL;
+const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
+const ogImage = new URL(
+  withBase('assets/images/gradski-prevoz-mapa-banja-luka.webp'),
+  Astro.site ?? 'https://open-data-bih.github.io/blum-project/',
+).toString();
 ---
 
 <!doctype html>
@@ -55,10 +60,10 @@ const ogImage = 'https://open-data-bih.github.io/blum-project/assets/images/grad
     />
 
     <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon/favicon-16x16.png" />
-    <link rel="manifest" href="/assets/images/favicon/site.webmanifest" />
+    <link rel="apple-touch-icon" sizes="180x180" href={withBase('assets/images/favicon/apple-touch-icon.png')} />
+    <link rel="icon" type="image/png" sizes="32x32" href={withBase('assets/images/favicon/favicon-32x32.png')} />
+    <link rel="icon" type="image/png" sizes="16x16" href={withBase('assets/images/favicon/favicon-16x16.png')} />
+    <link rel="manifest" href={withBase('assets/images/favicon/site.webmanifest')} />
 
     {pageStyles && <link rel="stylesheet" href={pageStyles} />}
 

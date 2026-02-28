@@ -3,6 +3,9 @@
 import { getCurrentLanguage } from '../../core/i18n';
 import type { LocalizedText, TransportHub } from './types';
 
+const BASE_URL = import.meta.env.BASE_URL;
+const withBase = (path: string): string => `${BASE_URL}${path.replace(/^\/+/, '')}`;
+
 const escapeHtml = (value: string): string =>
     value
         .replace(/&/g, '&amp;')
@@ -22,7 +25,10 @@ const localizedField = (value: string | LocalizedText | undefined): string => {
         return getCurrentLanguage() === 'en' ? value.en : value.bhs;
     }
 
-    const parts = value.split('|').map((part) => part.trim()).filter(Boolean);
+    const parts = value
+        .split('|')
+        .map((part) => part.trim())
+        .filter(Boolean);
     if (parts.length < 2) {
         return value;
     }
@@ -44,7 +50,7 @@ export const createShuttlePopup = (hub: TransportHub): string => `
     <h3>${escapeHtml(localizedField(hub.name))}</h3>
     <p>${escapeHtml(localizedField(hub.info))}</p>
     <p>${langText('Karte se kupuju u autobusu', 'Tickets are available on the bus')}</p>
-    <a href="/airport/#airport" class="popup-link">${langText('Informacije o aerodromskom prevozu', 'Airport Transfer Info')}</a>
+    <a href="${withBase('airport/#airport')}" class="popup-link">${langText('Informacije o aerodromskom prevozu', 'Airport Transfer Info')}</a>
   </div>
 `;
 

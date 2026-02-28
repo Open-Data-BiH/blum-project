@@ -1,9 +1,10 @@
 import type {
     CircleMarker,
+    Control,
     LatLngBoundsExpression,
     LatLngExpression,
     LayerGroup,
-    Map,
+    Map as LeafletMap,
     Marker,
     Polyline,
     TileLayer,
@@ -117,7 +118,7 @@ const showMapNotification = (message: string): void => {
     }, 6000);
 };
 
-const createWalkingCircles = (L: LeafletNS, map: Map, coordinates: LatLngExpression): void => {
+const createWalkingCircles = (L: LeafletNS, map: LeafletMap, coordinates: LatLngExpression): void => {
     walkingLayers.forEach((layer) => map.removeLayer(layer));
     walkingLayers = [];
 
@@ -157,7 +158,7 @@ const createWalkingCircles = (L: LeafletNS, map: Map, coordinates: LatLngExpress
 
 const autoSelectNearestStop = async (
     L: LeafletNS,
-    map: Map,
+    map: LeafletMap,
     busStopLayers: Array<Marker | CircleMarker>,
 ): Promise<void> => {
     if (busStopLayers.length === 0) {
@@ -183,7 +184,8 @@ const autoSelectNearestStop = async (
         return;
     }
 
-    const bounds = L.latLngBounds([position.lat, position.lng]);
+    const userCoords: [number, number] = [position.lat, position.lng];
+    const bounds = L.latLngBounds(userCoords, userCoords);
     nearestStops.forEach((stop) => bounds.extend([stop.lat, stop.lng]));
     map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
 
@@ -228,10 +230,14 @@ const autoSelectNearestStop = async (
     userMarker.openPopup();
 };
 
-const createLocateControl = (L: LeafletNS, map: Map, getBusStopLayers: () => Array<Marker | CircleMarker>): Control => {
+const createLocateControl = (
+    L: LeafletNS,
+    map: LeafletMap,
+    getBusStopLayers: () => Array<Marker | CircleMarker>,
+): Control => {
     const Locate = L.Control.extend({
         options: { position: 'bottomright' as const },
-        onAdd(_map) {
+        onAdd(_map: LeafletMap) {
             const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
             const button = L.DomUtil.create('a', 'leaflet-control-locate', container);
             button.href = '#';
@@ -282,7 +288,7 @@ const createFontAwesomeIcon = (L: LeafletNS, iconClass: string, color: string) =
 
 const buildBusStopsLayer = (
     L: LeafletNS,
-    map: Map,
+    map: LeafletMap,
     busRoutes: BusRoutesFile,
 ): { layer: LayerGroup; getLayersForGeolocation: () => Array<Marker | CircleMarker> } => {
     const layer = L.layerGroup();
@@ -444,7 +450,7 @@ const buildBusStopsLayer = (
 
 const loadTransportHubs = (
     L: LeafletNS,
-    map: Map,
+    map: LeafletMap,
     hubs: TransportHub[],
     groups: Record<OverlayLayerId, LayerGroup>,
 ): void => {
@@ -491,7 +497,7 @@ const loadTransportHubs = (
     });
 };
 
-const loadBikeStations = (L: LeafletNS, map: Map, stations: BikeStation[], group: LayerGroup): void => {
+const loadBikeStations = (L: LeafletNS, map: LeafletMap, stations: BikeStation[], group: LayerGroup): void => {
     stations.forEach((station) => {
         const marker = L.marker([station.lat, station.lon], {
             icon: createFontAwesomeIcon(L, 'fa-bicycle', '#004899'),
@@ -557,7 +563,7 @@ export const initMainMap = async (): Promise<void> => {
             [44.996414749446565, 17.620029520676],
         ];
 
-        const map: Map = L.map('map-container', {
+        const map: LeafletMap = L.map('map-container', {
             center: MAP_CONFIG.CENTER,
             zoom: MAP_CONFIG.ZOOM,
             maxBounds: bounds,

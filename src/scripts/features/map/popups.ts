@@ -1,7 +1,7 @@
 // Popup template helpers for map overlays
 
 import { getCurrentLanguage } from '../../core/i18n';
-import type { TransportHub } from './types';
+import type { LocalizedText, TransportHub } from './types';
 
 const escapeHtml = (value: string): string =>
     value
@@ -13,9 +13,13 @@ const escapeHtml = (value: string): string =>
 
 const langText = (bhs: string, en: string): string => (getCurrentLanguage() === 'en' ? en : bhs);
 
-const localizedField = (value: string | undefined): string => {
+const localizedField = (value: string | LocalizedText | undefined): string => {
     if (!value) {
         return '';
+    }
+
+    if (typeof value === 'object') {
+        return getCurrentLanguage() === 'en' ? value.en : value.bhs;
     }
 
     const parts = value.split('|').map((part) => part.trim()).filter(Boolean);

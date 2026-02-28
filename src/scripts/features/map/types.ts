@@ -7,6 +7,11 @@ export interface LegendLabel {
     en: string;
 }
 
+export interface LocalizedText {
+    bhs: string;
+    en: string;
+}
+
 export interface BaseMapConfig {
     id: string;
     label: LegendLabel;
@@ -52,14 +57,14 @@ export type BusRoutesFile = Record<string, BusRoute>;
 export interface TransportHub {
     id: string;
     type: 'train-station' | 'bus-station' | 'terminal-bus-station' | 'airport-transfer' | 'bus-terminal';
-    name: string;
+    name: string | LocalizedText;
     lat: number;
     lng: number;
-    info: string;
-    destinations?: string;
-    description?: string;
-    price?: string;
-    duration?: string;
+    info: string | LocalizedText;
+    destinations?: string | LocalizedText;
+    description?: string | LocalizedText;
+    price?: string | LocalizedText;
+    duration?: string | LocalizedText;
     website?: string | null;
 }
 

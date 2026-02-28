@@ -6,25 +6,43 @@
             "name": "Terminal Malta",
             "lat": 44.78484571323663,
             "lng": 17.204853732442842,
-            "info": "Besplatan parking | Free parking",
-            "description": "Terminal za prigradske linije | Terminal for suburban lines"
+            "info": {
+                "bhs": "Besplatan parking",
+                "en": "Free parking"
+            },
+            "description": {
+                "bhs": "Terminal za prigradske linije",
+                "en": "Terminal for suburban lines"
+            }
         },
         {
             "id": "old-bus-station",
             "type": "airport-transfer",
-            "name": "Airport Shuttle Stop - Stara autobuska stanica",
+            "name": {
+                "bhs": "Stajalište aerodromskog shuttle-a - Stara autobuska stanica",
+                "en": "Airport Shuttle Stop - Old Bus Station"
+            },
             "lat": 44.771729490757814,
             "lng": 17.188919608373606,
-            "info": "Plaćeni parking | Paid parking",
+            "info": {
+                "bhs": "Plaćeni parking",
+                "en": "Paid parking"
+            },
             "website": "https://smiljiccompany.ba/avio-transferi/"
         },
         {
             "id": "main-bus-station-airport-transfer",
             "type": "airport-transfer",
-            "name": "Airport Shuttle Stop - Glavna autobuska stanica",
+            "name": {
+                "bhs": "Stajalište aerodromskog shuttle-a - Glavna autobuska stanica",
+                "en": "Airport Shuttle Stop - Main Bus Station"
+            },
             "lat": 44.78834063878358,
             "lng": 17.21025219262331,
-            "info": "Plaćeni parking | Paid parking",
+            "info": {
+                "bhs": "Plaćeni parking",
+                "en": "Paid parking"
+            },
             "website": "https://smiljiccompany.ba/avio-transferi/"
         },
         {
@@ -33,7 +51,10 @@
             "name": "Autobuska stanica Banja Luka",
             "lat": 44.788574127735146,
             "lng": 17.20994882314769,
-            "info": "Plaćeni parking | Paid parking",
+            "info": {
+                "bhs": "Plaćeni parking",
+                "en": "Paid parking"
+            },
             "website": "https://www.as-banjaluka.com/"
         },
         {
@@ -42,7 +63,10 @@
             "name": "Željeznička stanica Banja Luka",
             "lat": 44.78884187333215,
             "lng": 17.212554694567164,
-            "info": "Besplatan parking | Free parking",
+            "info": {
+                "bhs": "Besplatan parking",
+                "en": "Free parking"
+            },
             "destinations": "Prijedor - Novi Grad, Doboj",
             "website": "https://www.zrs-rs.com/red-voznje"
         },
@@ -52,7 +76,10 @@
             "name": "Željeznička stanica Incel",
             "lat": 44.77247973731433,
             "lng": 17.222578981293236,
-            "info": "Besplatan parking | Free parking",
+            "info": {
+                "bhs": "Besplatan parking",
+                "en": "Free parking"
+            },
             "destinations": "Banja Luka, Doboj",
             "website": "https://www.zrs-rs.com/red-voznje"
         },
@@ -62,7 +89,10 @@
             "name": "Željeznička stanica Zalužani",
             "lat": 44.83634064959971,
             "lng": 17.21963674468813,
-            "info": "Nema parkinga | No parking",
+            "info": {
+                "bhs": "Nema parkinga",
+                "en": "No parking"
+            },
             "destinations": "Banja Luka, Prijedor - Novi Grad",
             "website": "https://www.zrs-rs.com/red-voznje"
         },
@@ -72,7 +102,10 @@
             "name": "Željeznička stanica Vrbanja",
             "lat": 44.76099516069787,
             "lng": 17.24206946906394,
-            "info": "Besplatan parking | Free parking",
+            "info": {
+                "bhs": "Besplatan parking",
+                "en": "Free parking"
+            },
             "destinations": "Banja Luka, Doboj",
             "website": "https://www.zrs-rs.com/red-voznje"
         },
@@ -82,7 +115,10 @@
             "name": "Željeznička stanica Ramići",
             "lat": 44.85350331345485,
             "lng": 17.170945238298362,
-            "info": "Besplatan parking | Free parking",
+            "info": {
+                "bhs": "Besplatan parking",
+                "en": "Free parking"
+            },
             "destinations": "Banja Luka, Prijedor - Novi Grad",
             "website": "https://www.zrs-rs.com/red-voznje"
         },
@@ -90,7 +126,10 @@
             "id": "banj-bus-terminal",
             "type": "bus-terminal",
             "name": "Banj bus terminal",
-            "info": "Nema parkinga | No parking",
+            "info": {
+                "bhs": "Nema parkinga",
+                "en": "No parking"
+            },
             "price": "1 KM",
             "duration": "30 minutes",
             "lat": 44.75590314027775,

@@ -66,7 +66,6 @@ const { categories, updates } = updatesData as { categories: Category[]; updates
           {activeUpdates.map((update) => {
             const cat = categories.find((c) => c.id === update.type);
             const catIcon = cat ? cat.icon : 'fa-info-circle';
-            const severityLabels = { info: 'Info', warning: 'Upozorenje / Warning', urgent: 'Hitno / Urgent' };
 
             return (
               <article

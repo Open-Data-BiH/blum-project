@@ -255,12 +255,6 @@ export const applyTranslation = (lang: Language): void => {
 
     // Lines section
     safelyUpdateText('lines-title', t.sections?.lines?.title);
-    safelyUpdateText(
-        'lines-intro-text',
-        lang === 'bhs'
-            ? 'Javni prevoz u Banjoj Luci organizovan je u tri grupe linija. Za svaku grupu linija potrebno je kupiti odgovarajuću kartu. Karte nisu prenosive između grupa.'
-            : 'Public transport in Banja Luka is organized into three groups of lines. For each group of lines, you need to purchase a corresponding ticket. Tickets are not transferable between groups.',
-    );
     safelyUpdateText('operator-legend-title', lang === 'bhs' ? 'Prevoznici' : 'Operators');
     safelyUpdateText('lines-map-note', safeGet(t, 'sections', 'lines', 'mapNote'));
     safelyUpdateText('lines-map-credits-label', safeGet(t, 'sections', 'lines', 'mapCreditsToggle'));

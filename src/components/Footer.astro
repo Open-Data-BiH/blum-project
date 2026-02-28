@@ -1,6 +1,6 @@
 ---
 const year = new Date().getFullYear();
-const maintainerEmail = import.meta.env.PUBLIC_MAINTAINER_EMAIL ?? 'vladocodes@gmail.com';
+const maintainerEmail = import.meta.env.PUBLIC_MAINTAINER_EMAIL ?? '@gmail.com';
 
 const createMailtoLink = (subject: string, body: string): string =>
   `mailto:${maintainerEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;

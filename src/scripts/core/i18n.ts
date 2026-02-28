@@ -325,9 +325,16 @@ export const applyTranslation = (lang: Language): void => {
             ? 'BLum nije zvanična stranica javnog prevoza. Za zvanične informacije obratite se nadležnim institucijama.'
             : 'BLum is not an official public transport website. For official information, contact the relevant institutions.',
     );
-    safelyUpdateText('footer-link-issues', lang === 'bhs' ? 'Prijavi grešku' : 'Report issue');
+    safelyUpdateText(
+        'footer-link-timetable-report',
+        lang === 'bhs' ? 'Prijavi red voznje' : 'Report timetable issue',
+    );
+    safelyUpdateText(
+        'footer-link-technical-report',
+        lang === 'bhs' ? 'Prijavi tehnicki problem' : 'Report technical issue',
+    );
     safelyUpdateText('footer-link-faq', 'FAQ');
-    safelyUpdateText('footer-link-contact', lang === 'bhs' ? 'Kontakt' : 'Contact');
+    safelyUpdateText('footer-link-contact', lang === 'bhs' ? 'Kontakt odrzavaoca' : 'Contact maintainer');
 
     // data-lang attribute visibility toggle
     document.querySelectorAll<HTMLElement>('[data-lang]').forEach((element) => {

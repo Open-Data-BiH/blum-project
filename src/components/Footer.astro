@@ -1,5 +1,44 @@
 ---
 const year = new Date().getFullYear();
+const maintainerEmail = import.meta.env.PUBLIC_MAINTAINER_EMAIL ?? 'vladocodes@gmail.com';
+
+const createMailtoLink = (subject: string, body: string): string =>
+  `mailto:${maintainerEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+const timetableReportLink = createMailtoLink(
+  'BLum - Prijava netacnog reda voznje',
+  [
+    'Pozdrav,',
+    '',
+    'Prijavljujem netacne informacije o redu voznje:',
+    '- Linija:',
+    '- Smjer:',
+    '- Stanica/lokacija:',
+    '- Datum i vrijeme:',
+    '- Ocekivano vrijeme:',
+    '- Stvarno stanje:',
+    '',
+    'Dodatne informacije:',
+  ].join('\n'),
+);
+
+const technicalIssueLink = createMailtoLink(
+  'BLum - Prijava tehnickog problema',
+  [
+    'Pozdrav,',
+    '',
+    'Prijavljujem tehnicki problem na sajtu:',
+    '- Stranica/URL:',
+    '- Uredjaj i browser:',
+    '- Koraci za reprodukciju:',
+    '- Ocekivani rezultat:',
+    '- Stvarni rezultat:',
+    '',
+    'Dodatne informacije:',
+  ].join('\n'),
+);
+
+const contactMaintainerLink = createMailtoLink('BLum - Kontakt', 'Pozdrav,\n\n');
 ---
 
 <footer class="footer">
@@ -18,16 +57,13 @@ const year = new Date().getFullYear();
     </div>
 
     <nav class="footer__links" aria-label="Footer links">
-      <a
-        href="https://github.com/Open-Data-BiH/blum-project/issues"
-        target="_blank"
-        rel="noopener noreferrer"
-        id="footer-link-issues"
-      >Prijavi grešku</a>
+      <a href={timetableReportLink} id="footer-link-timetable-report">Prijavi red voznje</a>
+      <span class="footer__separator" aria-hidden="true">&middot;</span>
+      <a href={technicalIssueLink} id="footer-link-technical-report">Prijavi tehnicki problem</a>
       <span class="footer__separator" aria-hidden="true">&middot;</span>
       <a href="/faq/" id="footer-link-faq">FAQ</a>
       <span class="footer__separator" aria-hidden="true">&middot;</span>
-      <a href="/#contact" id="footer-link-contact">Kontakt</a>
+      <a href={contactMaintainerLink} id="footer-link-contact">Kontakt odrzavaoca</a>
     </nav>
 
     <div class="footer__copyright">

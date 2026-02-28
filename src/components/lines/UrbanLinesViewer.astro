@@ -1,0 +1,16 @@
+---
+/**
+ * UrbanLinesViewer — shell div for the Leaflet CRS.Simple image viewer.
+ * The map is initialised client-side by urban-lines-viewer.ts.
+ */
+import 'leaflet/dist/leaflet.css';
+---
+
+<div class="map-container urban-lines-map">
+  <div id="urban-lines-viewer"></div>
+</div>
+
+<script>
+  import { initUrbanLinesViewer } from '../../scripts/urban-lines-viewer';
+  initUrbanLinesViewer();
+</script>

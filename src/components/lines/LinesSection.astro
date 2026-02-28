@@ -1,0 +1,217 @@
+---
+/**
+ * LinesSection — server-renders all line cards at build time.
+ * Cards carry data-search-text, data-group and data-company so the
+ * client-side lines-ui.ts can filter without any extra fetch.
+ */
+
+import type { ProcessedLine } from '../../types/lines';
+
+interface Props {
+  lines: ProcessedLine[];
+}
+
+const { lines } = Astro.props;
+
+// Derive the sorted set of groups for the filter buttons
+const groups = [...new Set(lines.map((l) => l.group).filter(Boolean))].sort();
+const totalLines = lines.length;
+
+// Labels are rendered in BHS (default lang). Client-side i18n updates count
+// text via applyFilters(), but the initial label is baked in.
+const lang = 'bhs'; // SSR default; JS will re-render count on languageChanged
+---
+
+<div id="simplified-lines" class="simplified-lines-container">
+  <div class="lines-controls">
+    <div class="lines-search">
+      <i class="fas fa-search lines-search__icon" aria-hidden="true"></i>
+      <input
+        type="search"
+        class="lines-search__input"
+        id="lines-search-input"
+        placeholder={lang === 'bhs' ? 'Pretrazi liniju, odrediste, naselje...' : 'Search line, destination, neighborhood...'}
+        aria-label={lang === 'bhs' ? 'Pretrazi liniju, odrediste, naselje...' : 'Search line, destination, neighborhood...'}
+        autocomplete="off"
+      />
+      <button
+        class="lines-search__clear"
+        id="lines-search-clear"
+        type="button"
+        aria-label={lang === 'bhs' ? 'Obrisi pretragu' : 'Clear search'}
+      >
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="lines-filter-row">
+      <div
+        class="filter-buttons"
+        role="group"
+        aria-label={lang === 'bhs' ? 'Filtriraj po grupi' : 'Filter by group'}
+      >
+        <button class="filter-btn active" data-filter="all" aria-pressed="true">
+          {lang === 'bhs' ? 'Sve' : 'All'}
+        </button>
+        {groups.map((group) => (
+          <button class="filter-btn" data-filter={group} aria-pressed="false">
+            {lang === 'bhs' ? 'Grupa' : 'Group'} {group}
+          </button>
+        ))}
+      </div>
+      <div class="lines-results-count" id="lines-results-count">
+        {lang === 'bhs' ? 'Prikazano' : 'Showing'} <strong>{totalLines}</strong> {lang === 'bhs' ? 'linija' : 'lines'}
+      </div>
+    </div>
+  </div>
+
+  <div class="lines-list" id="lines-list">
+    <div class="lines-empty-state" id="lines-empty-state" hidden>
+      <i class="fas fa-search"></i>
+      <p>{lang === 'bhs' ? 'Nema rezultata za vasu pretragu' : 'No lines match your search'}</p>
+      <button class="btn btn--secondary" id="clear-all-filters">
+        {lang === 'bhs' ? 'Obrisi filtere' : 'Clear filters'}
+      </button>
+    </div>
+
+    <div class="tab-content active" id="urban-lines-cards">
+      {lines.map((line) => {
+        const safeLineId = line.lineId;
+        const safeGroup = line.group ?? '';
+        const safeCompanyName = line.companyName ?? 'N/A';
+        const nameBhs = typeof line.lineName === 'object' ? line.lineName.bhs : String(line.lineName);
+        const nameEn = typeof line.lineName === 'object' ? line.lineName.en : String(line.lineName);
+        const hasTimetable = true; // urban always has timetable (LINE_CONFIG.urban.timetableFile)
+
+        return (
+          <div
+            class:list={['line-card', line.companyClass]}
+            data-line-id={safeLineId}
+            data-group={safeGroup}
+            data-company={line.companyClass.replace('-line', '')}
+            data-search-text={line.searchText}
+          >
+            <div class="line-card__header">
+              <div class="line-card__identity">
+                <span class="badge badge--line-number">{safeLineId}</span>
+                {/* BHS name shown by default; JS re-applies on languageChanged via card text already in DOM */}
+                <span class="line-card__name" data-name-bhs={nameBhs} data-name-en={nameEn}>{nameBhs}</span>
+              </div>
+              <div class="line-card__badges">
+                {safeGroup && (
+                  <span class="badge badge--group">
+                    {lang === 'bhs' ? 'Grupa' : 'Group'} {safeGroup}
+                  </span>
+                )}
+                {line.wheelchair_accessible ? (
+                  <span
+                    class="badge badge--accessible"
+                    title={lang === 'bhs' ? 'Pristupacno za invalidska kolica' : 'Wheelchair accessible'}
+                    aria-label={lang === 'bhs' ? 'Pristupacno za invalidska kolica' : 'Wheelchair accessible'}
+                  >
+                    <i class="fas fa-wheelchair" aria-hidden="true"></i>
+                  </span>
+                ) : (
+                  <span
+                    class="badge badge--not-accessible"
+                    title={lang === 'bhs' ? 'Nije pristupacno' : 'Not accessible'}
+                    aria-label={lang === 'bhs' ? 'Nije pristupacno' : 'Not accessible'}
+                  >
+                    <i class="fas fa-wheelchair" aria-hidden="true"></i>
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div class="line-card__meta">
+              <span class="meta-item">
+                <i class="fas fa-building" aria-hidden="true"></i> {line.shortOperator}
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-map-marker-alt" aria-hidden="true"></i> {line.no_stops ?? '?'} {lang === 'bhs' ? 'stajalista' : 'stops'}
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-clock" aria-hidden="true"></i> {line.min_duration ?? '?'} min
+              </span>
+            </div>
+
+            <div class="line-card__actions">
+              {hasTimetable && (
+                <button class="btn--primary timetable-btn" data-line-id={safeLineId}>
+                  <i class="fas fa-clock" aria-hidden="true"></i> {lang === 'bhs' ? 'Red voznje' : 'Timetable'}
+                </button>
+              )}
+              <button
+                class="btn--secondary details-btn"
+                data-line-id={safeLineId}
+                aria-expanded="false"
+                aria-controls={`details-${safeLineId}`}
+              >
+                <i class="fas fa-info-circle" aria-hidden="true"></i> {lang === 'bhs' ? 'Detalji' : 'Details'}
+              </button>
+              {line.pdf_url && (
+                <a
+                  href={line.pdf_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn--link pdf-btn"
+                >
+                  <i class="fas fa-file-pdf" aria-hidden="true"></i> PDF
+                </a>
+              )}
+            </div>
+
+            <div class="line-card__details" id={`details-${safeLineId}`} hidden>
+              <div class="detail-item">
+                <span class="detail-item__label">{lang === 'bhs' ? 'Prevoznik' : 'Operator'}</span>
+                <span class="detail-item__value">{safeCompanyName}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-item__label">{lang === 'bhs' ? 'Grupa' : 'Group'}</span>
+                <span class="detail-item__value">{safeGroup || 'N/A'}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-item__label">{lang === 'bhs' ? 'Broj stajalista' : 'Number of stops'}</span>
+                <span class="detail-item__value">{line.no_stops ?? 'N/A'}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-item__label">{lang === 'bhs' ? 'Trajanje voznje' : 'Duration'}</span>
+                <span class="detail-item__value">
+                  {line.min_duration ? `${line.min_duration} ${lang === 'bhs' ? 'minuta' : 'minutes'}` : 'N/A'}
+                </span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-item__label">{lang === 'bhs' ? 'Tip autobusa' : 'Bus type'}</span>
+                <span class="detail-item__value">
+                  {line.bus_type === 'solo'
+                    ? (lang === 'bhs' ? 'Standardni autobus' : 'Solo bus')
+                    : line.bus_type === 'minibus'
+                    ? 'Minibus'
+                    : line.bus_type === 'articulated'
+                    ? (lang === 'bhs' ? 'Zglobni autobus' : 'Articulated bus')
+                    : line.bus_type ?? 'N/A'}
+                </span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-item__label">{lang === 'bhs' ? 'Pristupacnost' : 'Accessibility'}</span>
+                <span
+                  class:list={[
+                    'detail-item__value',
+                    line.wheelchair_accessible ? 'detail-item__value--accessible' : 'detail-item__value--not-accessible',
+                  ]}
+                >
+                  <i class:list={['fas', line.wheelchair_accessible ? 'fa-check' : 'fa-times']} aria-hidden="true"></i>{' '}
+                  {line.wheelchair_accessible ? (lang === 'bhs' ? 'Da' : 'Yes') : (lang === 'bhs' ? 'Ne' : 'No')}
+                </span>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</div>
+
+<script>
+  import { initializeLinesEventListeners } from '../../scripts/features/lines/lines-ui';
+  initializeLinesEventListeners();
+</script>

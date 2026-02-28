@@ -24,7 +24,7 @@ export const createShuttlePopup = (hub: TransportHub): string => `
     <h3>${escapeHtml(hub.name)}</h3>
     <p>${escapeHtml(hub.info)}</p>
     <p>Karte se kupuju u autobusu | Tickets are available on the bus</p>
-    <a href="#airport" class="popup-link">Airport Transfer Info</a>
+    <a href="/airport/#airport" class="popup-link">Airport Transfer Info</a>
   </div>
 `;
 

@@ -47,7 +47,7 @@ export async function initAirportMap(): Promise<void> {
         <h3>Airport Shuttle Stop - Stara autobuska stanica</h3>
         <p>Plaćeni parking | Paid parking</p>
         <p>Karte se kupuju u autobusu | Tickets are available on the bus</p>
-        <a href="#airport" class="popup-link">Airport Transfer Info</a>
+        <a href="/airport/#airport" class="popup-link">Airport Transfer Info</a>
       </div>`;
 
     const popupMain = `
@@ -55,7 +55,7 @@ export async function initAirportMap(): Promise<void> {
         <h3>Airport Shuttle Stop - Glavna autobuska stanica</h3>
         <p>Plaćeni parking | Paid parking</p>
         <p>Karte se kupuju u autobusu | Tickets are available on the bus</p>
-        <a href="#airport" class="popup-link">Airport Transfer Info</a>
+        <a href="/airport/#airport" class="popup-link">Airport Transfer Info</a>
       </div>`;
 
     L.marker([44.7722, 17.191], { icon: shuttleIcon }).bindPopup(popupOld).addTo(map);

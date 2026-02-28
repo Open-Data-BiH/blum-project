@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import type { PageKey } from '../layouts/BaseLayout.astro';
+import logo from '../assets/images/favicon/blum_logo_main.png';
 
 interface Props {
   currentPage: PageKey;
@@ -22,12 +24,13 @@ const navLinks: { key: PageKey; href: string; id: string }[] = [
     <div class="header__content">
       <div class="header__brand">
         <a href="/" class="header__brand-link">
-          <img
-            src="/assets/images/favicon/blum_logo_main.png"
+          <Image
+            src={logo}
             alt="BLum logo"
             class="header__logo"
-            width="797"
-            height="797"
+            width={797}
+            height={797}
+            loading="eager"
           />
           <div class="header__brand-text">
             <h1 class="header__title" id="site-title">BLum</h1>

@@ -19,6 +19,15 @@
             "website": "https://smiljiccompany.ba/avio-transferi/"
         },
         {
+            "id": "main-bus-station-airport-transfer",
+            "type": "airport-transfer",
+            "name": "Airport Shuttle Stop - Glavna autobuska stanica",
+            "lat": 44.78834063878358,
+            "lng": 17.21025219262331,
+            "info": "Plaćeni parking | Paid parking",
+            "website": "https://smiljiccompany.ba/avio-transferi/"
+        },
+        {
             "id": "main-bus-station",
             "type": "bus-station",
             "name": "Autobuska stanica Banja Luka",

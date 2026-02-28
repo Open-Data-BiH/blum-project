@@ -8,18 +8,18 @@ export const initializeAirportMap = () => {
         }
 
         const airportMapBounds = L.latLngBounds([
-            [44.76, 17.18],
-            [44.79, 17.21],
+            [44.76, 17.14],
+            [44.82, 17.25],
         ]);
 
         const airportMap = L.map('airport-map', {
-            center: [44.7722, 17.191],
-            zoom: 14,
+            center: [44.7786, 17.1974],
+            zoom: 13,
             scrollWheelZoom: false,
             zoomControl: false,
             maxBounds: airportMapBounds,
             maxBoundsViscosity: 1.0,
-            minZoom: 13,
+            minZoom: 12,
         });
 
         L.control
@@ -49,6 +49,15 @@ export const initializeAirportMap = () => {
                 createShuttlePopup('Airport Shuttle Stop - Stara autobuska stanica', 'Plaćeni parking | Paid parking'),
             )
             .addTo(airportMap);
+
+        L.marker([44.788, 17.210], {
+            icon: airportIcon,
+        })
+            .bindPopup(
+                createShuttlePopup('Airport Shuttle Stop - Glavna autobuska stanica', 'Plaćeni parking | Paid parking'),
+            )
+            .addTo(airportMap);
+
     } catch (error) {
         console.error('Error initializing airport map:', error);
         const airportMapContainer = document.getElementById('airport-map');

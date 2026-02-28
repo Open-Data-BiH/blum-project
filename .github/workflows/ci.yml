@@ -1,75 +1,63 @@
 name: CI Quality Gate
 
 on:
-    push:
-        branches: [main, master]
-    pull_request:
-        branches: [main, master]
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
 
 jobs:
-    quality-gate:
-        name: Format, Lint, Test, Build & Audit
-        runs-on: ubuntu-latest
+  quality-gate:
+    name: Format, Lint, Check, Test, Build & Audit
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: '20'
-                  cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
 
-            - name: Install dependencies
-              run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-            - name: Check formatting
-              run: npm run format:check
+      - name: Check formatting
+        run: npm run format:check
 
-            - name: Run linter
-              run: npm run lint
+      - name: Run linter
+        run: npm run lint
 
-            - name: Check shared HTML head consistency
-              run: npm run check:head
+      - name: Run type/content checks
+        run: npm run check
 
-            - name: Run tests
-              run: npm run test
+      - name: Run tests
+        run: npm run test
 
-            - name: Run build
-              run: npm run build
+      - name: Run build
+        run: npm run build
 
-            - name: Security audit
-              run: npm audit --audit-level=high
+      - name: Validate built HTML routes exist
+        run: |
+          required_files=(
+            "dist/index.html"
+            "dist/faq/index.html"
+            "dist/lines/index.html"
+            "dist/pricing/index.html"
+            "dist/updates/index.html"
+            "dist/airport/index.html"
+          )
 
-    html-validation:
-        name: Validate HTML
-        runs-on: ubuntu-latest
+          for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "Missing required built HTML file: $file"
+              exit 1
+            fi
+          done
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+          echo "All required built HTML files present"
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: '20'
-
-            - name: Validate HTML files exist
-              run: |
-                  for file in index.html faq.html lines.html pricing.html updates.html airport.html; do
-                    if [ ! -f "$file" ]; then
-                      echo "Missing required HTML file: $file"
-                      exit 1
-                    fi
-                  done
-                  echo "All required HTML files present"
-
-            - name: Check for inline scripts (CSP compliance)
-              run: |
-                  # Check that no HTML files have inline scripts (except script src tags)
-                  if grep -rE '<script>[^<]' *.html 2>/dev/null; then
-                    echo "ERROR: Found inline scripts in HTML files. CSP compliance requires external scripts only."
-                    exit 1
-                  fi
-                  echo "CSP compliance check passed: No inline scripts found"
+      - name: Security audit
+        run: npm run audit

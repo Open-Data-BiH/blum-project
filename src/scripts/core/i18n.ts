@@ -191,25 +191,25 @@ export const applyTranslation = (lang: Language): void => {
     const heroDefaults =
         lang === 'bhs'
             ? {
-                title: 'BLum',
-                subtitle: 'Informacije za lakše kretanje gradom.',
-                description:
-                    'Nezavisna platforma za linije, red vožnje i obavještenja o javnom prevozu u Banjoj Luci.',
-                detail1: 'Linije i red vožnje na jednom mjestu',
-                detail2: 'Ažurne informacije i korisni alati za kretanje gradom',
-                timetables: 'Red vožnje',
-                airport: 'Transfer do aerodroma',
-            }
+                  title: 'BLum',
+                  subtitle: 'Informacije za lakše kretanje gradom.',
+                  description:
+                      'Nezavisna platforma za linije, red vožnje i obavještenja o javnom prevozu u Banjoj Luci.',
+                  detail1: 'Linije i red vožnje na jednom mjestu',
+                  detail2: 'Ažurne informacije i korisni alati za kretanje gradom',
+                  timetables: 'Red vožnje',
+                  airport: 'Transfer do aerodroma',
+              }
             : {
-                title: 'BLum',
-                subtitle: 'Information for easier movement through the city.',
-                description:
-                    'Independent platform for routes, timetables, and public transport notices in Banja Luka.',
-                detail1: 'Routes and timetables in one place',
-                detail2: 'Up-to-date information and practical tools for getting around the city',
-                timetables: 'Timetables',
-                airport: 'Airport transfer',
-            };
+                  title: 'BLum',
+                  subtitle: 'Information for easier movement through the city.',
+                  description:
+                      'Independent platform for routes, timetables, and public transport notices in Banja Luka.',
+                  detail1: 'Routes and timetables in one place',
+                  detail2: 'Up-to-date information and practical tools for getting around the city',
+                  timetables: 'Timetables',
+                  airport: 'Airport transfer',
+              };
 
     safelyUpdateText('hero-title', heroDefaults.title);
     safelyUpdateText('hero-subtitle', heroDefaults.subtitle);
@@ -303,10 +303,7 @@ export const applyTranslation = (lang: Language): void => {
             ? 'BLum je nezavisna platforma razvijena radi bolje dostupnosti informacija o javnom prevozu. Zvanične i ažurirane informacije provjerite kod nadležnih gradskih organa i prevoznika.'
             : 'BLum is an independent platform created to improve access to public transport information. For official and up-to-date information, check with relevant city authorities and transport operators.',
     );
-    safelyUpdateText(
-        'footer-link-timetable-report',
-        lang === 'bhs' ? 'Prijavi red vožnje' : 'Report timetable issue',
-    );
+    safelyUpdateText('footer-link-timetable-report', lang === 'bhs' ? 'Prijavi red vožnje' : 'Report timetable issue');
     safelyUpdateText(
         'footer-link-technical-report',
         lang === 'bhs' ? 'Prijavi tehnički problem' : 'Report technical issue',

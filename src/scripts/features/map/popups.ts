@@ -22,7 +22,10 @@ const localizedField = (value: string | LocalizedText | undefined): string => {
         return getCurrentLanguage() === 'en' ? value.en : value.bhs;
     }
 
-    const parts = value.split('|').map((part) => part.trim()).filter(Boolean);
+    const parts = value
+        .split('|')
+        .map((part) => part.trim())
+        .filter(Boolean);
     if (parts.length < 2) {
         return value;
     }

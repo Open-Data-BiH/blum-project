@@ -33,5 +33,12 @@ export const normalizeForSearch = (text: string | null | undefined): string => {
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/đ/g, 'd')
     .replace(/ð/g, 'd')
-    .replace(/ł/g, 'l');
+    .replace(/ł/g, 'l')
+    .replace(/ß/g, 'ss')
+    .replace(/æ/g, 'ae')
+    .replace(/œ/g, 'oe')
+    .replace(/ø/g, 'o')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 };

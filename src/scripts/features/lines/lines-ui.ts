@@ -38,9 +38,12 @@ const applyFilters = (): void => {
   const lineCards = container.querySelectorAll<HTMLElement>('.line-card');
   let visibleCount = 0;
   const normalizedQuery = normalizeForSearch(currentSearchQuery);
+  const queryTokens = normalizedQuery.split(' ').filter(Boolean);
 
   lineCards.forEach((card) => {
-    const matchesSearch = !normalizedQuery || (card.dataset.searchText ?? '').includes(normalizedQuery);
+    const searchText = card.dataset.searchText ?? '';
+    const matchesSearch =
+      queryTokens.length === 0 || queryTokens.every((token) => searchText.includes(token));
     const matchesGroup = currentGroupFilter === 'all' || card.dataset.group === currentGroupFilter;
     const shouldShow = matchesSearch && matchesGroup;
 

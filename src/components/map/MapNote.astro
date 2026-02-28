@@ -1,0 +1,18 @@
+---
+export interface Props {
+  id?: string;
+  className?: string;
+  iconClass?: string;
+  iconHidden?: boolean;
+}
+
+const { id, className, iconClass = 'fas fa-info-circle', iconHidden = true } = Astro.props;
+const iconHiddenAttr = iconHidden ? 'true' : undefined;
+---
+
+<div class:list={['map-note', className]} id={id}>
+  <i class={`map-note__icon ${iconClass}`} aria-hidden={iconHiddenAttr}></i>
+  <div class="map-note__content">
+    <slot />
+  </div>
+</div>

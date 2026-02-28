@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import UrbanLinesViewer from '../components/lines/UrbanLinesViewer.astro';
 import LinesSection from '../components/lines/LinesSection.astro';
 import TimetableSection from '../components/lines/TimetableSection.astro';
+import MapNote from '../components/map/MapNote.astro';
 
 import ownershipData from '../../public/data/transport/routes/urban_company_ownership.json';
 import type { CompanyOwnership } from '../types/lines';
@@ -101,10 +102,9 @@ processedLines.sort(sortLinesByID);
 
       <UrbanLinesViewer />
 
-      <div class="map-note">
-        <i class="map-note__icon fas fa-info-circle"></i>
+      <MapNote iconHidden={false}>
         <span id="lines-map-note"></span>
-      </div>
+      </MapNote>
 
       <!-- Map Credits Dropdown -->
       <div class="map-credits">
@@ -198,32 +198,24 @@ processedLines.sort(sortLinesByID);
             </div>
             <div class="legend-item bocac-legend">
               <span class="color-box"></span>
-              <span class="operator-name">BOČAC Tours</span>
+              <span class="operator-name">BOČAC TOURS</span>
             </div>
             <div class="legend-item aldemo-legend">
               <span class="color-box"></span>
-              <span class="operator-name">ALDEMO Turs</span>
+              <span class="operator-name">ALDEMO TOURS</span>
             </div>
             <div class="legend-item rale-legend">
               <span class="color-box"></span>
-              <span class="operator-name">RALE Turs</span>
+              <span class="operator-name">RALE TOURS</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div id="lines-info">
-        <LinesSection lines={processedLines} />
-      </div>
+      <p id="lines-intro-text" class="lines-intro-text"></p>
+      <LinesSection lines={processedLines} />
     </div>
   </section>
 
-  <!-- Timetable Section -->
-  <TimetableSection />
+  <TimetableSection lines={processedLines} />
 </BaseLayout>
-
-<script>
-  import { setupLinesInfoAccordion, setupMapCreditsDropdown } from '../scripts/components/site-interactions';
-  setupLinesInfoAccordion();
-  setupMapCreditsDropdown();
-</script>

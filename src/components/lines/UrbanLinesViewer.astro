@@ -4,11 +4,10 @@
  * The map is initialised client-side by urban-lines-viewer.ts.
  */
 import 'leaflet/dist/leaflet.css';
+import MapContainer from '../map/MapContainer.astro';
 ---
 
-<div class="map-container urban-lines-map">
-  <div id="urban-lines-viewer"></div>
-</div>
+<MapContainer mapId="urban-lines-viewer" className="urban-lines-map" />
 
 <script>
   import { initUrbanLinesViewer } from '../../scripts/urban-lines-viewer';

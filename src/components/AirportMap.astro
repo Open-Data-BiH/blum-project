@@ -1,15 +1,9 @@
 ---
 // Leaflet CSS is loaded here so it's scoped to pages that use this component.
 // The JS is loaded client-side via the <script> tag below.
+import 'leaflet/dist/leaflet.css';
+import MapContainer from './map/MapContainer.astro';
 ---
-
-<!-- Leaflet CSS -->
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  integrity="sha512-Zcn6bjR/8RZbLEpLIeOwNtzREBAJnUKESxces60Mpoj+2okopSAcSUIUOseddDm0cxnGQzxIR7vJgsLZbdLE3w=="
-  crossorigin="anonymous"
-/>
 
 <div class="airport-transfer-info">
   <div class="airport-transfer-details">
@@ -70,13 +64,12 @@
     </a>
   </div>
 
-  <div class="map-container small-map">
-    <div id="airport-map" aria-label="Departure location map"></div>
+  <MapContainer mapId="airport-map" label="Departure location map" className="small-map">
     <p class="airport-map-caption">
       <span data-lang="bhs">Lokacija polaska u Banjoj Luci</span>
       <span data-lang="en" style="display:none">Departure location in Banja Luka</span>
     </p>
-  </div>
+  </MapContainer>
 </div>
 
 <script>

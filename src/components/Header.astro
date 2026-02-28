@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets';
+import type { PageKey } from '../layouts/BaseLayout.astro';
+import logo from '../assets/images/favicon/blum_logo_main.png';
+
+interface Props {
+  currentPage: PageKey;
+}
+
+const { currentPage } = Astro.props;
+
+const navLinks: { key: PageKey; href: string; id: string }[] = [
+  { key: 'home',    href: '/',         id: 'nav-map-desktop' },
+  { key: 'lines',   href: '/lines/',   id: 'nav-lines-desktop' },
+  { key: 'pricing', href: '/pricing/', id: 'nav-prices-desktop' },
+  { key: 'airport', href: '/airport/', id: 'nav-airport-desktop' },
+  { key: 'updates', href: '/updates/', id: 'nav-updates-desktop' },
+  { key: 'faq',     href: '/faq/',     id: 'nav-faq-desktop' },
+];
+---
+
+<header>
+  <div class="header__container">
+    <div class="header__content">
+      <div class="header__brand">
+        <a href="/" class="header__brand-link">
+          <Image
+            src={logo}
+            alt="BLum logo"
+            class="header__logo"
+            width={797}
+            height={797}
+            loading="eager"
+          />
+          <div class="header__brand-text">
+            <h1 class="header__title" id="site-title">BLum</h1>
+            <p class="header__subtitle" id="site-subtitle">Urbana mobilnost Banja Luka</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="header__controls">
+        <div class="language-selector" role="group" aria-label="Jezik / Language">
+          <button class="lang-btn lang-btn--active" data-lang="bhs">BHS</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+
+        <button class="theme-toggle" id="theme-toggle" aria-label="Tema / Theme">
+          <i class="fas fa-desktop"></i>
+        </button>
+
+        <button
+          class="menu-toggle mobile-menu-toggle"
+          id="mobile-menu-toggle"
+          aria-label="Toggle navigation"
+          aria-expanded="false"
+          aria-controls="main-nav"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+
+    <nav class="nav" id="main-nav">
+      <ul class="nav__list">
+        {
+          navLinks.map(({ key, href, id }) => (
+            <li class="nav__item">
+              <a
+                href={href}
+                class={`nav__link${currentPage === key ? ' active' : ''}`}
+                id={id}
+                data-page={key}
+              ></a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  import { initHeaderInteractions } from '../scripts/header-interactions';
+  initHeaderInteractions();
+</script>

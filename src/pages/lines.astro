@@ -1,0 +1,234 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import UrbanLinesViewer from '../components/lines/UrbanLinesViewer.astro';
+import LinesSection from '../components/lines/LinesSection.astro';
+import TimetableSection from '../components/lines/TimetableSection.astro';
+import MapNote from '../components/map/MapNote.astro';
+
+import ownershipData from '../../public/data/transport/routes/urban_company_ownership.json';
+import type { CompanyOwnership } from '../types/lines';
+import type { ProcessedLine } from '../types/lines';
+
+// ─── Helper functions (mirrors lines-ui.js, run at build time) ──────────────
+
+const normalizeForSearch = (text: string | null | undefined): string => {
+  if (!text) return '';
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .replace(/ð/g, 'd')
+    .replace(/ł/g, 'l')
+    .replace(/ß/g, 'ss')
+    .replace(/æ/g, 'ae')
+    .replace(/œ/g, 'oe')
+    .replace(/ø/g, 'o')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+};
+
+const getCompanyClass = (companyName: string | null): string => {
+  const companyMap: Record<string, string> = {
+    AUTOPREVOZ: 'autoprevoz-line',
+    PAVLOVIC: 'pavlovic-line',
+    BOCAC: 'bocac-line',
+    ALDEMO: 'aldemo-line',
+    RALE: 'rale-line',
+  };
+  const normalized = (companyName ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toUpperCase();
+  const found = Object.entries(companyMap).find(([key]) => normalized.includes(key));
+  return found ? found[1] : '';
+};
+
+const getShortOperatorName = (companyName: string | null): string => {
+  if (!companyName) return '';
+  const nameMap: Record<string, string> = {
+    AUTOPREVOZ: 'Autoprevoz',
+    PAVLOVIC: 'Pavlovic',
+    BOCAC: 'Bocac',
+    ALDEMO: 'Aldemo',
+    RALE: 'Rale',
+  };
+  const normalizedName = companyName
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toUpperCase();
+  const found = Object.entries(nameMap).find(([key]) => normalizedName.includes(key));
+  return found ? found[1] : companyName.split('"')[1] || companyName;
+};
+
+const sortLinesByID = (a: { lineId: string }, b: { lineId: string }): number => {
+  const numA = parseInt(a.lineId);
+  const numB = parseInt(b.lineId);
+  return !isNaN(numA) && !isNaN(numB) ? numA - numB : a.lineId.localeCompare(b.lineId);
+};
+
+// ─── Build flat processed line array ────────────────────────────────────────
+
+const data = ownershipData as CompanyOwnership;
+
+const processedLines: ProcessedLine[] = [];
+
+data.urban.forEach((company) => {
+  company.lines.forEach((line) => {
+    const nameBhs = typeof line.lineName === 'object' ? line.lineName.bhs : String(line.lineName);
+    const nameEn = typeof line.lineName === 'object' ? line.lineName.en : String(line.lineName);
+
+    processedLines.push({
+      ...line,
+      companyName: company.companyName,
+      lineType: 'urban',
+      hasMultilingualName: true,
+      searchText: normalizeForSearch(
+        line.lineId + ' ' + nameBhs + ' ' + nameEn + ' ' + company.companyName,
+      ),
+      companyClass: getCompanyClass(company.companyName),
+      shortOperator: getShortOperatorName(company.companyName),
+    });
+  });
+});
+
+processedLines.sort(sortLinesByID);
+---
+
+<BaseLayout
+  pageKey="lines"
+  title="Red vožnje i linije | BLum"
+  description="Pregled gradskih i prigradskih linija, mape trasa i reda vožnje javnog prevoza u Banjoj Luci."
+  canonicalUrl="https://open-data-bih.github.io/blum-project/lines/"
+>
+  <!-- Urban Lines Map Section -->
+  <section class="section section--wide" id="urban-lines">
+    <div class="container">
+      <h2 class="section__title" id="urban-lines-title"></h2>
+
+      <UrbanLinesViewer />
+
+      <MapNote iconHidden={false}>
+        <span id="lines-map-note"></span>
+      </MapNote>
+
+      <!-- Map Credits Dropdown -->
+      <div class="map-credits">
+        <button class="map-credits__toggle" id="map-credits-toggle">
+          <span class="map-credits__label" data-lang="bhs">Informacije o mapi</span>
+          <span class="map-credits__label" data-lang="en" style="display:none">Map information</span>
+          <i class="map-credits__icon fas fa-chevron-down"></i>
+        </button>
+
+        <div class="map-credits__content" id="map-credits-content">
+          <div class="map-context__content" data-lang="bhs">
+            <p>
+              Mapa prikazuje trase linija javnog prevoza i rezultat je rada
+              <strong>Udruženja Građana "<a
+                href="https://www.imamoplan.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="map-context__link"
+              >Uticajna Grupa - Imamo Plan</a>"</strong>
+              iz Srbije, koje su osnovali
+              <strong>Jug Cerović, Marko Njegić i Stefan Milojević 2012. godine</strong>.
+            </p>
+            <p>
+              Ova mapa predstavlja <strong>poklon gradu i građanima</strong>, nastala iz entuzijazma
+              i volonterskog angažmana, s ciljem da se unaprijedi preglednost i dostupnost
+              informacija o javnom prevozu.
+            </p>
+            <div class="map-context__note">
+              <strong>NAPOMENA:</strong> Prikazi na mapi možda nisu u potpunosti ažurni, jer
+              informacije sa internet stranice gradske uprave nisu uvijek dostupne, potpune ili
+              ažurirane.
+            </div>
+            <p>Zahvaljujemo se autorima za doprinos zajednici.</p>
+          </div>
+
+          <div class="map-context__content" data-lang="en" style="display:none">
+            <p>
+              This map displays public transport routes and was created by the
+              <strong>Citizens' Association "<a
+                href="https://www.imamoplan.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="map-context__link"
+              >Uticajna Grupa - Imamo Plan</a>"</strong>
+              from Serbia, founded in
+              <strong>2012 by Jug Cerović, Marko Njegić and Stefan Milojević</strong>.
+            </p>
+            <p>
+              The map is a <strong>gift to the city and its citizens</strong>, developed as a
+              volunteer initiative aimed at improving access to and visibility of public transport
+              information.
+            </p>
+            <div class="map-context__note">
+              <strong>Note:</strong> Some route details may not be fully up to date due to limited
+              availability or lack of accurate information on the city administration website.
+            </div>
+            <p>We thank the authors for their valuable contribution to the community.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lines Section -->
+  <section class="section section--wide" id="lines">
+    <div class="container">
+      <h2 class="section__title" id="lines-title"></h2>
+
+      <!-- Collapsible Info Accordion -->
+      <div class="lines-info-accordion">
+        <button
+          class="accordion-toggle"
+          id="lines-info-toggle"
+          aria-expanded="false"
+          aria-controls="lines-info-content"
+        >
+          <span id="lines-accordion-toggle"></span>
+          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="accordion-content" id="lines-info-content" hidden>
+          <p id="lines-accordion-text"></p>
+
+          <div class="operator-legend operator-legend--compact">
+            <div class="legend-item autoprevoz-legend">
+              <span class="color-box"></span>
+              <span class="operator-name">AUTOPREVOZ</span>
+            </div>
+            <div class="legend-item pavlovic-legend">
+              <span class="color-box"></span>
+              <span class="operator-name">PAVLOVIĆ Turs</span>
+            </div>
+            <div class="legend-item bocac-legend">
+              <span class="color-box"></span>
+              <span class="operator-name">BOČAC TOURS</span>
+            </div>
+            <div class="legend-item aldemo-legend">
+              <span class="color-box"></span>
+              <span class="operator-name">ALDEMO TOURS</span>
+            </div>
+            <div class="legend-item rale-legend">
+              <span class="color-box"></span>
+              <span class="operator-name">RALE TOURS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <LinesSection lines={processedLines} />
+    </div>
+  </section>
+
+  <TimetableSection lines={processedLines} />
+
+  <script>
+    import { setupLinesInfoAccordion, setupMapCreditsDropdown } from '../scripts/components/site-interactions';
+
+    setupLinesInfoAccordion();
+    setupMapCreditsDropdown();
+  </script>
+</BaseLayout>

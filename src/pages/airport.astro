@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AirportMap from '../components/AirportMap.astro';
+---
+
+<BaseLayout
+  pageKey="airport"
+  title="Aerodromski prevoz | BLum"
+  description="Informacije o prevozu do i od Međunarodnog aerodroma Banja Luka, uključujući cijene, stajališta i polaske."
+  canonicalUrl="https://open-data-bih.github.io/blum-project/airport/"
+>
+  <section class="section section--wide" id="airport">
+    <div class="container">
+      <h2 class="section__title" id="airport-title">
+        <span data-lang="bhs">Aerodromski prevoz</span>
+        <span data-lang="en" style="display:none">Airport Transport</span>
+      </h2>
+      <AirportMap />
+    </div>
+  </section>
+</BaseLayout>

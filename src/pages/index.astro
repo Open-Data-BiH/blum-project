@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeMap from '../components/map/HomeMap.astro';
+import ContactsSection from '../components/contacts/ContactsSection.astro';
+---
+
+<BaseLayout
+  pageKey="home"
+  title="Početna | BLum"
+  description="BLum je nezavisna platforma za informacije o javnom prevozu, linijama i urbanoj mobilnosti u Banjoj Luci."
+  canonicalUrl="https://open-data-bih.github.io/blum-project/"
+>
+  <section class="hero">
+    <div class="container">
+      <h1 id="hero-title">BLum</h1>
+      <p class="hero__subtitle" id="hero-subtitle">Informacije za lakše kretanje gradom.</p>
+      <p class="hero__description" id="hero-description">
+        Nezavisna platforma za linije, red vožnje i obavještenja o javnom prevozu u Banjoj Luci.
+      </p>
+      <div class="hero__details" aria-label="Ključne informacije">
+        <p class="hero__detail" id="hero-detail-1">
+          <i class="fas fa-map-signs" aria-hidden="true"></i>
+          <span>Linije i red vožnje na jednom mjestu</span>
+        </p>
+        <p class="hero__detail" id="hero-detail-2">
+          <i class="fas fa-circle-info" aria-hidden="true"></i>
+          <span>Ažurne informacije i korisni alati za kretanje gradom</span>
+        </p>
+      </div>
+      <div class="hero__actions">
+        <a href="/lines/#timetable" class="btn btn--primary btn--lg" id="hero-btn-timetables">
+          <i class="fas fa-clock" aria-hidden="true"></i>
+          <span class="btn__label">Red vožnje</span>
+        </a>
+        <a href="/airport/" class="btn btn--secondary btn--lg" id="hero-btn-airport">
+          <i class="fas fa-plane-departure" aria-hidden="true"></i>
+          <span class="btn__label">Transfer do aerodroma</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <HomeMap />
+
+  <ContactsSection />
+</BaseLayout>

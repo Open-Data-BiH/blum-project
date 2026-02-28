@@ -1,0 +1,66 @@
+---
+const year = new Date().getFullYear();
+const maintainerEmail = import.meta.env.PUBLIC_MAINTAINER_EMAIL ?? '@gmail.com';
+
+const createMailtoLink = (subject: string, body: string): string =>
+  `mailto:${maintainerEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+const timetableReportLink = createMailtoLink(
+  'BLum - Prijava netačnog reda vožnje',
+  [
+    'Pozdrav,',
+    '',
+    'Prijavljujem netačne informacije o redu vožnje:',
+    '- Linija:',
+    '- Smjer:',
+    '- Stanica/lokacija:',
+    '- Datum i vrijeme:',
+    '- Očekivano vrijeme:',
+    '- Stvarno stanje:',
+    '',
+    'Dodatne informacije:',
+  ].join('\n'),
+);
+
+const technicalIssueLink = createMailtoLink(
+  'BLum - Prijava tehničkog problema',
+  [
+    'Pozdrav,',
+    '',
+    'Prijavljujem tehnički problem na sajtu:',
+    '- Stranica/URL:',
+    '- Uređaj i browser:',
+    '- Koraci za reprodukciju:',
+    '- Očekivani rezultat:',
+    '- Stvarni rezultat:',
+    '',
+    'Dodatne informacije:',
+  ].join('\n'),
+);
+
+const contactMaintainerLink = createMailtoLink('BLum - Kontakt', 'Pozdrav,\n\n');
+---
+
+<footer class="footer">
+  <div class="footer__content">
+    <div class="footer__mission">
+      <p id="footer-mission-text">
+        BLum je nezavisna platforma razvijena radi bolje dostupnosti informacija o javnom prevozu. Zvanične i ažurirane informacije provjerite kod nadležnih gradskih organa i prevoznika.
+      </p>
+    </div>
+
+    <nav class="footer__links" aria-label="Footer links">
+      <a href={timetableReportLink} id="footer-link-timetable-report">Prijavi red vožnje</a>
+      <span class="footer__separator" aria-hidden="true">&middot;</span>
+      <a href={technicalIssueLink} id="footer-link-technical-report">Prijavi tehnički problem</a>
+      <span class="footer__separator" aria-hidden="true">&middot;</span>
+      <a href="/faq/" id="footer-link-faq">FAQ</a>
+      <span class="footer__separator" aria-hidden="true">&middot;</span>
+      <a href={contactMaintainerLink} id="footer-link-contact">Kontakt</a>
+    </nav>
+
+    <div class="footer__copyright">
+      <p>&copy; {year} BLum &middot; Urbana mobilnost Banja Luka</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,17 @@
+---
+export interface Props {
+  mapId: string;
+  label?: string;
+  className?: string;
+  role?: astroHTML.JSX.AriaRole;
+  live?: 'polite' | 'assertive' | 'off';
+}
+
+const { mapId, label, className, role, live } = Astro.props;
+const liveAttr = live && live !== 'off' ? live : undefined;
+---
+
+<div class:list={['map-container', className]} aria-live={liveAttr}>
+  <div id={mapId} aria-label={label} role={role}></div>
+  <slot />
+</div>

@@ -1,0 +1,163 @@
+---
+import updatesData from '../../public/data/transport/updates.json';
+
+interface Category {
+  id: string;
+  icon: string;
+  label: { bhs: string; en: string };
+}
+
+interface Update {
+  id: string;
+  type: string;
+  severity: 'info' | 'warning' | 'urgent';
+  title: { bhs: string; en: string };
+  description: { bhs: string; en: string };
+  affectedLines: string[];
+  datePublished: string;
+  dateExpiry: string | null;
+  isActive: boolean;
+  source: string;
+  sourceUrl: string;
+}
+
+const { categories, updates } = updatesData as { categories: Category[]; updates: Update[] };
+---
+
+<div class="updates-container" id="updates-section">
+  <!-- Filter buttons — rendered server-side, activated/toggled via TS -->
+  <div class="updates-filters" id="updates-filters" role="group" aria-label="Filter updates">
+    <button class="updates-filter-btn active" data-filter="all">
+      <i class="fas fa-list" aria-hidden="true"></i>
+      <span data-lang="bhs">Sve</span>
+      <span data-lang="en" style="display:none">All</span>
+    </button>
+    {categories.map((cat) => (
+      <button class="updates-filter-btn" data-filter={cat.id}>
+        <i class={`fas ${cat.icon}`} aria-hidden="true"></i>
+        <span data-lang="bhs">{cat.label.bhs}</span>
+        <span data-lang="en" style="display:none">{cat.label.en}</span>
+      </button>
+    ))}
+  </div>
+
+  <!-- Update cards — rendered server-side, hidden/shown via TS filter -->
+  <div id="updates-content">
+    {(() => {
+      const activeUpdates = updates.filter((u) => u.isActive);
+      if (activeUpdates.length === 0) {
+        return (
+          <div class="updates-empty">
+            <i class="updates-empty__icon fas fa-check-circle" aria-hidden="true"></i>
+            <h3 class="updates-empty__title">
+              <span data-lang="bhs">Nema aktivnih obavještenja</span>
+              <span data-lang="en" style="display:none">No Active Updates</span>
+            </h3>
+            <p class="updates-empty__text">
+              <span data-lang="bhs">Trenutno nema aktivnih obavještenja.</span>
+              <span data-lang="en" style="display:none">There are currently no active updates or announcements.</span>
+            </p>
+          </div>
+        );
+      }
+
+      return (
+        <div class="updates-list">
+          {activeUpdates.map((update) => {
+            const cat = categories.find((c) => c.id === update.type);
+            const catIcon = cat ? cat.icon : 'fa-info-circle';
+
+            return (
+              <article
+                class={`update-card update-card--${update.severity}`}
+                data-update-id={update.id}
+                data-type={update.type}
+                data-published={update.datePublished}
+                data-expiry={update.dateExpiry ?? ''}
+                data-severity={update.severity}
+              >
+                <div class="update-card__header">
+                  <div class="update-card__badges">
+                    <span class={`update-badge update-badge--${update.type}`}>
+                      <i class={`fas ${catIcon}`} aria-hidden="true"></i>
+                      {cat && (
+                        <>
+                          <span data-lang="bhs">{cat.label.bhs}</span>
+                          <span data-lang="en" style="display:none">{cat.label.en}</span>
+                        </>
+                      )}
+                    </span>
+                    <span class={`update-badge update-badge--severity-${update.severity}`}>
+                      <span data-lang="bhs">
+                        {update.severity === 'warning' ? 'Upozorenje' : update.severity === 'urgent' ? 'Hitno' : 'Info'}
+                      </span>
+                      <span data-lang="en" style="display:none">
+                        {update.severity === 'warning' ? 'Warning' : update.severity === 'urgent' ? 'Urgent' : 'Info'}
+                      </span>
+                    </span>
+                  </div>
+                  <div class="update-card__date">
+                    <i class="fas fa-calendar" aria-hidden="true"></i>
+                    <span class="update-card__date-text" data-date={update.datePublished}>
+                      {new Date(update.datePublished).toLocaleDateString('bs-BA', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                    </span>
+                  </div>
+                </div>
+
+                <h3 class="update-card__title">
+                  <span data-lang="bhs">{update.title.bhs}</span>
+                  <span data-lang="en" style="display:none">{update.title.en}</span>
+                </h3>
+                <p class="update-card__description">
+                  <span data-lang="bhs">{update.description.bhs}</span>
+                  <span data-lang="en" style="display:none">{update.description.en}</span>
+                </p>
+
+                {update.affectedLines && update.affectedLines.length > 0 && (
+                  <div class="update-card__lines">
+                    <span class="update-card__lines-label">
+                      <span data-lang="bhs">Zahvaćene linije:</span>
+                      <span data-lang="en" style="display:none">Affected lines:</span>
+                    </span>
+                    {update.affectedLines.map((line) => (
+                      <a href={`/lines/?line=${encodeURIComponent(String(line))}`} class="line-badge">{line}</a>
+                    ))}
+                  </div>
+                )}
+
+                <div class="update-card__footer">
+                  <div class="update-card__source">
+                    <span data-lang="bhs">Izvor:</span>
+                    <span data-lang="en" style="display:none">Source:</span>
+                    {update.sourceUrl
+                      ? <a href={update.sourceUrl} target="_blank" rel="noopener noreferrer">
+                          {update.source}
+                          <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                        </a>
+                      : update.source
+                    }
+                  </div>
+                  {update.dateExpiry && (
+                    <div class="update-card__expiry">
+                      <i class="fas fa-clock" aria-hidden="true"></i>
+                      <span>
+                        <span data-lang="bhs">Važi do:</span>
+                        <span data-lang="en" style="display:none">Valid until:</span>
+                        {' '}{new Date(update.dateExpiry).toLocaleDateString('bs-BA', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      );
+    })()}
+  </div>
+</div>
+
+<script>
+  import { initUpdatesFilter } from '../scripts/features/updates/updates-filter';
+  initUpdatesFilter();
+</script>

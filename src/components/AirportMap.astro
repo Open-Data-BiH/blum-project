@@ -1,0 +1,78 @@
+---
+// Leaflet CSS is loaded here so it's scoped to pages that use this component.
+// The JS is loaded client-side in the script block at the end of this component.
+import 'leaflet/dist/leaflet.css';
+import MapContainer from './map/MapContainer.astro';
+---
+
+<div class="airport-transfer-info">
+  <div class="airport-transfer-details">
+    <h3 id="airport-description-title">
+      <span data-lang="bhs">Transferi do Međunarodnog aerodroma Banja Luka</span>
+      <span data-lang="en" style="display:none">Transfers to Banja Luka International Airport</span>
+    </h3>
+
+    <div class="airport-info-block airport-info-block--price">
+      <div class="airport-info-block__icon" aria-hidden="true">
+        <i class="fa-solid fa-credit-card"></i>
+      </div>
+      <div class="airport-info-block__content">
+        <p class="airport-info-block__label">
+          <span data-lang="bhs">Cijena</span>
+          <span data-lang="en" style="display:none">Price</span>
+        </p>
+        <p id="airport-price" class="airport-info-block__value">
+          <span data-lang="bhs">Cijena karte u jednom pravcu iznosi 10,00 KM</span>
+          <span data-lang="en" style="display:none">One-way ticket price is 10.00 KM</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="airport-info-block airport-info-block--departure">
+      <div class="airport-info-block__icon" aria-hidden="true">
+        <i class="fa-solid fa-location-dot"></i>
+      </div>
+      <div class="airport-info-block__content">
+        <p class="airport-info-block__label">
+          <span data-lang="bhs">Polazište</span>
+          <span data-lang="en" style="display:none">Departure point</span>
+        </p>
+        <p id="airport-departure-location" class="airport-info-block__value">
+          <span data-lang="bhs">
+            Svi polasci su sa Stare autobuske stanice (Vidovdanska ulica) i Glavne (Nove) autobuske stanice.
+          </span>
+          <span data-lang="en" style="display:none">
+            All departures are from the Old Bus Station (Vidovdanska street) and the Main (New) Bus Station.
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <p id="airport-more-info">
+      <span data-lang="bhs">Za više informacija o polascima posjetite internet stranicu prevoznika.</span>
+      <span data-lang="en" style="display:none">For more information about departures, visit the operator's website.</span>
+    </p>
+    <a
+      href="https://smiljiccompany.ba/avio-transferi/"
+      target="_blank"
+      id="airport-website-link"
+      class="airport-link"
+      rel="noopener noreferrer"
+    >
+      <span data-lang="bhs">Avio transferi</span>
+      <span data-lang="en" style="display:none">Aviation Transfers</span>
+    </a>
+  </div>
+
+  <MapContainer mapId="airport-map" label="Departure location map" className="small-map">
+    <p class="airport-map-caption">
+      <span data-lang="bhs">Lokacija polaska u Banjoj Luci</span>
+      <span data-lang="en" style="display:none">Departure location in Banja Luka</span>
+    </p>
+  </MapContainer>
+</div>
+
+<script>
+  import { initAirportMap } from '../scripts/features/airport/airport-map';
+  initAirportMap();
+</script>

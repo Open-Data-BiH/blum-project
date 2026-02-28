@@ -1,0 +1,106 @@
+---
+import pricesData from '../../public/data/transport/prices.json';
+
+type PriceEntry = { name: string; description?: string; price: number };
+type MonthlyGroup = { name: string; workers: PriceEntry; students: PriceEntry; pensioners: PriceEntry };
+
+interface LangData {
+  ticketTypes: {
+    single: PriceEntry;
+    singleInSet: PriceEntry;
+    daily: PriceEntry;
+    monthlyGroup: MonthlyGroup;
+    monthlyUnified: MonthlyGroup;
+  };
+  labels: { ticketTypes: string; price: string; km: string };
+}
+
+const prices = pricesData as Record<'bhs' | 'en', LangData>;
+---
+
+<div id="price-tables">
+  {(['bhs', 'en'] as const).map((lang) => {
+    const d = prices[lang];
+    const t = d.ticketTypes;
+    const l = d.labels;
+    const singleDailyHeader = lang === 'bhs' ? 'Pojedinačne i dnevne karte' : 'Single and Daily Tickets';
+    const disclaimer =
+      lang === 'bhs'
+        ? 'Prikazane cijene su informativne. Za tačne i ažurirane cijene, kao i za cijene prigradskih linija, provjerite informacije kod nadležnih institucija i prevoznika.'
+        : 'Displayed prices are informational. For current and updated prices, including suburban lines, verify information with relevant institutions and operators.';
+
+    return (
+      <div class="price-tables" data-lang={lang} style={lang === 'en' ? 'display:none' : ''}>
+        <div class="price-table-container">
+          <table class="unified-price-table">
+            <thead>
+              <tr>
+                <th>{l.ticketTypes}</th>
+                <th>{l.price} ({l.km})</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="category-header">
+                <td colspan="2">{singleDailyHeader}</td>
+              </tr>
+              <tr>
+                <td>
+                  {t.single.name}
+                  <div class="description">{t.single.description}</div>
+                </td>
+                <td>{t.single.price.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td>
+                  {t.singleInSet.name}
+                  <div class="description">{t.singleInSet.description}</div>
+                </td>
+                <td>{t.singleInSet.price.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td>
+                  {t.daily.name}
+                  <div class="description">{t.daily.description}</div>
+                </td>
+                <td>{t.daily.price.toFixed(2)}</td>
+              </tr>
+
+              <tr class="category-header">
+                <td colspan="2">{t.monthlyGroup.name}</td>
+              </tr>
+              <tr>
+                <td>{t.monthlyGroup.workers.name}</td>
+                <td>{t.monthlyGroup.workers.price.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td>{t.monthlyGroup.students.name}</td>
+                <td>{t.monthlyGroup.students.price.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td>{t.monthlyGroup.pensioners.name}</td>
+                <td>{t.monthlyGroup.pensioners.price.toFixed(2)}</td>
+              </tr>
+
+              <tr class="category-header">
+                <td colspan="2">{t.monthlyUnified.name}</td>
+              </tr>
+              <tr>
+                <td>{t.monthlyUnified.workers.name}</td>
+                <td>{t.monthlyUnified.workers.price.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td>{t.monthlyUnified.students.name}</td>
+                <td>{t.monthlyUnified.students.price.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td>{t.monthlyUnified.pensioners.name}</td>
+                <td>{t.monthlyUnified.pensioners.price.toFixed(2)}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="price-disclaimer">{disclaimer}</p>
+        </div>
+      </div>
+    );
+  })}
+</div>

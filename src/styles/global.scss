@@ -1,0 +1,15 @@
+// Global stylesheet entry point
+// CSS custom properties in _variables.scss are kept as-is (they power runtime dark mode)
+// SCSS is the authoring layer only - do not replace custom properties with $variables
+
+@use 'variables';
+@use 'base';
+@use 'layout';
+@use 'components';
+@use 'utilities';
+@use 'pages/price-tables';
+@use 'pages/faq';
+@use 'pages/updates';
+@use 'pages/map-legend';
+@use 'pages/line-styles';
+@use 'pages/timetables';

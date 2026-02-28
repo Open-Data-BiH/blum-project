@@ -1,0 +1,302 @@
+{
+    "categories": [
+        {
+            "id": "site-usage",
+            "title": {
+                "bhs": "Korištenje sajta",
+                "en": "Using the Site"
+            },
+            "questions": [
+                {
+                    "id": "service-coverage",
+                    "question": {
+                        "bhs": "Koja područja pokriva javni prevoz u Banjoj Luci?",
+                        "en": "Which areas are covered by public transport in Banja Luka?"
+                    },
+                    "answer": {
+                        "bhs": "Javni prevoz u Banjoj Luci obuhvata gradske i prigradske linije koje povezuju različite dijelove grada i okolna naselja.",
+                        "en": "Public transport in Banja Luka includes urban and suburban routes connecting various parts of the city and nearby settlements."
+                    }
+                },
+                {
+                    "id": "find-timetable",
+                    "question": {
+                        "bhs": "Kako da pronađem red vožnje za svoju liniju?",
+                        "en": "How can I find the timetable for my line?"
+                    },
+                    "answer": {
+                        "bhs": "Red vožnje možete pronaći u sekciji „Linije“ ili pretragom broja linije. Raspored polazaka dostupan je i na interaktivnoj mapi.",
+                        "en": "You can find the timetable in the \"Lines\" section or by searching for your line number. Departure schedules are also available on the interactive map."
+                    }
+                },
+                {
+                    "id": "holiday-timetable",
+                    "question": {
+                        "bhs": "Da li red vožnje važi praznicima?",
+                        "en": "Does the regular timetable apply on holidays?"
+                    },
+                    "answer": {
+                        "bhs": "Tokom praznika može važiti poseban red vožnje. Prilikom pregleda rasporeda provjerite oznaku dana: radni dan, subota ili nedjelja/praznik.",
+                        "en": "A special timetable may apply during holidays. When checking departures, review the day type label: weekday, Saturday, or Sunday/holiday."
+                    }
+                },
+                {
+                    "id": "interactive-map-usage",
+                    "question": {
+                        "bhs": "Kako da koristim interaktivnu mapu?",
+                        "en": "How do I use the interactive map?"
+                    },
+                    "answer": {
+                        "bhs": "Na mapi možete uključivati i isključivati slojeve (autobuska stajališta, stanice, aerodromski prevoz) putem kontrolnog panela u gornjem desnom uglu.",
+                        "en": "On the map, you can turn layers on and off (bus stops, stations, airport transport) using the control panel in the top-right corner."
+                    }
+                },
+                {
+                    "id": "line-changes-info",
+                    "question": {
+                        "bhs": "Gdje mogu pronaći informacije o izmjenama linija?",
+                        "en": "Where can I find information about route changes?"
+                    },
+                    "answer": {
+                        "bhs": "Informacije o privremenim izmjenama objavljuju nadležne institucije i prevoznici. BLUM prenosi dostupne informacije, ali preporučujemo provjeru zvaničnih izvora.",
+                        "en": "Temporary route changes are published by competent authorities and transport operators. BLUM republishes available information, but we recommend checking official sources as well."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "tickets-and-fares",
+            "title": {
+                "bhs": "Karte i cijene",
+                "en": "Tickets and Fares"
+            },
+            "questions": [
+                {
+                    "id": "ticket-purchase-locations",
+                    "question": {
+                        "bhs": "Gdje mogu kupiti kartu za javni prevoz?",
+                        "en": "Where can I buy a public transport ticket?"
+                    },
+                    "answer": {
+                        "bhs": "Pojedinačne i dnevne karte, kao i set od pet karata, dostupne su kod vozača i na ovlaštenim prodajnim mjestima prevoznika.",
+                        "en": "Single tickets, day tickets, and five-ticket sets are available from the driver and at authorised operator sales points."
+                    }
+                },
+                {
+                    "id": "card-payment",
+                    "question": {
+                        "bhs": "Da li je moguće plaćanje karticom u autobusu?",
+                        "en": "Is card payment available on the bus?"
+                    },
+                    "answer": {
+                        "bhs": "Prema trenutno dostupnim informacijama, plaćanje karticom u autobusu nije dostupno. Za kupovinu karte pripremite gotovinu.",
+                        "en": "Based on currently available information, card payment on the bus is not available. Please prepare cash when purchasing a ticket."
+                    }
+                },
+                {
+                    "id": "monthly-ticket",
+                    "question": {
+                        "bhs": "Da li postoji mjesečna karta?",
+                        "en": "Are monthly tickets available?"
+                    },
+                    "answer": {
+                        "bhs": "Da, dostupne su mjesečne karte za različite kategorije putnika (npr. radnici, učenici i penzioneri). Aktuelne cijene pogledajte u sekciji Cjenovnik.",
+                        "en": "Yes, monthly tickets are available for different passenger groups (for example workers, students, and pensioners). Check current prices in the \"Prices\" section."
+                    }
+                },
+                {
+                    "id": "concessions-eligibility",
+                    "question": {
+                        "bhs": "Ko ima pravo na besplatnu ili subvencionisanu kartu?",
+                        "en": "Who is entitled to free or subsidised travel?"
+                    },
+                    "answer": {
+                        "bhs": "Pravo na besplatan ili subvencionisan prevoz imaju određene kategorije građana (npr. penzioneri, osobe starije od 65 godina, osobe sa invaliditetom i druge kategorije prema odlukama Grada).",
+                        "en": "Free or subsidised travel is available to certain groups (for example pensioners, people over 65, people with disabilities, and other groups defined by City decisions)."
+                    }
+                },
+                {
+                    "id": "how-to-apply-benefit",
+                    "question": {
+                        "bhs": "Kako mogu ostvariti pravo na povlastice?",
+                        "en": "How can I apply for transport benefits?"
+                    },
+                    "answer": {
+                        "bhs": "Za ostvarivanje prava obratite se nadležnim institucijama uz potrebnu dokumentaciju.",
+                        "en": "To apply for benefits, contact the competent institutions and submit the required documentation."
+                    }
+                },
+                {
+                    "id": "child-travel-policy",
+                    "question": {
+                        "bhs": "Do koje dobi djeca putuju besplatno?",
+                        "en": "Until what age can children travel for free?"
+                    },
+                    "answer": {
+                        "bhs": "Djeca do 6 godina putuju besplatno u pratnji odrasle osobe.",
+                        "en": "Children under 6 travel free of charge when accompanied by an adult."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "during-ride",
+            "title": {
+                "bhs": "Tokom vožnje",
+                "en": "During the Ride"
+            },
+            "questions": [
+                {
+                    "id": "night-service",
+                    "question": {
+                        "bhs": "Da li postoji noćni prevoz?",
+                        "en": "Is there a night service?"
+                    },
+                    "answer": {
+                        "bhs": "Ne, noćni prevoz trenutno nije dostupan.",
+                        "en": "No, night service is currently not available."
+                    }
+                },
+                {
+                    "id": "pet-transport",
+                    "question": {
+                        "bhs": "Da li je dozvoljen prevoz kućnih ljubimaca?",
+                        "en": "Are pets allowed on public transport?"
+                    },
+                    "answer": {
+                        "bhs": "Mali kućni ljubimci su dozvoljeni ako su u transporteru i ne ometaju druge putnike. Psi vodiči su dozvoljeni, uz poštovanje sigurnosnih pravila.",
+                        "en": "Small pets are allowed if they are in a carrier and do not disturb other passengers. Guide dogs are allowed, with standard safety rules applied."
+                    }
+                },
+                {
+                    "id": "wheelchair-access",
+                    "question": {
+                        "bhs": "Da li su autobusi pristupačni za korisnike invalidskih kolica?",
+                        "en": "Are buses accessible for wheelchair users?"
+                    },
+                    "answer": {
+                        "bhs": "Na gradskim linijama predviđena su vozila sa pristupnim rampama. Ako primijetite vozilo bez rampe ili problem pri ulasku, možete prijaviti slučaj gradskoj inspekciji.",
+                        "en": "Urban lines are expected to use vehicles with access ramps. If you notice a vehicle without a ramp or encounter a boarding issue, you can report it to the city inspection service."
+                    }
+                },
+                {
+                    "id": "vehicle-equipment",
+                    "question": {
+                        "bhs": "Šta ako klima u autobusu ne radi?",
+                        "en": "What if the air conditioning is not working?"
+                    },
+                    "answer": {
+                        "bhs": "Ako klima ne radi ili vozilo nije adekvatno opremljeno, situaciju možete prijaviti nadležnoj gradskoj inspekciji ili prevozniku.",
+                        "en": "If the air conditioning does not work or the vehicle is not properly equipped, you can report the issue to the city inspection authority or the transport operator."
+                    }
+                },
+                {
+                    "id": "bus-stop-policy",
+                    "question": {
+                        "bhs": "Da li autobus staje na svakom stajalištu?",
+                        "en": "Does the bus stop at every stop?"
+                    },
+                    "answer": {
+                        "bhs": "Autobusi staju na registrovanim stajalištima kada ima putnika za ulazak ili izlazak. Na vrijeme signalizirajte vozaču da želite izaći.",
+                        "en": "Buses stop at registered stops when passengers need to board or alight. Signal in time if you want to get off."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "rights-and-reports",
+            "title": {
+                "bhs": "Prava i prijave",
+                "en": "Rights and Reporting"
+            },
+            "questions": [
+                {
+                    "id": "priority-boarding",
+                    "question": {
+                        "bhs": "Ko ima prednost pri ulasku u autobus?",
+                        "en": "Who has boarding priority?"
+                    },
+                    "answer": {
+                        "bhs": "Prednost pri ulasku, izlasku i sjedenju imaju osobe sa invaliditetom, trudnice, starije i bolesne osobe, te putnici sa malom djecom.",
+                        "en": "Priority for boarding, alighting, and seating is given to persons with disabilities, pregnant women, elderly and ill persons, and passengers with small children."
+                    }
+                },
+                {
+                    "id": "ticket-inspection",
+                    "question": {
+                        "bhs": "Da li moram pokazati kartu kontroloru?",
+                        "en": "Do I need to show my ticket to an inspector?"
+                    },
+                    "answer": {
+                        "bhs": "Da, tokom kontrole potrebno je pokazati važeću kartu ovlaštenom licu.",
+                        "en": "Yes, during inspections you need to show a valid ticket to authorised personnel."
+                    }
+                },
+                {
+                    "id": "report-bus-problem",
+                    "question": {
+                        "bhs": "Kako da prijavim problem sa autobusom?",
+                        "en": "How can I report a problem with a bus?"
+                    },
+                    "answer": {
+                        "bhs": "U slučaju problema (kašnjenje, neispravna klima, nepravilnosti), obratite se nadležnoj gradskoj inspekciji ili prevozniku. Kontakt informacije su u dostupne na početnoj stranici.",
+                        "en": "For problems such as delays, faulty air conditioning, or irregularities, contact the city inspection authority or the operator. Contact details are available on the homepage."
+                    }
+                },
+                {
+                    "id": "complaints",
+                    "question": {
+                        "bhs": "Kako mogu podnijeti žalbu ili prijedlog?",
+                        "en": "How can I file a complaint or suggestion?"
+                    },
+                    "answer": {
+                        "bhs": "Žalbe i prijedloge možete poslati putem kontakata iz sekcije „Korisni kontakti“.",
+                        "en": "You can submit complaints and suggestions using the contact details listed in the \"Useful Contacts\" section."
+                    }
+                },
+                {
+                    "id": "lost-items",
+                    "question": {
+                        "bhs": "Šta ako nađem izgubljeni predmet u autobusu?",
+                        "en": "What if I find a lost item on the bus?"
+                    },
+                    "answer": {
+                        "bhs": "Pronađeni predmet predajte vozaču ili prevozniku. Ako vlasnik ne preuzme predmet u predviđenom roku, predmet se predaje nadležnim službama.",
+                        "en": "Hand the found item to the driver or transport operator. If it is not claimed within the expected timeframe, it is forwarded to the competent authorities."
+                    }
+                },
+                {
+                    "id": "vehicle-faults",
+                    "question": {
+                        "bhs": "Šta ako se autobus pokvari tokom vožnje?",
+                        "en": "What if a bus breaks down during the ride?"
+                    },
+                    "answer": {
+                        "bhs": "U slučaju kvara pratite uputstva vozača i sačekajte dalje informacije o nastavku vožnje ili zamjenskom vozilu.",
+                        "en": "If a vehicle breaks down, follow the driver's instructions and wait for further information about service continuation or a replacement vehicle."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "emergencies",
+            "title": {
+                "bhs": "Hitne situacije",
+                "en": "Emergencies"
+            },
+            "questions": [
+                {
+                    "id": "emergency",
+                    "question": {
+                        "bhs": "Koji broj da pozovem u hitnoj situaciji u autobusu?",
+                        "en": "Which number should I call in an emergency on the bus?"
+                    },
+                    "answer": {
+                        "bhs": "U hitnim situacijama pozovite: policiju 122, vatrogasce 123 ili hitnu pomoć 124.",
+                        "en": "In emergencies, call: police 122, fire brigade 123, or ambulance 124."
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+---
+/**
+ * TimetableSection — structural shell only.
+ * All data loading and rendering happens client-side via timetable.ts.
+ */
+---
+
+<section class="section section--wide" id="timetable">
+  <div class="container">
+    <h2 class="section__title" id="lines-timetable-title"></h2>
+    <div class="line-selector-wrapper">
+      <label for="line-select" class="visually-hidden">Izaberite liniju</label>
+      <select id="line-select" aria-label="Izaberite liniju"></select>
+    </div>
+    <div id="timetable-display"></div>
+  </div>
+</section>
+
+<script>
+  import { setupTimetableSelection } from '../../scripts/features/lines/timetable';
+  setupTimetableSelection();
+</script>

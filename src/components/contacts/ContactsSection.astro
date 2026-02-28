@@ -1,0 +1,154 @@
+---
+import contactsData from '../../../public/data/transport/contacts.json';
+import translationsData from '../../../public/data/config/bhs_en_translations.json';
+import type { ContactsFile, Contact } from '../../types/contacts';
+
+interface Translations {
+  bhs: {
+    sections: { contact: { phone?: string; email?: string } };
+    ui: { visit?: string };
+  };
+  en: {
+    sections: { contact: { phone?: string; email?: string } };
+    ui: { visit?: string };
+  };
+}
+
+const { contacts } = contactsData as ContactsFile;
+const translations = translationsData as Translations;
+
+const labels = {
+  bhs: {
+    phone: translations.bhs.sections.contact.phone ?? 'Telefon:',
+    email: translations.bhs.sections.contact.email ?? 'Email:',
+    visit: translations.bhs.ui.visit ?? 'Posjetite web stranicu',
+  },
+  en: {
+    phone: translations.en.sections.contact.phone ?? 'Phone:',
+    email: translations.en.sections.contact.email ?? 'Email:',
+    visit: translations.en.ui.visit ?? 'Visit website',
+  },
+};
+
+const isAuthorityType = (contact: Contact): boolean =>
+  contact.type.bhs === 'Gradska uprava' || contact.type.en === 'City Administration';
+
+const authorityContacts = contacts.filter(isAuthorityType);
+const operatorContacts = contacts.filter((contact) => !isAuthorityType(contact));
+---
+
+<section class="section section--narrow" id="contact">
+  <div class="container">
+    <h2 class="section__title" id="contact-title">Korisni kontakti</h2>
+
+    <div class="contact-group">
+      <h3 class="contact-group__title" id="contact-group-authorities-title">Gradske službe</h3>
+      <div class="contact-cards">
+        {authorityContacts.map((contact) => (
+          <div
+            class="contact-card"
+            id={`contact-${contact.id}`}
+            style={contact.color ? `border-left-color: ${contact.color};` : undefined}
+          >
+            <h3>
+              <span data-lang="bhs">{contact.name.bhs}</span>
+              <span data-lang="en" style="display:none">{contact.name.en}</span>
+            </h3>
+            <p class="contact-department">
+              <span data-lang="bhs">{contact.department.bhs}</span>
+              <span data-lang="en" style="display:none">{contact.department.en}</span>
+            </p>
+            <p class="contact-type">
+              <span data-lang="bhs">{contact.type.bhs}</span>
+              <span data-lang="en" style="display:none">{contact.type.en}</span>
+            </p>
+
+            {contact.phoneDisplay && (
+              <p class="contact-phone">
+                <strong>
+                  <span data-lang="bhs">{labels.bhs.phone}</span>
+                  <span data-lang="en" style="display:none">{labels.en.phone}</span>
+                </strong>{' '}
+                {contact.phoneDisplay}
+              </p>
+            )}
+
+            {contact.email && (
+              <p class="contact-email">
+                <strong>
+                  <span data-lang="bhs">{labels.bhs.email}</span>
+                  <span data-lang="en" style="display:none">{labels.en.email}</span>
+                </strong>{' '}
+                <a href={`mailto:${contact.email}`}>{contact.email}</a>
+              </p>
+            )}
+
+            {contact.website && (
+              <p class="contact-website">
+                <a href={contact.website} target="_blank" rel="noopener noreferrer">
+                  <span data-lang="bhs">{labels.bhs.visit}</span>
+                  <span data-lang="en" style="display:none">{labels.en.visit}</span>
+                </a>
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="contact-group">
+      <h3 class="contact-group__title" id="contact-group-operators-title">Prevoznici</h3>
+      <div class="contact-cards">
+        {operatorContacts.map((contact) => (
+          <div
+            class="contact-card"
+            id={`contact-${contact.id}`}
+            style={contact.color ? `border-left-color: ${contact.color};` : undefined}
+          >
+            <h3>
+              <span data-lang="bhs">{contact.name.bhs}</span>
+              <span data-lang="en" style="display:none">{contact.name.en}</span>
+            </h3>
+            <p class="contact-department">
+              <span data-lang="bhs">{contact.department.bhs}</span>
+              <span data-lang="en" style="display:none">{contact.department.en}</span>
+            </p>
+            <p class="contact-type">
+              <span data-lang="bhs">{contact.type.bhs}</span>
+              <span data-lang="en" style="display:none">{contact.type.en}</span>
+            </p>
+
+            {contact.phoneDisplay && (
+              <p class="contact-phone">
+                <strong>
+                  <span data-lang="bhs">{labels.bhs.phone}</span>
+                  <span data-lang="en" style="display:none">{labels.en.phone}</span>
+                </strong>{' '}
+                {contact.phoneDisplay}
+              </p>
+            )}
+
+            {contact.email && (
+              <p class="contact-email">
+                <strong>
+                  <span data-lang="bhs">{labels.bhs.email}</span>
+                  <span data-lang="en" style="display:none">{labels.en.email}</span>
+                </strong>{' '}
+                <a href={`mailto:${contact.email}`}>{contact.email}</a>
+              </p>
+            )}
+
+            {contact.website && (
+              <p class="contact-website">
+                <a href={contact.website} target="_blank" rel="noopener noreferrer">
+                  <span data-lang="bhs">{labels.bhs.visit}</span>
+                  <span data-lang="en" style="display:none">{labels.en.visit}</span>
+                </a>
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

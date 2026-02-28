@@ -33,7 +33,9 @@ let currentGroupFilter = 'all';
 
 const applyFilters = (): void => {
   const container = document.getElementById('simplified-lines');
-  if (!container) return;
+  if (!container) {
+    return;
+  }
 
   const lineCards = container.querySelectorAll<HTMLElement>('.line-card');
   let visibleCount = 0;
@@ -48,7 +50,9 @@ const applyFilters = (): void => {
     const shouldShow = matchesSearch && matchesGroup;
 
     card.hidden = !shouldShow;
-    if (shouldShow) visibleCount++;
+    if (shouldShow) {
+      visibleCount++;
+    }
   });
 
   const resultsCount = document.getElementById('lines-results-count');
@@ -59,14 +63,18 @@ const applyFilters = (): void => {
   }
 
   const emptyState = document.getElementById('lines-empty-state');
-  if (emptyState) emptyState.hidden = visibleCount > 0;
+  if (emptyState) {
+    emptyState.hidden = visibleCount > 0;
+  }
 };
 
 // ─── Event wiring ───────────────────────────────────────────────────────────
 
 export const initializeLinesEventListeners = (): void => {
   const container = document.getElementById('simplified-lines');
-  if (!container) return;
+  if (!container) {
+    return;
+  }
 
   const searchInput = document.getElementById('lines-search-input') as HTMLInputElement | null;
   const clearSearchBtn = document.getElementById('lines-search-clear');
@@ -74,7 +82,9 @@ export const initializeLinesEventListeners = (): void => {
   const linesList = document.getElementById('lines-list');
   const clearAllFiltersBtn = document.getElementById('clear-all-filters');
 
-  if (!searchInput) return;
+  if (!searchInput) {
+    return;
+  }
 
   const handleSearch = debounce((query: string) => {
     currentSearchQuery = query;
@@ -142,7 +152,9 @@ export const initializeLinesEventListeners = (): void => {
     const timetableBtn = (e.target as Element).closest<HTMLElement>('.timetable-btn');
     if (timetableBtn) {
       const lineId = timetableBtn.dataset.lineId;
-      if (lineId) scrollToTimetable(lineId);
+      if (lineId) {
+        scrollToTimetable(lineId);
+      }
     }
   });
 

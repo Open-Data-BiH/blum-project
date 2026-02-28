@@ -63,7 +63,6 @@ export class LineManager {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   processLineData(data: any, lineType: string, useCompanyData: boolean): ProcessedLineData[] {
     const lines: ProcessedLineData[] = [];
 

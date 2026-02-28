@@ -16,7 +16,9 @@ let timeHighlightInterval: ReturnType<typeof setInterval> | null = null;
 // ─── escapeHTML helper (no DOMPurify dependency in TS modules) ──────────────
 
 const escapeHTML = (text: string | number | null | undefined): string => {
-  if (text === null || text === undefined) return '';
+  if (text === null || text === undefined) {
+    return '';
+  }
   const str = String(text);
   const div = document.createElement('div');
   div.textContent = str;
@@ -29,7 +31,9 @@ export function setupTimetableSelection(): void {
   const lineSelect = document.getElementById('line-select') as HTMLSelectElement | null;
   const timetableDisplay = document.getElementById('timetable-display');
 
-  if (!lineSelect || !timetableDisplay) return;
+  if (!lineSelect || !timetableDisplay) {
+    return;
+  }
 
   const timetablePromises: Promise<(TimetableEntry & { lineType: string })[]>[] = [];
 
@@ -129,12 +133,16 @@ function updateTimetableSelect(
     safeGet(getTranslations(), lang, 'sections', 'timetable', 'select') || 'Select a bus line';
   lineSelect.innerHTML = `<option value="">${selectPrompt}</option>`;
 
-  if (!timetableData || timetableData.length === 0) return;
+  if (!timetableData || timetableData.length === 0) {
+    return;
+  }
 
   const linesByType: Record<string, (TimetableEntry & { lineType: string })[]> = {};
   timetableData.forEach((line) => {
     const lineType = line.lineType || 'urban';
-    if (!linesByType[lineType]) linesByType[lineType] = [];
+    if (!linesByType[lineType]) {
+      linesByType[lineType] = [];
+    }
     linesByType[lineType].push(line);
   });
 
@@ -144,7 +152,9 @@ function updateTimetableSelect(
 
   Object.keys(linesByType).forEach((lineType) => {
     const lines = linesByType[lineType];
-    if (lines.length === 0) return;
+    if (lines.length === 0) {
+      return;
+    }
 
     const optgroup = document.createElement('optgroup');
     const configuredTitle = lineManager.getTypeTitle(lineType, lang);
@@ -169,7 +179,9 @@ function updateTimetableSelect(
 
 export function loadTimetable(lineId: string): void {
   const timetableDisplay = document.getElementById('timetable-display');
-  if (!timetableDisplay) return;
+  if (!timetableDisplay) {
+    return;
+  }
 
   const lang = getCurrentLanguage();
   const loadingText =
@@ -234,8 +246,12 @@ export function loadTimetable(lineId: string): void {
 
 function getTodayDayType(): 'weekday' | 'saturday' | 'sunday' {
   const day = new Date().getDay(); // 0=Sunday, 6=Saturday
-  if (day === 0) return 'sunday';
-  if (day === 6) return 'saturday';
+  if (day === 0) {
+    return 'sunday';
+  }
+  if (day === 6) {
+    return 'saturday';
+  }
   return 'weekday';
 }
 
@@ -330,7 +346,9 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
       const departuresByHour: Record<string, string[]> = {};
       allDepartures.forEach((time) => {
         const [hour, minute] = time.split(':');
-        if (!departuresByHour[hour]) departuresByHour[hour] = [];
+        if (!departuresByHour[hour]) {
+          departuresByHour[hour] = [];
+        }
         departuresByHour[hour].push(minute);
       });
 
@@ -344,7 +362,9 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
       Object.keys(departuresByHour)
         .sort()
         .forEach((hour) => {
-          if (nextDepartureHour !== null) return;
+          if (nextDepartureHour !== null) {
+            return;
+          }
           const hourValue = parseInt(hour, 10);
           if (hourValue > currentHour) {
             nextDepartureHour = hourValue;
@@ -417,7 +437,9 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
 
       container.querySelectorAll<HTMLElement>('.timetable-view').forEach((v) => (v.style.display = 'none'));
       const target = container.querySelector<HTMLElement>(`#timetable-${activeDay}-${direction}`);
-      if (target) target.style.display = 'block';
+      if (target) {
+        target.style.display = 'block';
+      }
 
       updateTimeHighlighting();
       scrollToCurrentHour();
@@ -448,7 +470,9 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
 
       container.querySelectorAll<HTMLElement>('.timetable-view').forEach((v) => (v.style.display = 'none'));
       const target = container.querySelector<HTMLElement>(`#timetable-${day}-${activeDirection}`);
-      if (target) target.style.display = 'block';
+      if (target) {
+        target.style.display = 'block';
+      }
 
       updateTimeHighlighting();
       scrollToCurrentHour();
@@ -462,7 +486,9 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
 // ─── Time highlighting ──────────────────────────────────────────────────────
 
 const setupTimeHighlighting = (): void => {
-  if (timeHighlightInterval) clearInterval(timeHighlightInterval);
+  if (timeHighlightInterval) {
+    clearInterval(timeHighlightInterval);
+  }
   updateTimeHighlighting();
   const debouncedUpdate = debounce(updateTimeHighlighting, 300);
   timeHighlightInterval = setInterval(debouncedUpdate, 60000);
@@ -477,7 +503,9 @@ const scrollToCurrentHour = (): void => {
       (v) => window.getComputedStyle(v).display !== 'none',
     ) ?? null;
   }
-  if (!visibleView) return;
+  if (!visibleView) {
+    return;
+  }
 
   let targetRow = visibleView.querySelector<HTMLElement>(`tr[data-hour="${currentHour}"]`);
   if (!targetRow) {
@@ -488,7 +516,9 @@ const scrollToCurrentHour = (): void => {
         break;
       }
     }
-    if (!targetRow && allRows.length > 0) targetRow = allRows[allRows.length - 1];
+    if (!targetRow && allRows.length > 0) {
+      targetRow = allRows[allRows.length - 1];
+    }
   }
   targetRow?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
@@ -520,13 +550,19 @@ const updateTimeHighlighting = (): void => {
     const allDepartureTimes: { hour: number; minute: number; timeInMinutes: number; element: HTMLElement }[] = [];
     tableView.querySelectorAll<HTMLElement>('tbody tr').forEach((row) => {
       const hourCell = row.querySelector<HTMLElement>('.hour-cell');
-      if (!hourCell) return;
+      if (!hourCell) {
+        return;
+      }
       const hourValue = parseInt(hourCell.textContent ?? '', 10);
-      if (isNaN(hourValue)) return;
+      if (isNaN(hourValue)) {
+        return;
+      }
 
       row.querySelectorAll<HTMLElement>('.minute-box').forEach((minuteBox) => {
         const minuteValue = parseInt(minuteBox.getAttribute('data-minute') ?? minuteBox.textContent ?? '', 10);
-        if (isNaN(minuteValue)) return;
+        if (isNaN(minuteValue)) {
+          return;
+        }
         allDepartureTimes.push({
           hour: hourValue,
           minute: minuteValue,
@@ -577,10 +613,14 @@ const updateTimeHighlighting = (): void => {
 
 document.addEventListener('mapBusLineSelected', (event) => {
   const lineId = (event as CustomEvent<{ lineId?: string }>).detail?.lineId;
-  if (!lineId) return;
+  if (!lineId) {
+    return;
+  }
 
   const lineSelect = document.getElementById('line-select') as HTMLSelectElement | null;
-  if (!lineSelect) return;
+  if (!lineSelect) {
+    return;
+  }
 
   lineSelect.value = lineId.toUpperCase();
   lineSelect.dispatchEvent(new Event('change', { bubbles: true }));

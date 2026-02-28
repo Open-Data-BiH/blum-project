@@ -5,7 +5,9 @@ import type { Map, LatLngBoundsExpression } from 'leaflet';
 
 export async function initAirportMap(): Promise<void> {
   const container = document.getElementById('airport-map');
-  if (!container) return;
+  if (!container) {
+    return;
+  }
 
   try {
     const L = (await import('leaflet')).default;

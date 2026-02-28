@@ -32,7 +32,9 @@ function setFilter(filter: string): void {
 
   cards.forEach((card) => {
     // Don't un-hide expired cards
-    if (card.style.display === 'none' && !card.dataset.type) return;
+    if (card.style.display === 'none' && !card.dataset.type) {
+      return;
+    }
 
     if (filter === 'all' || card.dataset.type === filter) {
       // Only show if not expired (already hidden by hideExpiredCards)
@@ -50,7 +52,9 @@ function setFilter(filter: string): void {
 
 function isExpired(card: HTMLElement): boolean {
   const expiry = card.dataset.expiry;
-  if (!expiry) return false;
+  if (!expiry) {
+    return false;
+  }
   const now = new Date();
   now.setHours(0, 0, 0, 0);
   const expiryDate = new Date(expiry);
@@ -60,7 +64,9 @@ function isExpired(card: HTMLElement): boolean {
 
 function toggleEmptyState(empty: boolean): void {
   const content = document.getElementById('updates-content');
-  if (!content) return;
+  if (!content) {
+    return;
+  }
 
   let emptyEl = content.querySelector<HTMLElement>('.updates-empty');
 
@@ -90,11 +96,17 @@ function toggleEmptyState(empty: boolean): void {
     }
 
     const list = content.querySelector<HTMLElement>('.updates-list');
-    if (list) list.style.display = 'none';
+    if (list) {
+      list.style.display = 'none';
+    }
   } else {
-    if (emptyEl) emptyEl.style.display = 'none';
+    if (emptyEl) {
+      emptyEl.style.display = 'none';
+    }
     const list = content.querySelector<HTMLElement>('.updates-list');
-    if (list) list.style.display = '';
+    if (list) {
+      list.style.display = '';
+    }
   }
 }
 
@@ -108,7 +120,9 @@ export function initUpdatesFilter(): void {
   toggleEmptyState(totalVisible === 0);
 
   const filtersContainer = document.getElementById('updates-filters');
-  if (!filtersContainer) return;
+  if (!filtersContainer) {
+    return;
+  }
 
   filtersContainer.addEventListener('click', (event) => {
     const btn = (event.target as Element).closest<HTMLButtonElement>('.updates-filter-btn');

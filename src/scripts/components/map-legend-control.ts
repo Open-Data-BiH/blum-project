@@ -67,7 +67,9 @@ export class MapLegendControl {
   }
 
   private render(): void {
-    if (!this.controlContainer) return;
+    if (!this.controlContainer) {
+      return;
+    }
 
     const collapsedClass = this.isCollapsed ? ' map-legend--collapsed' : '';
     const collapseIcon = this.isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up';
@@ -190,7 +192,9 @@ export class MapLegendControl {
   }
 
   private setupEventListeners(): void {
-    if (!this.controlContainer || this.listenersBound) return;
+    if (!this.controlContainer || this.listenersBound) {
+      return;
+    }
 
     this.controlContainer.addEventListener('click', (event) => this.handleClick(event));
     this.controlContainer.addEventListener('keydown', (event) => this.handleKeydown(event));
@@ -219,7 +223,9 @@ export class MapLegendControl {
     const focusable = this.controlContainer?.querySelectorAll<HTMLElement>(
       '.map-legend__option, .map-legend__action-btn, .map-legend__collapse',
     );
-    if (!focusable || focusable.length === 0) return;
+    if (!focusable || focusable.length === 0) {
+      return;
+    }
 
     const active = document.activeElement as HTMLElement | null;
     const index = active ? Array.from(focusable).indexOf(active) : -1;
@@ -260,7 +266,9 @@ export class MapLegendControl {
   private handleOption(option: HTMLElement): void {
     const type = option.dataset.type;
     const id = option.dataset.id as OverlayLayerId | string | undefined;
-    if (!id) return;
+    if (!id) {
+      return;
+    }
 
     if (type === 'basemap') {
       this.selectBaseMap(id);
@@ -284,10 +292,14 @@ export class MapLegendControl {
   }
 
   private selectBaseMap(id: string): void {
-    if (this.selectedBaseMap === id) return;
+    if (this.selectedBaseMap === id) {
+      return;
+    }
 
     Object.values(this.baseMaps).forEach((layer) => {
-      if (this.map.hasLayer(layer)) this.map.removeLayer(layer);
+      if (this.map.hasLayer(layer)) {
+        this.map.removeLayer(layer);
+      }
     });
 
     const next = this.baseMaps[id];
@@ -302,11 +314,15 @@ export class MapLegendControl {
     if (this.selectedLayers.has(id)) {
       this.selectedLayers.delete(id);
       const layer = this.overlayLayers[id];
-      if (layer && this.map.hasLayer(layer)) this.map.removeLayer(layer);
+      if (layer && this.map.hasLayer(layer)) {
+        this.map.removeLayer(layer);
+      }
     } else {
       this.selectedLayers.add(id);
       const layer = this.overlayLayers[id];
-      if (layer) layer.addTo(this.map);
+      if (layer) {
+        layer.addTo(this.map);
+      }
     }
     this.render();
   }
@@ -325,7 +341,9 @@ export class MapLegendControl {
   private clearAllLayers(): void {
     this.selectedLayers.forEach((id) => {
       const layer = this.overlayLayers[id];
-      if (layer && this.map.hasLayer(layer)) this.map.removeLayer(layer);
+      if (layer && this.map.hasLayer(layer)) {
+        this.map.removeLayer(layer);
+      }
     });
     this.selectedLayers.clear();
     this.render();
@@ -345,7 +363,9 @@ export class MapLegendControl {
 
     Object.entries(this.overlayLayers).forEach(([id, layer]) => {
       if (this.selectedLayers.has(id as OverlayLayerId)) {
-        if (!this.map.hasLayer(layer)) layer.addTo(this.map);
+        if (!this.map.hasLayer(layer)) {
+          layer.addTo(this.map);
+        }
       } else if (this.map.hasLayer(layer)) {
         this.map.removeLayer(layer);
       }

@@ -37,8 +37,12 @@ function initializeMobileMenu(): void {
   const nav = document.getElementById('main-nav');
   const body = document.body;
 
-  if (!menuToggle || !nav) return;
-  if ((menuToggle as HTMLButtonElement & { _mobileMenuInitialized?: boolean })._mobileMenuInitialized) return;
+  if (!menuToggle || !nav) {
+    return;
+  }
+  if ((menuToggle as HTMLButtonElement & { _mobileMenuInitialized?: boolean })._mobileMenuInitialized) {
+    return;
+  }
   (menuToggle as HTMLButtonElement & { _mobileMenuInitialized?: boolean })._mobileMenuInitialized = true;
 
   menuToggle.addEventListener('click', (e) => {
@@ -75,7 +79,9 @@ function initializeMobileMenu(): void {
 
 function initializeScrollShadow(): void {
   const header = document.querySelector('header');
-  if (!header) return;
+  if (!header) {
+    return;
+  }
   const onScroll = (): void => {
     header.classList.toggle('header--scrolled', window.scrollY > 10);
   };
@@ -87,11 +93,15 @@ function setupSmoothScrolling(): void {
   document.querySelectorAll<HTMLAnchorElement>('.nav__link').forEach((anchor) => {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href') ?? '';
-      if (!targetId.startsWith('#')) return;
+      if (!targetId.startsWith('#')) {
+        return;
+      }
 
       e.preventDefault();
       const targetElement = document.querySelector(targetId);
-      if (!targetElement) return;
+      if (!targetElement) {
+        return;
+      }
 
       const header = document.querySelector('header');
       const headerHeight = header ? header.offsetHeight : 0;

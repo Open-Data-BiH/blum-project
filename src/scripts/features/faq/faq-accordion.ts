@@ -3,10 +3,14 @@
 
 function toggleQuestion(questionButton: HTMLButtonElement): void {
   const faqItem = questionButton.closest<HTMLElement>('.faq-item');
-  if (!faqItem) return;
+  if (!faqItem) {
+    return;
+  }
 
   const answer = faqItem.querySelector<HTMLElement>('.faq-answer');
-  if (!answer) return;
+  if (!answer) {
+    return;
+  }
 
   const isActive = faqItem.classList.contains('active');
 
@@ -33,7 +37,9 @@ function toggleQuestion(questionButton: HTMLButtonElement): void {
 
 export function initFAQAccordion(): void {
   const container = document.getElementById('faq-content');
-  if (!container) return;
+  if (!container) {
+    return;
+  }
 
   container.addEventListener('click', (event) => {
     const target = event.target instanceof Element ? event.target : null;

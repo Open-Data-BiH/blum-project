@@ -25,7 +25,9 @@ const VIEWER_CONFIG = {
 
 export const initUrbanLinesViewer = (): void => {
   const viewer = document.getElementById('urban-lines-viewer');
-  if (!viewer) return;
+  if (!viewer) {
+    return;
+  }
 
   const map = L.map('urban-lines-viewer', VIEWER_CONFIG.MAP_OPTIONS);
 

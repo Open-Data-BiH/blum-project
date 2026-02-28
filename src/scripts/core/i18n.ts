@@ -8,17 +8,14 @@ import translationsData from '../../../public/data/config/bhs_en_translations.js
 
 export type Language = 'bhs' | 'en';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let translations: Record<string, any> = translationsData as Record<string, any>;
 let currentLang: Language = (localStorage.getItem('selectedLanguage') as Language) || 'bhs';
 
 // Helper for safe nested property access
 export const safeGet = <T = string>(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   obj: Record<string, any> | null | undefined,
   ...keys: string[]
 ): T | null => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return keys.reduce<any>((acc, key) => (acc && acc[key] !== undefined ? acc[key] : null), obj);
 };
 
@@ -81,20 +78,34 @@ const PAGE_SEO: Record<string, { url: string; title: Record<Language, string>; d
 
 const resolvePageKey = (): string => {
   const pageKey = document.body.dataset.page;
-  if (pageKey && PAGE_SEO[pageKey]) return pageKey;
+  if (pageKey && PAGE_SEO[pageKey]) {
+    return pageKey;
+  }
 
   // Astro paths: /lines/ not lines.html
   const path = window.location.pathname.toLowerCase();
-  if (path.includes('/lines')) return 'lines';
-  if (path.includes('/pricing')) return 'pricing';
-  if (path.includes('/airport')) return 'airport';
-  if (path.includes('/faq')) return 'faq';
-  if (path.includes('/updates')) return 'updates';
+  if (path.includes('/lines')) {
+    return 'lines';
+  }
+  if (path.includes('/pricing')) {
+    return 'pricing';
+  }
+  if (path.includes('/airport')) {
+    return 'airport';
+  }
+  if (path.includes('/faq')) {
+    return 'faq';
+  }
+  if (path.includes('/updates')) {
+    return 'updates';
+  }
   return 'home';
 };
 
 const setMetaContent = (attr: string, key: string, content: string | null): void => {
-  if (!content) return;
+  if (!content) {
+    return;
+  }
   let metaTag = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
   if (!metaTag) {
     metaTag = document.createElement('meta');
@@ -122,13 +133,17 @@ const updateSeoTags = (lang: Language): void => {
 
 const safelyUpdateText = (id: string, text: string | null | undefined): void => {
   const element = document.getElementById(id);
-  if (!element || text === null || text === undefined) return;
+  if (!element || text === null || text === undefined) {
+    return;
+  }
   element.textContent = text;
 };
 
 const safelyUpdateButtonLabel = (id: string, text: string | null | undefined): void => {
   const element = document.getElementById(id);
-  if (!element || text === null || text === undefined) return;
+  if (!element || text === null || text === undefined) {
+    return;
+  }
   const label = element.querySelector('.btn__label');
   if (label) {
     label.textContent = text;
@@ -139,15 +154,22 @@ const safelyUpdateButtonLabel = (id: string, text: string | null | undefined): v
 
 const updateDetailText = (id: string, text: string | null | undefined): void => {
   const el = document.getElementById(id);
-  if (!el || !text) return;
+  if (!el || !text) {
+    return;
+  }
   const span = el.querySelector('span');
-  if (span) span.textContent = text;
-  else el.textContent = text;
+  if (span) {
+    span.textContent = text;
+  } else {
+    el.textContent = text;
+  }
 };
 
 export const applyTranslation = (lang: Language): void => {
   const t = translations[lang];
-  if (!t) return;
+  if (!t) {
+    return;
+  }
 
   currentLang = lang;
   document.documentElement.lang = lang === 'bhs' ? 'bs' : 'en';
@@ -198,7 +220,9 @@ export const applyTranslation = (lang: Language): void => {
   const disclaimerEl = document.getElementById('hero-disclaimer');
   if (disclaimerEl) {
     const span = disclaimerEl.querySelector('span');
-    if (span) span.textContent = heroDefaults.disclaimer;
+    if (span) {
+      span.textContent = heroDefaults.disclaimer;
+    }
   }
 
   safelyUpdateButtonLabel('hero-btn-timetables', heroDefaults.timetables);
@@ -223,7 +247,9 @@ export const applyTranslation = (lang: Language): void => {
   // Urban lines viewer
   safelyUpdateText('urban-lines-title', t.sections?.urban_lines?.title);
   const mapNote = document.querySelector<HTMLElement>('#urban-lines .map-note span');
-  if (mapNote) mapNote.textContent = t.sections?.urban_lines?.map_note;
+  if (mapNote) {
+    mapNote.textContent = t.sections?.urban_lines?.map_note;
+  }
 
   // Lines section
   safelyUpdateText('lines-title', t.sections?.lines?.title);
@@ -288,7 +314,9 @@ export const applyTranslation = (lang: Language): void => {
 
   // data-lang attribute visibility toggle
   document.querySelectorAll<HTMLElement>('[data-lang]').forEach((element) => {
-    if (element.classList.contains('lang-btn')) return;
+    if (element.classList.contains('lang-btn')) {
+      return;
+    }
     element.style.display = element.getAttribute('data-lang') === lang ? '' : 'none';
   });
 
@@ -326,7 +354,6 @@ export const setupLanguageSwitcher = (): void => {
 };
 
 export const getCurrentLanguage = (): Language => currentLang;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getTranslations = (): Record<string, any> => translations;
 
 // Namespaced export kept for compatibility with feature modules that use AppI18n
@@ -334,7 +361,6 @@ export const AppI18n = {
   get currentLang() { return currentLang; },
   set currentLang(val: Language) { currentLang = val; },
   get translations() { return translations; },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   set translations(val: Record<string, any>) { translations = val; },
   safeGet,
   setupLanguageSwitcher,

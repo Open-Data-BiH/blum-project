@@ -57,10 +57,14 @@ class DarkModeManager {
 
   updateButtonUI(): void {
     const btn = document.getElementById('theme-toggle');
-    if (!btn) return;
+    if (!btn) {
+      return;
+    }
 
     const icon = btn.querySelector('i');
-    if (!icon) return;
+    if (!icon) {
+      return;
+    }
 
     icon.classList.remove('fa-sun', 'fa-moon', 'fa-desktop');
 

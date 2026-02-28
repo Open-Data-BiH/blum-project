@@ -69,7 +69,7 @@ const baseRules = {
 
 export default [
     {
-        ignores: ['node_modules/**', 'dist/**', '.astro/**', 'eslint.config.js', '**/*.astro'],
+        ignores: ['node_modules/**', 'dist/**', '.astro/**', 'eslint.config.mjs', '**/*.astro'],
     },
     js.configs.recommended,
     {

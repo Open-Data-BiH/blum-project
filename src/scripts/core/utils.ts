@@ -4,7 +4,6 @@
 /**
  * Debounce expensive operations
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const debounce = <T extends (...args: any[]) => void>(func: T, wait: number): ((...args: Parameters<T>) => void) => {
   let timeout: ReturnType<typeof setTimeout> | undefined;
   return (...args: Parameters<T>) => {
@@ -26,7 +25,9 @@ export const sortLinesByID = (a: { lineId: string }, b: { lineId: string }): num
  * Normalize text for search — removes diacritics and handles special characters
  */
 export const normalizeForSearch = (text: string | null | undefined): string => {
-  if (!text) return '';
+  if (!text) {
+    return '';
+  }
   return text
     .toLowerCase()
     .normalize('NFD')

@@ -65,13 +65,17 @@ let walkingLayers: Array<CircleMarker | Marker | Polyline> = [];
 
 const fetchJson = async <T>(url: string): Promise<T> => {
   const response = await fetch(url);
-  if (!response.ok) throw new Error(`Failed to load ${url}`);
+  if (!response.ok) {
+    throw new Error(`Failed to load ${url}`);
+  }
   return (await response.json()) as T;
 };
 
 const ensureNotificationRegion = (): HTMLElement => {
   const existing = document.getElementById('map-notification-region');
-  if (existing) return existing;
+  if (existing) {
+    return existing;
+  }
 
   const region = document.createElement('div');
   region.id = 'map-notification-region';
@@ -83,7 +87,9 @@ const ensureNotificationRegion = (): HTMLElement => {
 let notificationTimer: number | null = null;
 
 const showMapNotification = (message: string): void => {
-  if (!message) return;
+  if (!message) {
+    return;
+  }
 
   const region = ensureNotificationRegion();
   if (notificationTimer) {
@@ -171,7 +177,9 @@ const autoSelectNearestStop = async (
   userMarker.bindPopup('<strong>📍 Vaša lokacija / Your location</strong>').openPopup();
 
   const nearestStops = geoService.findNearestStops(busStopLayers, 3);
-  if (nearestStops.length === 0) return;
+  if (nearestStops.length === 0) {
+    return;
+  }
 
   const bounds = L.latLngBounds([position.lat, position.lng]);
   nearestStops.forEach((stop) => bounds.extend([stop.lat, stop.lng]));
@@ -288,7 +296,9 @@ const buildBusStopsLayer = (
   const orderedKeys = Object.keys(busRoutes).sort((a, b) => {
     const aNum = parseInt(a.replace(/[^\d]/g, ''), 10);
     const bNum = parseInt(b.replace(/[^\d]/g, ''), 10);
-    if (!Number.isNaN(aNum) && !Number.isNaN(bNum)) return aNum - bNum;
+    if (!Number.isNaN(aNum) && !Number.isNaN(bNum)) {
+      return aNum - bNum;
+    }
     return a.localeCompare(b);
   });
 
@@ -320,8 +330,12 @@ const buildBusStopsLayer = (
     uniqueStops.forEach((_stop, stopName) => {
       const marker = busStopMarkers.get(stopName);
       const circle = busStopCircles.get(stopName);
-      if (marker && layer.hasLayer(marker)) layers.push(marker);
-      else if (circle && layer.hasLayer(circle)) layers.push(circle);
+      if (marker && layer.hasLayer(marker)) {
+        layers.push(marker);
+      }
+      else if (circle && layer.hasLayer(circle)) {
+        layers.push(circle);
+      }
     });
     return layers;
   };
@@ -374,11 +388,15 @@ const buildBusStopsLayer = (
 
       const bindPopupLineLinks = (e: { popup: { getElement: () => HTMLElement | null } }): void => {
         const container = e.popup.getElement();
-        if (!container) return;
+        if (!container) {
+          return;
+        }
         container.querySelectorAll<HTMLAnchorElement>('.line-number-link[data-line-id]').forEach((link) => {
           link.addEventListener('click', () => {
             const lineId = link.dataset.lineId;
-            if (lineId) sessionStorage.setItem('selectedLine', lineId);
+            if (lineId) {
+              sessionStorage.setItem('selectedLine', lineId);
+            }
           });
         });
       };
@@ -515,7 +533,9 @@ const buildBaseLayers = (L: LeafletNS): Record<string, TileLayer> => {
 
 export const initMainMap = async (): Promise<void> => {
   const container = document.getElementById('map-container');
-  if (!container) return;
+  if (!container) {
+    return;
+  }
 
   try {
     const [L, legendConfig, busRoutes, hubsFile, bikeStations] = await Promise.all([

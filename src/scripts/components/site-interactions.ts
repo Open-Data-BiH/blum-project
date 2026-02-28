@@ -7,7 +7,9 @@ export const setupLinesInfoAccordion = (): void => {
   const toggle = document.getElementById('lines-info-toggle');
   const content = document.getElementById('lines-info-content');
 
-  if (!toggle || !content) return;
+  if (!toggle || !content) {
+    return;
+  }
 
   const updateContentLanguage = (): void => {
     const lang = getCurrentLanguage();
@@ -20,8 +22,12 @@ export const setupLinesInfoAccordion = (): void => {
 
     const bhsToggleText = toggle.querySelector<HTMLElement>('[data-lang="bhs"]');
     const enToggleText = toggle.querySelector<HTMLElement>('[data-lang="en"]');
-    if (bhsToggleText) bhsToggleText.style.display = lang === 'bhs' ? '' : 'none';
-    if (enToggleText) enToggleText.style.display = lang === 'en' ? '' : 'none';
+    if (bhsToggleText) {
+      bhsToggleText.style.display = lang === 'bhs' ? '' : 'none';
+    }
+    if (enToggleText) {
+      enToggleText.style.display = lang === 'en' ? '' : 'none';
+    }
   };
 
   updateContentLanguage();
@@ -30,7 +36,9 @@ export const setupLinesInfoAccordion = (): void => {
     const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
     toggle.setAttribute('aria-expanded', String(!isExpanded));
     (content as HTMLElement & { hidden: boolean }).hidden = isExpanded;
-    if (!isExpanded) updateContentLanguage();
+    if (!isExpanded) {
+      updateContentLanguage();
+    }
   });
 
   document.addEventListener('languageChanged', updateContentLanguage);
@@ -40,7 +48,9 @@ export const setupMapCreditsDropdown = (): void => {
   const toggle = document.getElementById('map-credits-toggle');
   const content = document.getElementById('map-credits-content');
 
-  if (!toggle || !content) return;
+  if (!toggle || !content) {
+    return;
+  }
 
   toggle.setAttribute('aria-expanded', 'false');
   content.classList.remove('open');

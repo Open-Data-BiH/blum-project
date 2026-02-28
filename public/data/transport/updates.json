@@ -82,63 +82,6 @@
             "isActive": false,
             "source": "Template Source",
             "sourceUrl": ""
-        },
-        {
-            "id": "example-2026-03-line-change",
-            "type": "line_change",
-            "severity": "warning",
-            "title": {
-                "bhs": "Privremena izmjena trase linije 13A",
-                "en": "Temporary Route Change for Line 13A"
-            },
-            "description": {
-                "bhs": "Zbog radova u Ulici Kralja Petra I Karađorđevića, linija 13A saobraća obilaznicom preko Ulice Meše Selimovića do 2026-03-15.",
-                "en": "Due to road works on Kralja Petra I Karadjordjevica Street, line 13A is diverted via Mese Selimovica Street until 2026-03-15."
-            },
-            "affectedLines": ["13A"],
-            "datePublished": "2026-02-28",
-            "dateExpiry": "2026-03-15",
-            "isActive": true,
-            "source": "Grad Banja Luka",
-            "sourceUrl": "https://www.banjaluka.rs.ba/"
-        },
-        {
-            "id": "example-2026-03-closure",
-            "type": "closure",
-            "severity": "urgent",
-            "title": {
-                "bhs": "Privremena obustava saobraćaja u centru grada",
-                "en": "Temporary Traffic Closure in City Center"
-            },
-            "description": {
-                "bhs": "U periodu 2026-03-05 do 2026-03-07 privremeno se zatvara dionica kod Trga Krajine. Moguća kašnjenja i preusmjerenja više linija.",
-                "en": "From 2026-03-05 to 2026-03-07, a section near Krajina Square is temporarily closed. Delays and diversions are expected on multiple lines."
-            },
-            "affectedLines": ["1", "3", "8"],
-            "datePublished": "2026-02-28",
-            "dateExpiry": "2026-03-07",
-            "isActive": true,
-            "source": "MUP RS",
-            "sourceUrl": "https://mup.vladars.rs/"
-        },
-        {
-            "id": "example-2026-03-schedule-change",
-            "type": "schedule_change",
-            "severity": "info",
-            "title": {
-                "bhs": "Novi vikend polasci na linijama 7 i 9",
-                "en": "New Weekend Departures on Lines 7 and 9"
-            },
-            "description": {
-                "bhs": "Od 2026-03-01 uvode se dodatni vikend polasci na linijama 7 i 9. Provjerite detaljan red vožnje prije putovanja.",
-                "en": "Starting 2026-03-01, additional weekend departures are introduced on lines 7 and 9. Check the timetable before traveling."
-            },
-            "affectedLines": ["7", "9"],
-            "datePublished": "2026-02-28",
-            "dateExpiry": "2026-04-01",
-            "isActive": true,
-            "source": "Autoprevoz BL",
-            "sourceUrl": "https://www.autoprevoz.org/"
         }
     ]
 }

@@ -225,4 +225,11 @@ processedLines.sort(sortLinesByID);
   </section>
 
   <TimetableSection lines={processedLines} />
+
+  <script>
+    import { setupLinesInfoAccordion, setupMapCreditsDropdown } from '../scripts/components/site-interactions';
+
+    setupLinesInfoAccordion();
+    setupMapCreditsDropdown();
+  </script>
 </BaseLayout>

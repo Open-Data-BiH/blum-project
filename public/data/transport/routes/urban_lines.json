@@ -1,0 +1,211 @@
+{
+    "urban": [
+        {
+            "lineId": "1",
+            "lineName": "Mađir - Ortopedija - Nova bolnica",
+            "group": "III",
+            "no_stops": 19,
+            "min_duration": 35,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "3",
+            "lineName": "ETF (Vodovod) - Vrbanja - Zeleni Vir",
+            "group": "II",
+            "no_stops": 16,
+            "min_duration": 28,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "3B",
+            "lineName": "ETF (Vodovod) - Debeljaci",
+            "group": "II",
+            "no_stops": 17,
+            "min_duration": 30,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "6",
+            "lineName": "Autobuska stanica - Lauš - Saračica",
+            "group": "II",
+            "no_stops": 20,
+            "min_duration": 30,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "7",
+            "lineName": "Lauš - Paprikovac - Centar - Obilićevo (TO Bema)",
+            "group": "II",
+            "no_stops": 16,
+            "min_duration": 28,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "8",
+            "lineName": "Autobuska stanica - Podgora",
+            "group": "II",
+            "no_stops": 20,
+            "min_duration": 35,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "9",
+            "lineName": "Kumsale - Centar - Desna Novoselija",
+            "group": "III",
+            "no_stops": 19,
+            "min_duration": 30,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "9B",
+            "lineName": "Česma - Medeno polje - Centar",
+            "group": "II",
+            "no_stops": 20,
+            "min_duration": 30,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "10",
+            "lineName": "Autobuska stanica - Obilićevo",
+            "group": "I",
+            "no_stops": 11,
+            "min_duration": 19,
+            "bus_type": "minibus",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "12P",
+            "lineName": "Centar - Paprikovac (Vidik)",
+            "group": "III",
+            "no_stops": 11,
+            "min_duration": 18,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "13",
+            "lineName": "Lazarevo - Obilićevo (TO Bema)",
+            "group": "I",
+            "no_stops": 15,
+            "min_duration": 29,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "13A",
+            "lineName": "Nova bolnica - Centar - Zalužani",
+            "group": "I",
+            "no_stops": 20,
+            "min_duration": 30,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "13B",
+            "lineName": "Pobrđe - Lazarevo (D. S. Lazarevića)",
+            "group": "III",
+            "no_stops": 18,
+            "min_duration": 30,
+            "bus_type": "minibus",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "13C",
+            "lineName": "Centar - Tunjice - Zalužani (Nenada Kostića)",
+            "group": "I",
+            "no_stops": 21,
+            "min_duration": 30,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "13P",
+            "lineName": "Obilićevo (Krfska) - Petrićevac",
+            "group": "III",
+            "no_stops": 18,
+            "min_duration": 28,
+            "bus_type": "minibus",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "14",
+            "lineName": "Starčevica - Centar - Starčevica",
+            "group": "III",
+            "no_stops": 15,
+            "min_duration": 30,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "14B",
+            "lineName": "Autobuska stanica - Borik - Starčevica",
+            "group": "III",
+            "no_stops": 19,
+            "min_duration": 30,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "17",
+            "lineName": "Obilićevo - Nova bolnica",
+            "group": "I",
+            "no_stops": 11,
+            "min_duration": 19,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "17A",
+            "lineName": "Starčevica - Nova bolnica",
+            "group": "III",
+            "no_stops": 16,
+            "min_duration": 29,
+            "bus_type": "minibus",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "19",
+            "lineName": "Šargovac - Centar (Vidovdanska)",
+            "group": "III",
+            "no_stops": 17,
+            "min_duration": 30,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "20",
+            "lineName": "Incel - Centar - Paprikovac (Ranka Šipke)",
+            "group": "III",
+            "no_stops": 11,
+            "min_duration": 22,
+            "bus_type": "minibus",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "39",
+            "lineName": "Drakulić - Centar",
+            "group": "III",
+            "no_stops": 15,
+            "min_duration": 24,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
+            "lineId": "39A",
+            "lineName": "Drakulić (Avion) - Rakovačke bare - Centar",
+            "group": "III",
+            "no_stops": 15,
+            "min_duration": 24,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        }
+    ]
+}

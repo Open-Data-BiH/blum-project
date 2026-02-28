@@ -7,18 +7,17 @@
         "node": ">=20.0.0"
     },
     "scripts": {
-        "start": "npx http-server -p 8000 -c-1",
-        "dev": "npx http-server -p 8000 -c-1 -o",
+        "dev": "astro dev",
+        "build": "astro build",
+        "preview": "astro preview",
+        "check": "astro check",
         "format": "prettier . --write",
         "format:check": "prettier . --check",
-        "lint": "eslint js/**/*.js --max-warnings 0",
-        "lint:fix": "eslint js/**/*.js --fix",
-        "check:sri": "node scripts/check-sri.mjs",
-        "check:head": "node scripts/check-shared-head.mjs",
+        "lint": "eslint src --max-warnings 0",
+        "lint:fix": "eslint src --fix",
         "test": "vitest run",
-        "build": "echo 'Build passed (static site - no build step required)'",
         "audit": "npm audit --audit-level=high",
-        "ci": "npm run format:check && npm run lint && npm run check:sri && npm run check:head && npm run test && npm run build && npm run audit"
+        "ci": "npm run format:check && npm run lint && npm run check && npm run test && npm run build && npm run audit"
     },
     "keywords": [
         "public-transport",
@@ -31,10 +30,13 @@
     "license": "MIT",
     "devDependencies": {
         "@eslint/js": "^10.0.1",
+        "astro": "^5.18.0",
         "eslint": "^10.0.1",
         "happy-dom": "^18.0.1",
         "http-server": "^14.1.1",
         "prettier": "^3.3.3",
+        "sass": "^1.97.3",
+        "typescript": "^5.9.3",
         "vitest": "^3.2.4"
     },
     "repository": {
@@ -44,5 +46,11 @@
     "bugs": {
         "url": "https://github.com/Open-Data-BiH/blum-project/issues"
     },
-    "homepage": "https://github.com/Open-Data-BiH/blum-project#readme"
+    "homepage": "https://github.com/Open-Data-BiH/blum-project#readme",
+    "dependencies": {
+        "@types/dompurify": "^3.2.0",
+        "@types/leaflet": "^1.9.21",
+        "dompurify": "^3.3.1",
+        "leaflet": "^1.9.4"
+    }
 }

@@ -197,7 +197,6 @@ export const applyTranslation = (lang: Language): void => {
                     'Nezavisna platforma za linije, red vožnje i obavještenja o javnom prevozu u Banjoj Luci.',
                 detail1: 'Linije i red vožnje na jednom mjestu',
                 detail2: 'Ažurne informacije i korisni alati za kretanje gradom',
-                disclaimer: 'BLum nije zvanična stranica javnog prevoza.',
                 timetables: 'Red vožnje',
                 airport: 'Transfer do aerodroma',
             }
@@ -208,7 +207,6 @@ export const applyTranslation = (lang: Language): void => {
                     'Independent platform for routes, timetables, and public transport notices in Banja Luka.',
                 detail1: 'Routes and timetables in one place',
                 detail2: 'Up-to-date information and practical tools for getting around the city',
-                disclaimer: 'BLum is not an official public transport website.',
                 timetables: 'Timetables',
                 airport: 'Airport transfer',
             };
@@ -218,14 +216,6 @@ export const applyTranslation = (lang: Language): void => {
     safelyUpdateText('hero-description', heroDefaults.description);
     updateDetailText('hero-detail-1', heroDefaults.detail1);
     updateDetailText('hero-detail-2', heroDefaults.detail2);
-
-    const disclaimerEl = document.getElementById('hero-disclaimer');
-    if (disclaimerEl) {
-        const span = disclaimerEl.querySelector('span');
-        if (span) {
-            span.textContent = heroDefaults.disclaimer;
-        }
-    }
 
     safelyUpdateButtonLabel('hero-btn-timetables', heroDefaults.timetables);
     safelyUpdateButtonLabel('hero-btn-airport', heroDefaults.airport);
@@ -310,14 +300,8 @@ export const applyTranslation = (lang: Language): void => {
     safelyUpdateText(
         'footer-mission-text',
         lang === 'bhs'
-            ? 'BLum je nezavisna platforma razvijena radi bolje dostupnosti informacija o javnom prevozu.'
-            : 'BLum is an independent platform created to improve access to public transport information.',
-    );
-    safelyUpdateText(
-        'footer-disclaimer-text',
-        lang === 'bhs'
-            ? 'BLUM je nezavisna platforma za informisanje o gradskom prevozu. Zvanične i ažurirane informacije provjerite kod nadležnih gradskih organa i prevoznika.'
-            : 'BLum is an independent informational platform. For official and latest updates, contact the relevant institutions and transport operators.',
+            ? 'BLum je nezavisna platforma razvijena radi bolje dostupnosti informacija o javnom prevozu. Zvanične i ažurirane informacije provjerite kod nadležnih gradskih organa i prevoznika.'
+            : 'BLum is an independent platform created to improve access to public transport information. For official and up-to-date information, check with relevant city authorities and transport operators.',
     );
     safelyUpdateText(
         'footer-link-timetable-report',

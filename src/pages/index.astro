@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeMap from '../components/map/HomeMap.astro';
+import ContactsSection from '../components/contacts/ContactsSection.astro';
 ---
 
 <BaseLayout
@@ -45,19 +46,5 @@ import HomeMap from '../components/map/HomeMap.astro';
 
   <HomeMap />
 
-  <section class="section section--narrow" id="contact">
-    <div class="container">
-      <h2 class="section__title" id="contact-title">Korisni kontakti</h2>
-
-      <div class="contact-group">
-        <h3 class="contact-group__title" id="contact-group-authorities-title">Gradske službe</h3>
-        <div class="contact-cards" id="authority-contacts"></div>
-      </div>
-
-      <div class="contact-group">
-        <h3 class="contact-group__title" id="contact-group-operators-title">Prevoznici</h3>
-        <div class="contact-cards" id="operator-contacts"></div>
-      </div>
-    </div>
-  </section>
+  <ContactsSection />
 </BaseLayout>

@@ -20,17 +20,17 @@ Each update object uses this shape:
 
 ```json
 {
-  "id": "unique-id",
-  "type": "line_change | closure | schedule_change",
-  "severity": "info | warning | urgent",
-  "title": { "bhs": "...", "en": "..." },
-  "description": { "bhs": "...", "en": "..." },
-  "affectedLines": ["13A", "7"],
-  "datePublished": "YYYY-MM-DD",
-  "dateExpiry": "YYYY-MM-DD or null",
-  "isActive": true,
-  "source": "Source name",
-  "sourceUrl": "https://..."
+    "id": "unique-id",
+    "type": "line_change | closure | schedule_change",
+    "severity": "info | warning | urgent",
+    "title": { "bhs": "...", "en": "..." },
+    "description": { "bhs": "...", "en": "..." },
+    "affectedLines": ["13A", "7"],
+    "datePublished": "YYYY-MM-DD",
+    "dateExpiry": "YYYY-MM-DD or null",
+    "isActive": true,
+    "source": "Source name",
+    "sourceUrl": "https://..."
 }
 ```
 
@@ -40,9 +40,9 @@ Each update object uses this shape:
 2. Copy one of the existing template/example records in `updates`.
 3. Set a new unique `id` (recommended format: `topic-YYYY-MM-short-slug`).
 4. Set `type` to one of the existing categories:
-   - `line_change`
-   - `closure`
-   - `schedule_change`
+    - `line_change`
+    - `closure`
+    - `schedule_change`
 5. Add both language texts (`title.bhs`, `title.en`, `description.bhs`, `description.en`).
 6. Add affected lines in `affectedLines` (or leave `[]` if not specific).
 7. Set `datePublished` and `dateExpiry` in `YYYY-MM-DD`.

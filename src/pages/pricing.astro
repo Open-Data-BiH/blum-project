@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PricingSection from '../components/PricingSection.astro';
+---
+
+<BaseLayout
+  pageKey="pricing"
+  title="Cjenovnik | BLum"
+  description="Aktuelne cijene karata i pretplatnih opcija za javni prevoz u Banjoj Luci na jednom mjestu."
+  canonicalUrl="https://blum.ba/pricing/"
+>
+  <section class="section section--narrow" id="pricing">
+    <div class="container">
+      <h2 class="section__title" id="price-tables-title">Cjenovnik karata</h2>
+      <PricingSection />
+    </div>
+  </section>
+</BaseLayout>

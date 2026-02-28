@@ -1,0 +1,60 @@
+---
+import faqData from '../../public/data/transport/faq.json';
+
+interface Question {
+  id: string;
+  question: { bhs: string; en: string };
+  answer: { bhs: string; en: string };
+}
+
+interface Category {
+  id: string;
+  title: { bhs: string; en: string };
+  questions: Question[];
+}
+
+const { categories } = faqData as { categories: Category[] };
+---
+
+<div class="faq-container" id="faq-content">
+  <div class="faq-categories">
+    {categories.map((category) => (
+      <div class="faq-category" data-category-id={category.id}>
+        <h3 class="faq-category__title">
+          <span data-lang="bhs">{category.title.bhs}</span>
+          <span data-lang="en" style="display:none">{category.title.en}</span>
+        </h3>
+        <div class="faq-questions">
+          {category.questions.map((q) => (
+            <div class="faq-item" data-question-id={q.id} data-category-id={category.id}>
+              <button
+                class="faq-question"
+                aria-expanded="false"
+                aria-controls={`answer-${q.id}`}
+              >
+                <span class="faq-question__text">
+                  <span data-lang="bhs">{q.question.bhs}</span>
+                  <span data-lang="en" style="display:none">{q.question.en}</span>
+                </span>
+                <i class="faq-question__icon fas fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="faq-answer" id={`answer-${q.id}`} aria-hidden="true">
+                <div class="faq-answer__content">
+                  <p>
+                    <span data-lang="bhs">{q.answer.bhs}</span>
+                    <span data-lang="en" style="display:none">{q.answer.en}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+  import { initFAQAccordion } from '../scripts/features/faq/faq-accordion';
+  initFAQAccordion();
+</script>

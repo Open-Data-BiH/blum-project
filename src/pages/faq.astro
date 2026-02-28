@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FAQSection from '../components/FAQSection.astro';
+---
+
+<BaseLayout
+  pageKey="faq"
+  title="FAQ | BLum"
+  description="Najcesca pitanja i odgovori o koristenju BLum platforme, linijama, kartama i javnom prevozu u Banjoj Luci."
+  canonicalUrl="https://blum.ba/faq/"
+>
+  <section class="section section--narrow" id="faq">
+    <div class="container">
+      <h2 class="section__title" id="faq-title">Česta pitanja</h2>
+      <p class="section__subtitle" id="faq-subtitle">
+        Odgovori na najčešća pitanja o javnom prevozu u Banjoj Luci
+      </p>
+      <FAQSection />
+    </div>
+  </section>
+</BaseLayout>

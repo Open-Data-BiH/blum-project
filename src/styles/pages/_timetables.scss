@@ -243,6 +243,36 @@
 }
 
 /* ==========================================================================
+   REDUCED SCHEDULE NOTICE
+   ========================================================================== */
+
+.timetable-reduced-notice {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background-color: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-4);
+    margin-bottom: var(--space-4);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-primary);
+    max-width: 800px;
+}
+
+.timetable-reduced-notice i {
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+[data-theme='dark'] .timetable-reduced-notice {
+    background-color: var(--accent-soft);
+    border-color: rgba(43, 110, 168, 0.45);
+    color: var(--accent);
+}
+
+/* ==========================================================================
    TIMETABLE TABLE - IMPROVED READABILITY
    ========================================================================== */
 

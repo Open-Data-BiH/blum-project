@@ -12,6 +12,10 @@ export interface StationTimes {
     weekday: [TimetableTime[], TimetableTime[]];
     saturday: [TimetableTime[], TimetableTime[]];
     sunday: [TimetableTime[], TimetableTime[]];
+    /** Reduced schedules — active during school holidays */
+    weekdayReduced?: [TimetableTime[], TimetableTime[]];
+    saturdayReduced?: [TimetableTime[], TimetableTime[]];
+    sundayReduced?: [TimetableTime[], TimetableTime[]];
 }
 
 export interface Station {

@@ -7,6 +7,7 @@
 import { debounce, sortLinesByID } from '../../core/utils';
 import { safeGet, getTranslations, getCurrentLanguage } from '../../core/i18n';
 import { LINE_CONFIG, lineManager } from './line-manager';
+import { isReducedScheduleDay } from './school-holidays';
 import type { TimetableEntry } from '../../../types/timetable';
 
 const BASE_URL = import.meta.env.BASE_URL;
@@ -265,6 +266,11 @@ function getTodayDayType(): 'weekday' | 'saturday' | 'sunday' {
 function renderTimetable(timetable: TimetableEntry & { lineType?: string }, container: HTMLElement): void {
     const todayDayType = getTodayDayType();
     const lang = getCurrentLanguage();
+    const reducedToday = isReducedScheduleDay();
+    const hasReducedData = timetable.stations.some(
+        (s) => s.times.weekdayReduced ?? s.times.saturdayReduced ?? s.times.sundayReduced,
+    );
+    const showingReduced = reducedToday && hasReducedData;
     const t = safeGet(getTranslations(), lang, 'sections', 'timetable') as Record<string, unknown> | null;
     const timetableDays = t ? (t.days as Record<string, string> | null) : null;
 
@@ -323,6 +329,19 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
     `;
     }
 
+    if (showingReduced) {
+        const reducedLabel =
+            lang === 'bhs'
+                ? 'Prikazan redukovani red vožnje (školski raspust)'
+                : 'Showing reduced schedule (school holidays)';
+        html += `
+      <div class="timetable-reduced-notice">
+        <i class="fas fa-calendar-alt"></i>
+        <span>${reducedLabel}</span>
+      </div>
+    `;
+    }
+
     html += `<div class="timetable-container">`;
 
     const dayTypes: ('weekday' | 'saturday' | 'sunday')[] = ['weekday', 'saturday', 'sunday'];
@@ -343,8 +362,10 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
             type Departure = { timeStr: string; note: string | null };
             const seen = new Set<string>();
             const allDepartures: Departure[] = [];
+            const reducedKey = `${dayType}Reduced` as keyof typeof timetable.stations[0]['times'];
             timetable.stations.forEach((station) => {
-                const stationTimes = station.times[dayType][dirIndex];
+                const reduced = showingReduced ? station.times[reducedKey] : undefined;
+                const stationTimes = (reduced ?? station.times[dayType])[dirIndex];
                 stationTimes.forEach((t) => {
                     const timeStr = typeof t === 'string' ? t : t.time;
                     const note = typeof t === 'string' ? null : t.note;

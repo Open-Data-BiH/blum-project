@@ -399,6 +399,90 @@
 }
 
 /* ==========================================================================
+   TIME NOTE ANNOTATIONS
+   ========================================================================== */
+
+.time-note {
+    font-size: 0.6em;
+    font-weight: 700;
+    vertical-align: super;
+    line-height: 0;
+    color: var(--accent);
+    margin-left: 1px;
+}
+
+.minute-box.past .time-note {
+    color: var(--text-light);
+}
+
+.minute-box.next .time-note {
+    color: #ecfff4;
+}
+
+.timetable-note-descriptions {
+    max-width: 800px;
+    margin: var(--space-4) auto 0;
+    padding: var(--space-3) var(--space-4);
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.timetable-note-descriptions p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+}
+
+.time-note--legend {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 3px;
+    background-color: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--accent);
+    vertical-align: baseline;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+[data-theme='dark'] .time-note {
+    color: var(--accent);
+}
+
+[data-theme='dark'] .minute-box.past .time-note {
+    color: var(--text-light);
+}
+
+[data-theme='dark'] .minute-box.next .time-note {
+    color: #ecfff4;
+}
+
+[data-theme='dark'] .timetable-note-descriptions {
+    border-top-color: var(--border-subtle);
+}
+
+[data-theme='dark'] .timetable-note-descriptions p {
+    color: var(--text-secondary);
+}
+
+[data-theme='dark'] .time-note--legend {
+    background-color: var(--accent-soft);
+    border-color: rgba(43, 110, 168, 0.45);
+    color: var(--accent);
+}
+
+/* ==========================================================================
    NO SERVICE MESSAGE
    ========================================================================== */
 

@@ -17,7 +17,7 @@ export const safeGet = <T = string>(obj: Record<string, any> | null | undefined,
 };
 
 const SEO_DEFAULTS = {
-    image: 'https://open-data-bih.github.io/blum-project/assets/images/gradski-prevoz-mapa-banja-luka.webp',
+    image: 'https://blprevoz.com/assets/images/gradski-prevoz-mapa-banja-luka.webp',
     type: 'website',
     twitterCard: 'summary_large_image',
 };
@@ -27,7 +27,7 @@ const PAGE_SEO: Record<
     { url: string; title: Record<Language, string>; description: Record<Language, string> }
 > = {
     home: {
-        url: 'https://open-data-bih.github.io/blum-project/',
+        url: 'https://blprevoz.com/',
         title: { bhs: 'Početna | BLum', en: 'Home | BLum' },
         description: {
             bhs: 'BLum je nezavisna platforma za informacije o javnom prevozu, linijama i urbanoj mobilnosti u Banjoj Luci.',
@@ -35,7 +35,7 @@ const PAGE_SEO: Record<
         },
     },
     lines: {
-        url: 'https://open-data-bih.github.io/blum-project/lines/',
+        url: 'https://blprevoz.com/lines/',
         title: { bhs: 'Red vožnje i linije | BLum', en: 'Lines & Timetables | BLum' },
         description: {
             bhs: 'Pregled gradskih i prigradskih linija, mape trasa i reda vožnje javnog prevoza u Banjoj Luci.',
@@ -43,7 +43,7 @@ const PAGE_SEO: Record<
         },
     },
     pricing: {
-        url: 'https://open-data-bih.github.io/blum-project/pricing/',
+        url: 'https://blprevoz.com/pricing/',
         title: { bhs: 'Cjenovnik | BLum', en: 'Prices | BLum' },
         description: {
             bhs: 'Aktuelne cijene karata i pretplatnih opcija za javni prevoz u Banjoj Luci na jednom mjestu.',
@@ -51,7 +51,7 @@ const PAGE_SEO: Record<
         },
     },
     airport: {
-        url: 'https://open-data-bih.github.io/blum-project/airport/',
+        url: 'https://blprevoz.com/airport/',
         title: { bhs: 'Aerodromski prevoz | BLum', en: 'Airport Transport | BLum' },
         description: {
             bhs: 'Informacije o prevozu do i od Međunarodnog aerodroma Banja Luka, uključujući cijene, stajališta i polaske.',
@@ -59,7 +59,7 @@ const PAGE_SEO: Record<
         },
     },
     faq: {
-        url: 'https://open-data-bih.github.io/blum-project/faq/',
+        url: 'https://blprevoz.com/faq/',
         title: { bhs: 'FAQ | BLum', en: 'FAQ | BLum' },
         description: {
             bhs: 'Najčešća pitanja i odgovori o korištenju BLum platforme, linijama, kartama i javnom prevozu u Banjoj Luci.',
@@ -67,7 +67,7 @@ const PAGE_SEO: Record<
         },
     },
     updates: {
-        url: 'https://open-data-bih.github.io/blum-project/updates/',
+        url: 'https://blprevoz.com/updates/',
         title: { bhs: 'Obavještenja | BLum', en: 'Updates | BLum' },
         description: {
             bhs: 'Najnovija obavještenja o izmjenama linija, redu vožnje i servisnim informacijama javnog prevoza u Banjoj Luci.',

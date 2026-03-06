@@ -18,7 +18,7 @@ const baseUrl = import.meta.env.BASE_URL;
 const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
 const ogImage = new URL(
   withBase('assets/images/gradski-prevoz-mapa-banja-luka.webp'),
-  Astro.site ?? 'https://open-data-bih.github.io/blum-project/',
+  Astro.site ?? 'https://blprevoz.com/',
 ).toString();
 ---
 

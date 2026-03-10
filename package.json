@@ -29,10 +29,10 @@
     "author": "Community Project",
     "license": "MIT",
     "devDependencies": {
-        "@typescript-eslint/eslint-plugin": "^8.44.0",
-        "@typescript-eslint/parser": "^8.44.0",
         "@astrojs/check": "^0.9.6",
         "@eslint/js": "^10.0.1",
+        "@typescript-eslint/eslint-plugin": "^8.44.0",
+        "@typescript-eslint/parser": "^8.44.0",
         "astro": "^5.18.0",
         "eslint": "^10.0.1",
         "happy-dom": "^18.0.1",
@@ -51,6 +51,7 @@
     },
     "homepage": "https://github.com/Open-Data-BiH/blum-project#readme",
     "dependencies": {
+        "@astrojs/sitemap": "^3.7.1",
         "@types/dompurify": "^3.2.0",
         "@types/leaflet": "^1.9.21",
         "dompurify": "^3.3.1",

@@ -28,15 +28,34 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
 
 <script is:inline>
   (function() {
-    var consent = localStorage.getItem('analytics-consent');
+    // Initialize dataLayer and gtag early so consent defaults are set before the tag loads
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
 
+    var consent = localStorage.getItem('analytics-consent');
+    var consentState = consent === 'granted' ? 'granted' : 'denied';
+
+    // Set consent defaults before loading the tag
+    gtag('consent', 'default', {
+      analytics_storage: consentState,
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied'
+    });
+
+    // Always load the Google tag so verification succeeds
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-TH1G57KP0X';
+    document.head.appendChild(s);
+
+    gtag('js', new Date());
+    gtag('config', 'G-TH1G57KP0X', { anonymize_ip: true, send_page_view: true });
+
+    // Show consent banner if user hasn't chosen yet
     if (consent === null) {
       var banner = document.getElementById('cookie-consent');
       if (banner) banner.hidden = false;
-    }
-
-    if (consent === 'granted') {
-      loadGA();
     }
 
     var acceptBtn = document.getElementById('cookie-accept');
@@ -46,7 +65,7 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
       acceptBtn.addEventListener('click', function() {
         localStorage.setItem('analytics-consent', 'granted');
         document.getElementById('cookie-consent').hidden = true;
-        loadGA();
+        gtag('consent', 'update', { analytics_storage: 'granted' });
       });
     }
 
@@ -55,18 +74,6 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
         localStorage.setItem('analytics-consent', 'denied');
         document.getElementById('cookie-consent').hidden = true;
       });
-    }
-
-    function loadGA() {
-      if (document.querySelector('script[src*="googletagmanager"]')) return;
-      var s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-TH1G57KP0X';
-      document.head.appendChild(s);
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-TH1G57KP0X', { anonymize_ip: true, send_page_view: true });
     }
   })();
 </script>

@@ -68,6 +68,26 @@ const ogImage = new URL(
 
     {pageStyles && <link rel="stylesheet" href={pageStyles} />}
 
+    <!-- Google tag (gtag.js) — loaded statically so verification crawlers can see it -->
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      var consent = localStorage.getItem('analytics-consent');
+      gtag('consent', 'default', {
+        analytics_storage: consent === 'granted' ? 'granted' : 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied'
+      });
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TH1G57KP0X" is:inline></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-TH1G57KP0X', { anonymize_ip: true, send_page_view: true });
+    </script>
+
     <!-- Inline theme init: reads localStorage and sets data-theme before body renders to prevent flash of wrong theme -->
     <script is:inline>
       (function () {

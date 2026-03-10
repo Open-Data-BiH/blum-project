@@ -1,0 +1,313 @@
+---
+const maintainerEmail = import.meta.env.PUBLIC_MAINTAINER_EMAIL ?? 'blprevoz@proton.me';
+
+const subjects = [
+  { value: 'timetable', bhs: 'Prijava netacnog reda voznje', en: 'Report incorrect timetable' },
+  { value: 'technical', bhs: 'Prijava tehnickog problema', en: 'Report technical issue' },
+  { value: 'suggestion', bhs: 'Prijedlog za poboljsanje', en: 'Suggestion for improvement' },
+  { value: 'question', bhs: 'Opste pitanje', en: 'General question' },
+  { value: 'custom', bhs: 'Drugo (unesite predmet)', en: 'Other (enter subject)' },
+];
+---
+
+<section class="section section--narrow" id="contact-form">
+  <div class="container">
+    <h2 class="section__title" id="contact-form-title">
+      <span data-lang="bhs">Kontaktirajte nas</span>
+      <span data-lang="en" style="display:none">Contact us</span>
+    </h2>
+    <p class="contact-form__intro">
+      <span data-lang="bhs">Imate pitanje, prijedlog ili zelite prijaviti problem? Popunite formu ispod.</span>
+      <span data-lang="en" style="display:none">Have a question, suggestion, or want to report an issue? Fill out the form below.</span>
+    </p>
+
+    <form class="contact-form" id="contact-form-el" data-email={maintainerEmail} novalidate>
+      <div class="contact-form__field">
+        <label for="contact-subject">
+          <span data-lang="bhs">Predmet</span>
+          <span data-lang="en" style="display:none">Subject</span>
+        </label>
+        <select id="contact-subject" name="subject" required data-placeholder-bhs="-- Izaberite predmet --" data-placeholder-en="-- Select a subject --">
+          <option value="" disabled selected>-- Izaberite predmet --</option>
+          {subjects.map((s) => (
+            <option value={s.value} data-bhs={s.bhs} data-en={s.en}>
+              {s.bhs}
+            </option>
+          ))}
+        </select>
+        <span class="contact-form__error" id="subject-error" hidden>
+          <span data-lang="bhs">Molimo izaberite predmet</span>
+          <span data-lang="en" style="display:none">Please select a subject</span>
+        </span>
+      </div>
+
+      <div class="contact-form__field contact-form__field--custom" id="custom-subject-field" style="display:none">
+        <label for="contact-custom-subject">
+          <span data-lang="bhs">Vas predmet</span>
+          <span data-lang="en" style="display:none">Your subject</span>
+        </label>
+        <input
+          type="text"
+          id="contact-custom-subject"
+          name="custom_subject"
+          minlength="3"
+          maxlength="120"
+          data-placeholder-bhs="Unesite predmet..."
+          data-placeholder-en="Enter subject..."
+          placeholder="Unesite predmet..."
+        />
+        <span class="contact-form__error" id="custom-subject-error" hidden>
+          <span data-lang="bhs">Predmet mora imati najmanje 3 karaktera</span>
+          <span data-lang="en" style="display:none">Subject must be at least 3 characters</span>
+        </span>
+      </div>
+
+      <div class="contact-form__field">
+        <label for="contact-message">
+          <span data-lang="bhs">Poruka</span>
+          <span data-lang="en" style="display:none">Message</span>
+        </label>
+        <textarea
+          id="contact-message"
+          name="message"
+          rows="6"
+          required
+          data-placeholder-bhs="Opisite detaljnije..."
+          data-placeholder-en="Describe in detail..."
+          placeholder="Opisite detaljnije..."
+        ></textarea>
+        <span class="contact-form__error" id="message-error" hidden>
+          <span data-lang="bhs">Poruka mora imati najmanje 10 karaktera</span>
+          <span data-lang="en" style="display:none">Message must be at least 10 characters</span>
+        </span>
+      </div>
+
+      <button type="submit" class="btn btn--primary contact-form__submit">
+        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+        <span data-lang="bhs">Nastavi</span>
+        <span data-lang="en" style="display:none">Continue</span>
+      </button>
+    </form>
+
+    <!-- Send options panel (shown after form submit) -->
+    <div class="contact-form__send-panel" id="send-panel" hidden>
+      <h3 class="contact-form__send-title">
+        <i class="fas fa-check-circle" aria-hidden="true"></i>
+        <span data-lang="bhs">Poruka pripremljena!</span>
+        <span data-lang="en" style="display:none">Message ready!</span>
+      </h3>
+      <p class="contact-form__send-desc">
+        <span data-lang="bhs">Izaberite kako zelite poslati poruku:</span>
+        <span data-lang="en" style="display:none">Choose how you'd like to send it:</span>
+      </p>
+
+      <div class="contact-form__send-options">
+        <a id="gmail-link" class="btn btn--primary contact-form__send-btn" target="_blank" rel="noopener noreferrer">
+          <i class="fas fa-envelope" aria-hidden="true"></i>
+          Gmail
+        </a>
+        <a id="outlook-link" class="btn btn--primary contact-form__send-btn" target="_blank" rel="noopener noreferrer">
+          <i class="fas fa-envelope" aria-hidden="true"></i>
+          Outlook
+        </a>
+        <a id="mailto-link" class="btn btn--secondary contact-form__send-btn">
+          <i class="fas fa-desktop" aria-hidden="true"></i>
+          <span data-lang="bhs">Email klijent</span>
+          <span data-lang="en" style="display:none">Email client</span>
+        </a>
+        <button type="button" id="copy-btn" class="btn btn--secondary contact-form__send-btn">
+          <i class="fas fa-copy" aria-hidden="true"></i>
+          <span data-lang="bhs">Kopiraj</span>
+          <span data-lang="en" style="display:none">Copy</span>
+        </button>
+      </div>
+
+      <div class="contact-form__copy-success" id="copy-success" hidden>
+        <i class="fas fa-check" aria-hidden="true"></i>
+        <span data-lang="bhs">Kopirano! Posaljite na: <strong id="copy-email-bhs"></strong></span>
+        <span data-lang="en" style="display:none">Copied! Send to: <strong id="copy-email-en"></strong></span>
+      </div>
+
+      <button type="button" id="back-to-form" class="contact-form__back-link">
+        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+        <span data-lang="bhs">Nazad na formu</span>
+        <span data-lang="en" style="display:none">Back to form</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initContactForm(): void {
+    const form = document.getElementById('contact-form-el') as HTMLFormElement | null;
+    if (!form) return;
+
+    const email = form.dataset.email ?? '';
+    const subjectSelect = document.getElementById('contact-subject') as HTMLSelectElement;
+    const customField = document.getElementById('custom-subject-field') as HTMLElement;
+    const customInput = document.getElementById('contact-custom-subject') as HTMLInputElement;
+    const messageEl = document.getElementById('contact-message') as HTMLTextAreaElement;
+    const subjectError = document.getElementById('subject-error') as HTMLElement;
+    const customSubjectError = document.getElementById('custom-subject-error') as HTMLElement;
+    const messageError = document.getElementById('message-error') as HTMLElement;
+    const sendPanel = document.getElementById('send-panel') as HTMLElement;
+    const gmailLink = document.getElementById('gmail-link') as HTMLAnchorElement;
+    const outlookLink = document.getElementById('outlook-link') as HTMLAnchorElement;
+    const mailtoLink = document.getElementById('mailto-link') as HTMLAnchorElement;
+    const copyBtn = document.getElementById('copy-btn') as HTMLButtonElement;
+    const copySuccess = document.getElementById('copy-success') as HTMLElement;
+    const backBtn = document.getElementById('back-to-form') as HTMLButtonElement;
+
+    const getLang = (): string => localStorage.getItem('selectedLanguage') || 'bhs';
+
+    const updateSelectLanguage = (lang: string): void => {
+      const placeholder = subjectSelect.options[0];
+      if (placeholder) {
+        placeholder.textContent = subjectSelect.dataset[`placeholder${lang === 'en' ? 'En' : 'Bhs'}`] ?? placeholder.textContent;
+      }
+      for (let i = 1; i < subjectSelect.options.length; i++) {
+        const opt = subjectSelect.options[i];
+        const text = lang === 'en' ? opt.dataset.en : opt.dataset.bhs;
+        if (text) opt.textContent = text;
+      }
+    };
+
+    const updatePlaceholders = (lang: string): void => {
+      const key = `placeholder${lang === 'en' ? 'En' : 'Bhs'}`;
+      [customInput, messageEl].forEach((el) => {
+        const val = el.dataset[key];
+        if (val) el.placeholder = val;
+      });
+    };
+
+    const clearErrors = (): void => {
+      subjectError.hidden = true;
+      customSubjectError.hidden = true;
+      messageError.hidden = true;
+      subjectSelect.classList.remove('contact-form__field--invalid');
+      customInput.classList.remove('contact-form__field--invalid');
+      messageEl.classList.remove('contact-form__field--invalid');
+    };
+
+    // Apply current language on load
+    const currentLang = getLang();
+    updateSelectLanguage(currentLang);
+    updatePlaceholders(currentLang);
+
+    // Listen for language changes
+    document.addEventListener('languageChanged', ((e: CustomEvent) => {
+      updateSelectLanguage(e.detail.language);
+      updatePlaceholders(e.detail.language);
+    }) as EventListener);
+
+    // Clear validation on interaction
+    subjectSelect.addEventListener('change', () => {
+      subjectError.hidden = true;
+      subjectSelect.classList.remove('contact-form__field--invalid');
+
+      const isCustom = subjectSelect.value === 'custom';
+      customField.style.display = isCustom ? '' : 'none';
+      if (isCustom) customInput.focus();
+    });
+
+    customInput.addEventListener('input', () => {
+      customSubjectError.hidden = true;
+      customInput.classList.remove('contact-form__field--invalid');
+    });
+
+    messageEl.addEventListener('input', () => {
+      messageError.hidden = true;
+      messageEl.classList.remove('contact-form__field--invalid');
+    });
+
+    // Back button
+    backBtn.addEventListener('click', () => {
+      sendPanel.hidden = true;
+      form.style.display = '';
+      copySuccess.hidden = true;
+    });
+
+    // Set copy email targets
+    const copyEmailBhs = document.getElementById('copy-email-bhs');
+    const copyEmailEn = document.getElementById('copy-email-en');
+    if (copyEmailBhs) copyEmailBhs.textContent = email;
+    if (copyEmailEn) copyEmailEn.textContent = email;
+
+    form.addEventListener('submit', (e: Event) => {
+      e.preventDefault();
+      clearErrors();
+
+      // Validate
+      let valid = true;
+      if (!subjectSelect.value) {
+        subjectError.hidden = false;
+        subjectSelect.classList.add('contact-form__field--invalid');
+        valid = false;
+      }
+      if (subjectSelect.value === 'custom' && customInput.value.trim().length < 3) {
+        customSubjectError.hidden = false;
+        customInput.classList.add('contact-form__field--invalid');
+        valid = false;
+      }
+      if (messageEl.value.trim().length < 10) {
+        messageError.hidden = false;
+        messageEl.classList.add('contact-form__field--invalid');
+        valid = false;
+      }
+      if (!valid) return;
+
+      const selectedOption = subjectSelect.options[subjectSelect.selectedIndex];
+      let subject: string;
+      if (subjectSelect.value === 'custom') {
+        subject = customInput.value.trim();
+      } else {
+        subject = `BLum - ${selectedOption.dataset.bhs ?? selectedOption.textContent ?? ''}`;
+      }
+
+      const lang = getLang();
+      const greeting = lang === 'en' ? 'Hello,' : 'Pozdrav,';
+      const message = messageEl.value.trim();
+      const body = message ? `${greeting}\n\n${message}` : `${greeting}\n\n`;
+
+      const encodedSubject = encodeURIComponent(subject);
+      const encodedBody = encodeURIComponent(body);
+
+      // Gmail compose URL
+      gmailLink.href = `https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(email)}&su=${encodedSubject}&body=${encodedBody}`;
+
+      // Outlook compose URL
+      outlookLink.href = `https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(email)}&subject=${encodedSubject}&body=${encodedBody}`;
+
+      // Standard mailto
+      mailtoLink.href = `mailto:${email}?subject=${encodedSubject}&body=${encodedBody}`;
+
+      // Copy button handler
+      const copyText = `To: ${email}\nSubject: ${subject}\n\n${body}`;
+      copyBtn.onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(copyText);
+          copySuccess.hidden = false;
+        } catch {
+          // Fallback for older browsers
+          const ta = document.createElement('textarea');
+          ta.value = copyText;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          copySuccess.hidden = false;
+        }
+      };
+
+      // Show the send panel, hide the form
+      form.style.display = 'none';
+      sendPanel.hidden = false;
+      copySuccess.hidden = true;
+      sendPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+
+  initContactForm();
+</script>

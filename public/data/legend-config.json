@@ -93,6 +93,16 @@
             "icon": "fa-bicycle",
             "color": "#004899",
             "defaultVisible": true
+        },
+        {
+            "id": "landmarks",
+            "label": {
+                "bhs": "Važne lokacije",
+                "en": "Key Locations"
+            },
+            "icon": "fa-location-dot",
+            "color": "#e74c3c",
+            "defaultVisible": true
         }
     ]
 }

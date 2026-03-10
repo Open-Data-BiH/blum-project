@@ -1,7 +1,7 @@
 // Popup template helpers for map overlays
 
 import { getCurrentLanguage } from '../../core/i18n';
-import type { LocalizedText, TransportHub } from './types';
+import type { Landmark, LocalizedText, TransportHub } from './types';
 
 const BASE_URL = import.meta.env.BASE_URL;
 const withBase = (path: string): string => `${BASE_URL}${path.replace(/^\/+/, '')}`;
@@ -85,5 +85,12 @@ export const createBikeStationPopup = (name: string, capacity: number): string =
     <h3>${escapeHtml(name)}</h3>
     <p>${langText('Kapacitet', 'Capacity')}: ${escapeHtml(String(capacity))}</p>
     <a href="https://www.nextbike.ba/bs/banjaluka/" target="_blank" rel="noopener noreferrer" class="popup-link">${langText('Nextbike BL informacije', 'Nextbike BL Info')}</a>
+  </div>
+`;
+
+export const createLandmarkPopup = (landmark: Landmark): string => `
+  <div class="hub-popup">
+    <h3>${escapeHtml(localizedField(landmark.name))}</h3>
+    <p>${escapeHtml(localizedField(landmark.description))}</p>
   </div>
 `;

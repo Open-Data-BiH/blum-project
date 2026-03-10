@@ -7,6 +7,7 @@
 import { debounce, sortLinesByID } from '../../core/utils';
 import { safeGet, getTranslations, getCurrentLanguage } from '../../core/i18n';
 import { LINE_CONFIG, lineManager } from './line-manager';
+import { isReducedScheduleDay } from './school-holidays';
 import type { TimetableEntry } from '../../../types/timetable';
 
 const BASE_URL = import.meta.env.BASE_URL;
@@ -265,6 +266,11 @@ function getTodayDayType(): 'weekday' | 'saturday' | 'sunday' {
 function renderTimetable(timetable: TimetableEntry & { lineType?: string }, container: HTMLElement): void {
     const todayDayType = getTodayDayType();
     const lang = getCurrentLanguage();
+    const reducedToday = isReducedScheduleDay();
+    const hasReducedData = timetable.stations.some(
+        (s) => s.times.weekdayReduced ?? s.times.saturdayReduced ?? s.times.sundayReduced,
+    );
+    const showingReduced = reducedToday && hasReducedData;
     const t = safeGet(getTranslations(), lang, 'sections', 'timetable') as Record<string, unknown> | null;
     const timetableDays = t ? (t.days as Record<string, string> | null) : null;
 
@@ -323,6 +329,19 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
     `;
     }
 
+    if (showingReduced) {
+        const reducedLabel =
+            lang === 'bhs'
+                ? 'Prikazan redukovani red vožnje (školski raspust)'
+                : 'Showing reduced schedule (school holidays)';
+        html += `
+      <div class="timetable-reduced-notice">
+        <i class="fas fa-calendar-alt"></i>
+        <span>${reducedLabel}</span>
+      </div>
+    `;
+    }
+
     html += `<div class="timetable-container">`;
 
     const dayTypes: ('weekday' | 'saturday' | 'sunday')[] = ['weekday', 'saturday', 'sunday'];
@@ -340,20 +359,32 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
             <tbody>
       `;
 
-            let allDepartures: string[] = [];
+            type Departure = { timeStr: string; note: string | null };
+            const seen = new Set<string>();
+            const allDepartures: Departure[] = [];
+            const reducedKey = `${dayType}Reduced` as keyof typeof timetable.stations[0]['times'];
             timetable.stations.forEach((station) => {
-                const stationTimes = station.times[dayType][dirIndex];
-                stationTimes.forEach((time) => allDepartures.push(time));
+                const reduced = showingReduced ? station.times[reducedKey] : undefined;
+                const stationTimes = (reduced ?? station.times[dayType])[dirIndex];
+                stationTimes.forEach((t) => {
+                    const timeStr = typeof t === 'string' ? t : t.time;
+                    const note = typeof t === 'string' ? null : t.note;
+                    const key = note ? `${timeStr}|${note}` : timeStr;
+                    if (!seen.has(key)) {
+                        seen.add(key);
+                        allDepartures.push({ timeStr, note });
+                    }
+                });
             });
-            allDepartures = [...new Set(allDepartures)].sort();
+            allDepartures.sort((a, b) => a.timeStr.localeCompare(b.timeStr));
 
-            const departuresByHour: Record<string, string[]> = {};
-            allDepartures.forEach((time) => {
-                const [hour, minute] = time.split(':');
+            const departuresByHour: Record<string, Departure[]> = {};
+            allDepartures.forEach(({ timeStr, note }) => {
+                const [hour, minute] = timeStr.split(':');
                 if (!departuresByHour[hour]) {
                     departuresByHour[hour] = [];
                 }
-                departuresByHour[hour].push(minute);
+                departuresByHour[hour].push({ timeStr: minute, note });
             });
 
             const now = new Date();
@@ -372,11 +403,11 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
                     const hourValue = parseInt(hour, 10);
                     if (hourValue > currentHour) {
                         nextDepartureHour = hourValue;
-                        nextDepartureMinute = Math.min(...departuresByHour[hour].map((m) => parseInt(m, 10)));
+                        nextDepartureMinute = Math.min(...departuresByHour[hour].map((d) => parseInt(d.timeStr, 10)));
                         return;
                     }
                     if (hourValue === currentHour) {
-                        const sortedMinutes = departuresByHour[hour].map((m) => parseInt(m, 10)).sort((a, b) => a - b);
+                        const sortedMinutes = departuresByHour[hour].map((d) => parseInt(d.timeStr, 10)).sort((a, b) => a - b);
                         for (const minute of sortedMinutes) {
                             if (minute >= currentMinute) {
                                 nextDepartureHour = hourValue;
@@ -390,7 +421,7 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
             Object.keys(departuresByHour)
                 .sort()
                 .forEach((hour) => {
-                    const minutes = departuresByHour[hour].sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+                    const departures = departuresByHour[hour].sort((a, b) => parseInt(a.timeStr, 10) - parseInt(b.timeStr, 10));
                     const hourValue = parseInt(hour, 10);
                     const isCurrentHour = hourValue === currentHour;
                     const rowClass = isCurrentHour ? 'current-hour' : '';
@@ -403,7 +434,7 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
                 <div class="minutes-wrapper">
           `;
 
-                    minutes.forEach((minute) => {
+                    departures.forEach(({ timeStr: minute, note }) => {
                         const minuteValue = parseInt(minute, 10);
                         let timeClass: string;
                         if (hourValue < currentHour || (hourValue === currentHour && minuteValue < currentMinute)) {
@@ -413,7 +444,8 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
                         } else {
                             timeClass = 'upcoming';
                         }
-                        html += `<span class="minute-box ${timeClass}" data-minute="${minuteValue}">${minute}</span>`;
+                        const noteHtml = note ? `<sup class="time-note">${escapeHTML(note)}</sup>` : '';
+                        html += `<span class="minute-box ${timeClass}" data-minute="${minuteValue}">${minute}${noteHtml}</span>`;
                     });
 
                     html += `</div></td></tr>`;
@@ -424,6 +456,17 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
     });
 
     html += `</div>`;
+
+    const noteDescriptions = timetable.noteDescriptions;
+    if (noteDescriptions && Object.keys(noteDescriptions).length > 0) {
+        html += `<div class="timetable-note-descriptions">`;
+        Object.entries(noteDescriptions).forEach(([key, desc]) => {
+            const text = desc[lang as 'bhs' | 'en'] ?? desc.en;
+            html += `<p><sup class="time-note time-note--legend">${escapeHTML(key)}</sup>${escapeHTML(text)}</p>`;
+        });
+        html += `</div>`;
+    }
+
     container.innerHTML = html;
 
     // ── Direction button handlers ────────────────────────────────────────────

@@ -1,0 +1,396 @@
+{
+    "landmarks": [
+        {
+            "id": "gradska-uprava",
+            "name": {
+                "bhs": "Gradska uprava",
+                "en": "City Hall"
+            },
+            "icon": "fa-landmark",
+            "lat": 44.7718442426809,
+            "lng": 17.191309272888503,
+            "description": {
+                "bhs": "Sjedište gradske administracije Banja Luke",
+                "en": "Seat of Banja Luka city administration"
+            }
+        },
+        {
+            "id": "klinicki-centar",
+            "name": {
+                "bhs": "Univerzitetski klinički centar RS",
+                "en": "University Clinical Center RS"
+            },
+            "icon": "fa-hospital",
+            "lat": 44.7838505662975,
+            "lng": 17.178109469222626,
+            "description": {
+                "bhs": "Glavni bolnički kompleks u Banjoj Luci",
+                "en": "Main hospital complex in Banja Luka"
+            }
+        },
+        {
+            "id": "univerzitet",
+            "name": {
+                "bhs": "Univerzitet u Banjoj Luci",
+                "en": "University of Banja Luka"
+            },
+            "icon": "fa-graduation-cap",
+            "lat": 44.77491749909294,
+            "lng": 17.210633557365632,
+            "description": {
+                "bhs": "Univerzitetski kampus",
+                "en": "University campus"
+            }
+        },
+        {
+            "id": "trg-krajine",
+            "name": {
+                "bhs": "Trg Krajine",
+                "en": "Krajina Square"
+            },
+            "icon": "fa-monument",
+            "lat": 44.76986751321787,
+            "lng": 17.189367302102774,
+            "description": {
+                "bhs": "Centralni gradski trg",
+                "en": "Central city square"
+            }
+        },
+        {
+            "id": "trznica",
+            "name": {
+                "bhs": "Gradska tržnica",
+                "en": "City Market"
+            },
+            "icon": "fa-store",
+            "lat": 44.76834665015882,
+            "lng": 17.190050447742866,
+            "description": {
+                "bhs": "Glavna gradska tržnica",
+                "en": "Main city market"
+            }
+        },
+        {
+            "id": "robna-kuca-boska",
+            "name": {
+                "bhs": "Robna kuća Boska",
+                "en": "Boska Shopping Center"
+            },
+            "icon": "fa-bag-shopping",
+            "lat": 44.76999923960819,
+            "lng": 17.18985646811639,
+            "description": {
+                "bhs": "Trgovački centar u centru grada",
+                "en": "Shopping center in the city center"
+            }
+        },
+        {
+            "id": "kastel",
+            "name": {
+                "bhs": "Tvrđava Kastel",
+                "en": "Kastel Fortress"
+            },
+            "icon": "fa-fort-awesome",
+            "lat": 44.76671805536329,
+            "lng": 17.190547525473022,
+            "description": {
+                "bhs": "Istorijska tvrđava i kulturni spomenik",
+                "en": "Historic fortress and cultural monument"
+            }
+        },
+        {
+            "id": "narodno-pozoriste",
+            "name": {
+                "bhs": "Narodno pozorište RS",
+                "en": "National Theatre RS"
+            },
+            "icon": "fa-masks-theater",
+            "lat": 44.774190377720146,
+            "lng": 17.19344930823518,
+            "description": {
+                "bhs": "Nacionalno pozorište Republike Srpske",
+                "en": "National Theatre of Republika Srpska"
+            }
+        },
+        {
+            "id": "banj-brdo",
+            "name": {
+                "bhs": "Banj brdo",
+                "en": "Banj Hill"
+            },
+            "icon": "fa-mountain",
+            "lat": 44.74391067718198,
+            "lng": 17.163063238514102,
+            "description": {
+                "bhs": "Memorijalni park i vidikovac iznad grada",
+                "en": "Memorial park and viewpoint above the city"
+            }
+        },
+        {
+            "id": "centralni-park",
+            "name": {
+                "bhs": "Park Mladen Stojanović",
+                "en": "Mladen Stojanović Park"
+            },
+            "icon": "fa-tree",
+            "lat": 44.78041031093467,
+            "lng": 17.201264968516295,
+            "description": {
+                "bhs": "Glavni gradski park",
+                "en": "Main city park"
+            }
+        },
+        {
+            "id": "vrucica-beach",
+            "name": {
+                "bhs": "Gradska plaža Vručica",
+                "en": "Vručica City Beach"
+            },
+            "icon": "fa-umbrella-beach",
+            "lat": 44.748995351749514,
+            "lng": 17.158903719043007,
+            "description": {
+                "bhs": "Popularna gradska plaža na rijeci Vrbas",
+                "en": "Popular city beach on the Vrbas river"
+            }
+        },
+        {
+            "id": "administrativni-centar",
+            "name": {
+                "bhs": "Administrativni centar Vlade RS",
+                "en": "RS Government Administrative Center"
+            },
+            "icon": "fa-building-columns",
+            "lat": 44.78576,
+            "lng": 17.20386,
+            "description": {
+                "bhs": "Sjedište Vlade Republike Srpske",
+                "en": "Seat of the Government of Republika Srpska"
+            }
+        },
+        {
+            "id": "hitna-pomoc",
+            "name": {
+                "bhs": "Služba hitne medicinske pomoći",
+                "en": "Emergency Medical Services"
+            },
+            "icon": "fa-truck-medical",
+            "lat": 44.772600561695334,
+            "lng": 17.18364022994203,
+            "description": {
+                "bhs": "Hitna medicinska pomoć Banja Luka",
+                "en": "Emergency room / ambulance services in Banja Luka"
+            }
+        },
+        {
+            "id": "dom-zdravlja",
+            "name": {
+                "bhs": "Dom zdravlja Banja Luka",
+                "en": "Banja Luka Health Center"
+            },
+            "icon": "fa-house-medical",
+            "lat": 44.772296387328055,
+            "lng": 17.184869444944272,
+            "description": {
+                "bhs": "Javna ustanova primarne zdravstvene zaštite",
+                "en": "Public primary healthcare institution"
+            }
+        },
+        {
+            "id": "skc",
+            "name": {
+                "bhs": "Studentski kulturni centar",
+                "en": "Student Cultural Center"
+            },
+            "icon": "fa-users",
+            "lat": 44.773534566003924,
+            "lng": 17.20924261057278,
+            "description": {
+                "bhs": "Kulturni i društveni centar za studente",
+                "en": "Cultural and social center for students"
+            }
+        },
+        {
+            "id": "merkator",
+            "name": {
+                "bhs": "Merkator",
+                "en": "Merkator Shopping Center"
+            },
+            "icon": "fa-cart-shopping",
+            "lat": 44.775322049538325,
+            "lng": 17.206017749591787,
+            "description": {
+                "bhs": "Trgovački centar Merkator",
+                "en": "Merkator shopping center"
+            }
+        },
+        {
+            "id": "delta-planet",
+            "name": {
+                "bhs": "Delta Planet",
+                "en": "Delta Planet Mall"
+            },
+            "icon": "fa-cart-shopping",
+            "lat": 44.77961083720359,
+            "lng": 17.206910641262088,
+            "description": {
+                "bhs": "Najveći tržni centar u Banjoj Luci",
+                "en": "Largest shopping mall in Banja Luka"
+            }
+        },
+        {
+            "id": "emporium",
+            "name": {
+                "bhs": "Emporium",
+                "en": "Emporium Shopping Center"
+            },
+            "icon": "fa-cart-shopping",
+            "lat": 44.7759442821273,
+            "lng": 17.187044688557304,
+            "description": {
+                "bhs": "Trgovački centar u centru grada",
+                "en": "Shopping center in the city center"
+            }
+        },
+        {
+            "id": "banski-dvor",
+            "name": {
+                "bhs": "Kulturni centar Banski dvor",
+                "en": "Banski Dvor Cultural Center"
+            },
+            "icon": "fa-landmark-dome",
+            "lat": 44.77276718329826,
+            "lng": 17.192259989752266,
+            "description": {
+                "bhs": "Najznačajnija kulturna institucija Banje Luke, koncertna i izložbena dvorana",
+                "en": "Banja Luka's main cultural institution, concert and exhibition hall"
+            }
+        },
+        {
+            "id": "muzej-rs",
+            "name": {
+                "bhs": "Muzej Republike Srpske",
+                "en": "Museum of Republika Srpska"
+            },
+            "icon": "fa-landmark",
+            "lat": 44.76938961387948,
+            "lng": 17.191794732234843,
+            "description": {
+                "bhs": "Glavni istorijski i kulturni muzej Republike Srpske",
+                "en": "Main history and heritage museum of Republika Srpska"
+            }
+        },
+        {
+            "id": "djecije-pozoriste",
+            "name": {
+                "bhs": "Dječije pozorište Republike Srpske",
+                "en": "Children's Theatre of Republika Srpska"
+            },
+            "icon": "fa-masks-theater",
+            "lat": 44.76872544188292,
+            "lng": 17.191044316841474,
+            "description": {
+                "bhs": "Pozorište za djecu osnovano 1955. godine",
+                "en": "Children's theatre founded in 1955"
+            }
+        },
+        {
+            "id": "pozoriste-jazavac",
+            "name": {
+                "bhs": "Gradsko pozorište Jazavac",
+                "en": "City Theatre Jazavac"
+            },
+            "icon": "fa-masks-theater",
+            "lat": 44.76428715837332,
+            "lng": 17.191067666710588,
+            "description": {
+                "bhs": "Gradsko pozorište osnovano 2006. godine",
+                "en": "City theatre founded in 2006"
+            }
+        },
+        {
+            "id": "cineplexx-palas",
+            "name": {
+                "bhs": "Cineplexx Palas",
+                "en": "Cineplexx Palas Cinema"
+            },
+            "icon": "fa-film",
+            "lat": 44.769761665829996,
+            "lng": 17.189263726613405,
+            "description": {
+                "bhs": "Najveći bioskop u BiH sa 7 sala i 1.100 mjesta",
+                "en": "Largest cinema in BiH with 7 halls and 1,100 seats"
+            }
+        },
+        {
+            "id": "cinestar",
+            "name": {
+                "bhs": "CineStar 4DX",
+                "en": "CineStar 4DX Cinema"
+            },
+            "icon": "fa-film",
+            "lat": 44.77947244250092,
+            "lng": 17.2079050258327,
+            "description": {
+                "bhs": "Multipleks bioskop sa 6 sala u Delta Planet centru",
+                "en": "Multiplex cinema with 6 auditoriums in Delta Planet mall"
+            }
+        },
+        {
+            "id": "muzej-savremene-umjetnosti",
+            "name": {
+                "bhs": "Muzej savremene umjetnosti Republike Srpske",
+                "en": "Museum of Contemporary Art of Republika Srpska"
+            },
+            "icon": "fa-palette",
+            "lat": 44.772309183703356,
+            "lng": 17.18971108028777,
+            "description": {
+                "bhs": "Muzej osnovan 1971, smješten u bivšoj austrougarskoj željezničkoj stanici iz 1891",
+                "en": "Museum founded in 1971, housed in a former Austro-Hungarian railway station from 1891"
+            }
+        },
+        {
+            "id": "kamena-kuca",
+            "name": {
+                "bhs": "Kamena kuća",
+                "en": "Stone House"
+            },
+            "icon": "fa-archway",
+            "lat": 44.766765800513426,
+            "lng": 17.19101696245375,
+            "description": {
+                "bhs": "Kulturni prostor u sklopu tvrđave Kastel za izložbe i događaje",
+                "en": "Cultural venue within Kastel Fortress for exhibitions and events"
+            }
+        },
+        {
+            "id": "centralni-park-univerzitetski-grad",
+            "name": {
+                "bhs": "Centralni park Univerzitetski grad",
+                "en": "University City Central Park"
+            },
+            "icon": "fa-tree",
+            "lat": 44.77842053465315,
+            "lng": 17.210921878482345,
+            "description": {
+                "bhs": "Centralni park u naselju Univerzitetski grad",
+                "en": "Central park in the University City neighborhood"
+            }
+        },
+        {
+            "id": "botanicka-basta",
+            "name": {
+                "bhs": "Botanička bašta Univerziteta u Banjoj Luci",
+                "en": "Botanical Garden of the University of Banja Luka"
+            },
+            "icon": "fa-seedling",
+            "lat": 44.77551098304156,
+            "lng": 17.214328856479177,
+            "description": {
+                "bhs": "Jedina botanička bašta u Republici Srpskoj, na površini od 5 hektara",
+                "en": "The only botanical garden in Republika Srpska, covering 5 hectares"
+            }
+        }
+    ]
+}

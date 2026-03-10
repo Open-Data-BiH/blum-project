@@ -1,0 +1,93 @@
+---
+import updatesData from '../../public/data/transport/updates.json';
+
+interface Category {
+  id: string;
+  icon: string;
+  label: { bhs: string; en: string };
+}
+
+interface Update {
+  id: string;
+  type: string;
+  severity: 'info' | 'warning' | 'urgent';
+  title: { bhs: string; en: string };
+  description: { bhs: string; en: string };
+  affectedLines: string[];
+  datePublished: string;
+  dateExpiry: string | null;
+  isActive: boolean;
+  source: string;
+  sourceUrl: string;
+}
+
+const { categories, updates } = updatesData as { categories: Category[]; updates: Update[] };
+
+const activeUpdates = updates
+  .filter((u) => u.isActive)
+  .sort((a, b) => new Date(b.datePublished).getTime() - new Date(a.datePublished).getTime())
+  .slice(0, 3);
+
+const baseUrl = import.meta.env.BASE_URL;
+const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
+---
+
+<section class="section section--narrow" id="home-updates">
+  <div class="container">
+    <h2 class="section__title" id="home-updates-title">
+      <span data-lang="bhs">Obavještenja</span>
+      <span data-lang="en" style="display:none">Updates</span>
+    </h2>
+
+    {activeUpdates.length === 0 ? (
+      <div class="home-updates-empty">
+        <i class="fas fa-check-circle" aria-hidden="true"></i>
+        <p>
+          <span data-lang="bhs">Nema aktivnih obavještenja. Javni prevoz saobraća redovno.</span>
+          <span data-lang="en" style="display:none">No active updates. Public transport is operating normally.</span>
+        </p>
+      </div>
+    ) : (
+      <div class="home-updates-list">
+        {activeUpdates.map((update) => {
+          const cat = categories.find((c) => c.id === update.type);
+          const catIcon = cat ? cat.icon : 'fa-info-circle';
+          return (
+            <article class={`home-update-card home-update-card--${update.severity}`}>
+              <div class="home-update-card__header">
+                <span class={`update-badge update-badge--${update.type}`}>
+                  <i class={`fas ${catIcon}`} aria-hidden="true"></i>
+                  {cat && (
+                    <>
+                      <span data-lang="bhs">{cat.label.bhs}</span>
+                      <span data-lang="en" style="display:none">{cat.label.en}</span>
+                    </>
+                  )}
+                </span>
+                <span class="home-update-card__date">
+                  {new Date(update.datePublished).toLocaleDateString('bs-BA', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                </span>
+              </div>
+              <h3 class="home-update-card__title">
+                <span data-lang="bhs">{update.title.bhs}</span>
+                <span data-lang="en" style="display:none">{update.title.en}</span>
+              </h3>
+              <p class="home-update-card__description">
+                <span data-lang="bhs">{update.description.bhs}</span>
+                <span data-lang="en" style="display:none">{update.description.en}</span>
+              </p>
+            </article>
+          );
+        })}
+      </div>
+    )}
+
+    <div class="home-updates-cta">
+      <a href={withBase('updates/')} class="btn btn--sm">
+        <i class="fas fa-bell" aria-hidden="true"></i>
+        <span data-lang="bhs">Sva obavještenja</span>
+        <span data-lang="en" style="display:none">All updates</span>
+      </a>
+    </div>
+  </div>
+</section>

@@ -17,7 +17,7 @@ export const safeGet = <T = string>(obj: Record<string, any> | null | undefined,
 };
 
 const SEO_DEFAULTS = {
-    image: 'https://open-data-bih.github.io/blum-project/assets/images/gradski-prevoz-mapa-banja-luka.webp',
+    image: 'https://blprevoz.com/assets/images/gradski-prevoz-mapa-banja-luka.webp',
     type: 'website',
     twitterCard: 'summary_large_image',
 };
@@ -27,51 +27,91 @@ const PAGE_SEO: Record<
     { url: string; title: Record<Language, string>; description: Record<Language, string> }
 > = {
     home: {
-        url: 'https://open-data-bih.github.io/blum-project/',
-        title: { bhs: 'Početna | BLum', en: 'Home | BLum' },
+        url: 'https://blprevoz.com/',
+        title: {
+            bhs: 'BL Prevoz – Linije javnog prevoza u Banjoj Luci',
+            en: 'BL Transport – Public Transport Routes in Banja Luka',
+        },
         description: {
-            bhs: 'BLum je nezavisna platforma za informacije o javnom prevozu, linijama i urbanoj mobilnosti u Banjoj Luci.',
-            en: 'BLum is an independent platform for public transport routes, timetables, and urban mobility information in Banja Luka.',
+            bhs: 'Pregled linija javnog prevoza u Banjoj Luci. Jednostavna mapa i informacije o autobuskim rutama.',
+            en: 'Public transport routes in Banja Luka. Simple map and information about bus routes and timetables.',
         },
     },
     lines: {
-        url: 'https://open-data-bih.github.io/blum-project/lines/',
-        title: { bhs: 'Red vožnje i linije | BLum', en: 'Lines & Timetables | BLum' },
+        url: 'https://blprevoz.com/lines/',
+        title: {
+            bhs: 'Red vožnje i autobuske linije – Javni prevoz Banja Luka',
+            en: 'Timetables & Bus Routes – Banja Luka Public Transport',
+        },
         description: {
-            bhs: 'Pregled gradskih i prigradskih linija, mape trasa i reda vožnje javnog prevoza u Banjoj Luci.',
-            en: 'Explore urban and suburban routes, map overlays, and timetable information for public transport in Banja Luka.',
+            bhs: 'Sve autobuske linije i red vožnje javnog prevoza u Banjoj Luci. Mape trasa, polasci i stajališta na jednom mjestu.',
+            en: 'All bus routes and timetables for public transport in Banja Luka. Route maps, departures, and stops in one place.',
         },
     },
     pricing: {
-        url: 'https://open-data-bih.github.io/blum-project/pricing/',
-        title: { bhs: 'Cjenovnik | BLum', en: 'Prices | BLum' },
+        url: 'https://blprevoz.com/pricing/',
+        title: {
+            bhs: 'Cijene karata – Javni prevoz Banja Luka',
+            en: 'Ticket Prices – Banja Luka Public Transport',
+        },
         description: {
-            bhs: 'Aktuelne cijene karata i pretplatnih opcija za javni prevoz u Banjoj Luci na jednom mjestu.',
-            en: 'Check current ticket prices and subscription options for public transport in Banja Luka.',
+            bhs: 'Aktuelne cijene karata, mjesečnih pretplata i đačkih markica za autobuski prevoz u Banjoj Luci.',
+            en: 'Current ticket prices, monthly passes, and student cards for bus transport in Banja Luka.',
         },
     },
     airport: {
-        url: 'https://open-data-bih.github.io/blum-project/airport/',
-        title: { bhs: 'Aerodromski prevoz | BLum', en: 'Airport Transport | BLum' },
+        url: 'https://blprevoz.com/airport/',
+        title: {
+            bhs: 'Prevoz do aerodroma Banja Luka – Cijene i polasci',
+            en: 'Banja Luka Airport Transfer – Prices & Departures',
+        },
         description: {
-            bhs: 'Informacije o prevozu do i od Međunarodnog aerodroma Banja Luka, uključujući cijene, stajališta i polaske.',
-            en: 'Find airport transfer details for Banja Luka International Airport, including prices, stops, and departures.',
+            bhs: 'Kako doći do Aerodroma Banja Luka. Cijene transfera, stajališta, polasci i mapa rute aerodromskog prevoza.',
+            en: 'How to get to Banja Luka Airport. Transfer prices, stops, departures, and route map.',
         },
     },
     faq: {
-        url: 'https://open-data-bih.github.io/blum-project/faq/',
-        title: { bhs: 'FAQ | BLum', en: 'FAQ | BLum' },
+        url: 'https://blprevoz.com/faq/',
+        title: {
+            bhs: 'Česta pitanja – Javni prevoz Banja Luka',
+            en: 'FAQ – Banja Luka Public Transport',
+        },
         description: {
-            bhs: 'Najčešća pitanja i odgovori o korištenju BLum platforme, linijama, kartama i javnom prevozu u Banjoj Luci.',
-            en: 'Read frequently asked questions about BLum, routes, tickets, and public transport in Banja Luka.',
+            bhs: 'Odgovori na najčešća pitanja o autobuskim linijama, kartama i javnom prevozu u Banjoj Luci.',
+            en: 'Answers to frequently asked questions about bus routes, tickets, and public transport in Banja Luka.',
         },
     },
     updates: {
-        url: 'https://open-data-bih.github.io/blum-project/updates/',
-        title: { bhs: 'Obavještenja | BLum', en: 'Updates | BLum' },
+        url: 'https://blprevoz.com/updates/',
+        title: {
+            bhs: 'Obavještenja – Izmjene linija i reda vožnje Banja Luka',
+            en: 'Updates – Route & Timetable Changes in Banja Luka',
+        },
         description: {
-            bhs: 'Najnovija obavještenja o izmjenama linija, redu vožnje i servisnim informacijama javnog prevoza u Banjoj Luci.',
-            en: 'Latest updates on route changes, timetable adjustments, and service notices for public transport in Banja Luka.',
+            bhs: 'Najnovija obavještenja o izmjenama autobuskih linija, reda vožnje i radovima na javnom prevozu u Banjoj Luci.',
+            en: 'Latest updates on bus route changes, timetable adjustments, and service notices in Banja Luka.',
+        },
+    },
+    contact: {
+        url: 'https://blprevoz.com/contact/',
+        title: {
+            bhs: 'Kontakt – BL Prevoz',
+            en: 'Contact – BL Transport',
+        },
+        description: {
+            bhs: 'Kontaktirajte nas za pitanja o javnom prevozu u Banjoj Luci. Prijavite problem ili predložite poboljšanje.',
+            en: 'Contact us about public transport in Banja Luka. Report an issue or suggest an improvement.',
+        },
+    },
+    privacy: {
+        url: 'https://blprevoz.com/privacy/',
+        title: {
+            bhs: 'Politika privatnosti – BL Prevoz',
+            en: 'Privacy Policy – BL Transport',
+        },
+        description: {
+            bhs: 'Politika privatnosti BL Prevoz platforme. Informacije o korištenju analitike, kolačića i zaštiti vaših podataka.',
+            en: 'BL Transport privacy policy. Information about analytics, cookies, and data protection.',
         },
     },
 };
@@ -98,6 +138,12 @@ const resolvePageKey = (): string => {
     }
     if (path.includes('/updates')) {
         return 'updates';
+    }
+    if (path.includes('/contact')) {
+        return 'contact';
+    }
+    if (path.includes('/privacy')) {
+        return 'privacy';
     }
     return 'home';
 };
@@ -186,6 +232,7 @@ export const applyTranslation = (lang: Language): void => {
     safelyUpdateText('nav-airport-desktop', t.header.nav.airport);
     safelyUpdateText('nav-updates-desktop', t.header.nav.updates ?? (lang === 'bhs' ? 'Obavještenja' : 'Updates'));
     safelyUpdateText('nav-faq-desktop', t.header.nav.faq);
+    safelyUpdateText('nav-contact-desktop', lang === 'bhs' ? 'Kontakt' : 'Contact');
 
     // Hero section
     const heroDefaults =
@@ -303,13 +350,15 @@ export const applyTranslation = (lang: Language): void => {
             ? 'BLum je nezavisna platforma razvijena radi bolje dostupnosti informacija o javnom prevozu. Zvanične i ažurirane informacije provjerite kod nadležnih gradskih organa i prevoznika.'
             : 'BLum is an independent platform created to improve access to public transport information. For official and up-to-date information, check with relevant city authorities and transport operators.',
     );
-    safelyUpdateText('footer-link-timetable-report', lang === 'bhs' ? 'Prijavi red vožnje' : 'Report timetable issue');
-    safelyUpdateText(
-        'footer-link-technical-report',
-        lang === 'bhs' ? 'Prijavi tehnički problem' : 'Report technical issue',
-    );
     safelyUpdateText('footer-link-faq', 'FAQ');
     safelyUpdateText('footer-link-contact', lang === 'bhs' ? 'Kontakt' : 'Contact');
+    safelyUpdateText('footer-link-privacy', lang === 'bhs' ? 'Privatnost' : 'Privacy');
+
+    // Ko-fi button
+    const kofiBtn = document.querySelector<HTMLElement>('#footer-kofi-container .kofi-button a span.kofitext');
+    if (kofiBtn) {
+        kofiBtn.textContent = lang === 'bhs' ? 'Podržite ovaj projekat' : 'Support this project';
+    }
 
     // data-lang attribute visibility toggle
     document.querySelectorAll<HTMLElement>('[data-lang]').forEach((element) => {

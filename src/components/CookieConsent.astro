@@ -1,0 +1,72 @@
+---
+const baseUrl = import.meta.env.BASE_URL;
+const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
+---
+
+<div class="cookie-consent" id="cookie-consent" role="dialog" aria-label="Cookie consent" hidden>
+  <div class="cookie-consent__body">
+    <p class="cookie-consent__text">
+      <span data-lang="bhs">Ova stranica koristi anonimnu analitiku kako bismo razumjeli kako se sajt koristi i poboljšali korisničko iskustvo. Lični podaci se ne prikupljaju.</span>
+      <span data-lang="en" style="display:none">This website uses anonymous analytics to understand how the site is used and improve the user experience. No personal data is collected.</span>
+      <a href={withBase('privacy/')} class="cookie-consent__link">
+        <span data-lang="bhs">Politika privatnosti</span>
+        <span data-lang="en" style="display:none">Privacy Policy</span>
+      </a>
+    </p>
+    <div class="cookie-consent__actions">
+      <button class="cookie-consent__btn cookie-consent__btn--accept" id="cookie-accept">
+        <span data-lang="bhs">Prihvati</span>
+        <span data-lang="en" style="display:none">Accept</span>
+      </button>
+      <button class="cookie-consent__btn cookie-consent__btn--decline" id="cookie-decline">
+        <span data-lang="bhs">Odbij</span>
+        <span data-lang="en" style="display:none">Decline</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function() {
+    var consent = localStorage.getItem('analytics-consent');
+
+    if (consent === null) {
+      var banner = document.getElementById('cookie-consent');
+      if (banner) banner.hidden = false;
+    }
+
+    if (consent === 'granted') {
+      loadGA();
+    }
+
+    var acceptBtn = document.getElementById('cookie-accept');
+    var declineBtn = document.getElementById('cookie-decline');
+
+    if (acceptBtn) {
+      acceptBtn.addEventListener('click', function() {
+        localStorage.setItem('analytics-consent', 'granted');
+        document.getElementById('cookie-consent').hidden = true;
+        loadGA();
+      });
+    }
+
+    if (declineBtn) {
+      declineBtn.addEventListener('click', function() {
+        localStorage.setItem('analytics-consent', 'denied');
+        document.getElementById('cookie-consent').hidden = true;
+      });
+    }
+
+    function loadGA() {
+      if (document.querySelector('script[src*="googletagmanager"]')) return;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-TH1G57KP0X';
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-TH1G57KP0X', { anonymize_ip: true, send_page_view: true });
+    }
+  })();
+</script>

@@ -1,44 +1,5 @@
 ---
 const year = new Date().getFullYear();
-const maintainerEmail = import.meta.env.PUBLIC_MAINTAINER_EMAIL ?? '@gmail.com';
-
-const createMailtoLink = (subject: string, body: string): string =>
-  `mailto:${maintainerEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-const timetableReportLink = createMailtoLink(
-  'BLum - Prijava netačnog reda vožnje',
-  [
-    'Pozdrav,',
-    '',
-    'Prijavljujem netačne informacije o redu vožnje:',
-    '- Linija:',
-    '- Smjer:',
-    '- Stanica/lokacija:',
-    '- Datum i vrijeme:',
-    '- Očekivano vrijeme:',
-    '- Stvarno stanje:',
-    '',
-    'Dodatne informacije:',
-  ].join('\n'),
-);
-
-const technicalIssueLink = createMailtoLink(
-  'BLum - Prijava tehničkog problema',
-  [
-    'Pozdrav,',
-    '',
-    'Prijavljujem tehnički problem na sajtu:',
-    '- Stranica/URL:',
-    '- Uređaj i browser:',
-    '- Koraci za reprodukciju:',
-    '- Očekivani rezultat:',
-    '- Stvarni rezultat:',
-    '',
-    'Dodatne informacije:',
-  ].join('\n'),
-);
-
-const contactMaintainerLink = createMailtoLink('BLum - Kontakt', 'Pozdrav,\n\n');
 const baseUrl = import.meta.env.BASE_URL;
 const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
 ---
@@ -52,17 +13,34 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
     </div>
 
     <nav class="footer__links" aria-label="Footer links">
-      <a href={timetableReportLink} id="footer-link-timetable-report">Prijavi red vožnje</a>
-      <span class="footer__separator" aria-hidden="true">&middot;</span>
-      <a href={technicalIssueLink} id="footer-link-technical-report">Prijavi tehnički problem</a>
-      <span class="footer__separator" aria-hidden="true">&middot;</span>
       <a href={withBase('faq/')} id="footer-link-faq">FAQ</a>
       <span class="footer__separator" aria-hidden="true">&middot;</span>
-      <a href={contactMaintainerLink} id="footer-link-contact">Kontakt</a>
+      <a href={withBase('contact/')} id="footer-link-contact">Kontakt</a>
+      <span class="footer__separator" aria-hidden="true">&middot;</span>
+      <a href={withBase('privacy/')} id="footer-link-privacy">Privatnost</a>
     </nav>
+
+    <div class="footer__kofi" id="footer-kofi-container"></div>
 
     <div class="footer__copyright">
       <p>&copy; {year} BLum &middot; Urbana mobilnost Banja Luka</p>
     </div>
   </div>
 </footer>
+
+<script is:inline>
+  (function() {
+    var script = document.createElement('script');
+    script.src = 'https://storage.ko-fi.com/cdn/widget/Widget_2.js';
+    script.onload = function() {
+      var lang = localStorage.getItem('selectedLanguage') || 'bhs';
+      var btnText = lang === 'en' ? 'Support this project' : 'Podržite ovaj projekat';
+      var container = document.getElementById('footer-kofi-container');
+      if (container && typeof kofiwidget2 !== 'undefined') {
+        kofiwidget2.init(btnText, '#72a4f2', 'J3J11VR53R');
+        container.innerHTML = kofiwidget2.getHTML();
+      }
+    };
+    document.head.appendChild(script);
+  })();
+</script>

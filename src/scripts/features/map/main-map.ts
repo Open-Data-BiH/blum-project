@@ -15,6 +15,7 @@ import { MapLegendControl } from '../../components/map-legend-control';
 import { GeolocationService } from './geolocation';
 import {
     createBikeStationPopup,
+    createLandmarkPopup,
     createMainBusStationPopup,
     createShuttlePopup,
     createTerminalBusStationPopup,
@@ -24,6 +25,8 @@ import {
 import type {
     BikeStation,
     BusRoutesFile,
+    Landmark,
+    LandmarksFile,
     LegendConfig,
     OverlayLayerId,
     TransportHub,
@@ -512,6 +515,19 @@ const loadBikeStations = (L: LeafletNS, map: LeafletMap, stations: BikeStation[]
     });
 };
 
+const loadLandmarks = (L: LeafletNS, map: LeafletMap, landmarks: Landmark[], group: LayerGroup): void => {
+    landmarks.forEach((landmark) => {
+        const marker = L.marker([landmark.lat, landmark.lng], {
+            icon: createFontAwesomeIcon(L, landmark.icon, '#e74c3c'),
+        }).bindPopup(() => createLandmarkPopup(landmark));
+
+        marker.on('click', () =>
+            window.setTimeout(() => createWalkingCircles(L, map, [landmark.lat, landmark.lng]), 100),
+        );
+        marker.addTo(group);
+    });
+};
+
 const buildBaseLayers = (L: LeafletNS): Record<string, TileLayer> => {
     const standard = L.tileLayer('https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png', {
         attribution:
@@ -549,12 +565,13 @@ export const initMainMap = async (): Promise<void> => {
     }
 
     try {
-        const [L, legendConfig, busRoutes, hubsFile, bikeStations] = await Promise.all([
+        const [L, legendConfig, busRoutes, hubsFile, bikeStations, landmarksFile] = await Promise.all([
             import('leaflet').then((mod) => mod.default),
             fetchJson<LegendConfig>(withBase('data/legend-config.json')),
             fetchJson<BusRoutesFile>(MAP_CONFIG.BUS_ROUTES_URL),
             fetchJson<TransportHubsFile>(withBase('data/transport/transport_hubs.json')),
             fetchJson<BikeStation[]>(withBase('data/transport/bike_stations.json')),
+            fetchJson<LandmarksFile>(withBase('data/transport/landmarks.json')),
         ]);
 
         const baseLayers = buildBaseLayers(L);
@@ -585,6 +602,7 @@ export const initMainMap = async (): Promise<void> => {
             airportShuttles: L.layerGroup(),
             touristBus: L.layerGroup(),
             bikeStations: L.layerGroup(),
+            landmarks: L.layerGroup(),
         };
 
         const busStops = buildBusStopsLayer(L, map, busRoutes);
@@ -593,6 +611,7 @@ export const initMainMap = async (): Promise<void> => {
 
         loadTransportHubs(L, map, hubsFile.hubs, overlayGroups);
         loadBikeStations(L, map, bikeStations, overlayGroups.bikeStations);
+        loadLandmarks(L, map, landmarksFile.landmarks, overlayGroups.landmarks);
 
         const legend = new MapLegendControl(L, map, legendConfig, baseLayers, overlayGroups);
         legend.init();

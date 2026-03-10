@@ -1,10 +1,12 @@
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-    site: 'https://open-data-bih.github.io/blum-project/',
-    base: '/blum-project',
+    site: 'https://blprevoz.com/',
+    base: '/',
     output: 'static',
     trailingSlash: 'always',
+    integrations: [sitemap()],
     vite: {
         optimizeDeps: {
             include: ['leaflet'],

@@ -365,17 +365,17 @@
             }
         },
         {
-            "id": "centralni-park-univerzitetski-grad",
+            "id": "centralni-park",
             "name": {
-                "bhs": "Centralni park Univerzitetski grad",
-                "en": "University City Central Park"
+                "bhs": "Centralni park",
+                "en": "Central Park"
             },
             "icon": "fa-tree",
             "lat": 44.77842053465315,
             "lng": 17.210921878482345,
             "description": {
-                "bhs": "Centralni park u naselju Univerzitetski grad",
-                "en": "Central park in the University City neighborhood"
+                "bhs": "Najveći gradski park sa vještačkim jezerom",
+                "en": "Largest city park with a artificial lake"
             }
         },
         {

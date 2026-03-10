@@ -24,7 +24,8 @@ export type OverlayLayerId =
     | 'mainBusStations'
     | 'airportShuttles'
     | 'touristBus'
-    | 'bikeStations';
+    | 'bikeStations'
+    | 'landmarks';
 
 export interface OverlayLayerConfig {
     id: OverlayLayerId;
@@ -77,4 +78,17 @@ export interface BikeStation {
     lat: number;
     lon: number;
     capacity: number;
+}
+
+export interface Landmark {
+    id: string;
+    name: LocalizedText;
+    icon: string;
+    lat: number;
+    lng: number;
+    description: LocalizedText;
+}
+
+export interface LandmarksFile {
+    landmarks: Landmark[];
 }

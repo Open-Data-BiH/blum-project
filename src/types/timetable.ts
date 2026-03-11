@@ -9,17 +9,18 @@ export type TimetableTime = string | { time: string; note: string };
 
 /** Per-station departure times: times[dayType][directionIndex] = TimetableTime[] */
 export interface StationTimes {
-    weekday: [TimetableTime[], TimetableTime[]];
-    saturday: [TimetableTime[], TimetableTime[]];
-    sunday: [TimetableTime[], TimetableTime[]];
+    weekday: TimetableTime[][];
+    saturday: TimetableTime[][];
+    sunday: TimetableTime[][];
     /** Reduced schedules — active during school holidays */
-    weekdayReduced?: [TimetableTime[], TimetableTime[]];
-    saturdayReduced?: [TimetableTime[], TimetableTime[]];
-    sundayReduced?: [TimetableTime[], TimetableTime[]];
+    weekdayReduced?: TimetableTime[][];
+    saturdayReduced?: TimetableTime[][];
+    sundayReduced?: TimetableTime[][];
 }
 
 export interface Station {
-    name: string;
+    id?: string;
+    name: string | BilingualString;
     times: StationTimes;
 }
 
@@ -31,7 +32,7 @@ export interface NoteDescription {
 export interface TimetableEntry {
     lineId: string;
     lineName: BilingualString;
-    directions: BilingualString & { bhs: string[]; en: string[] };
+    directions: { bhs: string[]; en: string[] };
     stations: Station[];
     notes?: BilingualString;
     /** Descriptions for annotated departure notes, keyed by note letter (Latin) */

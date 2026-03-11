@@ -20,7 +20,14 @@
                 "map_note": "Use the mouse scroll wheel to zoom in and out, and drag the map to move around. You can also use the +, - buttons and the Home button to reset the view. On touch devices, zoom using pinch gestures, and move around by dragging with your finger."
             },
             "map": {
-                "title": "Interactive Transport Map"
+                "title": "Interactive Transport Map",
+                "note": {
+                    "stops": "Bus stops and lines",
+                    "nextbike": "Nextbike stations",
+                    "rail": "Train stations",
+                    "tipLabel": "Tip:",
+                    "tipText": "Click on any marker to see walking distance (5 min radius)."
+                }
             },
             "lines": {
                 "title": "Lines",
@@ -138,7 +145,14 @@
                 "map_note": "Koristite točkić miša za zumiranje, a prevlačenjem miša pomjerajte mapu. Takođe, možete koristiti dugmad +, - za zumiranje i dugme \"Home\" za povratak na početni prikaz. Na pametnim uređajima, zumiranje vršite razdvajanjem ili približavanjem prstiju, a pomjeranje dodirom i prevlačenjem prsta po ekranu."
             },
             "map": {
-                "title": "Interaktivna mapa prevoza"
+                "title": "Interaktivna mapa prevoza",
+                "note": {
+                    "stops": "Autobuska stajališta i linije",
+                    "nextbike": "Nextbike stanice",
+                    "rail": "Željezničke stanice",
+                    "tipLabel": "Savjet:",
+                    "tipText": "Kliknite na bilo koji marker da vidite udaljenost hodanja (radijus 5 min)."
+                }
             },
             "lines": {
                 "title": "Linije",

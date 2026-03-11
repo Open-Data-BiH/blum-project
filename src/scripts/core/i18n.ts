@@ -330,6 +330,22 @@ export const applyTranslation = (lang: Language): void => {
         badge.setAttribute('aria-label', text);
     });
 
+    // Lines search input placeholder
+    const linesSearchInput = document.getElementById('lines-search-input') as HTMLInputElement | null;
+    if (linesSearchInput) {
+        linesSearchInput.placeholder =
+            lang === 'bhs' ? 'Pretraži liniju, odredište, naselje...' : 'Search line, destination, neighborhood...';
+        linesSearchInput.setAttribute('aria-label', linesSearchInput.placeholder);
+    }
+
+    // Line card names (switch between BHS/EN stored in data attributes)
+    document.querySelectorAll<HTMLElement>('.line-card__name').forEach((el) => {
+        const name = el.dataset[lang === 'bhs' ? 'nameBhs' : 'nameEn'];
+        if (name) {
+            el.textContent = name;
+        }
+    });
+
     // Timetable section
     safelyUpdateText('timetable-title', t.sections?.timetable?.title);
     if (t.sections?.timetable) {

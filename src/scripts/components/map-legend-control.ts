@@ -148,8 +148,8 @@ export class MapLegendControl {
 
         const options = layers
             .map((layer) => {
-                const labelPrimary = layer.label.bhs;
-                const labelSecondary = layer.label.en;
+                const labelPrimary = layer.label[this.currentLang] || layer.label.bhs;
+                const labelSecondary = this.currentLang === 'en' ? layer.label.bhs : layer.label.en;
                 const isChecked = this.selectedLayers.has(layer.id);
 
                 return `

@@ -50,11 +50,11 @@ const lang = 'bhs'; // SSR default; JS will re-render count on languageChanged
         aria-label={lang === 'bhs' ? 'Filtriraj po grupi' : 'Filter by group'}
       >
         <button class="filter-btn active" data-filter="all" aria-pressed="true">
-          {lang === 'bhs' ? 'Sve' : 'All'}
+          <span data-lang="bhs">Sve</span><span data-lang="en" style="display:none">All</span>
         </button>
         {groups.map((group) => (
           <button class="filter-btn" data-filter={group} aria-pressed="false">
-            {lang === 'bhs' ? 'Grupa' : 'Group'} {group}
+            <span data-lang="bhs">Grupa</span><span data-lang="en" style="display:none">Group</span> {group}
           </button>
         ))}
       </div>
@@ -67,9 +67,9 @@ const lang = 'bhs'; // SSR default; JS will re-render count on languageChanged
   <div class="lines-list" id="lines-list">
     <div class="lines-empty-state" id="lines-empty-state" hidden>
       <i class="fas fa-search"></i>
-      <p>{lang === 'bhs' ? 'Nema rezultata za vašu pretragu' : 'No lines match your search'}</p>
+      <p><span data-lang="bhs">Nema rezultata za vašu pretragu</span><span data-lang="en" style="display:none">No lines match your search</span></p>
       <button class="btn btn--secondary" id="clear-all-filters">
-        {lang === 'bhs' ? 'Obriši filtere' : 'Clear filters'}
+        <span data-lang="bhs">Obriši filtere</span><span data-lang="en" style="display:none">Clear filters</span>
       </button>
     </div>
 
@@ -99,7 +99,7 @@ const lang = 'bhs'; // SSR default; JS will re-render count on languageChanged
               <div class="line-card__badges">
                 {safeGroup && (
                   <span class="badge badge--group">
-                    {lang === 'bhs' ? 'Grupa' : 'Group'} {safeGroup}
+                    <span data-lang="bhs">Grupa</span><span data-lang="en" style="display:none">Group</span> {safeGroup}
                   </span>
                 )}
                 {line.wheelchair_accessible ? (
@@ -127,7 +127,7 @@ const lang = 'bhs'; // SSR default; JS will re-render count on languageChanged
                 <i class="fas fa-building" aria-hidden="true"></i> {line.shortOperator}
               </span>
               <span class="meta-item">
-                <i class="fas fa-map-marker-alt" aria-hidden="true"></i> {line.no_stops ?? '?'} {lang === 'bhs' ? 'stajališta' : 'stops'}
+                <i class="fas fa-map-marker-alt" aria-hidden="true"></i> {line.no_stops ?? '?'} <span data-lang="bhs">stajališta</span><span data-lang="en" style="display:none">stops</span>
               </span>
               <span class="meta-item">
                 <i class="fas fa-clock" aria-hidden="true"></i> {line.min_duration ?? '?'} min
@@ -166,7 +166,7 @@ const lang = 'bhs'; // SSR default; JS will re-render count on languageChanged
             <div class="line-card__actions">
               {hasTimetable && (
                 <button class="btn--primary timetable-btn" data-line-id={safeLineId}>
-                  <i class="fas fa-clock" aria-hidden="true"></i> {lang === 'bhs' ? 'Red vožnje' : 'Timetable'}
+                  <i class="fas fa-clock" aria-hidden="true"></i> <span data-lang="bhs">Red vožnje</span><span data-lang="en" style="display:none">Timetable</span>
                 </button>
               )}
               <button
@@ -175,7 +175,7 @@ const lang = 'bhs'; // SSR default; JS will re-render count on languageChanged
                 aria-expanded="false"
                 aria-controls={`details-${safeLineId}`}
               >
-                <i class="fas fa-info-circle" aria-hidden="true"></i> {lang === 'bhs' ? 'Detalji' : 'Details'}
+                <i class="fas fa-info-circle" aria-hidden="true"></i> <span data-lang="bhs">Detalji</span><span data-lang="en" style="display:none">Details</span>
               </button>
               {line.pdf_url && (
                 <a
@@ -191,37 +191,37 @@ const lang = 'bhs'; // SSR default; JS will re-render count on languageChanged
 
             <div class="line-card__details" id={`details-${safeLineId}`} hidden>
               <div class="detail-item">
-                <span class="detail-item__label">{lang === 'bhs' ? 'Prevoznik' : 'Operator'}</span>
+                <span class="detail-item__label"><span data-lang="bhs">Prevoznik</span><span data-lang="en" style="display:none">Operator</span></span>
                 <span class="detail-item__value">{safeCompanyName}</span>
               </div>
               <div class="detail-item">
-                <span class="detail-item__label">{lang === 'bhs' ? 'Grupa' : 'Group'}</span>
+                <span class="detail-item__label"><span data-lang="bhs">Grupa</span><span data-lang="en" style="display:none">Group</span></span>
                 <span class="detail-item__value">{safeGroup || 'N/A'}</span>
               </div>
               <div class="detail-item">
-                <span class="detail-item__label">{lang === 'bhs' ? 'Broj stajališta' : 'Number of stops'}</span>
+                <span class="detail-item__label"><span data-lang="bhs">Broj stajališta</span><span data-lang="en" style="display:none">Number of stops</span></span>
                 <span class="detail-item__value">{line.no_stops ?? 'N/A'}</span>
               </div>
               <div class="detail-item">
-                <span class="detail-item__label">{lang === 'bhs' ? 'Trajanje vožnje' : 'Duration'}</span>
+                <span class="detail-item__label"><span data-lang="bhs">Trajanje vožnje</span><span data-lang="en" style="display:none">Duration</span></span>
                 <span class="detail-item__value">
-                  {line.min_duration ? `${line.min_duration} ${lang === 'bhs' ? 'minuta' : 'minutes'}` : 'N/A'}
+                  {line.min_duration ? <span>{line.min_duration} <span data-lang="bhs">minuta</span><span data-lang="en" style="display:none">minutes</span></span> : 'N/A'}
                 </span>
               </div>
               <div class="detail-item">
-                <span class="detail-item__label">{lang === 'bhs' ? 'Tip autobusa' : 'Bus type'}</span>
+                <span class="detail-item__label"><span data-lang="bhs">Tip autobusa</span><span data-lang="en" style="display:none">Bus type</span></span>
                 <span class="detail-item__value">
                   {line.bus_type === 'solo'
-                    ? (lang === 'bhs' ? 'Standardni autobus' : 'Solo bus')
+                    ? <span><span data-lang="bhs">Standardni autobus</span><span data-lang="en" style="display:none">Solo bus</span></span>
                     : line.bus_type === 'minibus'
                     ? 'Minibus'
                     : line.bus_type === 'articulated'
-                    ? (lang === 'bhs' ? 'Zglobni autobus' : 'Articulated bus')
+                    ? <span><span data-lang="bhs">Zglobni autobus</span><span data-lang="en" style="display:none">Articulated bus</span></span>
                     : line.bus_type ?? 'N/A'}
                 </span>
               </div>
               <div class="detail-item">
-                <span class="detail-item__label">{lang === 'bhs' ? 'Pristupačnost' : 'Accessibility'}</span>
+                <span class="detail-item__label"><span data-lang="bhs">Pristupačnost</span><span data-lang="en" style="display:none">Accessibility</span></span>
                 <span
                   class:list={[
                     'detail-item__value',
@@ -229,7 +229,9 @@ const lang = 'bhs'; // SSR default; JS will re-render count on languageChanged
                   ]}
                 >
                   <i class:list={['fas', line.wheelchair_accessible ? 'fa-check' : 'fa-times']} aria-hidden="true"></i>{' '}
-                  {line.wheelchair_accessible ? (lang === 'bhs' ? 'Da' : 'Yes') : (lang === 'bhs' ? 'Ne' : 'No')}
+                  {line.wheelchair_accessible
+                    ? <span><span data-lang="bhs">Da</span><span data-lang="en" style="display:none">Yes</span></span>
+                    : <span><span data-lang="bhs">Ne</span><span data-lang="en" style="display:none">No</span></span>}
                 </span>
               </div>
             </div>

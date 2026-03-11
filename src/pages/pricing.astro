@@ -9,10 +9,393 @@ import PricingSection from '../components/PricingSection.astro';
   description="Aktuelne cijene karata, mjesečnih pretplata i đačkih markica za autobuski prevoz u Banjoj Luci."
   canonicalUrl="https://blprevoz.com/pricing/"
 >
-  <section class="section section--narrow" id="pricing">
+  <section class="section pricing-hero" id="pricing">
     <div class="container">
-      <h2 class="section__title" id="price-tables-title">Cjenovnik karata</h2>
-      <PricingSection />
+      <div class="pricing-main">
+        <h2 class="section__title" id="price-tables-title">Cjenovnik karata</h2>
+        <PricingSection />
+      </div>
+    </div>
+  </section>
+
+  <section class="section pricing-section pricing-section--info" id="where-to-buy">
+    <div class="pricing-section__inner">
+      <div class="pricing-info-block" data-lang="bhs">
+        <h2 class="pricing-section__title">Gdje kupiti kartu</h2>
+        <div class="pricing-info-grid">
+          <div class="pricing-info-card">
+            <h3 class="pricing-info-card__title">Pojedinačne i dnevne karte</h3>
+            <ul class="pricing-info-list">
+              <li>Kupovina <strong>u autobusu</strong> – plaćanje gotovinom vozaču pri ulasku</li>
+              <li>Kupovina <strong>na prodajnim mjestima prevoznika</strong> – jeftinije od karte u autobusu</li>
+            </ul>
+          </div>
+          <div class="pricing-info-card">
+            <h3 class="pricing-info-card__title">Mjesečne karte</h3>
+            <ul class="pricing-info-list">
+              <li>Radnička, penzonerska i đačka karta – isključivo na <strong>prodajnim mjestima prevoznika</strong></li>
+              <li>Jedinstvena mjesečna karta (JMK) – važi na svim gradskim linijama sva tri prevoznika</li>
+              <li>Doplatna karta – uz zonsku prigradsku kartu, važi i na gradskim linijama</li>
+            </ul>
+          </div>
+          <div class="pricing-info-card">
+            <h3 class="pricing-info-card__title">Besplatna vožnja i popusti</h3>
+            <ul class="pricing-info-list">
+              <li><strong>Besplatno:</strong> roditelji poginulih boraca; slijepa lica sa pratiocem</li>
+              <li><strong>Besplatno od 2024.:</strong> penzioneri i lica starija od 65 godina s prebivalištem u Banjoj Luci; učenici i studenti iz višečlanih porodica (4+); korisnici JU Dom „Rada Vranješević"; djeca iz hraniteljskih porodica</li>
+              <li><strong>Popust:</strong> djeca poginulih boraca (srednja škola i fakultet) i supruge poginulih boraca koje nisu penzioneri ni invalidi I/II kategorije; učenici i studenti (subvencije za gradske i prigradske linije)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="pricing-notice">
+          <p>Za ostvarivanje prava na besplatan prevoz ili popust obratite se nadležnim institucijama uz potrebnu dokumentaciju.</p>
+        </div>
+      </div>
+
+      <div class="pricing-info-block" data-lang="en" style="display:none">
+        <h2 class="pricing-section__title">Where to Buy Tickets</h2>
+        <div class="pricing-info-grid">
+          <div class="pricing-info-card">
+            <h3 class="pricing-info-card__title">Single and Day Tickets</h3>
+            <ul class="pricing-info-list">
+              <li>Purchase <strong>on the bus</strong> – pay cash to the driver when boarding</li>
+              <li>Purchase <strong>at operator sales points</strong> – cheaper than buying on the bus</li>
+            </ul>
+          </div>
+          <div class="pricing-info-card">
+            <h3 class="pricing-info-card__title">Monthly Tickets</h3>
+            <ul class="pricing-info-list">
+              <li>Worker, pensioner, and student monthly tickets – available <strong>at operator sales points only</strong></li>
+              <li>Unified monthly card (JMK) – valid on all urban lines across all three operators</li>
+              <li>Supplement card – combined with a suburban zone ticket, valid on all urban lines too</li>
+            </ul>
+          </div>
+          <div class="pricing-info-card">
+            <h3 class="pricing-info-card__title">Free Travel &amp; Discounts</h3>
+            <ul class="pricing-info-list">
+              <li><strong>Free:</strong> parents of fallen soldiers; blind persons with a companion</li>
+              <li><strong>Free from 2024:</strong> pensioners and persons over 65 with Banja Luka residency; students from large families (4+); JU Dom "Rada Vranješević" residents; children in foster care</li>
+              <li><strong>Discounts:</strong> children of fallen soldiers (secondary school and university) and their non-pensioner, non-disabled (cat. I/II) spouses; student subsidies for urban and suburban lines</li>
+            </ul>
+          </div>
+        </div>
+        <div class="pricing-notice">
+          <p>To apply for free travel or a discount, contact the competent institutions with the required documentation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pricing-section pricing-section--rules" id="ticket-inspection">
+    <div class="pricing-section__inner">
+      <div class="pricing-info-block" data-lang="bhs">
+        <h2 class="pricing-section__title">Pravila kontrole karata</h2>
+        <div class="pricing-info-grid pricing-info-grid--two">
+          <div class="pricing-info-card pricing-info-card--expanded">
+            <h3 class="pricing-info-card__title">Obaveze putnika</h3>
+            <ul class="pricing-info-list">
+              <li>Svaki putnik mora imati <strong>važeću kartu</strong> za cijelo trajanje vožnje.</li>
+              <li>Na zahtjev ovlaštenog kontrolora obavezno je <strong>pokazati kartu</strong>.</li>
+              <li>Kontrolori su ovlaštena lica i imaju pravo provjere karata u bilo kom trenutku tokom vožnje.</li>
+            </ul>
+          </div>
+          <div class="pricing-info-card pricing-info-card--expanded">
+            <h3 class="pricing-info-card__title">Napomene</h3>
+            <ul class="pricing-info-list">
+              <li>Karte kupljene u autobusu vrijede samo za tu vožnju i nisu prenosive.</li>
+              <li>Karte nisu prenosive između različitih grupa linija (npr. gradske i prigradske linije).</li>
+              <li>U slučaju problema s kontrolom, prijavite situaciju nadležnoj gradskoj inspekciji.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="pricing-info-block" data-lang="en" style="display:none">
+        <h2 class="pricing-section__title">Ticket Inspection Rules</h2>
+        <div class="pricing-info-grid pricing-info-grid--two">
+          <div class="pricing-info-card pricing-info-card--expanded">
+            <h3 class="pricing-info-card__title">Passenger Obligations</h3>
+            <ul class="pricing-info-list">
+              <li>Every passenger must hold a <strong>valid ticket</strong> for the entire journey.</li>
+              <li>Upon request from an authorised inspector, passengers must <strong>present their ticket</strong>.</li>
+              <li>Inspectors are authorised personnel and have the right to check tickets at any point during the journey.</li>
+            </ul>
+          </div>
+          <div class="pricing-info-card pricing-info-card--expanded">
+            <h3 class="pricing-info-card__title">Notes</h3>
+            <ul class="pricing-info-list">
+              <li>Tickets purchased on the bus are valid for that journey only and are non-transferable.</li>
+              <li>Tickets are not valid across different line groups (e.g. urban and suburban lines).</li>
+              <li>If you have an issue during an inspection, report it to the city inspection authority.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .pricing-hero {
+    padding-bottom: var(--space-24);
+  }
+
+  .pricing-hero .container {
+    max-width: 1120px;
+  }
+
+  .pricing-main .section__title {
+    margin-bottom: var(--space-12);
+  }
+
+  .pricing-section {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  .pricing-section__inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+
+  .pricing-info-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .pricing-section--info {
+    padding-top: 0;
+  }
+
+  .pricing-section--info::before {
+    content: '';
+    display: block;
+    width: min(60%, 600px);
+    height: 1px;
+    margin: 0 auto var(--space-16);
+    background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+  }
+
+  .pricing-section--rules {
+    padding-top: 0;
+    padding-bottom: var(--space-20);
+  }
+
+  .pricing-section--rules::before {
+    content: '';
+    display: block;
+    width: min(60%, 600px);
+    height: 1px;
+    margin: 0 auto var(--space-16);
+    background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+  }
+
+  .pricing-section--rules .pricing-section__inner {
+    padding-top: 0;
+  }
+
+  .pricing-section__title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    margin: 0;
+    padding-bottom: var(--space-5);
+    border-bottom: none;
+    position: relative;
+  }
+
+  .pricing-section__title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 3rem;
+    height: 3px;
+    border-radius: var(--radius-full);
+    background-color: var(--accent);
+  }
+
+  .pricing-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+    margin: 0;
+  }
+
+  .pricing-info-grid--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-8);
+    max-width: 960px;
+  }
+
+  .pricing-info-card {
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6) var(--space-8);
+    box-shadow: var(--shadow-sm);
+    transition:
+      border-color var(--transition-normal),
+      box-shadow var(--transition-normal),
+      transform var(--transition-normal);
+  }
+
+  .pricing-info-card:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .pricing-info-card--expanded {
+    padding: var(--space-8) var(--space-10);
+  }
+
+  .pricing-info-card__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-6);
+    padding-bottom: var(--space-5);
+    position: relative;
+  }
+
+  .pricing-info-card__title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 2.5rem;
+    height: 3px;
+    border-radius: var(--radius-full);
+    background-color: var(--accent);
+  }
+
+  .pricing-info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .pricing-info-list li {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-relaxed);
+    padding-left: var(--space-5);
+    position: relative;
+  }
+
+  .pricing-info-list li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--accent);
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+  }
+
+  .pricing-info-list strong {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .pricing-notice {
+    margin-top: var(--space-4);
+    background-color: var(--accent-soft);
+    border: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-xl);
+    padding: var(--space-4) var(--space-6);
+    box-shadow: none;
+  }
+
+  .pricing-notice p {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  @media (max-width: 1024px) {
+    .pricing-hero {
+      padding-bottom: var(--space-20);
+    }
+
+    .pricing-section {
+      padding-top: var(--space-12);
+      padding-bottom: var(--space-12);
+    }
+
+    .pricing-info-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    .pricing-main .section__title {
+      margin-bottom: var(--space-8);
+    }
+
+    .pricing-section--info::before,
+    .pricing-section--rules::before {
+      margin-bottom: var(--space-10);
+    }
+
+    .pricing-section__title {
+      font-size: var(--font-size-xl);
+    }
+
+    .pricing-info-grid,
+    .pricing-info-grid--two {
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+
+    .pricing-info-card {
+      padding: var(--space-5) var(--space-6);
+    }
+
+    .pricing-info-card--expanded {
+      padding: var(--space-6) var(--space-8);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .pricing-hero {
+      padding-bottom: var(--space-16);
+    }
+
+    .pricing-section {
+      padding-top: var(--space-10);
+      padding-bottom: var(--space-10);
+    }
+
+    .pricing-section--info::before,
+    .pricing-section--rules::before {
+      margin-bottom: var(--space-8);
+    }
+  }
+
+  :global([data-theme='dark']) .pricing-info-card {
+    background-color: var(--surface-2);
+    border-color: var(--border-subtle);
+    box-shadow: var(--shadow-sm);
+  }
+
+  :global([data-theme='dark']) .pricing-info-card:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-md);
+  }
+
+  :global([data-theme='dark']) .pricing-notice {
+    background-color: var(--accent-soft);
+    border-color: var(--border-subtle);
+    border-left-color: var(--accent);
+  }
+</style>

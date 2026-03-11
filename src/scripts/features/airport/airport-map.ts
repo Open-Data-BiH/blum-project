@@ -19,7 +19,7 @@ export async function initAirportMap(): Promise<void> {
 
         // Leaflet CSS is loaded via <link> in AirportMap.astro
         const bounds: LatLngBoundsExpression = [
-            [44.72, 17.10],
+            [44.72, 17.1],
             [44.97, 17.38],
         ];
 
@@ -75,13 +75,19 @@ export async function initAirportMap(): Promise<void> {
         const createAirportPopup = (): string => `
             <div class="hub-popup">
                 <h3>${langText('Međunarodni aerodrom Banja Luka (BNX)', 'Banja Luka International Airport (BNX)')}</h3>
-                <p>${langText('Mahovljani, 23 km od centra grada', 'Mahovljani, 23 km from city center')}</p>
-                <a href="https://banjaluka-airport.com" target="_blank" rel="noopener noreferrer" class="popup-link">${langText('Web stranica aerodroma', 'Airport website')}</a>
+                <p>${langText('Mahovljani, ~25 km od centra grada', 'Mahovljani, ~25 km from city center')}</p>
+                <a href="https://bnx.aero/" target="_blank" rel="noopener noreferrer" class="popup-link">${langText('Internet stranica aerodroma', 'Airport website')}</a>
             </div>`;
 
-        const oldStationMarker = L.marker([44.7722, 17.191], { icon: shuttleIcon }).bindPopup(createOldStationPopup).addTo(map);
-        const mainStationMarker = L.marker([44.788, 17.21], { icon: shuttleIcon }).bindPopup(createMainStationPopup).addTo(map);
-        const airportMarker = L.marker([44.9338, 17.3040], { icon: airportIcon }).bindPopup(createAirportPopup).addTo(map);
+        const oldStationMarker = L.marker([44.7722, 17.191], { icon: shuttleIcon })
+            .bindPopup(createOldStationPopup)
+            .addTo(map);
+        const mainStationMarker = L.marker([44.788, 17.21], { icon: shuttleIcon })
+            .bindPopup(createMainStationPopup)
+            .addTo(map);
+        const airportMarker = L.marker([44.9338, 17.304], { icon: airportIcon })
+            .bindPopup(createAirportPopup)
+            .addTo(map);
 
         const group = L.featureGroup([oldStationMarker, mainStationMarker, airportMarker]);
         map.fitBounds(group.getBounds().pad(0.15));

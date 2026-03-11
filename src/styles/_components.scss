@@ -1495,10 +1495,266 @@
     color: var(--text-secondary);
 }
 
+.airport-link-card__desc {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
 .airport-link-card__arrow {
     color: var(--text-tertiary);
     font-size: 0.85rem;
     flex-shrink: 0;
+}
+
+/* Fast Answer block */
+.airport-fast-answer {
+    max-width: 48rem;
+    margin: var(--space-6) auto 0;
+    padding: var(--space-5);
+    background-color: rgba(10, 92, 122, 0.06);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-lg);
+}
+
+.airport-fast-answer__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+}
+
+.airport-fast-answer__header > i {
+    color: var(--color-accent);
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.airport-fast-answer__header h2 {
+    font-size: clamp(1.1rem, 1.6vw, 1.25rem);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.airport-fast-answer__options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+}
+
+.airport-fast-answer__option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+}
+
+.airport-fast-answer__option > i {
+    color: var(--color-primary);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.airport-fast-answer__option strong {
+    display: block;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.airport-fast-answer__option span {
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.airport-fast-answer__note {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+/* Airport location block (text + map side-by-side) */
+.airport-location-block {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    margin-top: var(--space-6);
+    max-width: 56rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.airport-location-block__info .airport-section-title {
+    margin-bottom: var(--space-3);
+}
+
+.airport-location-block__info p {
+    font-size: var(--font-size-base);
+    line-height: 1.7;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    .airport-location-block {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+}
+
+/* Direction heading — arrival / departure */
+.direction-heading {
+    text-align: center;
+    margin-bottom: var(--space-5);
+}
+
+.direction-heading .section__title {
+    margin-bottom: var(--space-2);
+}
+
+.direction-heading__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-4);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-3);
+}
+
+.direction-heading__badge--arrival {
+    background-color: rgba(10, 124, 62, 0.1);
+    color: var(--color-success);
+}
+
+.direction-heading__badge--departure {
+    background-color: rgba(26, 77, 115, 0.1);
+    color: var(--color-primary);
+}
+
+.direction-heading__badge > i {
+    font-size: 0.85rem;
+}
+
+.direction-heading__subtitle {
+    max-width: 36rem;
+    margin: 0 auto;
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    line-height: var(--line-height-normal);
+}
+
+/* Transport options grid */
+.transport-options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-4);
+    max-width: 56rem;
+    margin: 0 auto;
+}
+
+.transport-option-card {
+    padding: var(--space-5);
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    transition: box-shadow var(--transition-fast);
+}
+
+.transport-option-card:hover {
+    box-shadow: var(--shadow-soft);
+}
+
+.transport-option-card__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+}
+
+.transport-option-card__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(10, 92, 122, 0.1);
+    color: var(--color-primary);
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.transport-option-card__header h3 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.transport-option-card__details {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.transport-option-card__details li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    color: var(--text-primary);
+}
+
+.transport-option-card__details li > i {
+    color: var(--color-accent);
+    font-size: 0.75rem;
+    margin-top: 0.3rem;
+    flex-shrink: 0;
+    width: 1rem;
+    text-align: center;
+}
+
+/* Location map */
+.map-container.small-map #airport-location-map {
+    height: 100%;
+    width: 100%;
+}
+
+.map-distance-label {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    white-space: nowrap;
+}
+
+/* Last updated indicator */
+.airport-last-updated {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    justify-content: center;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    padding: var(--space-4) 0 var(--space-8);
+}
+
+.airport-last-updated > i {
+    color: var(--color-success);
+    font-size: 0.85rem;
 }
 
 .airport-transfer-details h3 {

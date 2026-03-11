@@ -5,10 +5,10 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
 ---
 
 <footer class="footer">
-  <div class="footer__content">
+  <div class="footer__top">
     <div class="footer__mission">
       <p id="footer-mission-text">
-        BLum je nezavisna platforma razvijena radi bolje dostupnosti informacija o javnom prevozu. Zvanične i ažurirane informacije provjerite kod nadležnih gradskih organa i prevoznika.
+        BLum je nezavisna platforma za bolju dostupnost informacija o javnom prevozu u Banjoj Luci.
       </p>
     </div>
 
@@ -21,10 +21,10 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
     </nav>
 
     <div class="footer__kofi" id="footer-kofi-container"></div>
+  </div>
 
-    <div class="footer__copyright">
-      <p>&copy; {year} BLum &middot; Urbana mobilnost Banja Luka</p>
-    </div>
+  <div class="footer__bottom">
+    <p>&copy; {year} BLum &middot; Urbana mobilnost Banja Luka</p>
   </div>
 </footer>
 
@@ -37,7 +37,7 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
       var btnText = lang === 'en' ? 'Support this project' : 'Podržite ovaj projekat';
       var container = document.getElementById('footer-kofi-container');
       if (container && typeof kofiwidget2 !== 'undefined') {
-        kofiwidget2.init(btnText, '#72a4f2', 'J3J11VR53R');
+        kofiwidget2.init(btnText, '#1a4d73', 'J3J11VR53R');
         container.innerHTML = kofiwidget2.getHTML();
       }
     };

@@ -371,152 +371,204 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-4);
-    margin-top: var(--space-4);
+    margin-top: var(--space-3);
     align-items: stretch;
 }
 
-@media (min-width: 576px) {
+@media (min-width: 640px) {
     .contact-cards {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: var(--space-5);
-        max-width: 800px;
-        margin-left: auto;
-        margin-right: auto;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-4);
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1100px) {
     .contact-cards {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: var(--space-5);
-    }
-}
-
-@media (min-width: 992px) {
-    .contact-cards {
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: var(--space-6);
-        max-width: 1000px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
-
-@media (min-width: 1200px) {
-    .contact-cards {
-        grid-template-columns: repeat(3, 1fr);
-        max-width: 1200px;
-        margin-left: auto;
-        margin-right: auto;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
 .contact-card {
+    --contact-accent: var(--color-primary);
     background-color: var(--surface-2);
     border-radius: var(--radius-lg);
     box-shadow: none;
     overflow: hidden;
     transition: all var(--transition-fast);
     border: 1px solid var(--border-subtle);
-    border-left: 4px solid var(--color-primary);
+    border-left: 4px solid var(--contact-accent);
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    min-height: 220px;
     padding: var(--space-5);
 }
 
 .contact-card:hover {
-    box-shadow: var(--shadow-soft);
+    box-shadow: var(--shadow-md);
     border-color: var(--border-strong);
-    transform: translateY(-3px);
+    transform: translateY(-2px);
 }
 
-.contact-card h3 {
-    margin: 0 0 var(--space-3) 0;
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-primary);
-}
-
-.contact-card .contact-department {
-    margin: 0 0 var(--space-2) 0;
-    font-size: var(--font-size-base);
-    color: var(--text-primary);
-    font-weight: var(--font-weight-medium);
+.contact-card__top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
 }
 
 .contact-card .contact-type {
-    margin: 0 0 var(--space-4) 0;
-    font-size: var(--font-size-sm);
-    color: var(--text-secondary);
+    margin: 0;
+    font-size: 0.6875rem;
+    color: var(--text-light);
     font-weight: var(--font-weight-medium);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.06em;
+    line-height: var(--line-height-normal);
 }
 
-.contact-card .contact-phone {
-    margin: 0 0 var(--space-3) 0;
-    font-size: var(--font-size-sm);
+.contact-card .contact-name {
+    margin: var(--space-1) 0 0;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
     color: var(--text-primary);
+    line-height: var(--line-height-tight);
 }
 
-.contact-card .contact-email {
-    margin: 0 0 var(--space-3) 0;
+.contact-card .contact-department {
+    margin: var(--space-1) 0 0;
     font-size: var(--font-size-sm);
-    color: var(--text-primary);
+    color: var(--text-secondary);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--line-height-normal);
 }
 
-.contact-card .contact-email a {
-    color: var(--color-accent);
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin-top: var(--space-4);
+    padding: var(--space-3);
+    background-color: var(--surface-1);
+    border-radius: var(--radius-md);
+}
+
+.contact-detail {
+    display: flex;
+    gap: var(--space-2);
+    align-items: center;
+    font-size: var(--font-size-xs);
+    color: var(--text-primary);
     text-decoration: none;
     transition: color var(--transition-fast);
+    padding: var(--space-1) 0;
 }
 
-.contact-card .contact-email a:hover {
-    color: var(--color-accent-dark);
-    text-decoration: underline;
+.contact-detail:hover {
+    color: var(--color-primary);
 }
 
-.contact-card .contact-website {
+.contact-detail i {
+    font-size: var(--font-size-xs);
+    color: var(--text-light);
+    width: 1rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.contact-detail:hover i {
+    color: var(--color-primary);
+}
+
+.contact-detail__value {
+    font-weight: var(--font-weight-medium);
+    word-break: break-word;
+}
+
+.contact-card__footer {
     margin-top: auto;
     padding-top: var(--space-4);
 }
 
-.contact-card .contact-website a {
+.contact-card .contact-website {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    width: 100%;
     color: var(--accent);
     text-decoration: none;
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
     font-size: var(--font-size-sm);
     transition: all var(--transition-fast);
-    display: inline-block;
     padding: var(--space-2) var(--space-3);
     border: 1px solid var(--accent);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     background-color: var(--accent-soft);
 }
 
-.contact-card .contact-website a:hover {
+.contact-card .contact-website:hover {
     color: var(--color-white);
     background-color: var(--accent);
     text-decoration: none;
     transform: translateY(-1px);
     border-color: var(--accent-strong);
-    box-shadow: var(--shadow-soft);
+    box-shadow: var(--shadow-sm);
+}
+
+.contact-card .contact-website--empty {
+    display: block;
+    visibility: hidden;
+    height: 0;
+    padding: 0;
+    border: none;
+}
+
+.contact-card .contact-website i {
+    font-size: 0.65rem;
+    opacity: 0.7;
 }
 
 .contact-group + .contact-group {
-    margin-top: var(--space-12);
+    margin-top: var(--space-8);
 }
 
 .contact-group__title {
-    font-size: 1.25rem;
+    font-size: var(--font-size-sm);
     font-weight: var(--font-weight-semibold);
     color: var(--text-secondary);
     text-transform: uppercase;
-    letter-spacing: 0.03em;
-    margin-bottom: var(--space-2);
+    letter-spacing: 0.06em;
+    margin-bottom: var(--space-1);
+}
+
+.contact-group--primary {
+    position: relative;
+}
+
+.contact-group--primary .contact-group__title {
+    color: var(--color-primary);
+    font-size: var(--font-size-base);
+}
+
+.contact-card--authority {
+    border-left-color: var(--color-primary);
+}
+
+.contact-card--authority .contact-name {
+    color: var(--color-primary);
+}
+
+.contact-card--operator {
+    border-left-width: 3px;
+    border-left-color: color-mix(in srgb, var(--contact-accent, var(--color-primary)) 40%, transparent);
+}
+
+.contact-card--operator .contact-name {
+    color: var(--text-primary);
+}
+
+.contact-card--operator .contact-type {
+    color: var(--text-light);
 }
 
 /* ==========================================================================
@@ -1154,6 +1206,299 @@
 .section#airport .section__title {
     font-size: clamp(1.75rem, 2.2vw, 2rem);
     font-weight: var(--font-weight-semibold);
+}
+
+/* Airport page section titles */
+.airport-section-title {
+    font-size: clamp(1.35rem, 2vw, 1.6rem);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Airport intro paragraph */
+.airport-intro {
+    max-width: 48rem;
+    margin: 0 auto;
+    text-align: center;
+    font-size: var(--font-size-lg);
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+/* Quick-facts grid */
+.quickfacts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--space-4);
+    max-width: 56rem;
+    margin: 0 auto;
+}
+
+.quickfact-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--space-5) var(--space-4);
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    transition: box-shadow var(--transition-fast);
+}
+
+.quickfact-card:hover {
+    box-shadow: var(--shadow-soft);
+}
+
+.quickfact-card__icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(10, 92, 122, 0.1);
+    color: var(--color-primary);
+    font-size: 1.15rem;
+    margin-bottom: var(--space-3);
+}
+
+.quickfact-card__label {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-1);
+}
+
+.quickfact-card__value {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+}
+
+/* Airport content blocks (taxi, parking) */
+.airport-content-block {
+    max-width: 48rem;
+    margin: 0 auto;
+}
+
+.airport-content-block p {
+    font-size: var(--font-size-base);
+    line-height: 1.7;
+    color: var(--text-primary);
+    margin-bottom: var(--space-4);
+}
+
+/* Tip callout */
+.airport-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background-color: rgba(10, 92, 122, 0.06);
+    border-left: 4px solid var(--color-accent);
+    border-radius: var(--radius-md);
+    margin-top: var(--space-4);
+}
+
+.airport-tip > i {
+    color: var(--color-accent);
+    font-size: 1.15rem;
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+}
+
+.airport-tip p {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+
+.airport-tip p a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.airport-tip p a:hover {
+    color: var(--accent-strong);
+}
+
+/* Parking prices */
+.parking-prices {
+    margin-top: var(--space-5);
+    padding: var(--space-4) var(--space-5);
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+}
+
+.parking-prices__title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: clamp(1.05rem, 1.4vw, 1.15rem);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary);
+    margin-bottom: var(--space-4);
+}
+
+.parking-prices__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--space-3);
+}
+
+.parking-price-item {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--surface-1);
+    border-radius: var(--radius-md);
+    text-align: center;
+}
+
+.parking-price-item__label {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-1);
+}
+
+.parking-price-item__value {
+    font-size: 1.35rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary);
+}
+
+/* GoParking app box */
+.goparking-box {
+    margin-top: var(--space-5);
+    padding: var(--space-4) var(--space-5);
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+}
+
+.goparking-box__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+}
+
+.goparking-box__header > i {
+    font-size: 1.35rem;
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.goparking-box__header h3 {
+    font-size: clamp(1.05rem, 1.4vw, 1.15rem);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary);
+    margin: 0;
+}
+
+.goparking-box p {
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    color: var(--text-primary);
+    margin-bottom: var(--space-4);
+}
+
+.goparking-box__stores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.goparking-store-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    transition: all var(--transition-fast);
+    min-height: 40px;
+}
+
+.goparking-store-badge:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-white);
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.goparking-store-badge:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+.goparking-store-badge i {
+    font-size: 1.1rem;
+}
+
+/* Airport links grid */
+.airport-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-4);
+    max-width: 48rem;
+    margin: 0 auto;
+}
+
+.airport-link-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+}
+
+.airport-link-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-soft);
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: var(--text-primary);
+}
+
+.airport-link-card > i:first-child {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.airport-link-card div {
+    flex: 1;
+    min-width: 0;
+}
+
+.airport-link-card strong {
+    display: block;
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-1);
+}
+
+.airport-link-card__url {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.airport-link-card__arrow {
+    color: var(--text-tertiary);
+    font-size: 0.85rem;
+    flex-shrink: 0;
 }
 
 .airport-transfer-details h3 {

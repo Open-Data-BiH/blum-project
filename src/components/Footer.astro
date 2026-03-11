@@ -15,6 +15,8 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
     <nav class="footer__links" aria-label="Footer links">
       <a href={withBase('faq/')} id="footer-link-faq">FAQ</a>
       <span class="footer__separator" aria-hidden="true">&middot;</span>
+      <a href={withBase('about/')} id="footer-link-about">O projektu</a>
+      <span class="footer__separator" aria-hidden="true">&middot;</span>
       <a href={withBase('contact/')} id="footer-link-contact">Kontakt</a>
       <span class="footer__separator" aria-hidden="true">&middot;</span>
       <a href={withBase('privacy/')} id="footer-link-privacy">Privatnost</a>

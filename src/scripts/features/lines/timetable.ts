@@ -276,8 +276,9 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
 
     const weekdayLabel = timetableDays?.weekday || 'Weekdays';
     const saturdayLabel = timetableDays?.saturday || 'Saturday';
-    const sundayHolidayLabelText =
-        timetableDays?.sundayHoliday || (lang === 'bhs' ? 'Nedjelja i praznik' : 'Sunday and Holiday');
+    const sundayHolidayFull =
+        timetableDays?.sundayHoliday || (lang === 'bhs' ? 'Nedjelja i praznik' : 'Sunday & Holiday');
+    const sundayHolidayShort = lang === 'bhs' ? 'Ned. / praznik' : 'Sun / Holiday';
     const relationLabelText = (t?.relationLabel as string) || (lang === 'bhs' ? 'Relacija' : 'Direction');
     const timetableForLabelText = (t?.timetableForLabel as string) || (lang === 'bhs' ? 'Red vožnje' : 'Schedule');
     const hourLabel = (t?.hourLabel as string) || (lang === 'bhs' ? 'Sat' : 'Hour');
@@ -309,7 +310,7 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
           <div class="day-buttons" role="group" aria-labelledby="day-label">
             <button class="day-btn${todayDayType === 'weekday' ? ' active' : ''}" data-day="weekday" aria-pressed="${todayDayType === 'weekday'}" aria-label="${weekdayLabel}">${weekdayLabel}</button>
             <button class="day-btn${todayDayType === 'saturday' ? ' active' : ''}" data-day="saturday" aria-pressed="${todayDayType === 'saturday'}" aria-label="${saturdayLabel}">${saturdayLabel}</button>
-            <button class="day-btn${todayDayType === 'sunday' ? ' active' : ''}" data-day="sunday" aria-pressed="${todayDayType === 'sunday'}" aria-label="${sundayHolidayLabelText}">${sundayHolidayLabelText}</button>
+            <button class="day-btn${todayDayType === 'sunday' ? ' active' : ''}" data-day="sunday" aria-pressed="${todayDayType === 'sunday'}" aria-label="${sundayHolidayFull}"><span class="day-label-full">${sundayHolidayFull}</span><span class="day-label-short">${sundayHolidayShort}</span></button>
           </div>
         </div>
       </div>

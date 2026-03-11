@@ -378,13 +378,14 @@ export const applyTranslation = (lang: Language): void => {
     safelyUpdateText(
         'footer-mission-text',
         lang === 'bhs'
-            ? 'BLum je nezavisna platforma za bolju dostupnost informacija o javnom prevozu u Banjoj Luci.'
-            : 'BLum is an independent platform for better access to public transport information in Banja Luka.',
+            ? 'BLum je nezavisna platforma za informacije o javnom prevozu u Banjoj Luci.'
+            : 'BLum is an independent platform for public transport information in Banja Luka.',
     );
+    safelyUpdateText('footer-nav-heading', lang === 'bhs' ? 'Informacije' : 'Information');
     safelyUpdateText('footer-link-about', lang === 'bhs' ? 'O projektu' : 'About');
     safelyUpdateText('footer-link-faq', 'FAQ');
     safelyUpdateText('footer-link-contact', lang === 'bhs' ? 'Kontakt' : 'Contact');
-    safelyUpdateText('footer-link-privacy', lang === 'bhs' ? 'Privatnost' : 'Privacy');
+    safelyUpdateText('footer-link-privacy', lang === 'bhs' ? 'Politika privatnosti' : 'Privacy Policy');
 
     // Ko-fi button
     const kofiBtn = document.querySelector<HTMLElement>('#footer-kofi-container .kofi-button a span.kofitext');

@@ -5,24 +5,24 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
 ---
 
 <footer class="footer">
-  <div class="footer__top">
-    <div class="footer__mission">
+  <div class="footer__main">
+    <div class="footer__description">
       <p id="footer-mission-text">
-        BLum je nezavisna platforma za bolju dostupnost informacija o javnom prevozu u Banjoj Luci.
+        BLum je nezavisna platforma za informacije o javnom prevozu u Banjoj Luci.
       </p>
     </div>
 
-    <nav class="footer__links" aria-label="Footer links">
+    <nav class="footer__nav" aria-label="Footer links">
+      <span class="footer__nav-heading" id="footer-nav-heading">Informacije</span>
       <a href={withBase('faq/')} id="footer-link-faq">FAQ</a>
-      <span class="footer__separator" aria-hidden="true">&middot;</span>
       <a href={withBase('about/')} id="footer-link-about">O projektu</a>
-      <span class="footer__separator" aria-hidden="true">&middot;</span>
       <a href={withBase('contact/')} id="footer-link-contact">Kontakt</a>
-      <span class="footer__separator" aria-hidden="true">&middot;</span>
-      <a href={withBase('privacy/')} id="footer-link-privacy">Privatnost</a>
+      <a href={withBase('privacy/')} id="footer-link-privacy">Politika privatnosti</a>
     </nav>
 
-    <div class="footer__kofi" id="footer-kofi-container"></div>
+    <div class="footer__action">
+      <div class="footer__kofi" id="footer-kofi-container"></div>
+    </div>
   </div>
 
   <div class="footer__bottom">

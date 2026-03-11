@@ -42,6 +42,19 @@ import MapNote from './MapNote.astro';
 </section>
 
 <script>
-  import { initMainMap } from '../../scripts/features/map/main-map';
-  initMainMap();
+  const mapSection = document.getElementById('map');
+  if (mapSection) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          observer.disconnect();
+          import('../../scripts/features/map/main-map').then(({ initMainMap }) => {
+            initMainMap();
+          });
+        }
+      },
+      { rootMargin: '300px' },
+    );
+    observer.observe(mapSection);
+  }
 </script>

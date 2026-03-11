@@ -19,18 +19,18 @@ export async function initAirportMap(): Promise<void> {
 
         // Leaflet CSS is loaded via <link> in AirportMap.astro
         const bounds: LatLngBoundsExpression = [
-            [44.76, 17.14],
-            [44.82, 17.25],
+            [44.72, 17.10],
+            [44.97, 17.38],
         ];
 
         const map: Map = L.map('airport-map', {
-            center: [44.7786, 17.1974],
-            zoom: 13,
+            center: [44.85, 17.25],
+            zoom: 11,
             scrollWheelZoom: false,
             zoomControl: false,
             maxBounds: bounds,
             maxBoundsViscosity: 1.0,
-            minZoom: 12,
+            minZoom: 10,
         });
 
         L.control.zoom({ position: 'bottomright' }).addTo(map);
@@ -65,8 +65,26 @@ export async function initAirportMap(): Promise<void> {
                 <a href="${withBase('airport/#airport')}" class="popup-link">${langText('Informacije o aerodromskom prevozu', 'Airport Transfer Info')}</a>
             </div>`;
 
-        L.marker([44.7722, 17.191], { icon: shuttleIcon }).bindPopup(createOldStationPopup).addTo(map);
-        L.marker([44.788, 17.21], { icon: shuttleIcon }).bindPopup(createMainStationPopup).addTo(map);
+        const airportIcon = L.divIcon({
+            html: `<i class="fa-solid fa-plane fa-icon-marker" style="color:#c41e1e;"></i>`,
+            className: '',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15],
+        });
+
+        const createAirportPopup = (): string => `
+            <div class="hub-popup">
+                <h3>${langText('Međunarodni aerodrom Banja Luka (BNX)', 'Banja Luka International Airport (BNX)')}</h3>
+                <p>${langText('Mahovljani, 23 km od centra grada', 'Mahovljani, 23 km from city center')}</p>
+                <a href="https://banjaluka-airport.com" target="_blank" rel="noopener noreferrer" class="popup-link">${langText('Web stranica aerodroma', 'Airport website')}</a>
+            </div>`;
+
+        const oldStationMarker = L.marker([44.7722, 17.191], { icon: shuttleIcon }).bindPopup(createOldStationPopup).addTo(map);
+        const mainStationMarker = L.marker([44.788, 17.21], { icon: shuttleIcon }).bindPopup(createMainStationPopup).addTo(map);
+        const airportMarker = L.marker([44.9338, 17.3040], { icon: airportIcon }).bindPopup(createAirportPopup).addTo(map);
+
+        const group = L.featureGroup([oldStationMarker, mainStationMarker, airportMarker]);
+        map.fitBounds(group.getBounds().pad(0.15));
     } catch (error) {
         console.error('Error initializing airport map:', error);
         const el = document.getElementById('airport-map');

@@ -7,11 +7,6 @@ import MapContainer from './map/MapContainer.astro';
 
 <div class="airport-transfer-info">
   <div class="airport-transfer-details">
-    <h3 id="airport-description-title">
-      <span data-lang="bhs">Transferi do Međunarodnog aerodroma Banja Luka</span>
-      <span data-lang="en" style="display:none">Transfers to Banja Luka International Airport</span>
-    </h3>
-
     <div class="airport-info-block airport-info-block--price">
       <div class="airport-info-block__icon" aria-hidden="true">
         <i class="fa-solid fa-credit-card"></i>
@@ -64,10 +59,10 @@ import MapContainer from './map/MapContainer.astro';
     </a>
   </div>
 
-  <MapContainer mapId="airport-map" label="Departure location map" className="small-map">
+  <MapContainer mapId="airport-map" label="Airport and shuttle stops map" className="small-map">
     <p class="airport-map-caption">
-      <span data-lang="bhs">Lokacija polaska u Banjoj Luci</span>
-      <span data-lang="en" style="display:none">Departure location in Banja Luka</span>
+      <span data-lang="bhs">Aerodrom i stajališta shuttle autobusa</span>
+      <span data-lang="en" style="display:none">Airport and shuttle bus stops</span>
     </p>
   </MapContainer>
 </div>

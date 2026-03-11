@@ -5,17 +5,299 @@ import AirportMap from '../components/AirportMap.astro';
 
 <BaseLayout
   pageKey="airport"
-  title="Prevoz do aerodroma Banja Luka – Cijene i polasci"
-  description="Kako doći do Aerodroma Banja Luka. Cijene transfera, stajališta, polasci i mapa rute aerodromskog prevoza."
+  title="Prevoz do aerodroma Banja Luka – Autobus, taksi, cijene | BNX"
+  description="Kako doći do Aerodroma Banja Luka (BNX). Shuttle autobus 10 KM, 23 km od centra, 25–45 min vožnje. Cijene transfera, polasci, taksi alternative, parking i mapa."
   canonicalUrl="https://blprevoz.com/airport/"
 >
+  <!-- Airport Overview -->
+  <section class="section" id="airport-overview">
+    <div class="container">
+      <h1 class="section__title" id="airport-title">
+        <span data-lang="bhs">Prevoz do Aerodroma Banja Luka</span>
+        <span data-lang="en" style="display:none">Getting to Banja Luka Airport</span>
+      </h1>
+      <p class="airport-intro" id="airport-intro">
+        <span data-lang="bhs">
+          Međunarodni aerodrom Banja Luka (IATA: BNX) nalazi se u Mahovljanima, oko 23 km
+          sjeverno od centra grada. Aerodrom je povezan sa gradom shuttle autobusom kompanije
+          Smiljić, a dostupne su i taksi usluge. Ispod su sve informacije potrebne za
+          planiranje vašeg dolaska ili odlaska.
+        </span>
+        <span data-lang="en" style="display:none">
+          Banja Luka International Airport (IATA: BNX) is located in Mahovljani, approximately
+          23 km north of the city center. The airport is connected to the city by Smiljić
+          shuttle bus, and taxi services are also available. Below you'll find all the
+          information you need to plan your arrival or departure.
+        </span>
+      </p>
+    </div>
+  </section>
+
+  <!-- Quick Facts -->
+  <section class="section airport-quickfacts" id="airport-quickfacts">
+    <div class="container">
+      <h2 class="section__title airport-section-title">
+        <span data-lang="bhs">Osnovne informacije</span>
+        <span data-lang="en" style="display:none">Quick Facts</span>
+      </h2>
+      <div class="quickfacts-grid">
+        <div class="quickfact-card">
+          <div class="quickfact-card__icon" aria-hidden="true">
+            <i class="fa-solid fa-road"></i>
+          </div>
+          <div class="quickfact-card__label">
+            <span data-lang="bhs">Udaljenost</span>
+            <span data-lang="en" style="display:none">Distance</span>
+          </div>
+          <div class="quickfact-card__value">23 km</div>
+        </div>
+        <div class="quickfact-card">
+          <div class="quickfact-card__icon" aria-hidden="true">
+            <i class="fa-solid fa-clock"></i>
+          </div>
+          <div class="quickfact-card__label">
+            <span data-lang="bhs">Vrijeme vožnje</span>
+            <span data-lang="en" style="display:none">Travel time</span>
+          </div>
+          <div class="quickfact-card__value">25–45 min</div>
+        </div>
+        <div class="quickfact-card">
+          <div class="quickfact-card__icon" aria-hidden="true">
+            <i class="fa-solid fa-money-bill-wave"></i>
+          </div>
+          <div class="quickfact-card__label">
+            <span data-lang="bhs">Cijena autobusa</span>
+            <span data-lang="en" style="display:none">Bus price</span>
+          </div>
+          <div class="quickfact-card__value">~10 KM</div>
+        </div>
+        <div class="quickfact-card">
+          <div class="quickfact-card__icon" aria-hidden="true">
+            <i class="fa-solid fa-building"></i>
+          </div>
+          <div class="quickfact-card__label">
+            <span data-lang="bhs">Prevoznik</span>
+            <span data-lang="en" style="display:none">Operator</span>
+          </div>
+          <div class="quickfact-card__value">Smiljić</div>
+        </div>
+        <div class="quickfact-card">
+          <div class="quickfact-card__icon" aria-hidden="true">
+            <i class="fa-solid fa-calendar-day"></i>
+          </div>
+          <div class="quickfact-card__label">
+            <span data-lang="bhs">Učestalost</span>
+            <span data-lang="en" style="display:none">Frequency</span>
+          </div>
+          <div class="quickfact-card__value">
+            <span data-lang="bhs">Nekoliko polazaka dnevno</span>
+            <span data-lang="en" style="display:none">Few departures per day</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shuttle Bus + Map -->
   <section class="section section--wide" id="airport">
     <div class="container">
-      <h2 class="section__title" id="airport-title">
-        <span data-lang="bhs">Aerodromski prevoz</span>
-        <span data-lang="en" style="display:none">Airport Transport</span>
+      <h2 class="section__title airport-section-title" id="airport-shuttle-title">
+        <span data-lang="bhs">Aerodromski shuttle autobus</span>
+        <span data-lang="en" style="display:none">Airport Shuttle Bus</span>
       </h2>
       <AirportMap />
+    </div>
+  </section>
+
+  <!-- Taxi Alternatives -->
+  <section class="section" id="airport-taxi">
+    <div class="container">
+      <h2 class="section__title airport-section-title">
+        <span data-lang="bhs">Taksi do aerodroma</span>
+        <span data-lang="en" style="display:none">Taxi to the Airport</span>
+      </h2>
+      <div class="airport-content-block">
+        <p>
+          <span data-lang="bhs">
+            Ako vam shuttle raspored ne odgovara, taksi je najjednostavnija alternativa.
+            Vožnja od centra Banje Luke do aerodroma traje 20–30 minuta i košta otprilike
+            40–60 KM, zavisno od prevoznika i doba dana. Preporučujemo da unaprijed
+            dogovorite cijenu ili koristite aplikacije za naručivanje taksija.
+          </span>
+          <span data-lang="en" style="display:none">
+            If the shuttle schedule doesn't work for you, a taxi is the simplest alternative.
+            The ride from downtown Banja Luka to the airport takes 20–30 minutes and costs
+            approximately 40–60 KM, depending on the provider and time of day. We recommend
+            agreeing on the fare in advance or using taxi booking apps.
+          </span>
+        </p>
+        <div class="airport-tip">
+          <i class="fa-solid fa-lightbulb" aria-hidden="true"></i>
+          <p>
+            <span data-lang="bhs">
+              <strong>Savjet:</strong> Mnogi hoteli u Banjoj Luci mogu organizovati transfer
+              do aerodroma za goste. Raspitajte se na recepciji prilikom prijave.
+            </span>
+            <span data-lang="en" style="display:none">
+              <strong>Tip:</strong> Many hotels in Banja Luka can arrange airport transfers
+              for guests. Ask at reception during check-in.
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Airport Parking -->
+  <section class="section" id="airport-parking">
+    <div class="container">
+      <h2 class="section__title airport-section-title">
+        <span data-lang="bhs">Parking na aerodromu</span>
+        <span data-lang="en" style="display:none">Airport Parking</span>
+      </h2>
+      <div class="airport-content-block">
+        <p>
+          <span data-lang="bhs">
+            Aerodrom Banja Luka koristi automatizirani sistem naplate parkinga sa prepoznavanjem
+            registarskih tablica. Plaćanje je moguće putem SMS-a, na terminalu za naplatu u
+            zgradi aerodroma, ili putem <a href="#goparking">GoParking mobilne aplikacije</a>.
+          </span>
+          <span data-lang="en" style="display:none">
+            Banja Luka Airport uses an automated parking payment system with license plate
+            recognition. Payment is available via SMS, at the payment terminal inside the
+            airport building, or through the <a href="#goparking">GoParking mobile app</a>.
+          </span>
+        </p>
+
+        <div class="parking-prices">
+          <h3 class="parking-prices__title">
+            <i class="fa-solid fa-square-parking" aria-hidden="true"></i>
+            <span data-lang="bhs">Cjenovnik parkinga</span>
+            <span data-lang="en" style="display:none">Parking Prices</span>
+          </h3>
+          <div class="parking-prices__grid">
+            <div class="parking-price-item">
+              <span class="parking-price-item__label">
+                <span data-lang="bhs">Prvi sat</span>
+                <span data-lang="en" style="display:none">First hour</span>
+              </span>
+              <span class="parking-price-item__value">3 KM</span>
+            </div>
+            <div class="parking-price-item">
+              <span class="parking-price-item__label">
+                <span data-lang="bhs">Prvih 24 sata</span>
+                <span data-lang="en" style="display:none">First 24 hours</span>
+              </span>
+              <span class="parking-price-item__value">5 KM</span>
+            </div>
+            <div class="parking-price-item">
+              <span class="parking-price-item__label">
+                <span data-lang="bhs">Svaki sljedeći započeti dan</span>
+                <span data-lang="en" style="display:none">Each subsequent started day</span>
+              </span>
+              <span class="parking-price-item__value">5 KM</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="airport-tip">
+          <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+          <p>
+            <span data-lang="bhs">
+              Detaljan cjenovnik parking usluga dostupan je na
+              <a href="https://bnx.aero/en/home/" target="_blank" rel="noopener noreferrer">službenoj stranici aerodroma</a>.
+            </span>
+            <span data-lang="en" style="display:none">
+              A detailed parking price list is available on the
+              <a href="https://bnx.aero/en/home/" target="_blank" rel="noopener noreferrer">official airport website</a>.
+            </span>
+          </p>
+        </div>
+
+        <div class="goparking-box" id="goparking">
+          <div class="goparking-box__header">
+            <i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i>
+            <h3>
+              <span data-lang="bhs">Platite parking putem GoParking aplikacije</span>
+              <span data-lang="en" style="display:none">Pay for parking via GoParking app</span>
+            </h3>
+          </div>
+          <p>
+            <span data-lang="bhs">
+              Skenirajte QR kod sa tiketa ili unesite broj karte, izaberite način plaćanja
+              (SMS ili bankovna kartica) – jednostavno, brzo i sigurno.
+            </span>
+            <span data-lang="en" style="display:none">
+              Scan the QR code from your ticket or enter the card number, choose payment method
+              (SMS or bank card) – simple, fast and secure.
+            </span>
+          </p>
+          <div class="goparking-box__stores">
+            <a
+              href="https://play.google.com/store/apps/details?id=com.goparking.airport&hl=en"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="goparking-store-badge"
+            >
+              <i class="fa-brands fa-google-play" aria-hidden="true"></i>
+              Google Play
+            </a>
+            <a
+              href="https://apps.apple.com/ba/app/goparking-aerodromi-rs/id6746559109"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="goparking-store-badge"
+            >
+              <i class="fa-brands fa-apple" aria-hidden="true"></i>
+              App Store
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Useful Links -->
+  <section class="section" id="airport-links">
+    <div class="container">
+      <h2 class="section__title airport-section-title">
+        <span data-lang="bhs">Korisni linkovi</span>
+        <span data-lang="en" style="display:none">Useful Links</span>
+      </h2>
+      <div class="airport-links-grid">
+        <a
+          href="https://bnx.aero/en/home/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="airport-link-card"
+        >
+          <i class="fa-solid fa-plane" aria-hidden="true"></i>
+          <div>
+            <strong>
+              <span data-lang="bhs">Aerodrom Banja Luka</span>
+              <span data-lang="en" style="display:none">Banja Luka Airport</span>
+            </strong>
+            <span class="airport-link-card__url">bnx.aero</span>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square airport-link-card__arrow" aria-hidden="true"></i>
+        </a>
+        <a
+          href="https://smiljiccompany.ba/avio-transferi/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="airport-link-card"
+        >
+          <i class="fa-solid fa-bus" aria-hidden="true"></i>
+          <div>
+            <strong>
+              <span data-lang="bhs">Smiljić – Avio transferi</span>
+              <span data-lang="en" style="display:none">Smiljić – Airport Transfers</span>
+            </strong>
+            <span class="airport-link-card__url">smiljiccompany.ba</span>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square airport-link-card__arrow" aria-hidden="true"></i>
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>

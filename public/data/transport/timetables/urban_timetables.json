@@ -7,14 +7,8 @@
                 "en": "Line 1: Mađir - Ortopedija - New Hospital"
             },
             "directions": {
-                "bhs": [
-                    "Mađir - Nova bolnica",
-                    "Nova bolnica - Mađir"
-                ],
-                "en": [
-                    "Mađir - New Hospital",
-                    "New Hospital - Mađir"
-                ]
+                "bhs": ["Mađir - Nova bolnica", "Nova bolnica - Mađir"],
+                "en": ["Mađir - New Hospital", "New Hospital - Mađir"]
             },
             "stations": [
                 {
@@ -1042,14 +1036,8 @@
                 "bhs": "Linija 10: Autobuska stanica - Obilićevo"
             },
             "directions": {
-                "en": [
-                    "Autobuska stanica → Obilićevo",
-                    "Obilićevo → Autobuska stanica"
-                ],
-                "bhs": [
-                    "Autobuska stanica → Obilićevo",
-                    "Obilićevo → Autobuska stanica"
-                ]
+                "en": ["Autobuska stanica → Obilićevo", "Obilićevo → Autobuska stanica"],
+                "bhs": ["Autobuska stanica → Obilićevo", "Obilićevo → Autobuska stanica"]
             },
             "stations": [
                 {
@@ -1295,14 +1283,8 @@
                 "bhs": "Linija 20: Incel - Centar - Paprikovac (Ranka Šipke)"
             },
             "directions": {
-                "en": [
-                    "Incel → Paprikovac",
-                    "Paprikovac → Incel"
-                ],
-                "bhs": [
-                    "Incel → Paprikovac",
-                    "Paprikovac → Incel"
-                ]
+                "en": ["Incel → Paprikovac", "Paprikovac → Incel"],
+                "bhs": ["Incel → Paprikovac", "Paprikovac → Incel"]
             },
             "stations": [
                 {
@@ -1356,10 +1338,7 @@
                             ],
                             []
                         ],
-                        "sunday": [
-                            [],
-                            []
-                        ]
+                        "sunday": [[], []]
                     }
                 },
                 {
@@ -1417,10 +1396,7 @@
                                 "21:30"
                             ]
                         ],
-                        "sunday": [
-                            [],
-                            []
-                        ]
+                        "sunday": [[], []]
                     }
                 }
             ],
@@ -1438,14 +1414,8 @@
                 "bhs": "Linija 3: ETF (Centar) - Vrbanja - Zeleni Vir"
             },
             "directions": {
-                "en": [
-                    "ETF (Centar) → Zeleni Vir",
-                    "Zeleni Vir → ETF (Centar)"
-                ],
-                "bhs": [
-                    "ETF (Centar) → Zeleni Vir",
-                    "Zeleni Vir → ETF (Centar)"
-                ]
+                "en": ["ETF (Centar) → Zeleni Vir", "Zeleni Vir → ETF (Centar)"],
+                "bhs": ["ETF (Centar) → Zeleni Vir", "Zeleni Vir → ETF (Centar)"]
             },
             "stations": [
                 {
@@ -1798,14 +1768,8 @@
                 "bhs": "Linija 3B: ETF (Centar) - Debeljaci"
             },
             "directions": {
-                "en": [
-                    "ETF (Centar) → Debeljaci",
-                    "Debeljaci → ETF (Centar)"
-                ],
-                "bhs": [
-                    "ETF (Centar) → Debeljaci",
-                    "Debeljaci → ETF (Centar)"
-                ]
+                "en": ["ETF (Centar) → Debeljaci", "Debeljaci → ETF (Centar)"],
+                "bhs": ["ETF (Centar) → Debeljaci", "Debeljaci → ETF (Centar)"]
             },
             "stations": [
                 {
@@ -2058,14 +2022,8 @@
                 "bhs": "Linija 6: Autobuska stanica - Lauš - Saračica"
             },
             "directions": {
-                "en": [
-                    "Autobuska stanica → Saračica",
-                    "Saračica → Autobuska stanica"
-                ],
-                "bhs": [
-                    "Autobuska stanica → Saračica",
-                    "Saračica → Autobuska stanica"
-                ]
+                "en": ["Autobuska stanica → Saračica", "Saračica → Autobuska stanica"],
+                "bhs": ["Autobuska stanica → Saračica", "Saračica → Autobuska stanica"]
             },
             "stations": [
                 {
@@ -2937,14 +2895,8 @@
                                 "17:10"
                             ]
                         ],
-                        "saturday": [
-                            [],
-                            []
-                        ],
-                        "sunday": [
-                            [],
-                            []
-                        ]
+                        "saturday": [[], []],
+                        "sunday": [[], []]
                     }
                 }
             ],
@@ -2962,14 +2914,8 @@
                 "bhs": "Linija 8: Autobuska stanica - Podgora"
             },
             "directions": {
-                "en": [
-                    "Autobuska stanica → Podgora",
-                    "Podgora → Autobuska stanica"
-                ],
-                "bhs": [
-                    "Autobuska stanica → Podgora",
-                    "Podgora → Autobuska stanica"
-                ]
+                "en": ["Autobuska stanica → Podgora", "Podgora → Autobuska stanica"],
+                "bhs": ["Autobuska stanica → Podgora", "Podgora → Autobuska stanica"]
             },
             "stations": [
                 {
@@ -3161,14 +3107,8 @@
                 "bhs": "Linija 13: Lazarevo - Obilićevo"
             },
             "directions": {
-                "en": [
-                    "Lazarevo → Obilićevo",
-                    "Obilićevo → Lazarevo"
-                ],
-                "bhs": [
-                    "Lazarevo → Obilićevo",
-                    "Obilićevo → Lazarevo"
-                ]
+                "en": ["Lazarevo → Obilićevo", "Obilićevo → Lazarevo"],
+                "bhs": ["Lazarevo → Obilićevo", "Obilićevo → Lazarevo"]
             },
             "stations": [
                 {
@@ -3512,14 +3452,8 @@
                 "bhs": "Linija 13A: Nova bolnica - Zalužani"
             },
             "directions": {
-                "en": [
-                    "Nova bolnica → Zalužani",
-                    "Zalužani → Nova bolnica"
-                ],
-                "bhs": [
-                    "Nova bolnica → Zalužani",
-                    "Zalužani → Nova bolnica"
-                ]
+                "en": ["Nova bolnica → Zalužani", "Zalužani → Nova bolnica"],
+                "bhs": ["Nova bolnica → Zalužani", "Zalužani → Nova bolnica"]
             },
             "stations": [
                 {
@@ -4780,14 +4714,8 @@
                 "bhs": "Linija 13C: Centar - Tunjice - Zalužani (Nenada Kostića)"
             },
             "directions": {
-                "en": [
-                    "Centar → Zalužani (N.K.)",
-                    "Zalužani (N.K.) → Centar"
-                ],
-                "bhs": [
-                    "Centar → Zalužani (N.K.)",
-                    "Zalužani (N.K.) → Centar"
-                ]
+                "en": ["Centar → Zalužani (N.K.)", "Zalužani (N.K.) → Centar"],
+                "bhs": ["Centar → Zalužani (N.K.)", "Zalužani (N.K.) → Centar"]
             },
             "stations": [
                 {
@@ -5033,14 +4961,8 @@
                 "bhs": "Linija 17: Obilićevo - Nova bolnica"
             },
             "directions": {
-                "en": [
-                    "Obilićevo → Nova bolnica",
-                    "Nova bolnica → Obilićevo"
-                ],
-                "bhs": [
-                    "Obilićevo → Nova bolnica",
-                    "Nova bolnica → Obilićevo"
-                ]
+                "en": ["Obilićevo → Nova bolnica", "Nova bolnica → Obilićevo"],
+                "bhs": ["Obilićevo → Nova bolnica", "Nova bolnica → Obilićevo"]
             },
             "stations": [
                 {
@@ -5283,14 +5205,8 @@
                 "bhs": "Linija 7: Lauš - Paprikovac - Centar - Obilićevo (TO Bema)"
             },
             "directions": {
-                "en": [
-                    "Lauš → Obilićevo (TO Bema)",
-                    "Obilićevo (TO Bema) → Lauš"
-                ],
-                "bhs": [
-                    "Lauš → Obilićevo (TO Bema)",
-                    "Obilićevo (TO Bema) → Lauš"
-                ]
+                "en": ["Lauš → Obilićevo (TO Bema)", "Obilićevo (TO Bema) → Lauš"],
+                "bhs": ["Lauš → Obilićevo (TO Bema)", "Obilićevo (TO Bema) → Lauš"]
             },
             "stations": [
                 {
@@ -5452,14 +5368,8 @@
                 "bhs": "Linija 9: Kumsale - Centar - Desna Novoselija"
             },
             "directions": {
-                "en": [
-                    "Kumsale → Desna Novoselija",
-                    "Desna Novoselija → Kumsale"
-                ],
-                "bhs": [
-                    "Kumsale → Desna Novoselija",
-                    "Desna Novoselija → Kumsale"
-                ]
+                "en": ["Kumsale → Desna Novoselija", "Desna Novoselija → Kumsale"],
+                "bhs": ["Kumsale → Desna Novoselija", "Desna Novoselija → Kumsale"]
             },
             "stations": [
                 {
@@ -5492,33 +5402,11 @@
                             []
                         ],
                         "saturday": [
-                            [
-                                "06:25",
-                                "07:35",
-                                "09:35",
-                                "11:35",
-                                "13:35",
-                                "15:09",
-                                "16:35",
-                                "18:35",
-                                "20:35",
-                                "22:30"
-                            ],
+                            ["06:25", "07:35", "09:35", "11:35", "13:35", "15:09", "16:35", "18:35", "20:35", "22:30"],
                             []
                         ],
                         "sunday": [
-                            [
-                                "06:25",
-                                "07:35",
-                                "09:35",
-                                "11:35",
-                                "13:35",
-                                "15:09",
-                                "16:35",
-                                "18:35",
-                                "20:35",
-                                "22:30"
-                            ],
+                            ["06:25", "07:35", "09:35", "11:35", "13:35", "15:09", "16:35", "18:35", "20:35", "22:30"],
                             []
                         ],
                         "weekdayReduced": [
@@ -5633,14 +5521,8 @@
                 "bhs": "Linija 9B: Česma - Medeno polje - Centar"
             },
             "directions": {
-                "en": [
-                    "Česma → Centar",
-                    "Centar → Česma"
-                ],
-                "bhs": [
-                    "Česma → Centar",
-                    "Centar → Česma"
-                ]
+                "en": ["Česma → Centar", "Centar → Česma"],
+                "bhs": ["Česma → Centar", "Centar → Česma"]
             },
             "stations": [
                 {
@@ -5877,14 +5759,8 @@
                 "bhs": "Linija 12P: Centar - Paprikovac (Vidik)"
             },
             "directions": {
-                "en": [
-                    "Centar → Paprikovac (Vidik)",
-                    "Paprikovac (Vidik) → Centar"
-                ],
-                "bhs": [
-                    "Centar → Paprikovac (Vidik)",
-                    "Paprikovac (Vidik) → Centar"
-                ]
+                "en": ["Centar → Paprikovac (Vidik)", "Paprikovac (Vidik) → Centar"],
+                "bhs": ["Centar → Paprikovac (Vidik)", "Paprikovac (Vidik) → Centar"]
             },
             "stations": [
                 {
@@ -6017,14 +5893,8 @@
                 "bhs": "Linija 13P: Obilićevo (Krfska) - Petrićevac"
             },
             "directions": {
-                "en": [
-                    "Obilićevo (Krfska) → Petrićevac",
-                    "Petrićevac → Obilićevo (Krfska)"
-                ],
-                "bhs": [
-                    "Obilićevo (Krfska) → Petrićevac",
-                    "Petrićevac → Obilićevo (Krfska)"
-                ]
+                "en": ["Obilićevo (Krfska) → Petrićevac", "Petrićevac → Obilićevo (Krfska)"],
+                "bhs": ["Obilićevo (Krfska) → Petrićevac", "Petrićevac → Obilićevo (Krfska)"]
             },
             "stations": [
                 {
@@ -6403,14 +6273,8 @@
                 "bhs": "Linija 13B: Novo groblje - Lazarevo (Poslovna škola)"
             },
             "directions": {
-                "en": [
-                    "Novo groblje → Lazarevo (Poslovna škola)",
-                    "Lazarevo (Poslovna škola) → Novo groblje"
-                ],
-                "bhs": [
-                    "Novo groblje → Lazarevo (Poslovna škola)",
-                    "Lazarevo (Poslovna škola) → Novo groblje"
-                ]
+                "en": ["Novo groblje → Lazarevo (Poslovna škola)", "Lazarevo (Poslovna škola) → Novo groblje"],
+                "bhs": ["Novo groblje → Lazarevo (Poslovna škola)", "Lazarevo (Poslovna škola) → Novo groblje"]
             },
             "stations": [
                 {
@@ -6636,14 +6500,8 @@
                 "bhs": "Linija 14: Starčevica - Centar - Starčevica"
             },
             "directions": {
-                "en": [
-                    "Starčevica → Centar (Pošta)",
-                    "Starčevica → Centar (Boska)"
-                ],
-                "bhs": [
-                    "Starčevica → Centar (Pošta)",
-                    "Starčevica → Centar (Boska)"
-                ]
+                "en": ["Starčevica → Centar (Pošta)", "Starčevica → Centar (Boska)"],
+                "bhs": ["Starčevica → Centar (Pošta)", "Starčevica → Centar (Boska)"]
             },
             "stations": [
                 {
@@ -6934,14 +6792,8 @@
                 "bhs": "Linija 14B: Autobuska stanica - Borik - Starčevica"
             },
             "directions": {
-                "en": [
-                    "Autobuska stanica → Starčevica",
-                    "Starčevica → Autobuska stanica"
-                ],
-                "bhs": [
-                    "Autobuska stanica → Starčevica",
-                    "Starčevica → Autobuska stanica"
-                ]
+                "en": ["Autobuska stanica → Starčevica", "Starčevica → Autobuska stanica"],
+                "bhs": ["Autobuska stanica → Starčevica", "Starčevica → Autobuska stanica"]
             },
             "stations": [
                 {
@@ -7193,14 +7045,8 @@
                 "bhs": "Linija 17A: Starčevica - Nova bolnica"
             },
             "directions": {
-                "en": [
-                    "Starčevica → Nova bolnica",
-                    "Nova bolnica → Starčevica"
-                ],
-                "bhs": [
-                    "Starčevica → Nova bolnica",
-                    "Nova bolnica → Starčevica"
-                ]
+                "en": ["Starčevica → Nova bolnica", "Nova bolnica → Starčevica"],
+                "bhs": ["Starčevica → Nova bolnica", "Nova bolnica → Starčevica"]
             },
             "stations": [
                 {
@@ -7358,14 +7204,8 @@
                 "bhs": "Linija 19: Šargovac - Centar (Vidovdanska)"
             },
             "directions": {
-                "en": [
-                    "Šargovac → Centar (Vidovdanska)",
-                    "Centar (Vidovdanska) → Šargovac"
-                ],
-                "bhs": [
-                    "Šargovac → Centar (Vidovdanska)",
-                    "Centar (Vidovdanska) → Šargovac"
-                ]
+                "en": ["Šargovac → Centar (Vidovdanska)", "Centar (Vidovdanska) → Šargovac"],
+                "bhs": ["Šargovac → Centar (Vidovdanska)", "Centar (Vidovdanska) → Šargovac"]
             },
             "stations": [
                 {
@@ -7936,14 +7776,8 @@
                 "bhs": "Linija 39: Drakulić - Centar"
             },
             "directions": {
-                "en": [
-                    "Drakulić → Centar",
-                    "Centar → Drakulić"
-                ],
-                "bhs": [
-                    "Drakulić → Centar",
-                    "Centar → Drakulić"
-                ]
+                "en": ["Drakulić → Centar", "Centar → Drakulić"],
+                "bhs": ["Drakulić → Centar", "Centar → Drakulić"]
             },
             "stations": [
                 {
@@ -8105,14 +7939,8 @@
                 "bhs": "Linija 39A: Drakulić (Avion) - Rakovačke bare - Centar"
             },
             "directions": {
-                "en": [
-                    "Drakulić (Avion) → Centar",
-                    "Centar → Drakulić (Avion)"
-                ],
-                "bhs": [
-                    "Drakulić (Avion) → Centar",
-                    "Centar → Drakulić (Avion)"
-                ]
+                "en": ["Drakulić (Avion) → Centar", "Centar → Drakulić (Avion)"],
+                "bhs": ["Drakulić (Avion) → Centar", "Centar → Drakulić (Avion)"]
             },
             "stations": [
                 {
@@ -8138,24 +7966,9 @@
                             ],
                             []
                         ],
-                        "saturday": [
-                            [],
-                            []
-                        ],
-                        "sunday": [
-                            [],
-                            []
-                        ],
-                        "weekdayReduced": [
-                            [
-                                "06:20",
-                                "07:20",
-                                "08:20",
-                                "14:20",
-                                "15:20"
-                            ],
-                            []
-                        ]
+                        "saturday": [[], []],
+                        "sunday": [[], []],
+                        "weekdayReduced": [["06:20", "07:20", "08:20", "14:20", "15:20"], []]
                     }
                 },
                 {
@@ -8181,23 +7994,9 @@
                                 "18:50"
                             ]
                         ],
-                        "saturday": [
-                            [],
-                            []
-                        ],
-                        "sunday": [
-                            [],
-                            []
-                        ],
-                        "weekdayReduced": [
-                            [],
-                            [
-                                "06:50",
-                                "07:50",
-                                "14:50",
-                                "15:50"
-                            ]
-                        ]
+                        "saturday": [[], []],
+                        "sunday": [[], []],
+                        "weekdayReduced": [[], ["06:50", "07:50", "14:50", "15:50"]]
                     }
                 }
             ]

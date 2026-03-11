@@ -363,7 +363,7 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
             type Departure = { timeStr: string; note: string | null };
             const seen = new Set<string>();
             const allDepartures: Departure[] = [];
-            const reducedKey = `${dayType}Reduced` as keyof typeof timetable.stations[0]['times'];
+            const reducedKey = `${dayType}Reduced` as keyof (typeof timetable.stations)[0]['times'];
             timetable.stations.forEach((station) => {
                 const reduced = showingReduced ? station.times[reducedKey] : undefined;
                 const stationTimes = (reduced ?? station.times[dayType])[dirIndex];
@@ -408,7 +408,9 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
                         return;
                     }
                     if (hourValue === currentHour) {
-                        const sortedMinutes = departuresByHour[hour].map((d) => parseInt(d.timeStr, 10)).sort((a, b) => a - b);
+                        const sortedMinutes = departuresByHour[hour]
+                            .map((d) => parseInt(d.timeStr, 10))
+                            .sort((a, b) => a - b);
                         for (const minute of sortedMinutes) {
                             if (minute >= currentMinute) {
                                 nextDepartureHour = hourValue;
@@ -422,7 +424,9 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
             Object.keys(departuresByHour)
                 .sort()
                 .forEach((hour) => {
-                    const departures = departuresByHour[hour].sort((a, b) => parseInt(a.timeStr, 10) - parseInt(b.timeStr, 10));
+                    const departures = departuresByHour[hour].sort(
+                        (a, b) => parseInt(a.timeStr, 10) - parseInt(b.timeStr, 10),
+                    );
                     const hourValue = parseInt(hour, 10);
                     const isCurrentHour = hourValue === currentHour;
                     const rowClass = isCurrentHour ? 'current-hour' : '';

@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const baseUrl = import.meta.env.BASE_URL;
+const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
+---
+
+<BaseLayout
+  pageKey="home"
+  title="Stranica nije pronađena – BL Prevoz"
+  description="Tražena stranica ne postoji."
+  canonicalUrl="https://blprevoz.com/404/"
+>
+  <section class="not-found">
+    <div class="container">
+      <h1 class="not-found__code">404</h1>
+      <p class="not-found__title">
+        <span data-lang="bhs">Stranica nije pronađena</span>
+        <span data-lang="en" style="display:none">Page not found</span>
+      </p>
+      <p class="not-found__desc">
+        <span data-lang="bhs">Stranica koju tražite ne postoji ili je premještena.</span>
+        <span data-lang="en" style="display:none">The page you're looking for doesn't exist or has been moved.</span>
+      </p>
+      <a href={withBase('')} class="btn btn--primary">
+        <i class="fas fa-home" aria-hidden="true"></i>
+        <span data-lang="bhs">Nazad na početnu</span>
+        <span data-lang="en" style="display:none">Back to home</span>
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+  }
+
+  .not-found__code {
+    font-size: 6rem;
+    font-weight: 700;
+    line-height: 1;
+    margin: 0 0 0.5rem;
+    opacity: 0.2;
+  }
+
+  .not-found__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+  }
+
+  .not-found__desc {
+    color: var(--color-text-secondary, #666);
+    margin: 0 0 2rem;
+  }
+</style>

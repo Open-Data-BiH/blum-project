@@ -134,6 +134,35 @@ const lang = 'bhs'; // SSR default; JS will re-render count on languageChanged
               </span>
             </div>
 
+            {(line.schedule.firstBus || line.schedule.lastBus || line.schedule.avgFrequency) && (
+              <div class="line-card__schedule">
+                {line.schedule.firstBus && (
+                  <span class="schedule-item">
+                    <i class="fas fa-sun" aria-hidden="true"></i>
+                    <span class="schedule-item__label" data-lang="bhs">Prvi polazak:</span>
+                    <span class="schedule-item__label" data-lang="en" style="display:none">First bus:</span>
+                    <strong>{line.schedule.firstBus}</strong>
+                  </span>
+                )}
+                {line.schedule.lastBus && (
+                  <span class="schedule-item">
+                    <i class="fas fa-moon" aria-hidden="true"></i>
+                    <span class="schedule-item__label" data-lang="bhs">Zadnji polazak:</span>
+                    <span class="schedule-item__label" data-lang="en" style="display:none">Last bus:</span>
+                    <strong>{line.schedule.lastBus}</strong>
+                  </span>
+                )}
+                {line.schedule.avgFrequency && (
+                  <span class="schedule-item">
+                    <i class="fas fa-sync-alt" aria-hidden="true"></i>
+                    <span class="schedule-item__label" data-lang="bhs">Prosj. frekvencija:</span>
+                    <span class="schedule-item__label" data-lang="en" style="display:none">Avg. frequency:</span>
+                    <strong>~{line.schedule.avgFrequency} min</strong>
+                  </span>
+                )}
+              </div>
+            )}
+
             <div class="line-card__actions">
               {hasTimetable && (
                 <button class="btn--primary timetable-btn" data-line-id={safeLineId}>

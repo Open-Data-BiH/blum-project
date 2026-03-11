@@ -6,8 +6,10 @@ import TimetableSection from '../components/lines/TimetableSection.astro';
 import MapNote from '../components/map/MapNote.astro';
 
 import ownershipData from '../../public/data/transport/routes/urban_company_ownership.json';
+import timetableData from '../../public/data/transport/timetables/urban_timetables.json';
 import type { CompanyOwnership } from '../types/lines';
-import type { ProcessedLine } from '../types/lines';
+import type { ProcessedLine, ScheduleStats } from '../types/lines';
+import type { TimetableFile, TimetableTime } from '../types/timetable';
 
 // ─── Helper functions (mirrors lines-ui.js, run at build time) ──────────────
 
@@ -68,6 +70,47 @@ const sortLinesByID = (a: { lineId: string }, b: { lineId: string }): number => 
   return !isNaN(numA) && !isNaN(numB) ? numA - numB : a.lineId.localeCompare(b.lineId);
 };
 
+// ─── Schedule stats computation ─────────────────────────────────────────────
+
+const timetables = (timetableData as TimetableFile).urban;
+const timetableMap = new Map(timetables.map((t) => [t.lineId, t]));
+
+const getTimeString = (t: TimetableTime): string =>
+  typeof t === 'string' ? t : t.time;
+
+const computeScheduleStats = (lineId: string): ScheduleStats => {
+  const entry = timetableMap.get(lineId);
+  if (!entry || entry.stations.length === 0) {
+    return { firstBus: null, lastBus: null, avgFrequency: null };
+  }
+
+  // Use first station, direction A (index 0), weekday schedule
+  const times = entry.stations[0].times.weekday[0];
+  if (!times || times.length === 0) {
+    return { firstBus: null, lastBus: null, avgFrequency: null };
+  }
+
+  const timeStrings = times.map(getTimeString);
+  const firstBus = timeStrings[0];
+  const lastBus = timeStrings[timeStrings.length - 1];
+
+  // Average frequency: mean gap between consecutive departures
+  let avgFrequency: number | null = null;
+  if (timeStrings.length >= 2) {
+    const toMinutes = (hhmm: string) => {
+      const [h, m] = hhmm.split(':').map(Number);
+      return h * 60 + m;
+    };
+    let totalGap = 0;
+    for (let i = 1; i < timeStrings.length; i++) {
+      totalGap += toMinutes(timeStrings[i]) - toMinutes(timeStrings[i - 1]);
+    }
+    avgFrequency = Math.round(totalGap / (timeStrings.length - 1));
+  }
+
+  return { firstBus, lastBus, avgFrequency };
+};
+
 // ─── Build flat processed line array ────────────────────────────────────────
 
 const data = ownershipData as CompanyOwnership;
@@ -89,6 +132,7 @@ data.urban.forEach((company) => {
       ),
       companyClass: getCompanyClass(company.companyName),
       shortOperator: getShortOperatorName(company.companyName),
+      schedule: computeScheduleStats(line.lineId),
     });
   });
 });

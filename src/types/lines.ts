@@ -28,6 +28,16 @@ export interface CompanyOwnership {
     urban: CompanyGroup[];
 }
 
+/** Schedule summary computed at build time from timetable data */
+export interface ScheduleStats {
+    /** Earliest departure time (HH:MM) on weekday, direction A */
+    firstBus: string | null;
+    /** Latest departure time (HH:MM) on weekday, direction A */
+    lastBus: string | null;
+    /** Average frequency in minutes between departures on weekday, direction A */
+    avgFrequency: number | null;
+}
+
 // Processed line card data (flat, with computed fields for SSR and client)
 export interface ProcessedLine extends Line {
     companyName: string;
@@ -39,4 +49,6 @@ export interface ProcessedLine extends Line {
     companyClass: string;
     /** Short display name for the operator */
     shortOperator: string;
+    /** Schedule summary from timetable data */
+    schedule: ScheduleStats;
 }

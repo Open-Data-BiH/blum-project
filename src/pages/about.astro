@@ -1,11 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const baseUrl = import.meta.env.BASE_URL;
+const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
 ---
 
 <BaseLayout
   pageKey="about"
-  title="O projektu – BLum"
-  description="BLum je nezavisan projekat za bolju dostupnost informacija o javnom prevozu u Banjoj Luci. Saznajte više o našem cilju i pristupu otvorenim podacima."
+  title="O projektu – BLum | Javni prevoz Banja Luka"
+  description="BLum je nezavisan projekat za bolju dostupnost informacija o javnom prevozu u Banjoj Luci. Red vožnje, linije, cijene karata i aerodromski transfer na jednom mjestu."
   canonicalUrl="https://blprevoz.com/about/"
 >
   <section class="section section--narrow" id="about">
@@ -20,29 +23,57 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div data-lang="bhs">
           <h2>Zašto BLum postoji?</h2>
           <p>
-            Informacije o javnom prevozu u Banjoj Luci su često nepotpune, raspršene ili teško dostupne.
-            Građani i posjetioci ne mogu lako pronaći redove vožnje, mape linija ili cijene karata na jednom mjestu.
+            Javni prevoz u Banjoj Luci obuhvata više prevoznika, a informacije o linijama, redovima vožnje
+            i cijenama karata su često raspršene na različitim mjestima ili teško dostupne.
           </p>
           <p>
-            BLum je nastao iz potrebe da se te informacije objedine i učine dostupnim svima — jednostavno, pregledno i besplatno.
+            BLum je nastao iz potrebe da se te informacije objedine i učine dostupnim svima —
+            jednostavno, pregledno i besplatno. Naš cilj je da ogni korisnik brzo pronađe
+            ono što mu treba za kretanje gradom.
           </p>
+
+          <h2>Šta možete uraditi na BLum-u?</h2>
+          <div class="about-features">
+            <a href={withBase('lines/')} class="about-feature">
+              <i class="fa-solid fa-route" aria-hidden="true"></i>
+              <span>Pregledajte autobuske linije i rute</span>
+            </a>
+            <a href={withBase('lines/#timetable')} class="about-feature">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+              <span>Provjerite red vožnje</span>
+            </a>
+            <a href={withBase('pricing/')} class="about-feature">
+              <i class="fa-solid fa-ticket" aria-hidden="true"></i>
+              <span>Pogledajte cijene karata</span>
+            </a>
+            <a href={withBase('airport/')} class="about-feature">
+              <i class="fa-solid fa-plane-departure" aria-hidden="true"></i>
+              <span>Informacije o aerodromskom transferu</span>
+            </a>
+            <a href={withBase('updates/')} class="about-feature">
+              <i class="fa-solid fa-bell" aria-hidden="true"></i>
+              <span>Pratite obavještenja o izmjenama</span>
+            </a>
+          </div>
 
           <h2>Nezavisan projekat</h2>
           <p>
             BLum <strong>nije zvanična stranica</strong> grada Banja Luka, prevoznika niti bilo koje institucije.
             Ovo je nezavisan, volonterski projekat koji nema komercijalnu pozadinu i ne zastupa interese nijednog prevoznika.
           </p>
-          <p>
-            Sve informacije prikupljamo iz javno dostupnih izvora i prikazujemo ih na način koji je koristan za korisnike.
-          </p>
 
-          <h2>Cilj</h2>
+          <h2>Odakle dolaze informacije?</h2>
           <p>
-            Naš cilj je jednostavan: <strong>učiniti informacije o javnom prevozu u Banjoj Luci dostupnim i razumljivim svima</strong>.
-            To uključuje mape linija, redove vožnje, cijene karata, lokacije stanica i druga korisna obavještenja.
+            Sve informacije na platformi prikupljene su iz:
           </p>
+          <ul class="about-sources-list">
+            <li>javno dostupnih podataka i izvora</li>
+            <li>zvaničnih obavještenja prevoznika</li>
+            <li>informacija od prevozničkih operatera</li>
+          </ul>
           <p>
-            Vjerujemo da kvalitetne informacije o prevozu doprinose boljoj mobilnosti i podstiču korištenje javnog prevoza.
+            Informacije prikazujemo na način koji je koristan za korisnike. Trudimo se da podaci budu tačni,
+            ali preporučujemo provjeru kod prevoznika za najažurnije informacije.
           </p>
 
           <h2>Otvoreni podaci</h2>
@@ -53,35 +84,85 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             Izvorni kod ovog projekta je javno dostupan, a svi podaci prikazani na sajtu mogu se slobodno koristiti.
             Nadamo se da će ovaj pristup inspirisati i druge inicijative za otvorene podatke u našem gradu.
           </p>
+
+          <h2>Budući planovi</h2>
+          <p>
+            Projekat se aktivno razvija. Neke od planiranih unapređenja:
+          </p>
+          <ul class="about-sources-list">
+            <li>Unapređenje mapa stajališta</li>
+            <li>Poboljšanje pretrage linija i ruta</li>
+            <li>Proširenje informacija o prevoznim uslugama</li>
+          </ul>
+
+          <div class="about-cta">
+            <i class="fa-solid fa-comment-dots" aria-hidden="true"></i>
+            <div>
+              <strong>Primijetili ste grešku ili imate prijedlog?</strong>
+              <p>
+                Pomozite nam da informacije budu tačnije.
+                Ako ste primijetili netačan podatak ili imate ideju za poboljšanje,
+                <a href={withBase('contact/')}>javite nam se</a>.
+              </p>
+            </div>
+          </div>
         </div>
 
         <!-- English version -->
         <div data-lang="en" style="display:none">
           <h2>Why does BLum exist?</h2>
           <p>
-            Public transport information in Banja Luka is often incomplete, scattered, or hard to access.
-            Residents and visitors cannot easily find timetables, route maps, or ticket prices in one place.
+            Public transport in Banja Luka involves multiple operators, and information about lines,
+            timetables, and ticket prices is often scattered across different sources or hard to find.
           </p>
           <p>
-            BLum was created out of the need to bring all this information together and make it accessible to everyone — simply, clearly, and for free.
+            BLum was created out of the need to bring all this information together and make it accessible
+            to everyone — simply, clearly, and for free. Our goal is that every user can quickly find
+            what they need to get around the city.
           </p>
+
+          <h2>What can you do on BLum?</h2>
+          <div class="about-features">
+            <a href={withBase('lines/')} class="about-feature">
+              <i class="fa-solid fa-route" aria-hidden="true"></i>
+              <span>View bus lines and routes</span>
+            </a>
+            <a href={withBase('lines/#timetable')} class="about-feature">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+              <span>Check timetables</span>
+            </a>
+            <a href={withBase('pricing/')} class="about-feature">
+              <i class="fa-solid fa-ticket" aria-hidden="true"></i>
+              <span>See ticket pricing</span>
+            </a>
+            <a href={withBase('airport/')} class="about-feature">
+              <i class="fa-solid fa-plane-departure" aria-hidden="true"></i>
+              <span>Airport transport information</span>
+            </a>
+            <a href={withBase('updates/')} class="about-feature">
+              <i class="fa-solid fa-bell" aria-hidden="true"></i>
+              <span>Follow transport updates</span>
+            </a>
+          </div>
 
           <h2>An independent project</h2>
           <p>
             BLum is <strong>not an official website</strong> of the City of Banja Luka, any transport operator, or any institution.
             This is an independent, volunteer-driven project with no commercial backing and no affiliation with any transport company.
           </p>
-          <p>
-            All information is gathered from publicly available sources and presented in a way that is useful for users.
-          </p>
 
-          <h2>Our goal</h2>
+          <h2>Where does the information come from?</h2>
           <p>
-            Our goal is simple: <strong>make public transport information in Banja Luka accessible and understandable for everyone</strong>.
-            This includes route maps, timetables, ticket prices, station locations, and other useful updates.
+            All information on the platform is gathered from:
           </p>
+          <ul class="about-sources-list">
+            <li>Publicly available data and sources</li>
+            <li>Official operator announcements</li>
+            <li>Information from transport operators</li>
+          </ul>
           <p>
-            We believe that quality transport information contributes to better urban mobility and encourages the use of public transport.
+            We present information in a way that is useful for users. We strive for accuracy,
+            but recommend checking with operators for the most up-to-date information.
           </p>
 
           <h2>Open data</h2>
@@ -92,6 +173,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             The source code of this project is publicly available, and all data displayed on the site can be freely used.
             We hope this approach will inspire other open data initiatives in our city.
           </p>
+
+          <h2>Future plans</h2>
+          <p>
+            The project is actively evolving. Some planned improvements include:
+          </p>
+          <ul class="about-sources-list">
+            <li>Improving stop maps</li>
+            <li>Better search for lines and routes</li>
+            <li>Expanding information about transport services</li>
+          </ul>
+
+          <div class="about-cta">
+            <i class="fa-solid fa-comment-dots" aria-hidden="true"></i>
+            <div>
+              <strong>Noticed an error or have a suggestion?</strong>
+              <p>
+                Help us improve the accuracy of information.
+                If you've noticed incorrect data or have an idea for improvement,
+                <a href={withBase('contact/')}>get in touch</a>.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

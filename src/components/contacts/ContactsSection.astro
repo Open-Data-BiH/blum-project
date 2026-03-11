@@ -30,6 +30,9 @@ const labels = {
   },
 };
 
+const formatTelHref = (phone?: string | null): string =>
+  phone ? phone.replace(/[^+\d]/g, '') : '';
+
 const isAuthorityType = (contact: Contact): boolean =>
   contact.type.bhs === 'Gradska uprava' || contact.type.en === 'City Administration';
 
@@ -41,56 +44,65 @@ const operatorContacts = contacts.filter((contact) => !isAuthorityType(contact))
   <div class="container">
     <h2 class="section__title" id="contact-title">Korisni kontakti</h2>
 
-    <div class="contact-group">
+    <div class="contact-group contact-group--primary">
       <h3 class="contact-group__title" id="contact-group-authorities-title">Gradske službe</h3>
       <div class="contact-cards">
         {authorityContacts.map((contact) => (
           <div
-            class="contact-card"
+            class="contact-card contact-card--authority"
             id={`contact-${contact.id}`}
-            style={contact.color ? `border-left-color: ${contact.color};` : undefined}
+            style={contact.color ? `--contact-accent:${contact.color};` : undefined}
           >
-            <h3>
-              <span data-lang="bhs">{contact.name.bhs}</span>
-              <span data-lang="en" style="display:none">{contact.name.en}</span>
-            </h3>
-            <p class="contact-department">
-              <span data-lang="bhs">{contact.department.bhs}</span>
-              <span data-lang="en" style="display:none">{contact.department.en}</span>
-            </p>
-            <p class="contact-type">
-              <span data-lang="bhs">{contact.type.bhs}</span>
-              <span data-lang="en" style="display:none">{contact.type.en}</span>
-            </p>
-
-            {contact.phoneDisplay && (
-              <p class="contact-phone">
-                <strong>
-                  <span data-lang="bhs">{labels.bhs.phone}</span>
-                  <span data-lang="en" style="display:none">{labels.en.phone}</span>
-                </strong>{' '}
-                {contact.phoneDisplay}
+            <div class="contact-card__top">
+              <p class="contact-type">
+                <span data-lang="bhs">{contact.type.bhs}</span>
+                <span data-lang="en" style="display:none">{contact.type.en}</span>
               </p>
-            )}
-
-            {contact.email && (
-              <p class="contact-email">
-                <strong>
-                  <span data-lang="bhs">{labels.bhs.email}</span>
-                  <span data-lang="en" style="display:none">{labels.en.email}</span>
-                </strong>{' '}
-                <a href={`mailto:${contact.email}`}>{contact.email}</a>
+              <h3 class="contact-name">
+                <span data-lang="bhs">{contact.name.bhs}</span>
+                <span data-lang="en" style="display:none">{contact.name.en}</span>
+              </h3>
+              <p class="contact-department">
+                <span data-lang="bhs">{contact.department.bhs}</span>
+                <span data-lang="en" style="display:none">{contact.department.en}</span>
               </p>
-            )}
+            </div>
 
-            {contact.website && (
-              <p class="contact-website">
-                <a href={contact.website} target="_blank" rel="noopener noreferrer">
+            <div class="contact-details">
+              {contact.phoneDisplay && (
+                <a
+                  class="contact-detail"
+                  href={`tel:${formatTelHref(contact.phoneDisplay)}`}
+                  aria-label={`${labels.bhs.phone} ${contact.phoneDisplay}`}
+                >
+                  <i class="fas fa-phone" aria-hidden="true"></i>
+                  <span class="contact-detail__value">{contact.phoneDisplay}</span>
+                </a>
+              )}
+
+              {contact.email && (
+                <a
+                  class="contact-detail"
+                  href={`mailto:${contact.email}`}
+                  aria-label={`${labels.bhs.email} ${contact.email}`}
+                >
+                  <i class="fas fa-envelope" aria-hidden="true"></i>
+                  <span class="contact-detail__value">{contact.email}</span>
+                </a>
+              )}
+            </div>
+
+            <div class="contact-card__footer">
+              {contact.website ? (
+                <a class="contact-website" href={contact.website} target="_blank" rel="noopener noreferrer">
                   <span data-lang="bhs">{labels.bhs.visit}</span>
                   <span data-lang="en" style="display:none">{labels.en.visit}</span>
+                  <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                 </a>
-              </p>
-            )}
+              ) : (
+                <span class="contact-website contact-website--empty" aria-hidden="true"></span>
+              )}
+            </div>
           </div>
         ))}
       </div>
@@ -101,51 +113,60 @@ const operatorContacts = contacts.filter((contact) => !isAuthorityType(contact))
       <div class="contact-cards">
         {operatorContacts.map((contact) => (
           <div
-            class="contact-card"
+            class="contact-card contact-card--operator"
             id={`contact-${contact.id}`}
-            style={contact.color ? `border-left-color: ${contact.color};` : undefined}
+            style={contact.color ? `--contact-accent:${contact.color};` : undefined}
           >
-            <h3>
-              <span data-lang="bhs">{contact.name.bhs}</span>
-              <span data-lang="en" style="display:none">{contact.name.en}</span>
-            </h3>
-            <p class="contact-department">
-              <span data-lang="bhs">{contact.department.bhs}</span>
-              <span data-lang="en" style="display:none">{contact.department.en}</span>
-            </p>
-            <p class="contact-type">
-              <span data-lang="bhs">{contact.type.bhs}</span>
-              <span data-lang="en" style="display:none">{contact.type.en}</span>
-            </p>
-
-            {contact.phoneDisplay && (
-              <p class="contact-phone">
-                <strong>
-                  <span data-lang="bhs">{labels.bhs.phone}</span>
-                  <span data-lang="en" style="display:none">{labels.en.phone}</span>
-                </strong>{' '}
-                {contact.phoneDisplay}
+            <div class="contact-card__top">
+              <p class="contact-type">
+                <span data-lang="bhs">{contact.type.bhs}</span>
+                <span data-lang="en" style="display:none">{contact.type.en}</span>
               </p>
-            )}
-
-            {contact.email && (
-              <p class="contact-email">
-                <strong>
-                  <span data-lang="bhs">{labels.bhs.email}</span>
-                  <span data-lang="en" style="display:none">{labels.en.email}</span>
-                </strong>{' '}
-                <a href={`mailto:${contact.email}`}>{contact.email}</a>
+              <h3 class="contact-name">
+                <span data-lang="bhs">{contact.name.bhs}</span>
+                <span data-lang="en" style="display:none">{contact.name.en}</span>
+              </h3>
+              <p class="contact-department">
+                <span data-lang="bhs">{contact.department.bhs}</span>
+                <span data-lang="en" style="display:none">{contact.department.en}</span>
               </p>
-            )}
+            </div>
 
-            {contact.website && (
-              <p class="contact-website">
-                <a href={contact.website} target="_blank" rel="noopener noreferrer">
+            <div class="contact-details">
+              {contact.phoneDisplay && (
+                <a
+                  class="contact-detail"
+                  href={`tel:${formatTelHref(contact.phoneDisplay)}`}
+                  aria-label={`${labels.bhs.phone} ${contact.phoneDisplay}`}
+                >
+                  <i class="fas fa-phone" aria-hidden="true"></i>
+                  <span class="contact-detail__value">{contact.phoneDisplay}</span>
+                </a>
+              )}
+
+              {contact.email && (
+                <a
+                  class="contact-detail"
+                  href={`mailto:${contact.email}`}
+                  aria-label={`${labels.bhs.email} ${contact.email}`}
+                >
+                  <i class="fas fa-envelope" aria-hidden="true"></i>
+                  <span class="contact-detail__value">{contact.email}</span>
+                </a>
+              )}
+            </div>
+
+            <div class="contact-card__footer">
+              {contact.website ? (
+                <a class="contact-website" href={contact.website} target="_blank" rel="noopener noreferrer">
                   <span data-lang="bhs">{labels.bhs.visit}</span>
                   <span data-lang="en" style="display:none">{labels.en.visit}</span>
+                  <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                 </a>
-              </p>
-            )}
+              ) : (
+                <span class="contact-website contact-website--empty" aria-hidden="true"></span>
+              )}
+            </div>
           </div>
         ))}
       </div>

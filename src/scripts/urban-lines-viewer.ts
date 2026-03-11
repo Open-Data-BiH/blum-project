@@ -17,7 +17,7 @@ const VIEWER_CONFIG = {
         zoomSnap: 0.1,
         zoomDelta: 0.5,
         wheelPxPerZoomLevel: 100,
-        minZoom: -2,
+        minZoom: -1,
         maxZoom: 2,
         maxBoundsViscosity: 1.0,
         bounceAtZoomLimits: false,

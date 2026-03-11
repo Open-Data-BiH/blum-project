@@ -15,8 +15,8 @@ const navLinks: { key: PageKey; href: string; id: string }[] = [
   { key: 'home',    href: withBase(''),           id: 'nav-map-desktop' },
   { key: 'lines',   href: withBase('lines/'),     id: 'nav-lines-desktop' },
   { key: 'pricing', href: withBase('pricing/'),   id: 'nav-prices-desktop' },
-  { key: 'airport', href: withBase('airport/'),   id: 'nav-airport-desktop' },
   { key: 'updates', href: withBase('updates/'),   id: 'nav-updates-desktop' },
+  { key: 'airport', href: withBase('airport/'),   id: 'nav-airport-desktop' },
   { key: 'faq',     href: withBase('faq/'),       id: 'nav-faq-desktop' },
   { key: 'contact', href: withBase('contact/'),   id: 'nav-contact-desktop' },
 ];
@@ -31,9 +31,10 @@ const navLinks: { key: PageKey; href: string; id: string }[] = [
             src={logo}
             alt="BLum logo"
             class="header__logo"
-            width={797}
-            height={797}
+            width={100}
+            height={100}
             loading="eager"
+            fetchpriority="high"
           />
           <div class="header__brand-text">
             <h1 class="header__title" id="site-title">BLum</h1>

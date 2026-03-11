@@ -10,7 +10,7 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
 <BaseLayout
   pageKey="home"
   title="BL Prevoz – Linije javnog prevoza u Banjoj Luci"
-  description="Pregled linija javnog prevoza u Banjoj Luci. Jednostavna mapa i informacije o autobuskim rutama."
+  description="BLum – red vožnje, linije i mapa javnog prevoza u Banjoj Luci. Sve autobuske linije, polasci, stajališta i obavještenja o izmjenama na jednom mjestu."
   canonicalUrl="https://blprevoz.com/"
 >
   <section class="hero">
@@ -20,7 +20,7 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
       <p class="hero__description" id="hero-description">
         Nezavisna platforma za linije, red vožnje i obavještenja o javnom prevozu u Banjoj Luci.
       </p>
-      <div class="hero__details" aria-label="Ključne informacije">
+      <div class="hero__details" id="hero-details" aria-label="Ključne informacije">
         <p class="hero__detail" id="hero-detail-1">
           <i class="fas fa-map-signs" aria-hidden="true"></i>
           <span>Linije i red vožnje na jednom mjestu</span>

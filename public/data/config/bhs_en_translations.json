@@ -62,7 +62,7 @@
                     "weekday": "Weekdays",
                     "saturday": "Saturday",
                     "sunday": "Sunday",
-                    "sundayHoliday": "Sunday and Holiday"
+                    "sundayHoliday": "Sunday & Holiday"
                 },
                 "notAvailable": {
                     "title": "Timetable Not Available",

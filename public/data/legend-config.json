@@ -102,7 +102,7 @@
             },
             "icon": "fa-location-dot",
             "color": "#e74c3c",
-            "defaultVisible": true
+            "defaultVisible": false
         }
     ]
 }

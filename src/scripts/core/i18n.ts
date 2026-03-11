@@ -33,8 +33,8 @@ const PAGE_SEO: Record<
             en: 'BL Transport – Public Transport Routes in Banja Luka',
         },
         description: {
-            bhs: 'Pregled linija javnog prevoza u Banjoj Luci. Jednostavna mapa i informacije o autobuskim rutama.',
-            en: 'Public transport routes in Banja Luka. Simple map and information about bus routes and timetables.',
+            bhs: 'BLum – red vožnje, linije i mapa javnog prevoza u Banjoj Luci. Sve autobuske linije, polasci, stajališta i obavještenja o izmjenama na jednom mjestu.',
+            en: 'BLum – timetables, routes and map of public transport in Banja Luka. All bus lines, departures, stops and service updates in one place.',
         },
     },
     lines: {
@@ -114,6 +114,17 @@ const PAGE_SEO: Record<
             en: 'BL Transport privacy policy. Information about analytics, cookies, and data protection.',
         },
     },
+    about: {
+        url: 'https://blprevoz.com/about/',
+        title: {
+            bhs: 'O projektu – BLum',
+            en: 'About – BLum',
+        },
+        description: {
+            bhs: 'BLum je nezavisan projekat za bolju dostupnost informacija o javnom prevozu u Banjoj Luci. Saznajte više o našem cilju i pristupu otvorenim podacima.',
+            en: 'BLum is an independent project for better public transport information in Banja Luka. Learn about our mission and open data approach.',
+        },
+    },
 };
 
 const resolvePageKey = (): string => {
@@ -144,6 +155,9 @@ const resolvePageKey = (): string => {
     }
     if (path.includes('/privacy')) {
         return 'privacy';
+    }
+    if (path.includes('/about')) {
+        return 'about';
     }
     return 'home';
 };
@@ -267,6 +281,11 @@ export const applyTranslation = (lang: Language): void => {
     safelyUpdateButtonLabel('hero-btn-timetables', heroDefaults.timetables);
     safelyUpdateButtonLabel('hero-btn-airport', heroDefaults.airport);
 
+    const heroDetails = document.getElementById('hero-details');
+    if (heroDetails) {
+        heroDetails.setAttribute('aria-label', lang === 'bhs' ? 'Ključne informacije' : 'Key information');
+    }
+
     // Map section
     safelyUpdateText('map-title', t.sections?.map?.title);
     safelyUpdateText('map-note-item-stops', safeGet(t, 'sections', 'map', 'note', 'stops'));
@@ -298,6 +317,18 @@ export const applyTranslation = (lang: Language): void => {
     safelyUpdateText('lines-accordion-toggle', safeGet(t, 'sections', 'lines', 'accordionToggle'));
     safelyUpdateText('lines-accordion-text', safeGet(t, 'sections', 'lines', 'accordionText'));
     safelyUpdateText('lines-timetable-title', safeGet(t, 'sections', 'lines', 'timetableTitle'));
+
+    // Wheelchair badge title/aria-label (SSR-baked as BHS, update on language switch)
+    document.querySelectorAll<HTMLElement>('.badge--accessible').forEach((badge) => {
+        const text = lang === 'bhs' ? 'Pristupačno za invalidska kolica' : 'Wheelchair accessible';
+        badge.setAttribute('title', text);
+        badge.setAttribute('aria-label', text);
+    });
+    document.querySelectorAll<HTMLElement>('.badge--not-accessible').forEach((badge) => {
+        const text = lang === 'bhs' ? 'Nije pristupačno' : 'Not accessible';
+        badge.setAttribute('title', text);
+        badge.setAttribute('aria-label', text);
+    });
 
     // Timetable section
     safelyUpdateText('timetable-title', t.sections?.timetable?.title);
@@ -347,9 +378,10 @@ export const applyTranslation = (lang: Language): void => {
     safelyUpdateText(
         'footer-mission-text',
         lang === 'bhs'
-            ? 'BLum je nezavisna platforma razvijena radi bolje dostupnosti informacija o javnom prevozu. Zvanične i ažurirane informacije provjerite kod nadležnih gradskih organa i prevoznika.'
-            : 'BLum is an independent platform created to improve access to public transport information. For official and up-to-date information, check with relevant city authorities and transport operators.',
+            ? 'BLum je nezavisna platforma za bolju dostupnost informacija o javnom prevozu u Banjoj Luci.'
+            : 'BLum is an independent platform for better access to public transport information in Banja Luka.',
     );
+    safelyUpdateText('footer-link-about', lang === 'bhs' ? 'O projektu' : 'About');
     safelyUpdateText('footer-link-faq', 'FAQ');
     safelyUpdateText('footer-link-contact', lang === 'bhs' ? 'Kontakt' : 'Contact');
     safelyUpdateText('footer-link-privacy', lang === 'bhs' ? 'Privatnost' : 'Privacy');

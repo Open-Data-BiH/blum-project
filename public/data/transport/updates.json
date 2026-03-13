@@ -57,9 +57,7 @@
                 "bhs": "Autobuska linija broj 12, koja saobraća na relaciji Paprikovac - Centar, produžena je do naselja Rebrovac. Iz centra grada autobus nastavlja kroz naselje Obilićevo (ulice Patre - Cara Lazara - Bulevar vojvode Stepe Stepanovića) do Rebrovca, gdje koristi kružni tok kao okretnicu za povratak prema centru grada, a zatim preko naselja Petrićevac do Paprikovca (Lijevčanska). Relacijska tabla zbog dominantnog kretanja kroz Petrićevac glasi: 12 Petrićevac (Lijevčanska) - Centar - Rebrovac (kružni tok).",
                 "en": "Bus line 12, operating on the Paprikovac - Center route, has been extended to the Rebrovac neighborhood. From the city center, buses continue through the Obilićevo area (Patre Street - Cara Lazara Street - Bulevar vojvode Stepe Stepanovića) to Rebrovac, where the roundabout serves as the turning point before returning toward the city center and then via Petrićevac to Paprikovac (Lijevčanska). Due to the dominant direction through Petrićevac, the destination display is: 12 Petrićevac (Lijevčanska) - Center - Rebrovac (roundabout)."
             },
-            "affectedLines": [
-                "12"
-            ],
+            "affectedLines": ["12"],
             "datePublished": "2026-02-06",
             "dateExpiry": null,
             "isActive": true,

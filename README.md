@@ -1,11 +1,9 @@
-# BLum
+# BLum - Banja Luka urbana mobilnost
 
-### Urbana mobilnost Banja Luka
+BLum je nezavisni open-source projekat o urbanoj mobilnosti u Banjoj Luci.
 
-Nezavisna open-source platforma za informacije o javnom prevozu i urbanoj mobilnosti u Banjoj Luci.
+Trenutno je fokusiran na javni prevoz, s ciljem da postepeno obuhvati i druge oblasti urbane mobilnosti.
 
-## Misija
-
-Omogućiti jednostavan i transparentan pristup informacijama o javnom prevozu građanima i posjetiocima grada.
+English version: [README.en.md](README.en.md)
 
 > BLum nije zvanična stranica javnog prevoza.

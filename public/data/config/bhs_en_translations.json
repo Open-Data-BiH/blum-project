@@ -2,6 +2,7 @@
     "en": {
         "header": {
             "title": "BLum",
+            "subtitle": "Urban mobility in Banja Luka",
             "nav": {
                 "map": "Home",
                 "lines": "Lines",
@@ -117,6 +118,9 @@
                 }
             }
         },
+        "footer": {
+            "brandTagline": "Urban mobility in Banja Luka"
+        },
         "ui": {
             "back": "← Back to Home",
             "multipage": "Multi-page Mode",
@@ -127,6 +131,7 @@
     "bhs": {
         "header": {
             "title": "BLum",
+            "subtitle": "Urbana mobilnost u Banjoj Luci",
             "nav": {
                 "map": "Početna",
                 "lines": "Linije",
@@ -241,6 +246,9 @@
                     }
                 }
             }
+        },
+        "footer": {
+            "brandTagline": "Urbana mobilnost u Banjoj Luci"
         },
         "ui": {
             "back": "← Nazad na početnu",

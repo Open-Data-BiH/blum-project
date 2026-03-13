@@ -79,12 +79,18 @@
     transition: all var(--transition-normal);
     position: relative;
     overflow: hidden;
+    scroll-margin-top: calc(var(--space-12) + var(--space-4));
 }
 
 .update-card:hover {
     box-shadow: var(--shadow-soft);
     border-color: var(--border-strong);
     transform: translateY(-2px);
+}
+
+.update-card--targeted {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(10, 92, 122, 0.25);
 }
 
 /* Severity-based border colors */
@@ -421,6 +427,11 @@
 [data-theme='dark'] .update-card {
     background-color: var(--surface-2);
     border-color: var(--border-subtle);
+}
+
+[data-theme='dark'] .update-card--targeted {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(43, 110, 168, 0.45);
 }
 
 [data-theme='dark'] .updates-filter-btn {

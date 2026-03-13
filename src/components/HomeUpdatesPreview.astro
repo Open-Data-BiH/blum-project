@@ -52,31 +52,34 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
         {activeUpdates.map((update) => {
           const cat = categories.find((c) => c.id === update.type);
           const catIcon = cat ? cat.icon : 'fa-info-circle';
+          const updateHref = withBase(`updates/?update=${encodeURIComponent(update.id)}`);
           return (
-            <article class={`home-update-card home-update-card--${update.severity}`}>
-              <div class="home-update-card__header">
-                <span class={`update-badge update-badge--${update.type}`}>
-                  <i class={`fas ${catIcon}`} aria-hidden="true"></i>
-                  {cat && (
-                    <>
-                      <span data-lang="bhs">{cat.label.bhs}</span>
-                      <span data-lang="en" style="display:none">{cat.label.en}</span>
-                    </>
-                  )}
-                </span>
-                <span class="home-update-card__date">
-                  {new Date(update.datePublished).toLocaleDateString('bs-BA', { day: '2-digit', month: '2-digit', year: 'numeric' })}
-                </span>
-              </div>
-              <h3 class="home-update-card__title">
-                <span data-lang="bhs">{update.title.bhs}</span>
-                <span data-lang="en" style="display:none">{update.title.en}</span>
-              </h3>
-              <p class="home-update-card__description">
-                <span data-lang="bhs">{update.description.bhs}</span>
-                <span data-lang="en" style="display:none">{update.description.en}</span>
-              </p>
-            </article>
+            <a href={updateHref} class="home-update-card-link">
+              <article class={`home-update-card home-update-card--${update.severity}`}>
+                <div class="home-update-card__header">
+                  <span class={`update-badge update-badge--${update.type}`}>
+                    <i class={`fas ${catIcon}`} aria-hidden="true"></i>
+                    {cat && (
+                      <>
+                        <span data-lang="bhs">{cat.label.bhs}</span>
+                        <span data-lang="en" style="display:none">{cat.label.en}</span>
+                      </>
+                    )}
+                  </span>
+                  <span class="home-update-card__date">
+                    {new Date(update.datePublished).toLocaleDateString('bs-BA', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                  </span>
+                </div>
+                <h3 class="home-update-card__title">
+                  <span data-lang="bhs">{update.title.bhs}</span>
+                  <span data-lang="en" style="display:none">{update.title.en}</span>
+                </h3>
+                <p class="home-update-card__description">
+                  <span data-lang="bhs">{update.description.bhs}</span>
+                  <span data-lang="en" style="display:none">{update.description.en}</span>
+                </p>
+              </article>
+            </a>
           );
         })}
       </div>

@@ -604,6 +604,21 @@
     gap: var(--space-4);
 }
 
+.home-update-card-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.home-update-card-link:focus-visible {
+    outline: none;
+}
+
+.home-update-card-link:focus-visible .home-update-card {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
 .home-update-card {
     background-color: var(--surface-2);
     border-radius: var(--radius-lg);

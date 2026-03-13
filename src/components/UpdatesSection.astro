@@ -70,6 +70,7 @@ const { categories, updates } = updatesData as { categories: Category[]; updates
             return (
               <article
                 class={`update-card update-card--${update.severity}`}
+                id={`update-${update.id}`}
                 data-update-id={update.id}
                 data-type={update.type}
                 data-published={update.datePublished}

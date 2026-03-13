@@ -4,6 +4,9 @@
 //   - hiding/showing cards by type
 //   - hiding expired cards at page load (expiry checked client-side)
 
+const TARGETED_CARD_CLASS = 'update-card--targeted';
+const TARGETED_CARD_TIMEOUT_MS = 4000;
+
 function hideExpiredCards(): void {
     const now = new Date();
     now.setHours(0, 0, 0, 0);
@@ -110,6 +113,69 @@ function toggleEmptyState(empty: boolean): void {
     }
 }
 
+function getRequestedUpdateId(): string | null {
+    const params = new URLSearchParams(window.location.search);
+    const requestedByQuery = params.get('update')?.trim();
+    if (requestedByQuery) {
+        return requestedByQuery;
+    }
+
+    if (window.location.hash.startsWith('#update-')) {
+        const requestedByHash = window.location.hash.slice('#update-'.length);
+        try {
+            return decodeURIComponent(requestedByHash);
+        } catch {
+            return requestedByHash;
+        }
+    }
+
+    return null;
+}
+
+function escapeSelectorValue(value: string): string {
+    if (typeof CSS !== 'undefined' && typeof CSS.escape === 'function') {
+        return CSS.escape(value);
+    }
+
+    return value.replace(/["\\]/g, '\\$&');
+}
+
+function focusRequestedUpdate(): void {
+    const requestedUpdateId = getRequestedUpdateId();
+    if (!requestedUpdateId) {
+        return;
+    }
+
+    const selector = `.update-card[data-update-id="${escapeSelectorValue(requestedUpdateId)}"]`;
+    const card = document.querySelector<HTMLElement>(selector);
+    if (!card) {
+        return;
+    }
+
+    if (card.style.display === 'none') {
+        setFilter('all');
+    }
+
+    if (card.style.display === 'none') {
+        return;
+    }
+
+    document.querySelectorAll<HTMLElement>(`.update-card.${TARGETED_CARD_CLASS}`).forEach((el) => {
+        el.classList.remove(TARGETED_CARD_CLASS);
+    });
+
+    card.classList.add(TARGETED_CARD_CLASS);
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    card.setAttribute('tabindex', '-1');
+    card.focus({ preventScroll: true });
+
+    window.setTimeout(() => {
+        card.classList.remove(TARGETED_CARD_CLASS);
+        card.removeAttribute('tabindex');
+    }, TARGETED_CARD_TIMEOUT_MS);
+}
+
 export function initUpdatesFilter(): void {
     hideExpiredCards();
 
@@ -118,6 +184,7 @@ export function initUpdatesFilter(): void {
         (c) => c.style.display !== 'none',
     ).length;
     toggleEmptyState(totalVisible === 0);
+    focusRequestedUpdate();
 
     const filtersContainer = document.getElementById('updates-filters');
     if (!filtersContainer) {

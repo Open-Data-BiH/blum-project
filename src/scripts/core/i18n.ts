@@ -106,12 +106,12 @@ const PAGE_SEO: Record<
     privacy: {
         url: 'https://blprevoz.com/privacy/',
         title: {
-            bhs: 'Politika privatnosti – BL Prevoz',
-            en: 'Privacy Policy – BL Transport',
+            bhs: 'Politika privatnosti – BLum',
+            en: 'Privacy Policy – BLum',
         },
         description: {
-            bhs: 'Politika privatnosti BL Prevoz platforme. Informacije o korištenju analitike, kolačića i zaštiti vaših podataka.',
-            en: 'BL Transport privacy policy. Information about analytics, cookies, and data protection.',
+            bhs: 'Politika privatnosti BLum platforme. Informacije o korištenju analitike, kolačića i zaštiti vaših podataka.',
+            en: 'BLum privacy policy. Information about analytics, cookies, and data protection.',
         },
     },
     about: {
@@ -237,7 +237,10 @@ export const applyTranslation = (lang: Language): void => {
 
     // Header
     safelyUpdateText('site-title', 'BLum');
-    safelyUpdateText('site-subtitle', 'Urbana mobilnost Banja Luka');
+    safelyUpdateText(
+        'site-subtitle',
+        t.header?.subtitle ?? (lang === 'bhs' ? 'Urbana mobilnost u Banjoj Luci' : 'Urban mobility in Banja Luka'),
+    );
 
     // Navigation
     safelyUpdateText('nav-map-desktop', t.header.nav.map);
@@ -252,7 +255,7 @@ export const applyTranslation = (lang: Language): void => {
     const heroDefaults =
         lang === 'bhs'
             ? {
-                  title: 'BLum',
+                  title: 'BLum - BL prevoz',
                   subtitle: 'Informacije za lakše kretanje gradom.',
                   description:
                       'Nezavisna platforma za linije, red vožnje i obavještenja o javnom prevozu u Banjoj Luci.',
@@ -262,7 +265,7 @@ export const applyTranslation = (lang: Language): void => {
                   airport: 'Transfer do aerodroma',
               }
             : {
-                  title: 'BLum',
+                  title: 'BLum - BL Transport',
                   subtitle: 'Information for easier movement through the city.',
                   description:
                       'Independent platform for routes, timetables, and public transport notices in Banja Luka.',
@@ -402,6 +405,10 @@ export const applyTranslation = (lang: Language): void => {
     safelyUpdateText('footer-link-faq', 'FAQ');
     safelyUpdateText('footer-link-contact', lang === 'bhs' ? 'Kontakt' : 'Contact');
     safelyUpdateText('footer-link-privacy', lang === 'bhs' ? 'Politika privatnosti' : 'Privacy Policy');
+    safelyUpdateText(
+        'footer-brand-tagline',
+        t.footer?.brandTagline ?? (lang === 'bhs' ? 'Urbana mobilnost u Banjoj Luci' : 'Urban mobility in Banja Luka'),
+    );
 
     // Ko-fi button
     const kofiBtn = document.querySelector<HTMLElement>('#footer-kofi-container .kofi-button a span.kofitext');

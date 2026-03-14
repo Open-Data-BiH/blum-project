@@ -29,8 +29,8 @@ const PAGE_SEO: Record<
     home: {
         url: 'https://blprevoz.com/',
         title: {
-            bhs: 'BL Prevoz – Linije javnog prevoza u Banjoj Luci',
-            en: 'BL Transport – Public Transport Routes in Banja Luka',
+            bhs: 'BL Prevoz - Linije javnog prevoza u Banjoj Luci',
+            en: 'BL Transport - Public Transport Routes in Banja Luka',
         },
         description: {
             bhs: 'Jednostavan pregled linija javnog prevoza u Banjoj Luci. Pregled ruta autobusa i informacija o gradskom prevozu.',
@@ -40,8 +40,8 @@ const PAGE_SEO: Record<
     lines: {
         url: 'https://blprevoz.com/lines/',
         title: {
-            bhs: 'Red vožnje i autobuske linije – Javni prevoz Banja Luka',
-            en: 'Timetables & Bus Routes – Banja Luka Public Transport',
+            bhs: 'Red vožnje i autobuske linije - Javni prevoz Banja Luka',
+            en: 'Timetables & Bus Routes - Banja Luka Public Transport',
         },
         description: {
             bhs: 'Sve autobuske linije i red vožnje javnog prevoza u Banjoj Luci. Mape trasa, polasci i stajališta na jednom mjestu.',
@@ -51,8 +51,8 @@ const PAGE_SEO: Record<
     pricing: {
         url: 'https://blprevoz.com/pricing/',
         title: {
-            bhs: 'Cijene karata – Javni prevoz Banja Luka',
-            en: 'Ticket Prices – Banja Luka Public Transport',
+            bhs: 'Cijene karata - Javni prevoz Banja Luka',
+            en: 'Ticket Prices - Banja Luka Public Transport',
         },
         description: {
             bhs: 'Aktuelne cijene karata, mjesečnih pretplata i đačkih markica za autobuski prevoz u Banjoj Luci.',
@@ -62,8 +62,8 @@ const PAGE_SEO: Record<
     airport: {
         url: 'https://blprevoz.com/airport/',
         title: {
-            bhs: 'Prevoz do aerodroma Banja Luka – Cijene i polasci',
-            en: 'Banja Luka Airport Transfer – Prices & Departures',
+            bhs: 'Prevoz do aerodroma Banja Luka - Cijene i polasci',
+            en: 'Banja Luka Airport Transfer - Prices & Departures',
         },
         description: {
             bhs: 'Kako doći do Aerodroma Banja Luka. Cijene transfera, stajališta, polasci i mapa rute aerodromskog prevoza.',
@@ -73,8 +73,8 @@ const PAGE_SEO: Record<
     faq: {
         url: 'https://blprevoz.com/faq/',
         title: {
-            bhs: 'Česta pitanja – Javni prevoz Banja Luka',
-            en: 'FAQ – Banja Luka Public Transport',
+            bhs: 'Česta pitanja - Javni prevoz Banja Luka',
+            en: 'FAQ - Banja Luka Public Transport',
         },
         description: {
             bhs: 'Odgovori na najčešća pitanja o autobuskim linijama, kartama i javnom prevozu u Banjoj Luci.',
@@ -84,8 +84,8 @@ const PAGE_SEO: Record<
     updates: {
         url: 'https://blprevoz.com/updates/',
         title: {
-            bhs: 'Obavještenja – Izmjene linija i reda vožnje Banja Luka',
-            en: 'Updates – Route & Timetable Changes in Banja Luka',
+            bhs: 'Obavještenja - Izmjene linija i reda vožnje Banja Luka',
+            en: 'Updates - Route & Timetable Changes in Banja Luka',
         },
         description: {
             bhs: 'Najnovija obavještenja o izmjenama autobuskih linija, reda vožnje i radovima na javnom prevozu u Banjoj Luci.',
@@ -95,8 +95,8 @@ const PAGE_SEO: Record<
     contact: {
         url: 'https://blprevoz.com/contact/',
         title: {
-            bhs: 'Kontakt – BL Prevoz',
-            en: 'Contact – BL Transport',
+            bhs: 'Kontakt - BL Prevoz',
+            en: 'Contact - BL Transport',
         },
         description: {
             bhs: 'Kontaktirajte nas za pitanja o javnom prevozu u Banjoj Luci. Prijavite problem ili predložite poboljšanje.',
@@ -106,23 +106,23 @@ const PAGE_SEO: Record<
     privacy: {
         url: 'https://blprevoz.com/privacy/',
         title: {
-            bhs: 'Politika privatnosti – BLum',
-            en: 'Privacy Policy – BLum',
+            bhs: 'Politika privatnosti - BL Prevoz',
+            en: 'Privacy Policy - BL Prevoz',
         },
         description: {
-            bhs: 'Politika privatnosti BLum platforme. Informacije o korištenju analitike, kolačića i zaštiti vaših podataka.',
-            en: 'BLum privacy policy. Information about analytics, cookies, and data protection.',
+            bhs: 'Politika privatnosti platforme BL Prevoz. Informacije o analitici, kolačićima, pristanku i zaštiti privatnosti korisnika.',
+            en: 'Privacy Policy for BL Prevoz. Information about analytics, cookies, consent, and user privacy protection.',
         },
     },
     about: {
         url: 'https://blprevoz.com/about/',
         title: {
-            bhs: 'O projektu – BL Prevoz | Javni prevoz Banja Luka',
-            en: 'About – BL Prevoz',
+            bhs: 'O projektu - BL Prevoz | Javni prevoz Banja Luka',
+            en: 'About - BL Prevoz',
         },
         description: {
-            bhs: 'BL Prevoz je nezavisan projekat za bolju dostupnost informacija o javnom prevozu u Banjoj Luci. Saznajte više o našem cilju i pristupu otvorenim podacima.',
-            en: 'BL Prevoz is an independent project for better public transport information in Banja Luka. Learn about our mission and open data approach.',
+            bhs: 'BL Prevoz je nezavisna, volonterski vođena platforma za informacije o javnom prevozu u Banjoj Luci. Saznajte više o projektu.',
+            en: 'BL Prevoz is an independent, volunteer-driven platform for public transport information in Banja Luka. Learn more about the project.',
         },
     },
 };
@@ -237,9 +237,12 @@ export const applyTranslation = (lang: Language): void => {
 
     // Header
     safelyUpdateText('site-title', 'BL Prevoz');
-    safelyUpdateText('site-subtitle', lang === 'bhs'
-        ? 'Pregled linija javnog prevoza u Banjoj Luci'
-        : 'Overview of public transport lines in Banja Luka');
+    safelyUpdateText(
+        'site-subtitle',
+        lang === 'bhs'
+            ? 'Pregled linija javnog prevoza u Banjoj Luci'
+            : 'Overview of public transport lines in Banja Luka',
+    );
 
     // Navigation
     safelyUpdateText('nav-map-desktop', t.header.nav.map);

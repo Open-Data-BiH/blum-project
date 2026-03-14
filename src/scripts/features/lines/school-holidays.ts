@@ -2,7 +2,7 @@
 // Update the REDUCED_PERIODS array each school year as needed.
 
 interface MonthDay {
-    month: number; // 1–12
+    month: number; // 1-12
     day: number;
 }
 
@@ -12,7 +12,7 @@ interface DateRange {
 }
 
 // Year-agnostic recurring ranges (month/day only).
-// Winter break spans Dec–Jan so it is split into two entries.
+// Winter break spans Dec-Jan so it is split into two entries.
 // Spring break (Easter) shifts each year — adjust the April range annually.
 const REDUCED_PERIODS: DateRange[] = [
     // Summer break

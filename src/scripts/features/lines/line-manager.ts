@@ -63,12 +63,12 @@ export class LineManager {
         }
     }
 
-    processLineData(data: any, lineType: string, useCompanyData: boolean): ProcessedLineData[] {
+    processLineData(data: CompanyOwnership, lineType: string, useCompanyData: boolean): ProcessedLineData[] {
         const lines: ProcessedLineData[] = [];
 
         if (useCompanyData) {
-            const typeData = data[lineType] || [];
-            typeData.forEach((company: { companyName: string; lines: Line[] }) => {
+            const typeData = (data as unknown as Record<string, { companyName: string; lines: Line[] }[]>)[lineType] || [];
+            typeData.forEach((company) => {
                 company.lines.forEach((line) => {
                     lines.push({
                         ...line,
@@ -79,7 +79,7 @@ export class LineManager {
                 });
             });
         } else {
-            const typeData = data[lineType] || [];
+            const typeData = (data as unknown as Record<string, Line[]>)[lineType] || [];
             typeData.forEach((line: Line) => {
                 lines.push({
                     ...line,

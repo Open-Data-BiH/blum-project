@@ -12,6 +12,7 @@ import type { TimetableEntry } from '../../../types/timetable';
 
 let realTimetableData: (TimetableEntry & { lineType: string })[] | null = null;
 let timetableLanguageListenerAdded = false;
+let mapBusLineListenerAdded = false;
 let timeHighlightInterval: ReturnType<typeof setInterval> | null = null;
 
 // ─── escapeHTML helper (no DOMPurify dependency in TS modules) ──────────────
@@ -88,6 +89,19 @@ export function setupTimetableSelection(): void {
                     }
                 });
                 timetableLanguageListenerAdded = true;
+            }
+
+            if (!mapBusLineListenerAdded) {
+                document.addEventListener('mapBusLineSelected', (event) => {
+                    const lineId = (event as CustomEvent<{ lineId?: string }>).detail?.lineId;
+                    if (!lineId) {
+                        return;
+                    }
+                    lineSelect.value = lineId.toUpperCase();
+                    lineSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                    document.getElementById('timetable')?.scrollIntoView({ behavior: 'smooth' });
+                });
+                mapBusLineListenerAdded = true;
             }
 
             const savedLine = sessionStorage.getItem('selectedLine');
@@ -667,21 +681,3 @@ const updateTimeHighlighting = (): void => {
     });
 };
 
-// ─── Map bus-line-selected event ────────────────────────────────────────────
-
-document.addEventListener('mapBusLineSelected', (event) => {
-    const lineId = (event as CustomEvent<{ lineId?: string }>).detail?.lineId;
-    if (!lineId) {
-        return;
-    }
-
-    const lineSelect = document.getElementById('line-select') as HTMLSelectElement | null;
-    if (!lineSelect) {
-        return;
-    }
-
-    lineSelect.value = lineId.toUpperCase();
-    lineSelect.dispatchEvent(new Event('change', { bubbles: true }));
-
-    document.getElementById('timetable')?.scrollIntoView({ behavior: 'smooth' });
-});

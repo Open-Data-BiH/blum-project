@@ -5,7 +5,8 @@ import routeData from '../../../public/data/transport/routes/urban_bus_routes.js
 import timetableData from '../../../public/data/transport/timetables/urban_timetables.json';
 import '../../styles/pages/_line-styles.scss';
 import '../../styles/pages/_line-detail.scss';
-import type { CompanyOwnership } from '../../types/lines';
+import type { CompanyOwnership, Line } from '../../types/lines';
+import { getCompanyClass, getShortOperatorName } from '../../lib/lineHelpers';
 import type { TimetableFile, TimetableTime } from '../../types/timetable';
 
 type DayKey = 'weekday' | 'saturday' | 'sunday';
@@ -52,7 +53,7 @@ const dayTabs: { key: DayKey; bhs: string; en: string }[] = [
 
 export async function getStaticPaths() {
   const data = ownershipData as CompanyOwnership;
-  const paths: { params: { lineId: string }; props: any }[] = [];
+  const paths: { params: { lineId: string }; props: { originalLineId: string; line: Line; companyName: string } }[] = [];
 
   data.urban.forEach((company) => {
     company.lines.forEach((line) => {
@@ -109,36 +110,8 @@ const dirEnA = entry?.directions?.en?.[0] ?? nameEn;
 const dirBhsB = entry?.directions?.bhs?.[1] ?? null;
 const dirEnB = entry?.directions?.en?.[1] ?? null;
 
-const getCompanyClass = (name: string): string => {
-  const map: Record<string, string> = {
-    AUTOPREVOZ: 'autoprevoz-line',
-    PAVLOVIC: 'pavlovic-line',
-    BOCAC: 'bocac-line',
-    ALDEMO: 'aldemo-line',
-    RALE: 'rale-line',
-  };
-
-  const normalizedName = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
-  const found = Object.entries(map).find(([needle]) => normalizedName.includes(needle));
-  return found ? found[1] : '';
-};
-
-const getShortOperator = (name: string): string => {
-  const map: Record<string, string> = {
-    AUTOPREVOZ: 'Autoprevoz',
-    PAVLOVIC: 'Pavlovi\u0107',
-    BOCAC: 'Bo\u010dac',
-    ALDEMO: 'Aldemo',
-    RALE: 'Rale',
-  };
-
-  const normalizedName = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
-  const found = Object.entries(map).find(([needle]) => normalizedName.includes(needle));
-  return found ? found[1] : name.split('"')[1] || name.split(' ')[0];
-};
-
 const companyClass = getCompanyClass(companyName);
-const shortOperator = getShortOperator(companyName);
+const shortOperator = getShortOperatorName(companyName);
 
 const groupByHour = (times: string[]): Record<string, string[]> => {
   const grouped: Record<string, string[]> = {};

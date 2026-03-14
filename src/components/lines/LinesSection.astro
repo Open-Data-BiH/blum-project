@@ -93,7 +93,11 @@ const lang = 'bhs'; // SSR default; JS will re-render count on languageChanged
           >
             <div class="line-card__header">
               <div class="line-card__identity">
-                <span class="badge badge--line-number">{safeLineId}</span>
+                <a
+                  href={`/lines/${safeLineId.toLowerCase()}/`}
+                  class="badge badge--line-number badge--line-number-link"
+                  title={`Linija ${safeLineId} – detalji i red vožnje`}
+                >{safeLineId}</a>
                 {/* BHS name shown by default; JS re-applies on languageChanged via card text already in DOM */}
                 <span class="line-card__name" data-name-bhs={nameBhs} data-name-en={nameEn}>{nameBhs}</span>
               </div>

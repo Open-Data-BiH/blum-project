@@ -422,6 +422,17 @@
     border-radius: var(--radius-md);
 }
 
+a.badge--line-number-link {
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.15s;
+
+    &:hover,
+    &:focus-visible {
+        opacity: 0.82;
+    }
+}
+
 /* Company-colored line number badges */
 .autoprevoz-line .badge--line-number {
     background: var(--company-autoprevoz);

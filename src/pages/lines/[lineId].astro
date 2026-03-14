@@ -1,0 +1,760 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ownershipData from '../../../public/data/transport/routes/urban_company_ownership.json';
+import routeData from '../../../public/data/transport/routes/urban_bus_routes.json';
+import timetableData from '../../../public/data/transport/timetables/urban_timetables.json';
+import '../../styles/pages/_line-styles.scss';
+import '../../styles/pages/_line-detail.scss';
+import type { CompanyOwnership } from '../../types/lines';
+import type { TimetableFile, TimetableTime } from '../../types/timetable';
+
+type DayKey = 'weekday' | 'saturday' | 'sunday';
+
+type RouteDirectionData = {
+  route?: string;
+  stops?: string[];
+};
+
+type RouteLineData = {
+  route?: string;
+  directions?: Record<string, RouteDirectionData>;
+};
+
+interface StationTimetable {
+  name: string;
+  weekday: Record<string, string[]>;
+  saturday: Record<string, string[]>;
+  sunday: Record<string, string[]>;
+  hasWeekday: boolean;
+  hasSaturday: boolean;
+  hasSunday: boolean;
+}
+
+interface DirectionPanel {
+  id: 'a' | 'b';
+  order: number;
+  labelBhs: string;
+  labelEn: string;
+  routeBhs: string;
+  routeEn: string;
+  stops: string[];
+  tables: StationTimetable[];
+  hasTimetable: boolean;
+  dayAvailability: Record<DayKey, boolean>;
+  defaultDay: DayKey;
+}
+
+const dayTabs: { key: DayKey; bhs: string; en: string }[] = [
+  { key: 'weekday', bhs: 'Radni dan', en: 'Weekday' },
+  { key: 'saturday', bhs: 'Subota', en: 'Saturday' },
+  { key: 'sunday', bhs: 'Nedjelja / Praznik', en: 'Sunday / Holiday' },
+];
+
+export async function getStaticPaths() {
+  const data = ownershipData as CompanyOwnership;
+  const paths: { params: { lineId: string }; props: any }[] = [];
+
+  data.urban.forEach((company) => {
+    company.lines.forEach((line) => {
+      paths.push({
+        params: { lineId: line.lineId.toLowerCase() },
+        props: {
+          originalLineId: line.lineId,
+          line,
+          companyName: company.companyName,
+        },
+      });
+    });
+  });
+
+  return paths;
+}
+
+const { originalLineId, line, companyName } = Astro.props;
+
+const getTimeString = (t: TimetableTime): string => (typeof t === 'string' ? t : t.time);
+const lastItem = <T,>(items: T[]): T | null => (items.length > 0 ? items[items.length - 1] : null);
+
+const sortDirectionKeys = (a: string, b: string): number => {
+  const numA = Number.parseInt(a, 10);
+  const numB = Number.parseInt(b, 10);
+
+  if (!Number.isNaN(numA) && !Number.isNaN(numB)) {
+    return numA - numB;
+  }
+
+  return a.localeCompare(b);
+};
+
+const formatRouteLabel = (label: string | null | undefined): string =>
+  (label ?? '').replace(/\s*-\s*/g, ' \u2192 ').trim();
+
+const timetables = (timetableData as TimetableFile).urban;
+const entry = timetables.find((t) => t.lineId === originalLineId);
+
+const routes = routeData as Record<string, RouteLineData>;
+const routeEntry =
+  routes[originalLineId] ?? routes[originalLineId.toUpperCase()] ?? routes[originalLineId.toLowerCase()] ?? null;
+const routeDirections = Object.entries(routeEntry?.directions ?? {}).sort(([keyA], [keyB]) =>
+  sortDirectionKeys(keyA, keyB),
+);
+const routeDirectionA = routeDirections[0]?.[1] ?? null;
+const routeDirectionB = routeDirections[1]?.[1] ?? null;
+
+const nameBhs = typeof line.lineName === 'object' ? line.lineName.bhs : String(line.lineName);
+const nameEn = typeof line.lineName === 'object' ? line.lineName.en : String(line.lineName);
+
+const dirBhsA = entry?.directions?.bhs?.[0] ?? nameBhs;
+const dirEnA = entry?.directions?.en?.[0] ?? nameEn;
+const dirBhsB = entry?.directions?.bhs?.[1] ?? null;
+const dirEnB = entry?.directions?.en?.[1] ?? null;
+
+const getCompanyClass = (name: string): string => {
+  const map: Record<string, string> = {
+    AUTOPREVOZ: 'autoprevoz-line',
+    PAVLOVIC: 'pavlovic-line',
+    BOCAC: 'bocac-line',
+    ALDEMO: 'aldemo-line',
+    RALE: 'rale-line',
+  };
+
+  const normalizedName = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+  const found = Object.entries(map).find(([needle]) => normalizedName.includes(needle));
+  return found ? found[1] : '';
+};
+
+const getShortOperator = (name: string): string => {
+  const map: Record<string, string> = {
+    AUTOPREVOZ: 'Autoprevoz',
+    PAVLOVIC: 'Pavlovi\u0107',
+    BOCAC: 'Bo\u010dac',
+    ALDEMO: 'Aldemo',
+    RALE: 'Rale',
+  };
+
+  const normalizedName = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+  const found = Object.entries(map).find(([needle]) => normalizedName.includes(needle));
+  return found ? found[1] : name.split('"')[1] || name.split(' ')[0];
+};
+
+const companyClass = getCompanyClass(companyName);
+const shortOperator = getShortOperator(companyName);
+
+const groupByHour = (times: string[]): Record<string, string[]> => {
+  const grouped: Record<string, string[]> = {};
+
+  for (const departure of times) {
+    const [hour, minute] = departure.split(':');
+    if (!grouped[hour]) {
+      grouped[hour] = [];
+    }
+    grouped[hour].push(minute);
+  }
+
+  return grouped;
+};
+
+const buildStationTimetables = (directionIndex: number): StationTimetable[] =>
+  (entry?.stations ?? []).map((station) => {
+    const weekday = (station.times.weekday?.[directionIndex] ?? []).map(getTimeString);
+    const saturday = (station.times.saturday?.[directionIndex] ?? []).map(getTimeString);
+    const sunday = (station.times.sunday?.[directionIndex] ?? []).map(getTimeString);
+
+    return {
+      name: typeof station.name === 'object' ? station.name.bhs : station.name,
+      weekday: groupByHour(weekday),
+      saturday: groupByHour(saturday),
+      sunday: groupByHour(sunday),
+      hasWeekday: weekday.length > 0,
+      hasSaturday: saturday.length > 0,
+      hasSunday: sunday.length > 0,
+    };
+  });
+
+const dirATables = buildStationTimetables(0);
+const dirBTables = buildStationTimetables(1);
+
+const hasDirA = dirATables.some((station) => station.hasWeekday || station.hasSaturday || station.hasSunday);
+const hasDirB = dirBTables.some((station) => station.hasWeekday || station.hasSaturday || station.hasSunday);
+
+const timetableStops =
+  entry?.stations?.map((station) => (typeof station.name === 'object' ? station.name.bhs : station.name)) ?? [];
+
+const routeStopsA = (routeDirectionA?.stops ?? []).filter(
+  (stop): stop is string => typeof stop === 'string' && stop.trim().length > 0,
+);
+const routeStopsB = (routeDirectionB?.stops ?? []).filter(
+  (stop): stop is string => typeof stop === 'string' && stop.trim().length > 0,
+);
+
+const directionAStops = routeStopsA.length > 0 ? routeStopsA : timetableStops;
+const directionBStops = routeStopsB.length > 0 ? routeStopsB : hasDirB ? [...directionAStops].reverse() : [];
+
+const routeStartA = directionAStops[0] ?? null;
+const routeEndA = lastItem(directionAStops);
+
+const routeSummaryBhs = routeStartA && routeEndA ? `${routeStartA} \u2192 ${routeEndA}` : formatRouteLabel(dirBhsA);
+const routeSummaryEn = formatRouteLabel(dirEnA);
+
+const flattenGroupedTimes = (grouped: Record<string, string[]>): string[] =>
+  Object.entries(grouped)
+    .flatMap(([hour, minutes]) => minutes.map((minute) => `${hour}:${minute}`))
+    .sort();
+
+const firstStationWithData =
+  dirATables.find((station) => station.hasWeekday || station.hasSaturday || station.hasSunday) ?? null;
+
+const allFirstStationTimes = firstStationWithData
+  ? [
+      ...flattenGroupedTimes(firstStationWithData.weekday),
+      ...flattenGroupedTimes(firstStationWithData.saturday),
+      ...flattenGroupedTimes(firstStationWithData.sunday),
+    ].sort()
+  : [];
+
+const firstDeparture = allFirstStationTimes[0] ?? null;
+const lastDeparture = lastItem(allFirstStationTimes);
+
+const hasDayData = (tables: StationTimetable[], day: DayKey): boolean =>
+  tables.some((station) => Object.keys(station[day]).length > 0);
+
+const getDefaultDay = (dayAvailability: Record<DayKey, boolean>): DayKey => {
+  if (dayAvailability.weekday) return 'weekday';
+  if (dayAvailability.saturday) return 'saturday';
+  return 'sunday';
+};
+
+const directionPanels: DirectionPanel[] = [];
+
+if (hasDirA || directionAStops.length > 0) {
+  const dayAvailability = {
+    weekday: hasDayData(dirATables, 'weekday'),
+    saturday: hasDayData(dirATables, 'saturday'),
+    sunday: hasDayData(dirATables, 'sunday'),
+  };
+
+  directionPanels.push({
+    id: 'a',
+    order: 1,
+    labelBhs: dirBhsA,
+    labelEn: dirEnA,
+    routeBhs: formatRouteLabel(routeDirectionA?.route ?? dirBhsA),
+    routeEn: formatRouteLabel(dirEnA),
+    stops: directionAStops,
+    tables: dirATables,
+    hasTimetable: hasDirA,
+    dayAvailability,
+    defaultDay: getDefaultDay(dayAvailability),
+  });
+}
+
+if ((hasDirB || directionBStops.length > 0) && dirBhsB) {
+  const dayAvailability = {
+    weekday: hasDayData(dirBTables, 'weekday'),
+    saturday: hasDayData(dirBTables, 'saturday'),
+    sunday: hasDayData(dirBTables, 'sunday'),
+  };
+
+  directionPanels.push({
+    id: 'b',
+    order: 2,
+    labelBhs: dirBhsB,
+    labelEn: dirEnB ?? dirBhsB,
+    routeBhs: formatRouteLabel(routeDirectionB?.route ?? dirBhsB),
+    routeEn: formatRouteLabel(dirEnB ?? dirBhsB),
+    stops: directionBStops,
+    tables: dirBTables,
+    hasTimetable: hasDirB,
+    dayAvailability,
+    defaultDay: getDefaultDay(dayAvailability),
+  });
+}
+
+const allStopsForSchema = Array.from(new Set([...directionAStops, ...directionBStops, ...timetableStops])).filter(
+  (name) => name.trim().length > 0,
+);
+
+const canonicalUrl = `https://blprevoz.com/lines/${originalLineId.toLowerCase()}/`;
+const pageTitle = `Linija ${originalLineId} - ${routeSummaryBhs} | Red vo\u017enje Banja Luka`;
+const metaDesc = `Red vo\u017enje za autobusku liniju ${originalLineId} (${routeSummaryBhs}) u Banjoj Luci. Polasci radnim danom, subotom i nedjeljom i lista stajali\u0161ta po smjerovima.`;
+
+const lineSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BusRoute',
+  name: `Autobuska linija ${originalLineId} - ${routeSummaryBhs}`,
+  alternateName: `Bus line ${originalLineId} - ${routeSummaryEn}`,
+  provider: { '@type': 'Organization', name: companyName },
+  ...(allStopsForSchema.length > 0 && {
+    hasPart: allStopsForSchema.map((name) => ({
+      '@type': 'BusStop',
+      name,
+      address: { '@type': 'PostalAddress', addressLocality: 'Banja Luka', addressCountry: 'BA' },
+    })),
+  }),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'BL Prevoz', item: 'https://blprevoz.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Linije', item: 'https://blprevoz.com/lines/' },
+    { '@type': 'ListItem', position: 3, name: `Linija ${originalLineId}`, item: canonicalUrl },
+  ],
+};
+---
+
+<BaseLayout
+  pageKey="lines"
+  title={pageTitle}
+  description={metaDesc}
+  canonicalUrl={canonicalUrl}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(lineSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <section class="section section--narrow" id="line-detail">
+    <div class="container ldp-page">
+      <nav class="ldp-breadcrumb" aria-label="Navigacija">
+        <a href="/lines/">
+          <i class="fas fa-arrow-left" aria-hidden="true"></i>
+          <span data-lang="bhs">Sve linije</span>
+          <span data-lang="en" style="display:none">All lines</span>
+        </a>
+      </nav>
+
+      <section class="ldp-section" id="line-overview" aria-labelledby="line-overview-title">
+        <div class="ldp-section-heading">
+          <h2 class="ldp-section-title" id="line-overview-title">
+            <span data-lang="bhs">Pregled linije</span>
+            <span data-lang="en" style="display:none">Line Overview</span>
+          </h2>
+        </div>
+
+        <article class:list={['ldp-overview-card', 'line-card', companyClass]}>
+          <div class="ldp-overview-card__head">
+            <div class="line-card__identity">
+              <span class="badge badge--line-number">{originalLineId}</span>
+              <div class="ldp-overview-card__title-wrap">
+                <h1 class="ldp-overview-card__title">
+                  <span data-lang="bhs">{nameBhs}</span>
+                  <span data-lang="en" style="display:none">{nameEn}</span>
+                </h1>
+                <p class="ldp-overview-card__route">
+                  <span data-lang="bhs">{routeSummaryBhs}</span>
+                  <span data-lang="en" style="display:none">{routeSummaryEn}</span>
+                </p>
+              </div>
+            </div>
+
+            <div class="line-card__badges">
+              {line.group && (
+                <span class="badge badge--group">
+                  <span data-lang="bhs">Grupa</span>
+                  <span data-lang="en" style="display:none">Group</span>
+                  {' '}{line.group}
+                </span>
+              )}
+              {line.wheelchair_accessible ? (
+                <span
+                  class="badge badge--accessible"
+                  title="Pristupačno za invalidska kolica / Wheelchair accessible"
+                >
+                  <i class="fas fa-wheelchair" aria-hidden="true"></i>
+                </span>
+              ) : (
+                <span class="badge badge--not-accessible" title="Nije pristupačno / Not accessible">
+                  <i class="fas fa-wheelchair" aria-hidden="true"></i>
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div class="ldp-overview-grid" aria-label="Line summary metrics">
+            <article class="ldp-overview-metric">
+              <p class="ldp-overview-metric__label">
+                <span data-lang="bhs">Operater</span>
+                <span data-lang="en" style="display:none">Operator</span>
+              </p>
+              <p class="ldp-overview-metric__value">{shortOperator}</p>
+            </article>
+
+            <article class="ldp-overview-metric">
+              <p class="ldp-overview-metric__label">
+                <span data-lang="bhs">Broj stajališta</span>
+                <span data-lang="en" style="display:none">Stops</span>
+              </p>
+              <p class="ldp-overview-metric__value">
+                {line.no_stops ?? (directionAStops.length > 0 ? directionAStops.length : 'N/A')}
+              </p>
+            </article>
+
+            <article class="ldp-overview-metric">
+              <p class="ldp-overview-metric__label">
+                <span data-lang="bhs">Trajanje vožnje</span>
+                <span data-lang="en" style="display:none">Trip duration</span>
+              </p>
+              <p class="ldp-overview-metric__value">
+                {line.min_duration ? `${line.min_duration} min` : 'N/A'}
+              </p>
+            </article>
+
+            <article class="ldp-overview-metric">
+              <p class="ldp-overview-metric__label">
+                <span data-lang="bhs">Prvi polazak</span>
+                <span data-lang="en" style="display:none">First departure</span>
+              </p>
+              <p class="ldp-overview-metric__value">{firstDeparture ?? '--:--'}</p>
+            </article>
+
+            <article class="ldp-overview-metric">
+              <p class="ldp-overview-metric__label">
+                <span data-lang="bhs">Zadnji polazak</span>
+                <span data-lang="en" style="display:none">Last departure</span>
+              </p>
+              <p class="ldp-overview-metric__value">{lastDeparture ?? '--:--'}</p>
+            </article>
+
+            <article class="ldp-overview-metric">
+              <p class="ldp-overview-metric__label">
+                <span data-lang="bhs">Pristupačnost</span>
+                <span data-lang="en" style="display:none">Accessibility</span>
+              </p>
+              <p
+                class:list={[
+                  'ldp-overview-metric__value',
+                  'ldp-overview-metric__value--status',
+                  line.wheelchair_accessible ? 'is-accessible' : 'is-not-accessible',
+                ]}
+              >
+                <i class:list={['fas', line.wheelchair_accessible ? 'fa-check-circle' : 'fa-times-circle']} aria-hidden="true"></i>
+                <span data-lang="bhs">{line.wheelchair_accessible ? 'Pristupačno' : 'Nije pristupačno'}</span>
+                <span data-lang="en" style="display:none">{line.wheelchair_accessible ? 'Accessible' : 'Not accessible'}</span>
+              </p>
+            </article>
+          </div>
+
+          <div class="ldp-overview-actions">
+            {line.pdf_url && (
+              <a href={line.pdf_url} target="_blank" rel="noopener noreferrer" class="btn--link pdf-btn">
+                <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                <span data-lang="bhs">Zvanični red vožnje (PDF)</span>
+                <span data-lang="en" style="display:none">Official timetable (PDF)</span>
+              </a>
+            )}
+            <a href="#line-timetable" class="btn btn--primary">
+              <i class="fas fa-clock" aria-hidden="true"></i>
+              <span data-lang="bhs">Red vožnje</span>
+              <span data-lang="en" style="display:none">Timetable</span>
+            </a>
+          </div>
+        </article>
+      </section>
+
+      <section class="ldp-section" id="line-timetable" aria-labelledby="line-timetable-title">
+        <div class="ldp-section-heading">
+          <h2 class="ldp-section-title" id="line-timetable-title">
+            <span data-lang="bhs">Red vožnje</span>
+            <span data-lang="en" style="display:none">Timetable</span>
+          </h2>
+          <p class="ldp-section-subtitle">
+            <span data-lang="bhs">Pregled polazaka po smjeru i danu, grupisano po satima i minutama.</span>
+            <span data-lang="en" style="display:none">Departures by direction and day, grouped by hours and minutes.</span>
+          </p>
+        </div>
+
+        {directionPanels.length > 0 ? (
+          <div class="ldp-timetable-shell">
+            {directionPanels.length > 1 && (
+              <div class="ldp-direction-tabs" role="tablist" aria-label="Smjerovi vožnje / Directions">
+                {directionPanels.map((direction, index) => (
+                  <button
+                    class:list={['ldp-direction-tab', index === 0 && 'is-active']}
+                    type="button"
+                    role="tab"
+                    id={`direction-tab-${direction.id}`}
+                    aria-controls={`direction-panel-${direction.id}`}
+                    aria-selected={index === 0 ? 'true' : 'false'}
+                    data-direction-target={direction.id}
+                  >
+                    <span class="ldp-direction-tab__label">
+                      <span data-lang="bhs">Smjer {direction.order}</span>
+                      <span data-lang="en" style="display:none">Direction {direction.order}</span>
+                    </span>
+                    <span class="ldp-direction-tab__route">
+                      <span data-lang="bhs">{direction.routeBhs}</span>
+                      <span data-lang="en" style="display:none">{direction.routeEn}</span>
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {directionPanels.map((direction, index) => (
+              <article
+                class:list={['ldp-direction-panel', index === 0 && 'is-active']}
+                id={`direction-panel-${direction.id}`}
+                role="tabpanel"
+                aria-labelledby={`direction-tab-${direction.id}`}
+                data-direction-panel={direction.id}
+                hidden={index !== 0}
+              >
+                <header class="ldp-direction-panel__head">
+                  <h3>
+                    <span data-lang="bhs">{direction.labelBhs}</span>
+                    <span data-lang="en" style="display:none">{direction.labelEn}</span>
+                  </h3>
+                  <p>
+                    <span data-lang="bhs">Smjer {direction.order}</span>
+                    <span data-lang="en" style="display:none">Direction {direction.order}</span>
+                  </p>
+                </header>
+
+                {direction.hasTimetable ? (
+                  <>
+                    <div class="ldp-day-tabs" role="tablist" aria-label="Tip dana / Day type">
+                      {dayTabs.map((day) => {
+                        const dayAvailable = direction.dayAvailability[day.key];
+                        const isDefaultDay = direction.defaultDay === day.key;
+
+                        return (
+                          <button
+                            class:list={['ldp-day-tab', dayAvailable && isDefaultDay && 'is-active']}
+                            type="button"
+                            role="tab"
+                            data-day-target={day.key}
+                            aria-selected={dayAvailable && isDefaultDay ? 'true' : 'false'}
+                            disabled={!dayAvailable}
+                          >
+                            <span data-lang="bhs">{day.bhs}</span>
+                            <span data-lang="en" style="display:none">{day.en}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <div class="ldp-day-panels">
+                      {dayTabs.map((day) => {
+                        const dayAvailable = direction.dayAvailability[day.key];
+                        const isDefaultDay = dayAvailable && direction.defaultDay === day.key;
+                        const stationsForDay = direction.tables.filter(
+                          (station) => Object.keys(station[day.key]).length > 0,
+                        );
+
+                        return (
+                          <div
+                            class:list={['ldp-day-panel', isDefaultDay && 'is-active']}
+                            data-day-panel={day.key}
+                            hidden={!isDefaultDay}
+                          >
+                            {dayAvailable ? (
+                              <div class="ldp-station-grid">
+                                {stationsForDay.map((station) => (
+                                  <article class="ldp-station-card">
+                                    <h4 class="ldp-station-card__title">
+                                      <i class="fas fa-map-pin" aria-hidden="true"></i>
+                                      {station.name}
+                                    </h4>
+
+                                    <div class="ldp-station-card__table-wrap">
+                                      <table class="ldp-tt-table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">
+                                              <span data-lang="bhs">Sat</span>
+                                              <span data-lang="en" style="display:none">Hour</span>
+                                            </th>
+                                            <th scope="col">
+                                              <span data-lang="bhs">Minute</span>
+                                              <span data-lang="en" style="display:none">Minutes</span>
+                                            </th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {Object.entries(station[day.key]).map(([hour, minutes]) => (
+                                            <tr>
+                                              <th scope="row" class="ldp-tt-table__hour">{hour}</th>
+                                              <td>
+                                                <div class="ldp-minute-list">
+                                                  {minutes.map((minute) => (
+                                                    <span class="ldp-minute-pill">{minute}</span>
+                                                  ))}
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </article>
+                                ))}
+                              </div>
+                            ) : (
+                              <p class="ldp-empty">
+                                <span data-lang="bhs">Nema dostupnih polazaka za izabrani dan.</span>
+                                <span data-lang="en" style="display:none">No departures available for the selected day.</span>
+                              </p>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                ) : (
+                  <p class="ldp-empty">
+                    <span data-lang="bhs">Nema dostupnih podataka o polascima za ovaj smjer.</span>
+                    <span data-lang="en" style="display:none">No departure data available for this direction.</span>
+                  </p>
+                )}
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p class="ldp-empty">
+            <span data-lang="bhs">Za ovu liniju trenutno nema podataka o redu vožnje.</span>
+            <span data-lang="en" style="display:none">No timetable data is currently available for this line.</span>
+          </p>
+        )}
+      </section>
+
+      <section class="ldp-section" id="line-stops" aria-labelledby="line-stops-title">
+        <div class="ldp-section-heading">
+          <h2 class="ldp-section-title" id="line-stops-title">
+            <span data-lang="bhs">Stajališta na trasi</span>
+            <span data-lang="en" style="display:none">Stops Along The Route</span>
+          </h2>
+          <p class="ldp-section-subtitle">
+            <span data-lang="bhs">Prikaz stajališta po smjerovima u preglednim tabelama.</span>
+            <span data-lang="en" style="display:none">Stops by direction in clear side-by-side tables.</span>
+          </p>
+        </div>
+
+        <div class="ldp-stops-tables">
+          {directionPanels.map((direction) => (
+            <article class="ldp-stops-card card">
+              <h3>
+                <span data-lang="bhs">Smjer {direction.order}</span>
+                <span data-lang="en" style="display:none">Direction {direction.order}</span>
+              </h3>
+              <p class="ldp-stops-card__route">
+                <span data-lang="bhs">{direction.routeBhs}</span>
+                <span data-lang="en" style="display:none">{direction.routeEn}</span>
+              </p>
+
+              {direction.stops.length > 0 ? (
+                <div class="ldp-stop-table-wrap">
+                  <table class="ldp-stop-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">
+                          <span data-lang="bhs">Stajalište</span>
+                          <span data-lang="en" style="display:none">Stop</span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {direction.stops.map((stopName, stopIndex) => (
+                        <tr>
+                          <td class="ldp-stop-table__index">{String(stopIndex + 1).padStart(2, '0')}</td>
+                          <td class="ldp-stop-table__name">{stopName}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p class="ldp-empty">
+                  <span data-lang="bhs">Podaci o stajalištima nisu dostupni za ovaj smjer.</span>
+                  <span data-lang="en" style="display:none">Stop data is unavailable for this direction.</span>
+                </p>
+              )}
+            </article>
+          ))}
+        </div>
+
+        <div class="ldp-cta">
+          <a href="/lines/#timetable" class="btn btn--primary">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <span data-lang="bhs">Interaktivni red vožnje</span>
+            <span data-lang="en" style="display:none">Interactive timetable</span>
+          </a>
+          <a href="/lines/" class="btn btn--secondary">
+            <i class="fas fa-list" aria-hidden="true"></i>
+            <span data-lang="bhs">Sve linije</span>
+            <span data-lang="en" style="display:none">All lines</span>
+          </a>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <script is:inline>
+    (() => {
+      const root = document.getElementById('line-detail');
+      if (!root) {
+        return;
+      }
+
+      const activateDirection = (targetId) => {
+        root.querySelectorAll('.ldp-direction-tab[data-direction-target]').forEach((tab) => {
+          const isActive = tab.getAttribute('data-direction-target') === targetId;
+          tab.classList.toggle('is-active', isActive);
+          tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        root.querySelectorAll('.ldp-direction-panel[data-direction-panel]').forEach((panel) => {
+          const isActive = panel.getAttribute('data-direction-panel') === targetId;
+          panel.classList.toggle('is-active', isActive);
+          panel.hidden = !isActive;
+        });
+      };
+
+      const activateDay = (panel, dayKey) => {
+        panel.querySelectorAll('.ldp-day-tab[data-day-target]').forEach((tab) => {
+          const isActive = tab.getAttribute('data-day-target') === dayKey;
+          tab.classList.toggle('is-active', isActive);
+          tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        panel.querySelectorAll('.ldp-day-panel[data-day-panel]').forEach((dayPanel) => {
+          const isActive = dayPanel.getAttribute('data-day-panel') === dayKey;
+          dayPanel.classList.toggle('is-active', isActive);
+          dayPanel.hidden = !isActive;
+        });
+      };
+
+      root.querySelectorAll('.ldp-direction-tab[data-direction-target]').forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const targetId = tab.getAttribute('data-direction-target');
+          if (targetId) {
+            activateDirection(targetId);
+          }
+        });
+      });
+
+      root.querySelectorAll('.ldp-direction-panel[data-direction-panel]').forEach((panel) => {
+        const defaultDayTab = panel.querySelector('.ldp-day-tab.is-active[data-day-target]');
+        if (defaultDayTab) {
+          const defaultDay = defaultDayTab.getAttribute('data-day-target');
+          if (defaultDay) {
+            activateDay(panel, defaultDay);
+          }
+        }
+
+        panel.querySelectorAll('.ldp-day-tab[data-day-target]').forEach((tab) => {
+          tab.addEventListener('click', () => {
+            if (tab.hasAttribute('disabled')) {
+              return;
+            }
+
+            const targetDay = tab.getAttribute('data-day-target');
+            if (targetDay) {
+              activateDay(panel, targetDay);
+            }
+          });
+        });
+      });
+    })();
+  </script>
+</BaseLayout>

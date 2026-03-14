@@ -4,14 +4,104 @@ import AirportMap from '../components/AirportMap.astro';
 
 const baseUrl = import.meta.env.BASE_URL;
 const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
+
+const airportFaqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Kako doći od aerodroma Banja Luka do centra grada?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Shuttle autobusom kompanije Smiljić za oko 10 KM (30-45 min), ili taksijem za 40-60 KM (30-35 min). Autobus čeka ispred terminala nakon svakog leta i završava na Staroj i Glavnoj autobuskoj stanici.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How do I get from Banja Luka Airport to the city center?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Take the Smiljić shuttle bus for approximately 10 KM (30-45 minutes), or a taxi for 40-60 KM (30-35 minutes). The shuttle waits outside the terminal after each flight arrival and ends at the Old and Main Bus Station.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Koliko košta shuttle autobus od aerodroma Banja Luka?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Shuttle autobus kompanije Smiljić košta oko 10 KM (jedna vožnja). Karte se kupuju u autobusu.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How much does the Banja Luka airport bus cost?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The Smiljić airport shuttle costs approximately 10 KM one way. Tickets are purchased on the bus.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Koliko je daleko aerodrom Banja Luka od centra?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Aerodrom Banja Luka (BNX) nalazi se u Mahovljanima, oko 25 km sjeverno od centra grada, autoputem E661.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How far is Banja Luka Airport from the city center?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Banja Luka Airport (BNX) is located in Mahovljani, approximately 25 km north of the city center via the E661 motorway.',
+      },
+    },
+  ],
+};
+
+const airportShuttleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BusTrip',
+  name: 'Banja Luka Airport Shuttle (Smiljić)',
+  description:
+    'Airport shuttle bus connecting Banja Luka city center to Banja Luka International Airport (BNX). Operated by Smiljić company.',
+  provider: {
+    '@type': 'Organization',
+    name: 'Smiljić',
+    url: 'https://smiljiccompany.ba/avio-transferi/',
+  },
+  departureStop: {
+    '@type': 'BusStation',
+    name: 'Stara i Glavna autobuska stanica Banja Luka',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Banja Luka',
+      addressCountry: 'BA',
+    },
+  },
+  arrivalStop: {
+    '@type': 'Airport',
+    name: 'Aerodrom Banja Luka',
+    iataCode: 'BNX',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Mahovljani bb',
+      addressLocality: 'Banja Luka',
+      addressCountry: 'BA',
+    },
+  },
+};
 ---
 
 <BaseLayout
   pageKey="airport"
-  title="Prevoz do aerodroma Banja Luka - Autobus, taksi, cijene | BNX"
-  description="Kako doći do Aerodroma Banja Luka (BNX). Shuttle autobus 10 KM, 23 km od centra, 25-45 min vožnje. Cijene transfera, polasci, taksi alternative, parking i mapa."
+  title="Prevoz do aerodroma Banja Luka - Shuttle, taksi, cijene | BNX"
+  description="Kako doći do Aerodroma Banja Luka (BNX). Shuttle autobus ~10 KM (30-45 min), taksi 40-60 KM. Polasci od Glavne stanice, parking i interaktivna mapa rute."
   canonicalUrl="https://blprevoz.com/airport/"
 >
+  <script type="application/ld+json" set:html={JSON.stringify(airportFaqSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(airportShuttleSchema)} />
   <!-- Airport Overview -->
   <section class="section" id="airport-overview">
     <div class="container">
@@ -627,7 +717,7 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
           rel="noopener noreferrer"
           class="airport-link-card"
         >
-          <i class="fa-solid fa-bus" aria-hidden="true"></i>
+          <i class="fa-solid fa-van-shuttle" aria-hidden="true"></i>
           <div>
             <strong>
               <span data-lang="bhs">Smiljić - Avio transferi</span>

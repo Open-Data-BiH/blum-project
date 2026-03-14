@@ -1,0 +1,537 @@
+/* ==========================================================================
+   LINE DETAIL PAGE
+   Structured layout for single-line overview, timetable, stops and future map
+   ========================================================================== */
+
+.ldp-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+}
+
+.ldp-breadcrumb {
+    margin-bottom: var(--space-1);
+}
+
+.ldp-breadcrumb a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.ldp-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.ldp-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.ldp-section-heading {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.ldp-section-title {
+    margin: 0;
+    font-size: clamp(1.2rem, 2.6vw, 1.45rem);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+}
+
+.ldp-section-subtitle {
+    margin: 0;
+    max-width: 68ch;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+}
+
+/* ==========================================================================
+   OVERVIEW CARD
+   ========================================================================== */
+
+.ldp-overview-card {
+    padding: var(--space-6);
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.ldp-overview-card__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+}
+
+.ldp-overview-card__title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+}
+
+.ldp-overview-card__title {
+    margin: 0;
+    font-size: clamp(1.2rem, 3vw, 1.55rem);
+    line-height: var(--line-height-tight);
+    color: var(--text-primary);
+}
+
+.ldp-overview-card__route {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: var(--font-size-base);
+}
+
+.ldp-overview-card .badge--line-number {
+    min-width: 3.5rem;
+    height: 3.5rem;
+    font-size: 1.3rem;
+    border-radius: var(--radius-lg);
+}
+
+.ldp-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: var(--space-3);
+}
+
+.ldp-overview-metric {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--surface-1);
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.ldp-overview-metric__label {
+    margin: 0;
+    color: var(--text-light);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.ldp-overview-metric__value {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    line-height: var(--line-height-tight);
+}
+
+.ldp-overview-metric__value--status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.ldp-overview-metric__value--status.is-accessible {
+    color: var(--color-accessible);
+}
+
+.ldp-overview-metric__value--status.is-not-accessible {
+    color: var(--text-secondary);
+}
+
+.ldp-overview-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border-subtle);
+}
+
+.ldp-overview-actions .btn--link {
+    padding: var(--space-2) 0;
+}
+
+/* ==========================================================================
+   TIMETABLE SECTION
+   ========================================================================== */
+
+.ldp-timetable-shell {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--surface-2);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.ldp-direction-tabs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-2);
+}
+
+.ldp-direction-tab {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--surface-1);
+    color: var(--text-secondary);
+    padding: var(--space-3);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    cursor: pointer;
+    transition:
+        border-color var(--transition-fast),
+        background-color var(--transition-fast),
+        color var(--transition-fast);
+}
+
+.ldp-direction-tab:hover {
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+}
+
+.ldp-direction-tab.is-active {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--text-primary);
+}
+
+.ldp-direction-tab__label {
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: var(--font-weight-semibold);
+}
+
+.ldp-direction-tab__route {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+}
+
+.ldp-direction-panel {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--surface-1);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.ldp-direction-panel__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+}
+
+.ldp-direction-panel__head h3 {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    color: var(--text-primary);
+}
+
+.ldp-direction-panel__head p {
+    margin: 0;
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-light);
+}
+
+.ldp-day-tabs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.ldp-day-tab {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-full);
+    background: var(--surface-2);
+    color: var(--text-secondary);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.2;
+    cursor: pointer;
+    transition:
+        border-color var(--transition-fast),
+        background-color var(--transition-fast),
+        color var(--transition-fast);
+}
+
+.ldp-day-tab:hover {
+    color: var(--text-primary);
+    border-color: var(--border-strong);
+}
+
+.ldp-day-tab.is-active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--color-white);
+}
+
+.ldp-day-tab:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.ldp-day-panels {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.ldp-day-panel {
+    display: none;
+}
+
+.ldp-day-panel.is-active {
+    display: block;
+}
+
+.ldp-station-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-3);
+}
+
+.ldp-station-card {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--surface-2);
+    overflow: hidden;
+}
+
+.ldp-station-card__title {
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--surface-1);
+}
+
+.ldp-station-card__title i {
+    color: var(--accent);
+    font-size: var(--font-size-xs);
+}
+
+.ldp-station-card__table-wrap {
+    overflow-x: auto;
+}
+
+.ldp-tt-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+}
+
+.ldp-tt-table th,
+.ldp-tt-table td {
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--border-subtle);
+    vertical-align: top;
+}
+
+.ldp-tt-table thead th {
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-light);
+    background: var(--surface-1);
+}
+
+.ldp-tt-table tbody tr:last-child th,
+.ldp-tt-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.ldp-tt-table__hour {
+    width: 3rem;
+    text-align: left;
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+}
+
+.ldp-minute-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.ldp-minute-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.1rem;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-1);
+    font-weight: var(--font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   STOPS TABLES
+   ========================================================================== */
+
+.ldp-stops-tables {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--space-4);
+}
+
+.ldp-stops-card {
+    padding: var(--space-5);
+    transform: none;
+}
+
+.ldp-stops-card:hover {
+    transform: none;
+}
+
+.ldp-stops-card h3 {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    color: var(--text-primary);
+}
+
+.ldp-stops-card__route {
+    margin: var(--space-2) 0 var(--space-4);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.ldp-stop-table-wrap {
+    overflow-x: auto;
+}
+
+.ldp-stop-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.ldp-stop-table thead th {
+    padding: var(--space-2) var(--space-3);
+    background: var(--surface-1);
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: var(--font-size-xs);
+    text-align: left;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.ldp-stop-table thead th:first-child {
+    width: 3.2rem;
+}
+
+.ldp-stop-table tbody td {
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: var(--font-size-sm);
+}
+
+.ldp-stop-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.ldp-stop-table__index {
+    font-family: var(--font-family-mono);
+    color: var(--text-light);
+}
+
+.ldp-stop-table__name {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-medium);
+}
+
+/* ==========================================================================
+   COMMON EMPTY + CTA
+   ========================================================================== */
+
+.ldp-empty {
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-md);
+    background: var(--surface-1);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.ldp-cta {
+    margin-top: var(--space-2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 767px) {
+    .ldp-overview-card {
+        padding: var(--space-4);
+    }
+
+    .ldp-overview-card__head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ldp-overview-card .line-card__identity {
+        align-items: flex-start;
+    }
+
+    .ldp-overview-card .badge--line-number {
+        min-width: 3rem;
+        height: 3rem;
+        font-size: 1.1rem;
+    }
+
+    .ldp-overview-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .ldp-overview-actions .btn--link {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .ldp-direction-tab {
+        padding: var(--space-2) var(--space-3);
+    }
+
+    .ldp-direction-panel,
+    .ldp-timetable-shell,
+    .ldp-stops-card {
+        padding: var(--space-4);
+    }
+}

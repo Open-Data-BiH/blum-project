@@ -1,6 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FAQSection from '../components/FAQSection.astro';
+import faqData from '../../public/data/transport/faq.json';
+
+const allQuestions = faqData.categories.flatMap((cat) => cat.questions);
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: allQuestions.map((q) => ({
+    '@type': 'Question',
+    name: q.question.bhs,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: q.answer.bhs,
+    },
+  })),
+};
 ---
 
 <BaseLayout
@@ -9,6 +24,7 @@ import FAQSection from '../components/FAQSection.astro';
   description="Odgovori na najčešća pitanja o autobuskim linijama, kartama i javnom prevozu u Banjoj Luci."
   canonicalUrl="https://blprevoz.com/faq/"
 >
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <section class="section section--narrow" id="faq">
     <div class="container">
       <h2 class="section__title" id="faq-title">Česta pitanja</h2>

@@ -17,6 +17,7 @@ import {
     createBikeStationPopup,
     createLandmarkPopup,
     createMainBusStationPopup,
+    createNearestStopsPopup,
     createShuttlePopup,
     createTerminalBusStationPopup,
     createTouristBusPopup,
@@ -66,8 +67,23 @@ const MAP_NOTIFICATION_MESSAGES = {
     },
 } as const;
 
+const LOCATION_CONTROL_MESSAGES = {
+    buttonLabel: {
+        en: 'Show my location',
+        bhs: 'Prikaži moju lokaciju',
+    },
+    privacyTooltip: {
+        en: 'Location is used only locally in your browser and is not sent to the server.',
+        bhs: 'Lokacija se koristi samo lokalno u vašem pregledaču i ne šalje se serveru.',
+    },
+} as const;
+
 const geoService = new GeolocationService();
-let walkingLayers: Array<CircleMarker | Marker | Polyline> = [];
+type TemporaryMapLayer = CircleMarker | Marker | Polyline;
+
+let walkingLayers: TemporaryMapLayer[] = [];
+let geolocationRouteLayers: Polyline[] = [];
+let userLocationMarker: Marker | null = null;
 
 const fetchJson = async <T>(url: string): Promise<T> => {
     const response = await fetch(url);
@@ -93,6 +109,39 @@ const ensureNotificationRegion = (): HTMLElement => {
 let notificationTimer: number | null = null;
 
 const langText = (bhs: string, en: string): string => (getCurrentLanguage() === 'en' ? en : bhs);
+
+const escapeHtml = (value: string): string =>
+    value
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+
+const compareLineIds = (a: string, b: string): number => {
+    const aNum = parseInt(a.replace(/[^\d]/g, ''), 10);
+    const bNum = parseInt(b.replace(/[^\d]/g, ''), 10);
+
+    if (!Number.isNaN(aNum) && !Number.isNaN(bNum) && aNum !== bNum) {
+        return aNum - bNum;
+    }
+
+    return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+};
+
+const hexToRgba = (value: string, alpha: number): string | null => {
+    const normalized = value.trim().replace(/^#/, '');
+    if (![3, 6].includes(normalized.length) || !/^[\da-f]+$/i.test(normalized)) {
+        return null;
+    }
+
+    const hex = normalized.length === 3 ? normalized.replace(/./g, '$&$&') : normalized;
+    const r = parseInt(hex.slice(0, 2), 16);
+    const g = parseInt(hex.slice(2, 4), 16);
+    const b = parseInt(hex.slice(4, 6), 16);
+
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
 
 const showMapNotification = (message: string): void => {
     if (!message) {
@@ -123,9 +172,22 @@ const showMapNotification = (message: string): void => {
     }, 6000);
 };
 
+const clearTemporaryLayers = (map: LeafletMap, layers: TemporaryMapLayer[]): TemporaryMapLayer[] => {
+    layers.forEach((layer) => map.removeLayer(layer));
+    return [];
+};
+
+const clearGeolocationState = (map: LeafletMap): void => {
+    geolocationRouteLayers = clearTemporaryLayers(map, geolocationRouteLayers) as Polyline[];
+    if (userLocationMarker) {
+        map.removeLayer(userLocationMarker);
+        userLocationMarker = null;
+    }
+};
+
 const createWalkingCircles = (L: LeafletNS, map: LeafletMap, coordinates: LatLngExpression): void => {
-    walkingLayers.forEach((layer) => map.removeLayer(layer));
-    walkingLayers = [];
+    clearGeolocationState(map);
+    walkingLayers = clearTemporaryLayers(map, walkingLayers);
 
     const circle5min = L.circle(coordinates, {
         radius: MAP_CONFIG.WALKING_RADIUS_5MIN,
@@ -172,7 +234,15 @@ const autoSelectNearestStop = async (
     }
 
     const position = await geoService.getCurrentPosition();
-    const userMarker = L.marker([position.lat, position.lng], {
+    const nearestStops = geoService.findNearestStops(busStopLayers, 3);
+    if (nearestStops.length === 0) {
+        return;
+    }
+
+    clearGeolocationState(map);
+    walkingLayers = clearTemporaryLayers(map, walkingLayers);
+
+    const activeUserMarker = L.marker([position.lat, position.lng], {
         icon: L.divIcon({
             className: 'user-location-marker',
             html: '<i class="fas fa-street-view" style="color: #007bff; font-size: 28px;"></i>',
@@ -181,20 +251,13 @@ const autoSelectNearestStop = async (
         }),
         zIndexOffset: 1000,
     }).addTo(map);
-
-    userMarker.bindPopup(`<strong>📍 ${langText('Vaša lokacija', 'Your location')}</strong>`).openPopup();
-
-    const nearestStops = geoService.findNearestStops(busStopLayers, 3);
-    if (nearestStops.length === 0) {
-        return;
-    }
+    userLocationMarker = activeUserMarker;
 
     const userCoords: [number, number] = [position.lat, position.lng];
     const bounds = L.latLngBounds(userCoords, userCoords);
     nearestStops.forEach((stop) => bounds.extend([stop.lat, stop.lng]));
     map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
 
-    walkingLayers.forEach((layer) => map.removeLayer(layer));
     const geoLines: Polyline[] = [];
     nearestStops.forEach((stop, index) => {
         const isClosest = index === 0;
@@ -212,27 +275,17 @@ const autoSelectNearestStop = async (
         ).addTo(map);
         geoLines.push(line);
     });
-    walkingLayers = geoLines;
+    geolocationRouteLayers = geoLines;
 
-    window.setTimeout(() => {
-        nearestStops[0].marker.openPopup();
-    }, 800);
-
-    let stopsHtml = '<ul style="margin: 5px 0; padding-left: 20px;">';
-    nearestStops.forEach((stop) => {
-        stopsHtml += `<li><strong>${stop.distance.toFixed(2)} km</strong></li>`;
-    });
-    stopsHtml += '</ul>';
-
-    userMarker.setPopupContent(`
-    <div style="min-width: 200px;">
-      <strong>📍 ${langText('Vaša lokacija', 'Your location')}</strong><br>
-      <hr style="margin: 5px 0;">
-      ${langText('Najbliža stajališta', 'Nearest stops')}:<br>
-      ${stopsHtml}
-    </div>
-  `);
-    userMarker.openPopup();
+    activeUserMarker.bindPopup(
+        createNearestStopsPopup(
+            nearestStops.map((stop) => ({
+                name: stop.name,
+                distanceKm: stop.distance,
+            })),
+        ),
+    );
+    activeUserMarker.openPopup();
 };
 
 const createLocateControl = (
@@ -243,15 +296,63 @@ const createLocateControl = (
     const Locate = L.Control.extend({
         options: { position: 'bottomright' as const },
         onAdd(_map: LeafletMap) {
-            const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
-            const button = L.DomUtil.create('a', 'leaflet-control-locate', container);
-            button.href = '#';
-            button.title = langText('Pronađi moju lokaciju', 'Find my location');
-            button.innerHTML = '<i class="fas fa-crosshairs"></i>';
+            const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-location');
+            const button = L.DomUtil.create('button', 'leaflet-control-locate', container) as HTMLButtonElement;
+            const tooltip = L.DomUtil.create('div', 'map-location-tooltip', container);
+            const buttonLabel = LOCATION_CONTROL_MESSAGES.buttonLabel[getCurrentLanguage()];
+            const tooltipText = LOCATION_CONTROL_MESSAGES.privacyTooltip[getCurrentLanguage()];
+            const tooltipId = `map-location-tooltip-${Math.random().toString(36).slice(2, 10)}`;
 
-            L.DomEvent.disableClickPropagation(button);
-            L.DomEvent.on(button, 'click', (e) => {
-                L.DomEvent.stop(e);
+            button.type = 'button';
+            button.title = buttonLabel;
+            button.setAttribute('aria-label', buttonLabel);
+            button.setAttribute('aria-describedby', tooltipId);
+            button.innerHTML = '<i class="fas fa-crosshairs" aria-hidden="true"></i>';
+
+            tooltip.id = tooltipId;
+            tooltip.setAttribute('role', 'tooltip');
+            tooltip.textContent = tooltipText;
+
+            L.DomEvent.disableClickPropagation(container);
+            L.DomEvent.disableScrollPropagation(container);
+
+            let tooltipTimer: number | null = null;
+            let locateDelayTimer: number | null = null;
+
+            const clearTooltipTimer = (): void => {
+                if (tooltipTimer !== null) {
+                    window.clearTimeout(tooltipTimer);
+                    tooltipTimer = null;
+                }
+            };
+
+            const clearLocateDelayTimer = (): void => {
+                if (locateDelayTimer !== null) {
+                    window.clearTimeout(locateDelayTimer);
+                    locateDelayTimer = null;
+                }
+            };
+
+            const showTooltip = (autoHide = false): void => {
+                clearTooltipTimer();
+                tooltip.classList.add('is-visible');
+                if (autoHide) {
+                    tooltipTimer = window.setTimeout(() => {
+                        tooltip.classList.remove('is-visible');
+                        tooltipTimer = null;
+                    }, 2400);
+                }
+            };
+
+            const hideTooltip = (): void => {
+                clearTooltipTimer();
+                tooltip.classList.remove('is-visible');
+            };
+
+            const isTouchInteraction = (): boolean =>
+                window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches;
+
+            const runLocate = (): void => {
                 button.classList.add('loading');
 
                 const layers = getBusStopLayers();
@@ -272,6 +373,41 @@ const createLocateControl = (
                         }
                     })
                     .finally(() => button.classList.remove('loading'));
+            };
+
+            button.addEventListener('mouseenter', () => {
+                if (!isTouchInteraction()) {
+                    showTooltip();
+                }
+            });
+            button.addEventListener('mouseleave', hideTooltip);
+            button.addEventListener('focus', () => showTooltip());
+            button.addEventListener('blur', hideTooltip);
+            button.addEventListener('pointerdown', (event) => {
+                if (event.pointerType !== 'mouse') {
+                    showTooltip(true);
+                }
+            });
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                if (button.classList.contains('loading')) {
+                    return;
+                }
+
+                clearLocateDelayTimer();
+
+                if (isTouchInteraction()) {
+                    showTooltip(true);
+                    locateDelayTimer = window.setTimeout(() => {
+                        locateDelayTimer = null;
+                        runLocate();
+                    }, 220);
+                    return;
+                }
+
+                runLocate();
             });
 
             return container;
@@ -301,15 +437,6 @@ const buildBusStopsLayer = (
         string,
         { name: string; coordinates: LatLngExpression; street?: string; lines: Set<string> }
     >();
-
-    const orderedKeys = Object.keys(busRoutes).sort((a, b) => {
-        const aNum = parseInt(a.replace(/[^\d]/g, ''), 10);
-        const bNum = parseInt(b.replace(/[^\d]/g, ''), 10);
-        if (!Number.isNaN(aNum) && !Number.isNaN(bNum)) {
-            return aNum - bNum;
-        }
-        return a.localeCompare(b);
-    });
 
     Object.entries(busRoutes).forEach(([lineId, line]) => {
         Object.values(line.directions).forEach((direction) => {
@@ -353,15 +480,48 @@ const buildBusStopsLayer = (
             .map((lineId) => {
                 const line = busRoutes[lineId];
                 const lineColor = line?.color || line?.colour || '#72aaff';
-                return `<a href="${withBase('lines/#timetable')}" class="line-number-link" style="color:${lineColor}" data-line-id="${lineId}">${lineId}</a>`;
+                const accentSoft = hexToRgba(lineColor, 0.14) ?? 'rgba(114, 170, 255, 0.14)';
+                const accentHover = hexToRgba(lineColor, 0.2) ?? 'rgba(114, 170, 255, 0.2)';
+                const accentBorder = hexToRgba(lineColor, 0.28) ?? 'rgba(114, 170, 255, 0.28)';
+                const timetableLabel = langText(
+                    `Kliknite za red vožnje linije ${lineId}`,
+                    `Click to view the timetable for line ${lineId}`,
+                );
+                const badgeStyle = [
+                    `--line-accent:${escapeHtml(lineColor)}`,
+                    `--line-accent-soft:${accentSoft}`,
+                    `--line-accent-hover:${accentHover}`,
+                    `--line-accent-border:${accentBorder}`,
+                ].join('; ');
+                const lineIdLabel = escapeHtml(lineId);
+                const safeTimetableLabel = escapeHtml(timetableLabel);
+
+                return [
+                    `<a href="${withBase('lines/#timetable')}"`,
+                    ` class="line-number-link"`,
+                    ` style="${badgeStyle}"`,
+                    ` data-line-id="${lineIdLabel}"`,
+                    ` title="${safeTimetableLabel}"`,
+                    ` aria-label="${safeTimetableLabel}">`,
+                    `${lineIdLabel}</a>`,
+                ].join('');
             })
-            .join(', ');
+            .join('');
+
+        const stopTypeLabel = escapeHtml(langText('Autobusko stajalište', 'Bus stop'));
+        const linesLabel = escapeHtml(langText('Linije na ovom stajalištu', 'Lines at this stop'));
+        const helperHint = escapeHtml(
+            langText('Kliknite na liniju za red vožnje', 'Click a line to view its timetable'),
+        );
 
         return `
-            <div class="hub-popup">
-                <h3>${stopName}</h3>
-                <p>${langText('Linije', 'Lines')}: ${linesMarkup}</p>
-                <a href="${withBase('lines/#timetable')}" class="popup-link">${langText('Pogledaj red vožnje', 'View timetables')}</a>
+            <div class="hub-popup hub-popup--bus-stop">
+                <span class="hub-popup__type-label">${stopTypeLabel}</span>
+                <h3>${escapeHtml(stopName)}</h3>
+                <div class="hub-popup__lines" aria-label="${linesLabel}">
+                    ${linesMarkup}
+                </div>
+                <p class="hub-popup__hint">${helperHint}</p>
             </div>
         `;
     };
@@ -387,11 +547,16 @@ const buildBusStopsLayer = (
             icon: createFontAwesomeIcon(L, 'fa-bus-simple', '#72aaff'),
         });
 
+    const attachStopName = <T extends Marker | CircleMarker>(layerInstance: T, stopName: string): T => {
+        (layerInstance as T & { stopName?: string }).stopName = stopName;
+        return layerInstance;
+    };
+
     const updateBusStopDisplay = (): void => {
         const currentZoom = map.getZoom();
 
         uniqueStops.forEach((stop, stopName) => {
-            const sortedLines = Array.from(stop.lines).sort((a, b) => orderedKeys.indexOf(a) - orderedKeys.indexOf(b));
+            const sortedLines = Array.from(stop.lines).sort(compareLineIds);
 
             const bindPopupLineLinks = (e: { popup: { getElement: () => HTMLElement | null } }): void => {
                 const container = e.popup.getElement();
@@ -414,7 +579,7 @@ const buildBusStopsLayer = (
                 }
 
                 if (!busStopMarkers.has(stopName)) {
-                    const marker = createBusStopIcon(stop.coordinates);
+                    const marker = attachStopName(createBusStopIcon(stop.coordinates), stop.name);
                     marker.bindPopup(() => createPopupContent(stop.name, sortedLines));
                     marker.on('popupopen', bindPopupLineLinks);
                     marker.on('click', () => {
@@ -434,7 +599,7 @@ const buildBusStopsLayer = (
                     layer.removeLayer(busStopCircles.get(stopName)!);
                 }
 
-                const circle = createBusStopCircle(stop.coordinates);
+                const circle = attachStopName(createBusStopCircle(stop.coordinates), stop.name);
                 circle.bindPopup(() => createPopupContent(stop.name, sortedLines));
                 circle.on('popupopen', bindPopupLineLinks);
                 circle.on('click', () => {

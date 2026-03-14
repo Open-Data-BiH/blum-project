@@ -8,6 +8,7 @@ export interface GeoPoint {
 }
 
 type MarkerLike = Marker | CircleMarker;
+type NamedMarkerLike = MarkerLike & { stopName?: string };
 
 export class GeolocationService {
     private userLocation: GeoPoint | null = null;
@@ -57,20 +58,21 @@ export class GeolocationService {
     findNearestStops(
         markers: MarkerLike[],
         limit = 3,
-    ): Array<{ marker: MarkerLike; distance: number; lat: number; lng: number }> {
+    ): Array<{ marker: MarkerLike; distance: number; lat: number; lng: number; name: string }> {
         if (!this.userLocation || markers.length === 0) {
             return [];
         }
 
         const calculated = markers.map((marker) => {
             const latlng = marker.getLatLng();
+            const namedMarker = marker as NamedMarkerLike;
             const distance = this.calculateDistance(
                 this.userLocation!.lat,
                 this.userLocation!.lng,
                 latlng.lat,
                 latlng.lng,
             );
-            return { marker, distance, lat: latlng.lat, lng: latlng.lng };
+            return { marker, distance, lat: latlng.lat, lng: latlng.lng, name: namedMarker.stopName ?? '' };
         });
 
         calculated.sort((a, b) => a.distance - b.distance);

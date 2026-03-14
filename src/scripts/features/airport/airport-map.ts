@@ -1,7 +1,7 @@
 // Airport map — ported from js/features/map/airport-map.js
 // Uses Leaflet to show two shuttle stop markers on a CARTO basemap.
 
-import type { Map, LatLngBoundsExpression } from 'leaflet';
+import type { Map, LatLngBoundsExpression, FitBoundsOptions, PointExpression } from 'leaflet';
 import { getCurrentLanguage } from '../../core/i18n';
 
 const langText = (bhs: string, en: string): string => (getCurrentLanguage() === 'en' ? en : bhs);
@@ -31,6 +31,7 @@ export async function initAirportMap(): Promise<void> {
             maxBounds: bounds,
             maxBoundsViscosity: 1.0,
             minZoom: 10,
+            maxZoom: 12,
         });
 
         L.control.zoom({ position: 'bottomright' }).addTo(map);
@@ -79,18 +80,32 @@ export async function initAirportMap(): Promise<void> {
                 <a href="https://bnx.aero/" target="_blank" rel="noopener noreferrer" class="popup-link">${langText('Internet stranica aerodroma', 'Airport website')}</a>
             </div>`;
 
+        const popupTopPadding: PointExpression = [24, 120];
+        const popupSidePadding: PointExpression = [24, 24];
+
         const oldStationMarker = L.marker([44.7722, 17.191], { icon: shuttleIcon })
             .bindPopup(createOldStationPopup)
             .addTo(map);
+
         const mainStationMarker = L.marker([44.788, 17.21], { icon: shuttleIcon })
             .bindPopup(createMainStationPopup)
             .addTo(map);
+
         const airportMarker = L.marker([44.9338, 17.304], { icon: airportIcon })
-            .bindPopup(createAirportPopup)
+            .bindPopup(createAirportPopup, {
+                autoPan: true,
+                keepInView: true,
+                autoPanPaddingTopLeft: popupTopPadding,
+                autoPanPaddingBottomRight: popupSidePadding,
+            })
             .addTo(map);
 
         const group = L.featureGroup([oldStationMarker, mainStationMarker, airportMarker]);
-        map.fitBounds(group.getBounds().pad(0.15));
+        const fitOptions: FitBoundsOptions = {
+            paddingTopLeft: [24, 150],
+            paddingBottomRight: [24, 36],
+        };
+        map.fitBounds(group.getBounds().pad(0.12), fitOptions);
     } catch (error) {
         console.error('Error initializing airport map:', error);
         const el = document.getElementById('airport-map');

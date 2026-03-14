@@ -19,7 +19,7 @@ export class MapLegendControl {
     private leafletControl: Control | null = null;
     private selectedBaseMap: string;
     private selectedLayers: Set<OverlayLayerId>;
-    private isCollapsed = false;
+    private isCollapsed = true;
     private listenersBound = false;
     private currentLang = getCurrentLanguage();
 
@@ -72,16 +72,18 @@ export class MapLegendControl {
         }
 
         const collapsedClass = this.isCollapsed ? ' map-legend--collapsed' : '';
-        const collapseIcon = this.isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up';
+        const toggleIcon = this.isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up';
+        const title = this.isCollapsed ? this.getCompactTitle() : this.getTitle();
 
         const html = `
       <div class="map-legend${collapsedClass}">
-        <div class="map-legend__header">
-          <span class="map-legend__title">${this.getTitle()}</span>
-          <button class="map-legend__collapse" aria-label="${this.getCollapseLabel()}" aria-expanded="${!this.isCollapsed}">
-            <i class="fas ${collapseIcon}"></i>
-          </button>
-        </div>
+        <button type="button" class="map-legend__toggle" aria-label="${this.getCollapseLabel()}" aria-expanded="${!this.isCollapsed}">
+          <span class="map-legend__toggle-main">
+            <i class="fas fa-layer-group map-legend__toggle-icon" aria-hidden="true"></i>
+            <span class="map-legend__title">${title}</span>
+          </span>
+          <i class="fas ${toggleIcon} map-legend__toggle-chevron" aria-hidden="true"></i>
+        </button>
         <div class="map-legend__body">
           ${this.renderBaseMapsSection(this.config.baseMaps)}
           ${this.renderOverlaySection(this.config.overlayLayers)}
@@ -96,11 +98,15 @@ export class MapLegendControl {
         return this.currentLang === 'en' ? 'Map Layers' : 'Slojevi mape';
     }
 
+    private getCompactTitle(): string {
+        return this.currentLang === 'en' ? 'Layers' : 'Slojevi';
+    }
+
     private getCollapseLabel(): string {
         if (this.currentLang === 'en') {
-            return this.isCollapsed ? 'Expand legend' : 'Collapse legend';
+            return this.isCollapsed ? 'Open map layers' : 'Close map layers';
         }
-        return this.isCollapsed ? 'Proširi legendu' : 'Sakrij legendu';
+        return this.isCollapsed ? 'Otvori slojeve mape' : 'Zatvori slojeve mape';
     }
 
     private renderBaseMapsSection(baseMaps: BaseMapConfig[]): string {
@@ -149,7 +155,6 @@ export class MapLegendControl {
         const options = layers
             .map((layer) => {
                 const labelPrimary = layer.label[this.currentLang] || layer.label.bhs;
-                const labelSecondary = this.currentLang === 'en' ? layer.label.bhs : layer.label.en;
                 const isChecked = this.selectedLayers.has(layer.id);
 
                 return `
@@ -168,7 +173,6 @@ export class MapLegendControl {
             <i class="map-legend__icon fas ${escapeHtml(layer.icon)}" style="color:${escapeHtml(layer.color)};" aria-hidden="true"></i>
             <span class="map-legend__label">
               <span class="map-legend__label-primary">${escapeHtml(labelPrimary)}</span>
-              <span class="map-legend__label-secondary">${escapeHtml(labelSecondary)}</span>
             </span>
           </label>
         `;
@@ -180,8 +184,8 @@ export class MapLegendControl {
         <div class="map-legend__section-header">
           <h3 class="map-legend__section-title">${title}</h3>
           <div class="map-legend__actions">
-            <button class="map-legend__action-btn" data-action="select-all" aria-label="${selectAllLabel}">${selectAllLabel}</button>
-            <button class="map-legend__action-btn" data-action="clear" aria-label="${clearLabel}">${clearLabel}</button>
+            <button type="button" class="map-legend__action-btn" data-action="select-all" aria-label="${selectAllLabel}">${selectAllLabel}</button>
+            <button type="button" class="map-legend__action-btn" data-action="clear" aria-label="${clearLabel}">${clearLabel}</button>
           </div>
         </div>
         <div class="map-legend__options">
@@ -205,7 +209,7 @@ export class MapLegendControl {
         const target = event.target instanceof Element ? event.target : null;
         const option = target?.closest<HTMLElement>('.map-legend__option');
         const actionBtn = target?.closest<HTMLElement>('.map-legend__action-btn');
-        const collapseBtn = target?.closest<HTMLElement>('.map-legend__collapse');
+        const toggleBtn = target?.closest<HTMLElement>('.map-legend__toggle');
 
         if (option) {
             event.preventDefault();
@@ -213,7 +217,7 @@ export class MapLegendControl {
         } else if (actionBtn) {
             event.preventDefault();
             this.handleAction(actionBtn);
-        } else if (collapseBtn) {
+        } else if (toggleBtn) {
             event.preventDefault();
             this.toggleCollapse();
         }
@@ -221,7 +225,7 @@ export class MapLegendControl {
 
     private handleKeydown(event: KeyboardEvent): void {
         const focusable = this.controlContainer?.querySelectorAll<HTMLElement>(
-            '.map-legend__option, .map-legend__action-btn, .map-legend__collapse',
+            '.map-legend__option, .map-legend__action-btn, .map-legend__toggle',
         );
         if (!focusable || focusable.length === 0) {
             return;
@@ -247,7 +251,7 @@ export class MapLegendControl {
                 } else if (active?.classList.contains('map-legend__action-btn')) {
                     event.preventDefault();
                     this.handleAction(active);
-                } else if (active?.classList.contains('map-legend__collapse')) {
+                } else if (active?.classList.contains('map-legend__toggle')) {
                     event.preventDefault();
                     this.toggleCollapse();
                 }
@@ -289,6 +293,7 @@ export class MapLegendControl {
     private toggleCollapse(): void {
         this.isCollapsed = !this.isCollapsed;
         this.render();
+        this.controlContainer?.querySelector<HTMLButtonElement>('.map-legend__toggle')?.focus();
     }
 
     private selectBaseMap(id: string): void {

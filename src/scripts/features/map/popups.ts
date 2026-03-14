@@ -3,6 +3,11 @@
 import { getCurrentLanguage } from '../../core/i18n';
 import type { Landmark, LocalizedText, TransportHub } from './types';
 
+export interface NearbyStopSummary {
+    name: string;
+    distanceKm: number;
+}
+
 const BASE_URL = import.meta.env.BASE_URL;
 const withBase = (path: string): string => `${BASE_URL}${path.replace(/^\/+/, '')}`;
 
@@ -92,5 +97,26 @@ export const createLandmarkPopup = (landmark: Landmark): string => `
   <div class="hub-popup">
     <h3>${escapeHtml(localizedField(landmark.name))}</h3>
     <p>${escapeHtml(localizedField(landmark.description))}</p>
+  </div>
+`;
+
+export const createNearestStopsPopup = (stops: NearbyStopSummary[]): string => `
+  <div class="hub-popup hub-popup--nearby-stops">
+    <h3>${langText('Najbliža autobuska stajališta', 'Nearest Bus Stops')}</h3>
+    <div class="nearby-stop-list">
+      ${stops
+          .map(
+              (stop) => `
+        <div class="nearby-stop-row">
+          <span class="nearby-stop-row__main">
+            <i class="fas fa-bus-simple nearby-stop-row__icon" aria-hidden="true"></i>
+            <span class="nearby-stop-row__name">${escapeHtml(stop.name)}</span>
+          </span>
+          <span class="nearby-stop-row__distance">${escapeHtml(stop.distanceKm.toFixed(2))} km</span>
+        </div>
+      `,
+          )
+          .join('')}
+    </div>
   </div>
 `;

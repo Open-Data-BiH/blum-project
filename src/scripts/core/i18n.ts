@@ -33,8 +33,8 @@ const PAGE_SEO: Record<
             en: 'BL Transport – Public Transport Routes in Banja Luka',
         },
         description: {
-            bhs: 'BLum – red vožnje, linije i mapa javnog prevoza u Banjoj Luci. Sve autobuske linije, polasci, stajališta i obavještenja o izmjenama na jednom mjestu.',
-            en: 'BLum – timetables, routes and map of public transport in Banja Luka. All bus lines, departures, stops and service updates in one place.',
+            bhs: 'Jednostavan pregled linija javnog prevoza u Banjoj Luci. Pregled ruta autobusa i informacija o gradskom prevozu.',
+            en: 'Simple overview of public transport lines in Banja Luka. Bus routes and urban transport information.',
         },
     },
     lines: {
@@ -117,12 +117,12 @@ const PAGE_SEO: Record<
     about: {
         url: 'https://blprevoz.com/about/',
         title: {
-            bhs: 'O projektu – BLum',
-            en: 'About – BLum',
+            bhs: 'O projektu – BL Prevoz | Javni prevoz Banja Luka',
+            en: 'About – BL Prevoz',
         },
         description: {
-            bhs: 'BLum je nezavisan projekat za bolju dostupnost informacija o javnom prevozu u Banjoj Luci. Saznajte više o našem cilju i pristupu otvorenim podacima.',
-            en: 'BLum is an independent project for better public transport information in Banja Luka. Learn about our mission and open data approach.',
+            bhs: 'BL Prevoz je nezavisan projekat za bolju dostupnost informacija o javnom prevozu u Banjoj Luci. Saznajte više o našem cilju i pristupu otvorenim podacima.',
+            en: 'BL Prevoz is an independent project for better public transport information in Banja Luka. Learn about our mission and open data approach.',
         },
     },
 };
@@ -236,11 +236,10 @@ export const applyTranslation = (lang: Language): void => {
     updateSeoTags(lang);
 
     // Header
-    safelyUpdateText('site-title', 'BLum');
-    safelyUpdateText(
-        'site-subtitle',
-        t.header?.subtitle ?? (lang === 'bhs' ? 'Urbana mobilnost u Banjoj Luci' : 'Urban mobility in Banja Luka'),
-    );
+    safelyUpdateText('site-title', 'BL Prevoz');
+    safelyUpdateText('site-subtitle', lang === 'bhs'
+        ? 'Pregled linija javnog prevoza u Banjoj Luci'
+        : 'Overview of public transport lines in Banja Luka');
 
     // Navigation
     safelyUpdateText('nav-map-desktop', t.header.nav.map);
@@ -255,7 +254,7 @@ export const applyTranslation = (lang: Language): void => {
     const heroDefaults =
         lang === 'bhs'
             ? {
-                  title: 'BLum - BL prevoz',
+                  title: 'BL Prevoz',
                   subtitle: 'Informacije za lakše kretanje gradom.',
                   description:
                       'Nezavisna platforma za linije, red vožnje i obavještenja o javnom prevozu u Banjoj Luci.',
@@ -265,7 +264,7 @@ export const applyTranslation = (lang: Language): void => {
                   airport: 'Transfer do aerodroma',
               }
             : {
-                  title: 'BLum - BL Transport',
+                  title: 'BL Prevoz',
                   subtitle: 'Information for easier movement through the city.',
                   description:
                       'Independent platform for routes, timetables, and public transport notices in Banja Luka.',
@@ -397,8 +396,8 @@ export const applyTranslation = (lang: Language): void => {
     safelyUpdateText(
         'footer-mission-text',
         lang === 'bhs'
-            ? 'BLum je nezavisna platforma za informacije o javnom prevozu u Banjoj Luci.'
-            : 'BLum is an independent platform for public transport information in Banja Luka.',
+            ? 'BL Prevoz je nezavisna platforma za informacije o javnom prevozu u Banjoj Luci.'
+            : 'BL Prevoz is an independent platform for public transport information in Banja Luka.',
     );
     safelyUpdateText('footer-nav-heading', lang === 'bhs' ? 'Informacije' : 'Information');
     safelyUpdateText('footer-link-about', lang === 'bhs' ? 'O projektu' : 'About');

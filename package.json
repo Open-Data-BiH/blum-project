@@ -36,7 +36,7 @@
         "@typescript-eslint/parser": "^8.44.0",
         "astro": "^5.18.0",
         "eslint": "^10.0.1",
-        "happy-dom": "^18.0.1",
+        "happy-dom": "^20.8.3",
         "http-server": "^14.1.1",
         "prettier": "^3.3.3",
         "sass": "^1.97.3",
@@ -53,6 +53,9 @@
     "homepage": "https://github.com/Open-Data-BiH/blum-project#readme",
     "dependencies": {
         "@astrojs/sitemap": "^3.7.1",
+        "@fontsource-variable/inter": "^5.2.8",
+        "@fontsource-variable/noto-sans": "^5.2.10",
+        "@fortawesome/fontawesome-free": "^7.2.0",
         "@types/dompurify": "^3.2.0",
         "@types/leaflet": "^1.9.21",
         "dompurify": "^3.3.1",

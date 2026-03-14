@@ -11,5 +11,14 @@ export default defineConfig({
         optimizeDeps: {
             include: ['leaflet'],
         },
+        build: {
+            rollupOptions: {
+                output: {
+                    manualChunks: {
+                        leaflet: ['leaflet'],
+                    },
+                },
+            },
+        },
     },
 });

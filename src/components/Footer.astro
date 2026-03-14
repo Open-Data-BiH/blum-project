@@ -8,7 +8,7 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
   <div class="footer__main">
     <div class="footer__description">
       <p id="footer-mission-text">
-        BLum je nezavisna platforma za informacije o javnom prevozu u Banjoj Luci.
+        BL Prevoz je nezavisna platforma za informacije o javnom prevozu u Banjoj Luci.
       </p>
     </div>
 
@@ -26,23 +26,46 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
   </div>
 
   <div class="footer__bottom">
-    <p>&copy; {year} BLum &middot; <span id="footer-brand-tagline">Urbana mobilnost u Banjoj Luci</span></p>
+    <p>&copy; {year} BL Prevoz</p>
   </div>
 </footer>
 
 <script is:inline>
+  // Defer Ko-fi widget until the footer enters the viewport to avoid
+  // adding a third-party request chain to the critical path.
   (function() {
-    var script = document.createElement('script');
-    script.src = 'https://storage.ko-fi.com/cdn/widget/Widget_2.js';
-    script.onload = function() {
-      var lang = localStorage.getItem('selectedLanguage') || 'bhs';
-      var btnText = lang === 'en' ? 'Support this project' : 'Podržite ovaj projekat';
-      var container = document.getElementById('footer-kofi-container');
-      if (container && typeof kofiwidget2 !== 'undefined') {
-        kofiwidget2.init(btnText, '#1a4d73', 'J3J11VR53R');
-        container.innerHTML = kofiwidget2.getHTML();
+    var container = document.getElementById('footer-kofi-container');
+    if (!container) return;
+    var loaded = false;
+    function loadKofi() {
+      if (loaded) return;
+      loaded = true;
+      var script = document.createElement('script');
+      script.src = 'https://storage.ko-fi.com/cdn/widget/Widget_2.js';
+      script.onload = function() {
+        var lang = localStorage.getItem('selectedLanguage') || 'bhs';
+        var btnText = lang === 'en' ? 'Support this project' : 'Podržite ovaj projekat';
+        if (typeof kofiwidget2 !== 'undefined') {
+          kofiwidget2.init(btnText, '#1a4d73', 'J3J11VR53R');
+          container.innerHTML = kofiwidget2.getHTML();
+        }
+      };
+      document.body.appendChild(script);
+    }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function(entries, observer) {
+        if (entries[0].isIntersecting) {
+          observer.disconnect();
+          loadKofi();
+        }
+      }, { rootMargin: '200px' }).observe(container);
+    } else {
+      // Fallback: load after page is idle
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadKofi);
+      } else {
+        window.addEventListener('load', loadKofi);
       }
-    };
-    document.head.appendChild(script);
+    }
   })();
 </script>

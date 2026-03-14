@@ -2058,43 +2058,6 @@
     color: var(--text-primary);
 }
 
-.airport-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    background-color: var(--accent);
-    color: var(--color-white);
-    padding: var(--space-3) var(--space-5);
-    border-radius: var(--radius-md);
-    text-decoration: none;
-    font-weight: var(--font-weight-medium);
-    border: 1px solid var(--accent);
-    transition: all var(--transition-fast);
-    margin-top: var(--space-4);
-}
-
-.airport-link::after {
-    content: '\f35d';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    margin-left: var(--space-2);
-    font-size: 0.9em;
-}
-
-.airport-link:hover {
-    background-color: var(--accent-strong);
-    border-color: var(--accent-strong);
-    color: var(--color-white);
-    text-decoration: none;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-soft);
-}
-
-.airport-link:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 2px;
-}
 
 @media (min-width: 768px) {
     .airport-transfer-info {
@@ -2152,10 +2115,6 @@
 @media (max-width: 767px) {
     .airport-transfer-info {
         gap: clamp(1.5rem, 6vw, 2rem);
-    }
-
-    .airport-link {
-        width: 100%;
     }
 }
 

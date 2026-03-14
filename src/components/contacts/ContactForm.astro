@@ -2,10 +2,10 @@
 const maintainerEmail = import.meta.env.PUBLIC_MAINTAINER_EMAIL ?? 'blprevoz@proton.me';
 
 const subjects = [
-  { value: 'timetable', bhs: 'Prijava netacnog reda voznje', en: 'Report incorrect timetable' },
-  { value: 'technical', bhs: 'Prijava tehnickog problema', en: 'Report technical issue' },
-  { value: 'suggestion', bhs: 'Prijedlog za poboljsanje', en: 'Suggestion for improvement' },
-  { value: 'question', bhs: 'Opste pitanje', en: 'General question' },
+  { value: 'timetable', bhs: 'Prijava netačnog reda vožnje', en: 'Report incorrect timetable' },
+  { value: 'technical', bhs: 'Prijava tehničkog problema', en: 'Report technical issue' },
+  { value: 'suggestion', bhs: 'Prijedlog za poboljšanje', en: 'Suggestion for improvement' },
+  { value: 'question', bhs: 'Opšte pitanje', en: 'General question' },
   { value: 'custom', bhs: 'Drugo (unesite predmet)', en: 'Other (enter subject)' },
 ];
 ---
@@ -17,7 +17,7 @@ const subjects = [
       <span data-lang="en" style="display:none">Contact us</span>
     </h2>
     <p class="contact-form__intro">
-      <span data-lang="bhs">Imate pitanje, prijedlog ili zelite prijaviti problem? Popunite formu ispod.</span>
+      <span data-lang="bhs">Imate pitanje, prijedlog ili želite prijaviti problem? Popunite formu ispod.</span>
       <span data-lang="en" style="display:none">Have a question, suggestion, or want to report an issue? Fill out the form below.</span>
     </p>
 
@@ -72,9 +72,9 @@ const subjects = [
           name="message"
           rows="6"
           required
-          data-placeholder-bhs="Opisite detaljnije..."
+          data-placeholder-bhs="Opišite detaljnije..."
           data-placeholder-en="Describe in detail..."
-          placeholder="Opisite detaljnije..."
+          placeholder="Opišite detaljnije..."
         ></textarea>
         <span class="contact-form__error" id="message-error" hidden>
           <span data-lang="bhs">Poruka mora imati najmanje 10 karaktera</span>
@@ -97,7 +97,7 @@ const subjects = [
         <span data-lang="en" style="display:none">Message ready!</span>
       </h3>
       <p class="contact-form__send-desc">
-        <span data-lang="bhs">Izaberite kako zelite poslati poruku:</span>
+        <span data-lang="bhs">Izaberite kako želite poslati poruku:</span>
         <span data-lang="en" style="display:none">Choose how you'd like to send it:</span>
       </p>
 

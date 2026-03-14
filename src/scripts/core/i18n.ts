@@ -29,12 +29,12 @@ const PAGE_SEO: Record<
     home: {
         url: 'https://blprevoz.com/',
         title: {
-            bhs: 'BL Prevoz - Linije javnog prevoza u Banjoj Luci',
-            en: 'BL Transport - Public Transport Routes in Banja Luka',
+            bhs: 'BL Prevoz - Red vožnje i linije javnog prevoza u Banjoj Luci',
+            en: 'Banja Luka Public Transport - Bus Schedules, Routes & Airport Shuttle',
         },
         description: {
-            bhs: 'Jednostavan pregled linija javnog prevoza u Banjoj Luci. Pregled ruta autobusa i informacija o gradskom prevozu.',
-            en: 'Simple overview of public transport lines in Banja Luka. Bus routes and urban transport information.',
+            bhs: 'Red vožnje, linije i mapa javnog prevoza u Banjoj Luci. Polasci, stajališta i informacije o gradskom autobusu.',
+            en: 'Bus schedules, routes, and map for public transport in Banja Luka. Departures, stops, and airport shuttle information.',
         },
     },
     lines: {
@@ -62,12 +62,12 @@ const PAGE_SEO: Record<
     airport: {
         url: 'https://blprevoz.com/airport/',
         title: {
-            bhs: 'Prevoz do aerodroma Banja Luka - Cijene i polasci',
-            en: 'Banja Luka Airport Transfer - Prices & Departures',
+            bhs: 'Prevoz do aerodroma Banja Luka - Shuttle, taksi, cijene | BNX',
+            en: 'Banja Luka Airport Bus & Shuttle - Transfer Guide (BNX)',
         },
         description: {
-            bhs: 'Kako doći do Aerodroma Banja Luka. Cijene transfera, stajališta, polasci i mapa rute aerodromskog prevoza.',
-            en: 'How to get to Banja Luka Airport. Transfer prices, stops, departures, and route map.',
+            bhs: 'Kako doći do Aerodroma Banja Luka (BNX). Shuttle autobus ~10 KM (30-45 min), taksi 40-60 KM. Polasci od Glavne stanice, parking i interaktivna mapa rute.',
+            en: 'How to get from Banja Luka Airport (BNX) to the city center. Shuttle bus ~10 KM (30-45 min), taxi 40-60 KM. Timetable, route map, and parking info.',
         },
     },
     faq: {
@@ -379,8 +379,6 @@ export const applyTranslation = (lang: Language): void => {
     safelyUpdateText('airport-description-title', t.sections?.airport?.descriptionTitle);
     safelyUpdateText('airport-price', t.sections?.airport?.price);
     safelyUpdateText('airport-departure-location', t.sections?.airport?.departureLocation);
-    safelyUpdateText('airport-more-info', t.sections?.airport?.moreInfo);
-    safelyUpdateText('airport-website-link', t.sections?.airport?.websiteLink);
 
     // Updates section
     safelyUpdateText('updates-title', safeGet(t, 'sections', 'updates', 'title'));

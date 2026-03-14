@@ -1,12 +1,12 @@
 // Timetable — ported from js/features/lines/timetable.js
 // Key changes:
 //   - FetchHelper.fetchJSON → fetch().then(r => r.json())
-//   - AppI18n.safeGet(AppI18n.translations, AppI18n.currentLang, ...) → safeGet(getTranslations(), getCurrentLanguage(), ...)
+//   - Translations resolved via safeGet(getTranslations(), getCurrentLanguage(), ...)
 //   - TypeScript types added throughout
 
-import { debounce, sortLinesByID, withBase } from '../../core/utils';
+import { debounce, escapeHtml, sortLinesByID, withBase } from '../../core/utils';
 import { safeGet, getTranslations, getCurrentLanguage } from '../../core/i18n';
-import { LINE_CONFIG, lineManager } from './line-manager';
+import { LINE_CONFIG, getLineTypeTitle } from './line-config';
 import { isReducedScheduleDay } from './school-holidays';
 import type { TimetableEntry } from '../../../types/timetable';
 
@@ -17,15 +17,8 @@ let timeHighlightInterval: ReturnType<typeof setInterval> | null = null;
 
 // ─── escapeHTML helper (no DOMPurify dependency in TS modules) ──────────────
 
-const escapeHTML = (text: string | number | null | undefined): string => {
-    if (text === null || text === undefined) {
-        return '';
-    }
-    const str = String(text);
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-};
+const escapeHTML = (text: string | number | null | undefined): string =>
+    escapeHtml(text === null || text === undefined ? '' : String(text));
 
 // ─── Public entry point ─────────────────────────────────────────────────────
 
@@ -65,19 +58,22 @@ export function setupTimetableSelection(): void {
             realTimetableData = timetableArrays.flat();
             updateTimetableSelect(lineSelect, realTimetableData);
 
-            lineSelect.addEventListener('change', function (this: HTMLSelectElement) {
-                if (this.value) {
-                    loadTimetable(this.value);
-                } else {
-                    const lang = getCurrentLanguage();
-                    const welcomeMessage =
-                        safeGet(getTranslations(), lang, 'sections', 'timetable', 'welcome') ||
-                        (lang === 'bhs'
-                            ? 'Redovi vožnje će biti prikazani nakon izbora linije.'
-                            : 'Timetables will be displayed after selecting a line.');
-                    timetableDisplay.innerHTML = `<p class="timetable-welcome">${welcomeMessage}</p>`;
-                }
-            });
+            if (lineSelect.dataset.timetableChangeBound !== 'true') {
+                lineSelect.addEventListener('change', function (this: HTMLSelectElement) {
+                    if (this.value) {
+                        loadTimetable(this.value);
+                    } else {
+                        const lang = getCurrentLanguage();
+                        const welcomeMessage =
+                            safeGet(getTranslations(), lang, 'sections', 'timetable', 'welcome') ||
+                            (lang === 'bhs'
+                                ? 'Redovi vožnje će biti prikazani nakon izbora linije.'
+                                : 'Timetables will be displayed after selecting a line.');
+                        timetableDisplay.innerHTML = `<p class="timetable-welcome">${welcomeMessage}</p>`;
+                    }
+                });
+                lineSelect.dataset.timetableChangeBound = 'true';
+            }
 
             if (!timetableLanguageListenerAdded) {
                 document.addEventListener('languageChanged', () => {
@@ -173,7 +169,7 @@ function updateTimetableSelect(
         }
 
         const optgroup = document.createElement('optgroup');
-        const configuredTitle = lineManager.getTypeTitle(lineType, lang);
+        const configuredTitle = getLineTypeTitle(lineType, lang);
         optgroup.label =
             configuredTitle === lineType
                 ? lineType.charAt(0).toUpperCase() + lineType.slice(1) + ' Lines'
@@ -182,8 +178,7 @@ function updateTimetableSelect(
         lines.forEach((line) => {
             const option = document.createElement('option');
             option.value = line.lineId;
-            const nameObj = line.lineName as unknown as Record<string, string>;
-            option.textContent = nameObj[lang] || nameObj.en;
+            option.textContent = line.lineName[lang] || line.lineName.en;
             optgroup.appendChild(option);
         });
 
@@ -211,18 +206,8 @@ export function loadTimetable(lineId: string): void {
         }
     }
 
-    let timetableFile: string | null = null;
-    let resolvedLineType = 'urban';
-    for (const [lineType, config] of Object.entries(LINE_CONFIG)) {
-        if (config.enabled && lineManager.getLines(lineType).some((l) => l.lineId === lineId)) {
-            timetableFile = config.timetableFile;
-            resolvedLineType = lineType;
-            break;
-        }
-    }
-    if (!timetableFile) {
-        timetableFile = withBase('data/transport/timetables/urban_timetables.json');
-    }
+    const resolvedLineType = realTimetableData?.find((t) => t.lineId === lineId)?.lineType ?? 'urban';
+    const timetableFile = LINE_CONFIG[resolvedLineType]?.timetableFile ?? withBase('data/transport/timetables/urban_timetables.json');
 
     fetch(timetableFile)
         .then((r) => r.json())
@@ -282,21 +267,25 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
         (s) => s.times.weekdayReduced ?? s.times.saturdayReduced ?? s.times.sundayReduced,
     );
     const showingReduced = reducedToday && hasReducedData;
-    const t = safeGet(getTranslations(), lang, 'sections', 'timetable') as Record<string, unknown> | null;
-    const timetableDays = t ? (t.days as Record<string, string> | null) : null;
+    const t = safeGet<Record<string, unknown>>(getTranslations(), lang, 'sections', 'timetable');
+    const timetableDays = t?.days && typeof t.days === 'object' ? (t.days as Record<string, string>) : null;
 
     const weekdayLabel = timetableDays?.weekday || 'Weekdays';
     const saturdayLabel = timetableDays?.saturday || 'Saturday';
     const sundayHolidayFull =
         timetableDays?.sundayHoliday || (lang === 'bhs' ? 'Nedjelja i praznik' : 'Sunday & Holiday');
     const sundayHolidayShort = lang === 'bhs' ? 'Ned. / praznik' : 'Sun / Holiday';
-    const relationLabelText = (t?.relationLabel as string) || (lang === 'bhs' ? 'Relacija' : 'Direction');
-    const timetableForLabelText = (t?.timetableForLabel as string) || (lang === 'bhs' ? 'Red vožnje' : 'Schedule');
-    const hourLabel = (t?.hourLabel as string) || (lang === 'bhs' ? 'Sat' : 'Hour');
-    const minutesLabel = (t?.minutesLabel as string) || (lang === 'bhs' ? 'Minute' : 'Minutes');
+    const relationLabelText =
+        (typeof t?.relationLabel === 'string' ? t.relationLabel : null) || (lang === 'bhs' ? 'Relacija' : 'Direction');
+    const timetableForLabelText =
+        (typeof t?.timetableForLabel === 'string' ? t.timetableForLabel : null) ||
+        (lang === 'bhs' ? 'Red vožnje' : 'Schedule');
+    const hourLabel = (typeof t?.hourLabel === 'string' ? t.hourLabel : null) || (lang === 'bhs' ? 'Sat' : 'Hour');
+    const minutesLabel =
+        (typeof t?.minutesLabel === 'string' ? t.minutesLabel : null) || (lang === 'bhs' ? 'Minute' : 'Minutes');
     const swapDirectionLabel = lang === 'bhs' ? 'Zamijeni smjer' : 'Swap direction';
 
-    const directions = timetable.directions as unknown as Record<string, string[]>;
+    const directions = timetable.directions;
     const directionAId = timetable.lineId + 'a';
     const directionBId = timetable.lineId + 'b';
 
@@ -307,8 +296,8 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
           <p id="direction-label" class="timetable-control-label">${relationLabelText}</p>
           <div class="direction-buttons-wrapper">
             <div class="direction-buttons" role="group" aria-labelledby="direction-label">
-              <button class="direction-btn active" data-direction="${escapeHTML(directionAId)}" aria-pressed="true" aria-label="${escapeHTML(directions[lang][0])}">${escapeHTML(directions[lang][0])}</button>
-              <button class="direction-btn" data-direction="${escapeHTML(directionBId)}" aria-pressed="false" aria-label="${escapeHTML(directions[lang][1])}">${escapeHTML(directions[lang][1])}</button>
+              <button class="direction-btn active" data-direction="${escapeHTML(directionAId)}" aria-pressed="true" aria-label="${escapeHTML(directions[lang][0] ?? directions.bhs[0] ?? '')}">${escapeHTML(directions[lang][0] ?? directions.bhs[0] ?? '')}</button>
+              <button class="direction-btn" data-direction="${escapeHTML(directionBId)}" aria-pressed="false" aria-label="${escapeHTML(directions[lang][1] ?? directions.bhs[1] ?? '')}">${escapeHTML(directions[lang][1] ?? directions.bhs[1] ?? '')}</button>
             </div>
             <button class="direction-swap-btn" aria-label="${swapDirectionLabel}" title="${swapDirectionLabel}">
               <i class="fas fa-exchange-alt"></i>
@@ -328,7 +317,7 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
     </div>
   `;
 
-    const notes = timetable.notes as Record<string, string> | undefined;
+    const notes = timetable.notes;
     if (notes?.[lang]) {
         html += `
       <div class="timetable-notes">
@@ -680,4 +669,3 @@ const updateTimeHighlighting = (): void => {
         });
     });
 };
-

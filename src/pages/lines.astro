@@ -11,33 +11,9 @@ import type { CompanyOwnership } from '../types/lines';
 import type { ProcessedLine, ScheduleStats } from '../types/lines';
 import type { TimetableFile, TimetableTime } from '../types/timetable';
 import { getCompanyClass, getShortOperatorName } from '../lib/lineHelpers';
+import { normalizeForSearch, sortLinesByID } from '../scripts/core/utils';
 
 // ─── Helper functions (mirrors lines-ui.js, run at build time) ──────────────
-
-const normalizeForSearch = (text: string | null | undefined): string => {
-  if (!text) return '';
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/đ/g, 'd')
-    .replace(/ð/g, 'd')
-    .replace(/ł/g, 'l')
-    .replace(/ß/g, 'ss')
-    .replace(/æ/g, 'ae')
-    .replace(/œ/g, 'oe')
-    .replace(/ø/g, 'o')
-    .replace(/[^a-z0-9]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-};
-
-
-const sortLinesByID = (a: { lineId: string }, b: { lineId: string }): number => {
-  const numA = parseInt(a.lineId);
-  const numB = parseInt(b.lineId);
-  return !isNaN(numA) && !isNaN(numB) ? numA - numB : a.lineId.localeCompare(b.lineId);
-};
 
 // ─── Schedule stats computation ─────────────────────────────────────────────
 

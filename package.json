@@ -1,7 +1,7 @@
 {
     "name": "banja-luka-transport",
     "version": "1.0.0",
-    "description": "BLum - Urbana mobilnost Banja Luka. Nezavisna open-source platforma za informacije o javnom prevozu i urbanoj mobilnosti u Banjoj Luci.",
+    "description": "Nezavisna open-source platforma za informacije o javnom prevozu i urbanoj mobilnosti u Banjoj Luci.",
     "main": "index.html",
     "engines": {
         "node": ">=20.0.0"

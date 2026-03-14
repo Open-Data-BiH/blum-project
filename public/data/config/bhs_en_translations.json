@@ -1,7 +1,7 @@
 {
     "en": {
         "header": {
-            "title": "BLum",
+            "title": "BL prevoz",
             "subtitle": "Urban mobility in Banja Luka",
             "nav": {
                 "map": "Home",
@@ -108,7 +108,7 @@
             },
             "home": {
                 "hero": {
-                    "title": "BLum",
+                    "title": "BL prevoz",
                     "subtitle": "Informacije za lakše kretanje gradom.",
                     "description": "Independent platform for routes, timetables, and public transport information.",
                     "buttons": {
@@ -130,7 +130,7 @@
     },
     "bhs": {
         "header": {
-            "title": "BLum",
+            "title": "BL prevoz",
             "subtitle": "Urbana mobilnost u Banjoj Luci",
             "nav": {
                 "map": "Početna",
@@ -237,7 +237,7 @@
             },
             "home": {
                 "hero": {
-                    "title": "BLum",
+                    "title": "BL prevoz",
                     "subtitle": "Informacije za lakše kretanje gradom.",
                     "description": "Nezavisna platforma za pregled linija, redova vožnje i informacija o javnom prevozu.",
                     "buttons": {

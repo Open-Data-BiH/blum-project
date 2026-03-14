@@ -30,42 +30,7 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
   </div>
 </footer>
 
-<script is:inline>
-  // Defer Ko-fi widget until the footer enters the viewport to avoid
-  // adding a third-party request chain to the critical path.
-  (function() {
-    var container = document.getElementById('footer-kofi-container');
-    if (!container) return;
-    var loaded = false;
-    function loadKofi() {
-      if (loaded) return;
-      loaded = true;
-      var script = document.createElement('script');
-      script.src = 'https://storage.ko-fi.com/cdn/widget/Widget_2.js';
-      script.onload = function() {
-        var lang = localStorage.getItem('selectedLanguage') || 'bhs';
-        var btnText = lang === 'en' ? 'Support this project' : 'Podržite ovaj projekat';
-        if (typeof kofiwidget2 !== 'undefined') {
-          kofiwidget2.init(btnText, '#1a4d73', 'J3J11VR53R');
-          container.innerHTML = kofiwidget2.getHTML();
-        }
-      };
-      document.body.appendChild(script);
-    }
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function(entries, observer) {
-        if (entries[0].isIntersecting) {
-          observer.disconnect();
-          loadKofi();
-        }
-      }, { rootMargin: '200px' }).observe(container);
-    } else {
-      // Fallback: load after page is idle
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(loadKofi);
-      } else {
-        window.addEventListener('load', loadKofi);
-      }
-    }
-  })();
+<script>
+  import { initFooterKofi } from '../scripts/features/layout/footer-kofi';
+  initFooterKofi();
 </script>

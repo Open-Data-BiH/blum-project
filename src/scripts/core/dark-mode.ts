@@ -9,8 +9,17 @@ class DarkModeManager {
 
     constructor() {
         this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        this.currentMode = (localStorage.getItem('theme') as ThemeMode) || 'auto';
+        this.currentMode = this.getStoredTheme();
         this.init();
+    }
+
+    private getStoredTheme(): ThemeMode {
+        try {
+            const stored = localStorage.getItem('theme');
+            return stored === 'light' || stored === 'dark' || stored === 'auto' ? stored : 'auto';
+        } catch {
+            return 'auto';
+        }
     }
 
     private init(): void {
@@ -35,7 +44,11 @@ class DarkModeManager {
 
     setTheme(mode: ThemeMode): void {
         this.currentMode = mode;
-        localStorage.setItem('theme', mode);
+        try {
+            localStorage.setItem('theme', mode);
+        } catch {
+            // Ignore storage write failures and continue with in-memory mode.
+        }
         this.applyTheme();
     }
 
@@ -85,4 +98,3 @@ class DarkModeManager {
 }
 
 export const darkModeManager = new DarkModeManager();
-export const cycleTheme = (): void => darkModeManager.toggleTheme();

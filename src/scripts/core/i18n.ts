@@ -7,13 +7,33 @@
 import translationsData from '../../../public/data/config/bhs_en_translations.json';
 
 export type Language = 'bhs' | 'en';
+type TranslationCatalog = typeof translationsData;
+type UnknownRecord = Record<string, unknown>;
 
-let translations: Record<string, any> = translationsData as Record<string, any>;
-let currentLang: Language = (localStorage.getItem('selectedLanguage') as Language) || 'bhs';
+const translations: TranslationCatalog = translationsData;
+const getInitialLanguage = (): Language => {
+    try {
+        const stored = localStorage.getItem('selectedLanguage');
+        return stored === 'en' || stored === 'bhs' ? stored : 'bhs';
+    } catch {
+        return 'bhs';
+    }
+};
+let currentLang: Language = getInitialLanguage();
 
 // Helper for safe nested property access
-export const safeGet = <T = string>(obj: Record<string, any> | null | undefined, ...keys: string[]): T | null => {
-    return keys.reduce<any>((acc, key) => (acc && acc[key] !== undefined ? acc[key] : null), obj);
+export const safeGet = <T = string>(obj: UnknownRecord | null | undefined, ...keys: string[]): T | null => {
+    let cursor: unknown = obj;
+
+    for (const key of keys) {
+        if (cursor && typeof cursor === 'object' && key in (cursor as UnknownRecord)) {
+            cursor = (cursor as UnknownRecord)[key];
+            continue;
+        }
+        return null;
+    }
+
+    return cursor === undefined ? null : (cursor as T);
 };
 
 const SEO_DEFAULTS = {
@@ -458,27 +478,6 @@ export const setupLanguageSwitcher = (): void => {
 };
 
 export const getCurrentLanguage = (): Language => currentLang;
-export const getTranslations = (): Record<string, any> => translations;
+export const getTranslations = (): TranslationCatalog => translations;
 
 export const langText = (bhs: string, en: string): string => (currentLang === 'en' ? en : bhs);
-
-// Namespaced export kept for compatibility with feature modules that use AppI18n
-export const AppI18n = {
-    get currentLang() {
-        return currentLang;
-    },
-    set currentLang(val: Language) {
-        currentLang = val;
-    },
-    get translations() {
-        return translations;
-    },
-    set translations(val: Record<string, any>) {
-        translations = val;
-    },
-    safeGet,
-    setupLanguageSwitcher,
-    applyTranslation,
-    getCurrentLanguage,
-    getTranslations,
-};

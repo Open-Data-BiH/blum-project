@@ -4,11 +4,9 @@ import Footer from '../components/Footer.astro';
 import CookieConsent from '../components/CookieConsent.astro';
 import '../styles/global.scss';
 // Self-hosted fonts — eliminates cross-origin request chains for Google Fonts and Font Awesome CDN
-import '@fontsource-variable/inter';
 import '@fontsource-variable/noto-sans';
 import '@fortawesome/fontawesome-free/css/fontawesome.min.css';
 import '@fortawesome/fontawesome-free/css/solid.min.css';
-import '@fortawesome/fontawesome-free/css/brands.min.css';
 
 export type PageKey = 'home' | 'lines' | 'pricing' | 'airport' | 'faq' | 'updates' | 'contact' | 'privacy' | 'about';
 
@@ -37,7 +35,7 @@ const ogImage = new URL(
     <!-- Content Security Policy -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://storage.ko-fi.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.tile.openstreetmap.org https://basemaps.cartocdn.com https://*.basemaps.cartocdn.com https://server.arcgisonline.com https://www.googletagmanager.com https://storage.ko-fi.com; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; base-uri 'self'; form-action 'self';"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://storage.ko-fi.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.tile.openstreetmap.org https://basemaps.cartocdn.com https://*.basemaps.cartocdn.com https://server.arcgisonline.com https://www.googletagmanager.com https://storage.ko-fi.com; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'; upgrade-insecure-requests;"
     />
     <title>{title}</title>
     <link rel="canonical" href={canonicalUrl} />
@@ -63,37 +61,13 @@ const ogImage = new URL(
 
     {pageStyles && <link rel="stylesheet" href={pageStyles} />}
 
-    <!-- Google tag (gtag.js) — loaded statically so verification crawlers can see it -->
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      var consent = localStorage.getItem('analytics-consent');
-      gtag('consent', 'default', {
-        analytics_storage: consent === 'granted' ? 'granted' : 'denied',
-        ad_storage: 'denied',
-        ad_user_data: 'denied',
-        ad_personalization: 'denied'
-      });
-    </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TH1G57KP0X" is:inline></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-TH1G57KP0X', { anonymize_ip: true, send_page_view: true });
-    </script>
+    <!-- Google tag (gtag.js) -->
+    <script src={withBase('scripts/analytics-consent-default.js')}></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TH1G57KP0X"></script>
+    <script src={withBase('scripts/analytics-init.js')}></script>
 
-    <!-- Inline theme init: reads localStorage and sets data-theme before body renders to prevent flash of wrong theme -->
-    <script is:inline>
-      (function () {
-        try {
-          var theme = localStorage.getItem('theme') || 'auto';
-          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          var isDark = theme === 'dark' || (theme === 'auto' && prefersDark);
-          document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-        } catch (e) {}
-      })();
-    </script>
+    <!-- Theme init runs before body render to prevent flash -->
+    <script src={withBase('scripts/theme-init.js')}></script>
   </head>
   <body data-page={pageKey}>
     <a href="#main-content" class="skip-link">Skip to main content</a>

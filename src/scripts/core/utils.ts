@@ -15,12 +15,12 @@ export const escapeHtml = (value: string): string =>
 /**
  * Debounce expensive operations
  */
-export const debounce = <T extends (...args: any[]) => void>(
-    func: T,
+export const debounce = <TArgs extends unknown[]>(
+    func: (...args: TArgs) => void,
     wait: number,
-): ((...args: Parameters<T>) => void) => {
+): ((...args: TArgs) => void) => {
     let timeout: ReturnType<typeof setTimeout> | undefined;
-    return (...args: Parameters<T>) => {
+    return (...args: TArgs) => {
         clearTimeout(timeout);
         timeout = setTimeout(() => func(...args), wait);
     };

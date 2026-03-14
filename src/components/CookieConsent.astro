@@ -26,32 +26,7 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
   </div>
 </div>
 
-<script is:inline>
-  (function() {
-    var consent = localStorage.getItem('analytics-consent');
-
-    // Show consent banner if user hasn't chosen yet
-    if (consent === null) {
-      var banner = document.getElementById('cookie-consent');
-      if (banner) banner.hidden = false;
-    }
-
-    var acceptBtn = document.getElementById('cookie-accept');
-    var declineBtn = document.getElementById('cookie-decline');
-
-    if (acceptBtn) {
-      acceptBtn.addEventListener('click', function() {
-        localStorage.setItem('analytics-consent', 'granted');
-        document.getElementById('cookie-consent').hidden = true;
-        gtag('consent', 'update', { analytics_storage: 'granted' });
-      });
-    }
-
-    if (declineBtn) {
-      declineBtn.addEventListener('click', function() {
-        localStorage.setItem('analytics-consent', 'denied');
-        document.getElementById('cookie-consent').hidden = true;
-      });
-    }
-  })();
+<script>
+  import { initCookieConsent } from '../scripts/features/layout/cookie-consent';
+  initCookieConsent();
 </script>

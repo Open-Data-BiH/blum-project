@@ -2,6 +2,7 @@
 // Leaflet CSS is loaded here so it's scoped to pages that use this component.
 // The JS is loaded client-side in the script block at the end of this component.
 import 'leaflet/dist/leaflet.css';
+import '../styles/pages/_map-legend.scss';
 import MapContainer from './map/MapContainer.astro';
 ---
 
@@ -68,6 +69,19 @@ import MapContainer from './map/MapContainer.astro';
 </div>
 
 <script>
-  import { initAirportMap } from '../scripts/features/airport/airport-map';
-  initAirportMap();
+  const airportMapEl = document.getElementById('airport-map');
+  if (airportMapEl) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          observer.disconnect();
+          import('../scripts/features/airport/airport-map').then(({ initAirportMap }) => {
+            initAirportMap();
+          });
+        }
+      },
+      { rootMargin: '300px' },
+    );
+    observer.observe(airportMapEl);
+  }
 </script>

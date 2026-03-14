@@ -1,4 +1,5 @@
 ---
+import '../styles/pages/_faq.scss';
 import faqData from '../../public/data/transport/faq.json';
 
 interface Question {
@@ -55,6 +56,19 @@ const { categories } = faqData as { categories: Category[] };
 </div>
 
 <script>
-  import { initFAQAccordion } from '../scripts/features/faq/faq-accordion';
-  initFAQAccordion();
+  const faqEl = document.getElementById('faq-content');
+  if (faqEl) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          observer.disconnect();
+          import('../scripts/features/faq/faq-accordion').then(({ initFAQAccordion }) => {
+            initFAQAccordion();
+          });
+        }
+      },
+      { rootMargin: '300px' },
+    );
+    observer.observe(faqEl);
+  }
 </script>

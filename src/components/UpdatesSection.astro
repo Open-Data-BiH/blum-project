@@ -1,4 +1,5 @@
 ---
+import '../styles/pages/_updates.scss';
 import updatesData from '../../public/data/transport/updates.json';
 
 interface Category {
@@ -159,6 +160,19 @@ const { categories, updates } = updatesData as { categories: Category[]; updates
 </div>
 
 <script>
-  import { initUpdatesFilter } from '../scripts/features/updates/updates-filter';
-  initUpdatesFilter();
+  const updatesSectionEl = document.getElementById('updates-section');
+  if (updatesSectionEl) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          observer.disconnect();
+          import('../scripts/features/updates/updates-filter').then(({ initUpdatesFilter }) => {
+            initUpdatesFilter();
+          });
+        }
+      },
+      { rootMargin: '300px' },
+    );
+    observer.observe(updatesSectionEl);
+  }
 </script>

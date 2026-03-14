@@ -5,6 +5,7 @@
  * client-side lines-ui.ts can filter without any extra fetch.
  */
 
+import '../../styles/pages/_line-styles.scss';
 import type { ProcessedLine } from '../../types/lines';
 
 interface Props {
@@ -243,6 +244,19 @@ const lang = 'bhs'; // SSR default; JS will re-render count on languageChanged
 </div>
 
 <script>
-  import { initializeLinesEventListeners } from '../../scripts/features/lines/lines-ui';
-  initializeLinesEventListeners();
+  const linesSectionEl = document.getElementById('simplified-lines');
+  if (linesSectionEl) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          observer.disconnect();
+          import('../../scripts/features/lines/lines-ui').then(({ initializeLinesEventListeners }) => {
+            initializeLinesEventListeners();
+          });
+        }
+      },
+      { rootMargin: '500px' },
+    );
+    observer.observe(linesSectionEl);
+  }
 </script>

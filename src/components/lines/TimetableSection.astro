@@ -3,6 +3,7 @@
  * TimetableSection — structural shell only.
  * All data loading and rendering happens client-side via timetable.ts.
  */
+import '../../styles/pages/_timetables.scss';
 ---
 
 <section class="section section--wide" id="timetable">
@@ -17,6 +18,19 @@
 </section>
 
 <script>
-  import { setupTimetableSelection } from '../../scripts/features/lines/timetable';
-  setupTimetableSelection();
+  const timetableEl = document.getElementById('timetable');
+  if (timetableEl) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          observer.disconnect();
+          import('../../scripts/features/lines/timetable').then(({ setupTimetableSelection }) => {
+            setupTimetableSelection();
+          });
+        }
+      },
+      { rootMargin: '400px' },
+    );
+    observer.observe(timetableEl);
+  }
 </script>

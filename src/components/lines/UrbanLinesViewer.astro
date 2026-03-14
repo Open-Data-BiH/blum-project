@@ -10,6 +10,19 @@ import MapContainer from '../map/MapContainer.astro';
 <MapContainer mapId="urban-lines-viewer" className="urban-lines-map" />
 
 <script>
-  import { initUrbanLinesViewer } from '../../scripts/urban-lines-viewer';
-  initUrbanLinesViewer();
+  const viewerEl = document.getElementById('urban-lines-viewer');
+  if (viewerEl) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          observer.disconnect();
+          import('../../scripts/urban-lines-viewer').then(({ initUrbanLinesViewer }) => {
+            initUrbanLinesViewer();
+          });
+        }
+      },
+      { rootMargin: '400px' },
+    );
+    observer.observe(viewerEl);
+  }
 </script>

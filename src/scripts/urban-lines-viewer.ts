@@ -2,9 +2,7 @@
 // Key change: window.L replaced with import L from 'leaflet'
 
 import L from 'leaflet';
-
-const BASE_URL = import.meta.env.BASE_URL;
-const withBase = (path: string): string => `${BASE_URL}${path.replace(/^\/+/, '')}`;
+import { withBase } from './core/utils';
 
 const VIEWER_CONFIG = {
     IMAGE_URL: withBase('assets/images/gradski-prevoz-mapa-banja-luka.webp'),

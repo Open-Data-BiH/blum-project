@@ -1,16 +1,9 @@
 // Shared types for homepage map data
 
-export type LanguageKey = 'bhs' | 'en';
+import type { BilingualString } from '../../../types/lines';
 
-export interface LegendLabel {
-    bhs: string;
-    en: string;
-}
-
-export interface LocalizedText {
-    bhs: string;
-    en: string;
-}
+export type LegendLabel = BilingualString;
+export type LocalizedText = BilingualString;
 
 export interface BaseMapConfig {
     id: string;

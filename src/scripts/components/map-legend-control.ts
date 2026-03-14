@@ -1,18 +1,11 @@
 import type { Control, LayerGroup, Map, TileLayer } from 'leaflet';
 import { getCurrentLanguage } from '../core/i18n';
+import { escapeHtml } from '../core/utils';
 import type { BaseMapConfig, LegendConfig, OverlayLayerConfig, OverlayLayerId } from '../features/map/types';
 
 type LeafletNS = typeof import('leaflet');
 type BaseLayers = Record<string, TileLayer>;
 type OverlayLayers = Record<OverlayLayerId, LayerGroup>;
-
-const escapeHtml = (value: string): string =>
-    value
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
 
 export class MapLegendControl {
     private controlContainer: HTMLElement | null = null;

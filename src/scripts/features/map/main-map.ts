@@ -9,8 +9,8 @@ import type {
     Polyline,
     TileLayer,
 } from 'leaflet';
-import { getCurrentLanguage } from '../../core/i18n';
-import { debounce } from '../../core/utils';
+import { getCurrentLanguage, langText } from '../../core/i18n';
+import { debounce, escapeHtml, withBase } from '../../core/utils';
 import { MapLegendControl } from '../../components/map-legend-control';
 import { GeolocationService } from './geolocation';
 import {
@@ -35,8 +35,6 @@ import type {
 } from './types';
 
 type LeafletNS = typeof import('leaflet');
-const BASE_URL = import.meta.env.BASE_URL;
-const withBase = (path: string): string => `${BASE_URL}${path.replace(/^\/+/, '')}`;
 
 const MAP_CONFIG = {
     CENTER: [44.7866, 17.1975] as LatLngExpression,
@@ -107,16 +105,6 @@ const ensureNotificationRegion = (): HTMLElement => {
 };
 
 let notificationTimer: number | null = null;
-
-const langText = (bhs: string, en: string): string => (getCurrentLanguage() === 'en' ? en : bhs);
-
-const escapeHtml = (value: string): string =>
-    value
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
 
 const compareLineIds = (a: string, b: string): number => {
     const aNum = parseInt(a.replace(/[^\d]/g, ''), 10);

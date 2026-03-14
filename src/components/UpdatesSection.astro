@@ -1,26 +1,7 @@
 ---
 import '../styles/pages/_updates.scss';
 import updatesData from '../../public/data/transport/updates.json';
-
-interface Category {
-  id: string;
-  icon: string;
-  label: { bhs: string; en: string };
-}
-
-interface Update {
-  id: string;
-  type: string;
-  severity: 'info' | 'warning' | 'urgent';
-  title: { bhs: string; en: string };
-  description: { bhs: string; en: string };
-  affectedLines: string[];
-  datePublished: string;
-  dateExpiry: string | null;
-  isActive: boolean;
-  source: string;
-  sourceUrl: string;
-}
+import type { Category, Update } from '../types/updates';
 
 const { categories, updates } = updatesData as { categories: Category[]; updates: Update[] };
 ---

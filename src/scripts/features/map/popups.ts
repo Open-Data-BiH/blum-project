@@ -1,25 +1,13 @@
 // Popup template helpers for map overlays
 
-import { getCurrentLanguage } from '../../core/i18n';
+import { getCurrentLanguage, langText } from '../../core/i18n';
+import { escapeHtml, withBase } from '../../core/utils';
 import type { Landmark, LocalizedText, TransportHub } from './types';
 
 export interface NearbyStopSummary {
     name: string;
     distanceKm: number;
 }
-
-const BASE_URL = import.meta.env.BASE_URL;
-const withBase = (path: string): string => `${BASE_URL}${path.replace(/^\/+/, '')}`;
-
-const escapeHtml = (value: string): string =>
-    value
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-
-const langText = (bhs: string, en: string): string => (getCurrentLanguage() === 'en' ? en : bhs);
 
 const localizedField = (value: string | LocalizedText | undefined): string => {
     if (!value) {

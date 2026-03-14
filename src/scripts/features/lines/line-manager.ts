@@ -1,11 +1,8 @@
 // Line manager — ported from js/features/lines/line-manager.js
 // Key changes: FetchHelper replaced with fetch().then(r => r.json()), TypeScript types added
 
-import { sortLinesByID } from '../../core/utils';
+import { sortLinesByID, withBase } from '../../core/utils';
 import type { CompanyOwnership, Line } from '../../../types/lines';
-
-const BASE_URL = import.meta.env.BASE_URL;
-const withBase = (path: string): string => `${BASE_URL}${path.replace(/^\/+/, '')}`;
 
 export interface LineConfig {
     enabled: boolean;

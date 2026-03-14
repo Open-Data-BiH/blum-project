@@ -460,6 +460,8 @@ export const setupLanguageSwitcher = (): void => {
 export const getCurrentLanguage = (): Language => currentLang;
 export const getTranslations = (): Record<string, any> => translations;
 
+export const langText = (bhs: string, en: string): string => (currentLang === 'en' ? en : bhs);
+
 // Namespaced export kept for compatibility with feature modules that use AppI18n
 export const AppI18n = {
     get currentLang() {

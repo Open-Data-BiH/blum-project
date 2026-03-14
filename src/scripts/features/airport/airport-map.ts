@@ -2,11 +2,8 @@
 // Uses Leaflet to show two shuttle stop markers on a CARTO basemap.
 
 import type { Map, LatLngBoundsExpression, FitBoundsOptions, PointExpression } from 'leaflet';
-import { getCurrentLanguage } from '../../core/i18n';
-
-const langText = (bhs: string, en: string): string => (getCurrentLanguage() === 'en' ? en : bhs);
-const BASE_URL = import.meta.env.BASE_URL;
-const withBase = (path: string): string => `${BASE_URL}${path.replace(/^\/+/, '')}`;
+import { langText } from '../../core/i18n';
+import { withBase } from '../../core/utils';
 
 export async function initAirportMap(): Promise<void> {
     const container = document.getElementById('airport-map');

@@ -9,11 +9,12 @@
    ========================================================================== */
 
 .map-legend-control {
-    position: absolute;
-    top: 12px;
-    right: 12px;
     z-index: var(--z-dropdown, 1000);
     pointer-events: auto;
+}
+
+.leaflet-top.leaflet-right .map-legend-control {
+    margin: 12px 12px 0 0;
 }
 
 .map-legend {
@@ -112,7 +113,7 @@
     padding-top: 0.625rem;
 }
 
-.map-legend__section + .map-legend__section {
+.map-legend__section+.map-legend__section {
     margin-top: 0.5rem;
     border-top: 1px solid var(--border-subtle, rgba(15, 23, 42, 0.08));
 }
@@ -238,11 +239,11 @@
     background: var(--surface-2, #ffffff);
 }
 
-.map-legend__radio:checked + .map-legend__radio-visual {
+.map-legend__radio:checked+.map-legend__radio-visual {
     border-color: var(--accent, #1a4d73);
 }
 
-.map-legend__radio:checked + .map-legend__radio-visual::after {
+.map-legend__radio:checked+.map-legend__radio-visual::after {
     content: '';
     position: absolute;
     top: 50%;
@@ -254,7 +255,7 @@
     border-radius: var(--radius-full, 9999px);
 }
 
-.map-legend__radio:focus + .map-legend__radio-visual {
+.map-legend__radio:focus+.map-legend__radio-visual {
     outline: 2px solid var(--accent, #1a4d73);
     outline-offset: 2px;
 }
@@ -276,7 +277,7 @@
     background: var(--surface-2, #ffffff);
 }
 
-.map-legend__checkbox:checked + .map-legend__checkbox-visual {
+.map-legend__checkbox:checked+.map-legend__checkbox-visual {
     background: var(--accent, #1a4d73);
     border-color: var(--accent, #1a4d73);
 }
@@ -288,11 +289,11 @@
     transition: opacity var(--transition-fast, 150ms ease-in-out);
 }
 
-.map-legend__checkbox:checked + .map-legend__checkbox-visual i {
+.map-legend__checkbox:checked+.map-legend__checkbox-visual i {
     opacity: 1;
 }
 
-.map-legend__checkbox:focus + .map-legend__checkbox-visual {
+.map-legend__checkbox:focus+.map-legend__checkbox-visual {
     outline: 2px solid var(--accent, #1a4d73);
     outline-offset: 2px;
 }
@@ -345,8 +346,10 @@
     text-align: center;
 }
 
-.map-legend--collapsed {
+.map-legend.map-legend--collapsed {
     width: auto;
+    width: fit-content;
+    max-width: calc(100vw - 20px);
 }
 
 .map-legend--collapsed .map-legend__body {
@@ -362,9 +365,8 @@
         width: 220px;
     }
 
-    .map-legend-control {
-        top: 10px;
-        right: 10px;
+    .leaflet-top.leaflet-right .map-legend-control {
+        margin: 10px 10px 0 0;
     }
 
     .map-legend__toggle {
@@ -413,9 +415,8 @@
         width: min(210px, calc(100vw - 20px));
     }
 
-    .map-legend-control {
-        top: 8px;
-        right: 8px;
+    .leaflet-top.leaflet-right .map-legend-control {
+        margin: 8px 8px 0 0;
     }
 
     .map-legend__body {
@@ -433,14 +434,7 @@
     }
 
     .map-legend--collapsed .map-legend__toggle {
-        min-width: 2.5rem;
-        justify-content: center;
-        padding: 0.5rem;
-    }
-
-    .map-legend--collapsed .map-legend__title,
-    .map-legend--collapsed .map-legend__toggle-chevron {
-        display: none;
+        padding: 0.5rem 0.625rem;
     }
 }
 
@@ -470,7 +464,7 @@
     border-top-color: var(--border-subtle, rgba(255, 255, 255, 0.06));
 }
 
-[data-theme='dark'] .map-legend__section + .map-legend__section {
+[data-theme='dark'] .map-legend__section+.map-legend__section {
     border-top-color: var(--border-subtle, rgba(255, 255, 255, 0.06));
 }
 
@@ -515,15 +509,15 @@
     border-color: var(--border-strong, rgba(255, 255, 255, 0.12));
 }
 
-[data-theme='dark'] .map-legend__radio:checked + .map-legend__radio-visual {
+[data-theme='dark'] .map-legend__radio:checked+.map-legend__radio-visual {
     border-color: var(--accent, #2b6ea8);
 }
 
-[data-theme='dark'] .map-legend__radio:checked + .map-legend__radio-visual::after {
+[data-theme='dark'] .map-legend__radio:checked+.map-legend__radio-visual::after {
     background: var(--accent, #2b6ea8);
 }
 
-[data-theme='dark'] .map-legend__checkbox:checked + .map-legend__checkbox-visual {
+[data-theme='dark'] .map-legend__checkbox:checked+.map-legend__checkbox-visual {
     background: var(--accent, #2b6ea8);
     border-color: var(--accent, #2b6ea8);
 }
@@ -545,6 +539,7 @@
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
+
     .map-legend,
     .map-legend__option,
     .map-legend__toggle,

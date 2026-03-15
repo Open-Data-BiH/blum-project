@@ -1,9 +1,8 @@
 // Airport map — ported from js/features/map/airport-map.js
 // Uses Leaflet to show two shuttle stop markers on a CARTO basemap.
 
-import type { Map, LatLngBoundsExpression, FitBoundsOptions, PointExpression } from 'leaflet';
+import type { Map, LatLngBoundsExpression, FitBoundsOptions, PointExpression, PopupOptions } from 'leaflet';
 import { langText } from '../../core/i18n';
-import { withBase } from '../../core/utils';
 
 export async function initAirportMap(): Promise<void> {
     const container = document.getElementById('airport-map');
@@ -47,21 +46,80 @@ export async function initAirportMap(): Promise<void> {
             iconAnchor: [15, 15],
         });
 
+        const createAirportMapPopup = (
+            label: { bhs: string; en: string },
+            title: { bhs: string; en: string },
+            details: Array<{ icon: string; bhs: string; en: string }>,
+            action?: { href: string; bhs: string; en: string; external?: boolean },
+        ): string => {
+            const detailRows = details
+                .map(
+                    ({ icon, bhs, en }) => `
+                        <li class="hub-popup__item">
+                            <i class="${icon} hub-popup__item-icon" aria-hidden="true"></i>
+                            <span class="hub-popup__item-text">${langText(bhs, en)}</span>
+                        </li>`,
+                )
+                .join('');
+
+            const actionMarkup = action
+                ? `
+                    <a href="${action.href}" ${action.external ? 'target="_blank" rel="noopener noreferrer"' : ''} class="popup-link popup-link--airport">
+                        <span>${langText(action.bhs, action.en)}</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                    </a>`
+                : '';
+
+            return `
+                <div class="hub-popup hub-popup--airport">
+                    <p class="hub-popup__eyebrow">${langText(label.bhs, label.en)}</p>
+                    <h3 class="hub-popup__title">${langText(title.bhs, title.en)}</h3>
+                    <ul class="hub-popup__details">${detailRows}</ul>
+                    ${actionMarkup}
+                </div>`;
+        };
+
         const createOldStationPopup = (): string => `
-            <div class="hub-popup">
-                <h3>${langText('Stajalište aerodromskog shuttle-a - Stara autobuska stanica', 'Airport Shuttle Stop - Old Bus Station')}</h3>
-                <p>${langText('Dostupan parking uz naplatu', 'Paid parking available')}</p>
-                <p>${langText('Karte se kupuju u autobusu', 'Tickets are available on the bus')}</p>
-                <a href="${withBase('airport/#airport')}" class="popup-link">${langText('Informacije o aerodromskom prevozu', 'Airport Transfer Info')}</a>
-            </div>`;
+            ${createAirportMapPopup(
+                { bhs: 'Aerodromski shuttle', en: 'Airport shuttle' },
+                {
+                    bhs: 'Stajalište aerodromskog shuttle-a - Stara autobuska stanica',
+                    en: 'Airport Shuttle Stop - Old Bus Station',
+                },
+                [
+                    {
+                        icon: 'fa-solid fa-square-parking',
+                        bhs: 'Dostupan parking uz naplatu',
+                        en: 'Paid parking available',
+                    },
+                    {
+                        icon: 'fa-solid fa-ticket',
+                        bhs: 'Karte se kupuju u autobusu',
+                        en: 'Tickets are available on the bus',
+                    },
+                ],
+            )}`;
 
         const createMainStationPopup = (): string => `
-            <div class="hub-popup">
-                <h3>${langText('Stajalište aerodromskog shuttle-a - Glavna autobuska stanica', 'Airport Shuttle Stop - Main Bus Station')}</h3>
-                <p>${langText('Dostupan parking uz naplatu', 'Paid parking available')}</p>
-                <p>${langText('Karte se kupuju u autobusu', 'Tickets are available on the bus')}</p>
-                <a href="${withBase('airport/#airport')}" class="popup-link">${langText('Informacije o aerodromskom prevozu', 'Airport Transfer Info')}</a>
-            </div>`;
+            ${createAirportMapPopup(
+                { bhs: 'Aerodromski shuttle', en: 'Airport shuttle' },
+                {
+                    bhs: 'Stajalište aerodromskog shuttle-a - Glavna autobuska stanica',
+                    en: 'Airport Shuttle Stop - Main Bus Station',
+                },
+                [
+                    {
+                        icon: 'fa-solid fa-square-parking',
+                        bhs: 'Dostupan parking uz naplatu',
+                        en: 'Paid parking available',
+                    },
+                    {
+                        icon: 'fa-solid fa-ticket',
+                        bhs: 'Karte se kupuju u autobusu',
+                        en: 'Tickets are available on the bus',
+                    },
+                ],
+            )}`;
 
         const airportIcon = L.divIcon({
             html: `<i class="fa-solid fa-plane fa-icon-marker" style="color:#c41e1e;"></i>`,
@@ -71,25 +129,45 @@ export async function initAirportMap(): Promise<void> {
         });
 
         const createAirportPopup = (): string => `
-            <div class="hub-popup">
-                <h3>${langText('Međunarodni aerodrom Banja Luka (BNX)', 'Banja Luka International Airport (BNX)')}</h3>
-                <p>${langText('Mahovljani, ~25 km od centra grada', 'Mahovljani, ~25 km from city center')}</p>
-                <a href="https://bnx.aero/" target="_blank" rel="noopener noreferrer" class="popup-link">${langText('Internet stranica aerodroma', 'Airport website')}</a>
-            </div>`;
+            ${createAirportMapPopup(
+                { bhs: 'Aerodrom', en: 'Airport' },
+                {
+                    bhs: 'Međunarodni aerodrom Banja Luka (BNX)',
+                    en: 'Banja Luka International Airport (BNX)',
+                },
+                [
+                    {
+                        icon: 'fa-solid fa-location-dot',
+                        bhs: 'Mahovljani, ~25 km od centra grada',
+                        en: 'Mahovljani, ~25 km from city center',
+                    },
+                ],
+                {
+                    href: 'https://bnx.aero/',
+                    bhs: 'Internet stranica aerodroma',
+                    en: 'Airport website',
+                    external: true,
+                },
+            )}`;
+
+        const airportPopupOptions: PopupOptions = {
+            className: 'airport-map-popup',
+        };
 
         const popupTopPadding: PointExpression = [24, 120];
         const popupSidePadding: PointExpression = [24, 24];
 
         const oldStationMarker = L.marker([44.7722, 17.191], { icon: shuttleIcon })
-            .bindPopup(createOldStationPopup)
+            .bindPopup(createOldStationPopup, airportPopupOptions)
             .addTo(map);
 
         const mainStationMarker = L.marker([44.788, 17.21], { icon: shuttleIcon })
-            .bindPopup(createMainStationPopup)
+            .bindPopup(createMainStationPopup, airportPopupOptions)
             .addTo(map);
 
         const airportMarker = L.marker([44.9338, 17.304], { icon: airportIcon })
             .bindPopup(createAirportPopup, {
+                ...airportPopupOptions,
                 autoPan: true,
                 keepInView: true,
                 autoPanPaddingTopLeft: popupTopPadding,

@@ -82,7 +82,7 @@
             },
             "icon": "fa-route",
             "color": "#57bd6d",
-            "defaultVisible": true
+            "defaultVisible": false
         },
         {
             "id": "bikeStations",

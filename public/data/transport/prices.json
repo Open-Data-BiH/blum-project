@@ -2,24 +2,24 @@
     "en": {
         "ticketTypes": {
             "single": {
-                "name": "Single ticket (on bus)",
-                "description": "Purchased directly on the bus",
+                "name": "Single ticket",
+                "description": "Purchased directly on the bus. Valid for a single ride.",
                 "price": 2.3
             },
             "singleInSet": {
-                "name": "Single ticket (sales point)",
-                "description": "Purchased at operator's sales points",
-                "price": 1.94
+                "name": "Set of 5 single tickets",
+                "description": "Available on the bus or at ticket sales points.",
+                "price": 9.7
             },
             "daily": {
                 "name": "Daily ticket",
-                "description": "Valid for one day on all urban lines",
+                "description": "Available at ticket sales points. Valid for one day on all city lines.",
                 "price": 7.1
             },
             "monthlyGroup": {
                 "name": "Monthly tickets by groups",
                 "workers": {
-                    "name": "Worker monthly ticket",
+                    "name": "Employee monthly ticket",
                     "price": 57.0
                 },
                 "students": {
@@ -34,7 +34,7 @@
             "monthlyUnified": {
                 "name": "Unified monthly tickets (all groups)",
                 "workers": {
-                    "name": "Unified worker monthly ticket",
+                    "name": "Unified employee monthly ticket",
                     "price": 78.0
                 },
                 "students": {
@@ -48,26 +48,26 @@
             }
         },
         "labels": {
-            "ticketTypes": "Ticket Type",
+            "ticketTypes": "Ticket type",
             "price": "Price",
-            "km": "KM"
+            "km": "currency - KM"
         }
     },
     "bhs": {
         "ticketTypes": {
             "single": {
                 "name": "Pojedinačna karta",
-                "description": "Kupuje se direktno u autobusu",
+                "description": "Kupuje se direktno u autobusu. Važi za jednu vožnju.",
                 "price": 2.3
             },
             "singleInSet": {
-                "name": "Set od 5 pojedinačnih karti",
-                "description": "Kupuje se direktno u autobusu ili na prodajnim mjestima prevoznika",
+                "name": "Blok od 5 pojedinačnih karata",
+                "description": "Kupuje se direktno u autobusu ili na prodajnim mjestima prevoznika.",
                 "price": 9.7
             },
             "daily": {
                 "name": "Dnevna karta",
-                "description": "Važi za jedan dan na svim gradskim linijama",
+                "description": "Kupuje se na prodajnim mjestima prevoznika. Važi jedan dan na svim gradskim linijama.",
                 "price": 7.1
             },
             "monthlyGroup": {

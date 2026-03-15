@@ -488,16 +488,19 @@ const breadcrumbSchema = {
                     <div class="ldp-day-tabs" role="tablist" aria-label="Tip dana / Day type">
                       {dayTabs.map((day) => {
                         const dayAvailable = direction.dayAvailability[day.key];
-                        const isDefaultDay = direction.defaultDay === day.key;
+                        const isDefaultDay = dayAvailable && direction.defaultDay === day.key;
+                        const noServiceHint = `${day.bhs}: linija ne saobraća / ${day.en}: line does not operate`;
 
                         return (
                           <button
-                            class:list={['ldp-day-tab', dayAvailable && isDefaultDay && 'is-active']}
+                            class:list={['ldp-day-tab', isDefaultDay && 'is-active', !dayAvailable && 'is-unavailable']}
                             type="button"
                             role="tab"
                             data-day-target={day.key}
-                            aria-selected={dayAvailable && isDefaultDay ? 'true' : 'false'}
-                            disabled={!dayAvailable}
+                            data-day-available={dayAvailable ? 'true' : 'false'}
+                            aria-selected={isDefaultDay ? 'true' : 'false'}
+                            title={!dayAvailable ? noServiceHint : undefined}
+                            aria-label={!dayAvailable ? noServiceHint : undefined}
                           >
                             <span data-lang="bhs">{day.bhs}</span>
                             <span data-lang="en" style="display:none">{day.en}</span>
@@ -563,10 +566,17 @@ const breadcrumbSchema = {
                                 ))}
                               </div>
                             ) : (
-                              <p class="ldp-empty">
-                                <span data-lang="bhs">Nema dostupnih polazaka za izabrani dan.</span>
-                                <span data-lang="en" style="display:none">No departures available for the selected day.</span>
-                              </p>
+                              <div class="no-service-message ldp-no-service-message" role="status">
+                                <i class="fas fa-ban" aria-hidden="true"></i>
+                                <strong>
+                                  <span data-lang="bhs">Linija ne saobraća ovaj dan</span>
+                                  <span data-lang="en" style="display:none">Line does not operate on this day</span>
+                                </strong>
+                                <p>
+                                  <span data-lang="bhs">Izaberite drugi dan za prikaz dostupnih polazaka.</span>
+                                  <span data-lang="en" style="display:none">Choose another day to see available departures.</span>
+                                </p>
+                              </div>
                             )}
                           </div>
                         );
@@ -644,19 +654,6 @@ const breadcrumbSchema = {
               )}
             </article>
           ))}
-        </div>
-
-        <div class="ldp-cta">
-          <a href="/lines/#timetable" class="btn btn--primary">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span data-lang="bhs">Interaktivni red vožnje</span>
-            <span data-lang="en" style="display:none">Interactive timetable</span>
-          </a>
-          <a href="/lines/" class="btn btn--secondary">
-            <i class="fas fa-list" aria-hidden="true"></i>
-            <span data-lang="bhs">Sve linije</span>
-            <span data-lang="en" style="display:none">All lines</span>
-          </a>
         </div>
       </section>
     </div>

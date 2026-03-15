@@ -288,6 +288,67 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
     const directions = timetable.directions;
     const directionAId = timetable.lineId + 'a';
     const directionBId = timetable.lineId + 'b';
+    const dayTypes: ('weekday' | 'saturday' | 'sunday')[] = ['weekday', 'saturday', 'sunday'];
+    const directionIds = [directionAId, directionBId];
+    const dayLabelByType = {
+        weekday: weekdayLabel,
+        saturday: saturdayLabel,
+        sunday: sundayHolidayFull,
+    };
+    const noServiceTitleText = lang === 'bhs' ? 'Linija ne saobraća ovaj dan' : 'Line does not operate on this day';
+    const noServiceBodyPrefix = lang === 'bhs' ? 'Nema planiranih polazaka za' : 'No departures are scheduled for';
+    const noServiceLabelSuffix = lang === 'bhs' ? ' - linija ne saobraća ovaj dan' : ' - line does not operate on this day';
+    const noServiceHintText = lang === 'bhs' ? 'linija ne saobraća' : 'line does not operate';
+
+    type Departure = { timeStr: string; note: string | null };
+    const departuresByView: Record<string, Departure[]> = {};
+
+    const collectDepartures = (dayType: 'weekday' | 'saturday' | 'sunday', dirIndex: number): Departure[] => {
+        const seen = new Set<string>();
+        const allDepartures: Departure[] = [];
+        const reducedKey = `${dayType}Reduced` as keyof (typeof timetable.stations)[0]['times'];
+
+        timetable.stations.forEach((station) => {
+            const reduced = showingReduced ? station.times[reducedKey] : undefined;
+            const stationTimes = (reduced ?? station.times[dayType])[dirIndex] ?? [];
+            stationTimes.forEach((t) => {
+                const timeStr = typeof t === 'string' ? t : t.time;
+                const note = typeof t === 'string' ? null : t.note;
+                const key = note ? `${timeStr}|${note}` : timeStr;
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    allDepartures.push({ timeStr, note });
+                }
+            });
+        });
+
+        allDepartures.sort((a, b) => a.timeStr.localeCompare(b.timeStr));
+        return allDepartures;
+    };
+
+    dayTypes.forEach((dayType) => {
+        directionIds.forEach((_, dirIndex) => {
+            departuresByView[`${dayType}-${dirIndex}`] = collectDepartures(dayType, dirIndex);
+        });
+    });
+
+    const dayHasService = {
+        weekday: directionIds.some((_, dirIndex) => departuresByView[`weekday-${dirIndex}`].length > 0),
+        saturday: directionIds.some((_, dirIndex) => departuresByView[`saturday-${dirIndex}`].length > 0),
+        sunday: directionIds.some((_, dirIndex) => departuresByView[`sunday-${dirIndex}`].length > 0),
+    };
+    const startDayType = todayDayType;
+    const buildDayButton = (
+        dayType: 'weekday' | 'saturday' | 'sunday',
+        labelHtml: string,
+        fullLabel: string,
+    ): string => {
+        const hasService = dayHasService[dayType];
+        const buttonClass = `day-btn${startDayType === dayType ? ' active' : ''}${!hasService ? ' is-unavailable' : ''}`;
+        const dayAriaLabel = hasService ? fullLabel : `${fullLabel}${noServiceLabelSuffix}`;
+        const titleAttr = hasService ? '' : ` title="${escapeHTML(`${fullLabel}: ${noServiceHintText}`)}"`;
+        return `<button class="${buttonClass}" data-day="${dayType}" data-has-service="${hasService}" aria-pressed="${startDayType === dayType}" aria-label="${escapeHTML(dayAriaLabel)}"${titleAttr}>${labelHtml}</button>`;
+    };
 
     let html = `
     <div class="timetable-controls">
@@ -308,9 +369,13 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
         <div class="day-toggle">
           <p id="day-label" class="timetable-control-label">${timetableForLabelText}</p>
           <div class="day-buttons" role="group" aria-labelledby="day-label">
-            <button class="day-btn${todayDayType === 'weekday' ? ' active' : ''}" data-day="weekday" aria-pressed="${todayDayType === 'weekday'}" aria-label="${weekdayLabel}">${weekdayLabel}</button>
-            <button class="day-btn${todayDayType === 'saturday' ? ' active' : ''}" data-day="saturday" aria-pressed="${todayDayType === 'saturday'}" aria-label="${saturdayLabel}">${saturdayLabel}</button>
-            <button class="day-btn${todayDayType === 'sunday' ? ' active' : ''}" data-day="sunday" aria-pressed="${todayDayType === 'sunday'}" aria-label="${sundayHolidayFull}"><span class="day-label-full">${sundayHolidayFull}</span><span class="day-label-short">${sundayHolidayShort}</span></button>
+            ${buildDayButton('weekday', escapeHTML(weekdayLabel), weekdayLabel)}
+            ${buildDayButton('saturday', escapeHTML(saturdayLabel), saturdayLabel)}
+            ${buildDayButton(
+                'sunday',
+                `<span class="day-label-full">${escapeHTML(sundayHolidayFull)}</span><span class="day-label-short">${escapeHTML(sundayHolidayShort)}</span>`,
+                sundayHolidayFull,
+            )}
           </div>
         </div>
       </div>
@@ -345,13 +410,24 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
 
     html += `<div class="timetable-container">`;
 
-    const dayTypes: ('weekday' | 'saturday' | 'sunday')[] = ['weekday', 'saturday', 'sunday'];
-    const directionIds = [directionAId, directionBId];
-
     dayTypes.forEach((dayType) => {
         directionIds.forEach((direction, dirIndex) => {
-            const isActive = dayType === todayDayType && dirIndex === 0 ? '' : 'style="display: none;"';
+            const isActive = dayType === startDayType && dirIndex === 0 ? '' : 'style="display: none;"';
             const tableId = `timetable-${dayType}-${direction}`;
+            const allDepartures = departuresByView[`${dayType}-${dirIndex}`];
+
+            if (allDepartures.length === 0) {
+                html += `
+        <div class="timetable-view" id="${tableId}" ${isActive}>
+          <div class="no-service-message" role="status" aria-live="polite">
+            <i class="fas fa-ban" aria-hidden="true"></i>
+            <strong>${noServiceTitleText}</strong>
+            <p>${noServiceBodyPrefix} ${escapeHTML(dayLabelByType[dayType])}.</p>
+          </div>
+        </div>
+      `;
+                return;
+            }
 
             html += `
         <div class="timetable-view" id="${tableId}" ${isActive}>
@@ -359,25 +435,6 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
             <thead><tr><th>${hourLabel}</th><th>${minutesLabel}</th></tr></thead>
             <tbody>
       `;
-
-            type Departure = { timeStr: string; note: string | null };
-            const seen = new Set<string>();
-            const allDepartures: Departure[] = [];
-            const reducedKey = `${dayType}Reduced` as keyof (typeof timetable.stations)[0]['times'];
-            timetable.stations.forEach((station) => {
-                const reduced = showingReduced ? station.times[reducedKey] : undefined;
-                const stationTimes = (reduced ?? station.times[dayType])[dirIndex];
-                stationTimes.forEach((t) => {
-                    const timeStr = typeof t === 'string' ? t : t.time;
-                    const note = typeof t === 'string' ? null : t.note;
-                    const key = note ? `${timeStr}|${note}` : timeStr;
-                    if (!seen.has(key)) {
-                        seen.add(key);
-                        allDepartures.push({ timeStr, note });
-                    }
-                });
-            });
-            allDepartures.sort((a, b) => a.timeStr.localeCompare(b.timeStr));
 
             const departuresByHour: Record<string, Departure[]> = {};
             allDepartures.forEach(({ timeStr, note }) => {

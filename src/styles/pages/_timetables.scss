@@ -158,6 +158,22 @@
     border-color: var(--accent);
 }
 
+.day-btn.is-unavailable {
+    border-style: dashed;
+    color: var(--text-light);
+}
+
+.day-btn.is-unavailable:hover {
+    background-color: var(--surface-2);
+    color: var(--text-secondary);
+}
+
+.day-btn.is-unavailable.active {
+    background-color: #fff7ed;
+    border-color: #f59e0b;
+    color: #92400e;
+}
+
 /* Responsive day labels: full on desktop, short on mobile */
 .day-label-short {
     display: none;
@@ -542,17 +558,31 @@
    ========================================================================== */
 
 .no-service-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
     text-align: center;
-    padding: var(--space-8);
+    padding: var(--space-8) var(--space-4);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-lg);
+    background: var(--surface-2);
     color: var(--text-secondary);
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .no-service-message i {
-    display: block;
-    font-size: 48px;
-    margin-bottom: var(--space-4);
-    color: var(--text-light);
+    font-size: 28px;
+    color: #92400e;
+}
+
+.no-service-message strong {
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+}
+
+.no-service-message p {
+    margin: 0;
 }
 
 /* ==========================================================================
@@ -787,6 +817,17 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
+[data-theme='dark'] .day-btn.is-unavailable {
+    color: var(--text-light);
+    border-style: dashed;
+}
+
+[data-theme='dark'] .day-btn.is-unavailable.active {
+    background-color: rgba(217, 119, 6, 0.16);
+    border-color: rgba(217, 119, 6, 0.55);
+    color: #fcd6a5;
+}
+
 [data-theme='dark'] .direction-swap-btn {
     background-color: var(--surface-2);
     border-color: var(--border-subtle);
@@ -859,6 +900,15 @@
     color: #ecfff4;
     border-color: #256b43;
     box-shadow: 0 4px 10px rgba(22, 64, 45, 0.36);
+}
+
+[data-theme='dark'] .no-service-message {
+    background: var(--surface-2);
+    border-color: var(--border-subtle);
+}
+
+[data-theme='dark'] .no-service-message i {
+    color: #fbbf24;
 }
 
 /* ==========================================================================

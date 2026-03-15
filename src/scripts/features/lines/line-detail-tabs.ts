@@ -52,10 +52,6 @@ export const initLineDetailTabs = (): void => {
 
         panel.querySelectorAll<HTMLElement>('.ldp-day-tab[data-day-target]').forEach((tab) => {
             tab.addEventListener('click', () => {
-                if (tab.hasAttribute('disabled')) {
-                    return;
-                }
-
                 const targetDay = tab.getAttribute('data-day-target');
                 if (targetDay) {
                     activateDay(panel, targetDay);

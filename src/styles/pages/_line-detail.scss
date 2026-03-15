@@ -287,9 +287,20 @@
     color: var(--color-white);
 }
 
-.ldp-day-tab:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
+.ldp-day-tab.is-unavailable {
+    border-style: dashed;
+    color: var(--text-light);
+}
+
+.ldp-day-tab.is-unavailable:hover {
+    border-color: var(--border-subtle);
+    color: var(--text-secondary);
+}
+
+.ldp-day-tab.is-unavailable.is-active {
+    background: #fff7ed;
+    border-color: #f59e0b;
+    color: #92400e;
 }
 
 .ldp-day-panels {
@@ -484,11 +495,43 @@
     font-size: var(--font-size-sm);
 }
 
-.ldp-cta {
-    margin-top: var(--space-2);
+.ldp-no-service-message {
+    margin: 0;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-md);
+    background: var(--surface-1);
+    padding: var(--space-5) var(--space-4);
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-2);
+}
+
+.ldp-no-service-message i {
+    font-size: 1.35rem;
+    color: #92400e;
+}
+
+.ldp-no-service-message strong {
+    color: var(--text-primary);
+    font-size: var(--font-size-sm);
+}
+
+.ldp-no-service-message p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+[data-theme='dark'] .ldp-day-tab.is-unavailable.is-active {
+    background: rgba(217, 119, 6, 0.16);
+    border-color: rgba(217, 119, 6, 0.55);
+    color: #fcd6a5;
+}
+
+[data-theme='dark'] .ldp-no-service-message i {
+    color: #fbbf24;
 }
 
 /* ==========================================================================

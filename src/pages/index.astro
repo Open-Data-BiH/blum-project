@@ -5,7 +5,7 @@ import HomeUpdatesPreview from '../components/HomeUpdatesPreview.astro';
 
 const baseUrl = import.meta.env.BASE_URL;
 const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
-const heroMapTextureUrl = withBase('assets/images/banja-luka-transport-map.webp');
+const heroNetworkBackgroundUrl = withBase('assets/images/public_transport_network.webp');
 ---
 
 <BaseLayout
@@ -14,7 +14,7 @@ const heroMapTextureUrl = withBase('assets/images/banja-luka-transport-map.webp'
   description="Red vožnje, linije i mapa javnog prevoza u Banjoj Luci. Polasci, stajališta i informacije o gradskom autobusu."
   canonicalUrl="https://blprevoz.com/"
 >
-  <section class="hero" style={`--hero-map-url: url("${heroMapTextureUrl}")`}>
+  <section class="hero" style={`--hero-network-url: url("${heroNetworkBackgroundUrl}")`}>
     <div class="container hero__inner">
       <h1 id="hero-title">BL Prevoz</h1>
       <p class="hero__subtitle" id="hero-subtitle">Informacije za lakše kretanje gradom.</p>

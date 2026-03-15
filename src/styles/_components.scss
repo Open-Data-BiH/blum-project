@@ -14,7 +14,12 @@
     margin: 0 0 var(--space-2);
     text-align: center;
     background:
-        radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0) 64%),
+        radial-gradient(
+            circle at 50% 18%,
+            rgba(255, 255, 255, 0.34) 0%,
+            rgba(255, 255, 255, 0.08) 40%,
+            rgba(255, 255, 255, 0) 64%
+        ),
         linear-gradient(180deg, #d7e3ec 0%, #c8d8e4 100%);
     overflow: hidden;
 }
@@ -29,8 +34,20 @@
     background: var(--hero-map-url) 68% center / 108% auto no-repeat;
     opacity: 0.03;
     filter: grayscale(0.25) blur(2px);
-    -webkit-mask-image: radial-gradient(125% 115% at 72% 50%, #000 34%, rgba(0, 0, 0, 0.92) 56%, rgba(0, 0, 0, 0.52) 74%, transparent 94%);
-    mask-image: radial-gradient(125% 115% at 72% 50%, #000 34%, rgba(0, 0, 0, 0.92) 56%, rgba(0, 0, 0, 0.52) 74%, transparent 94%);
+    -webkit-mask-image: radial-gradient(
+        125% 115% at 72% 50%,
+        #000 34%,
+        rgba(0, 0, 0, 0.92) 56%,
+        rgba(0, 0, 0, 0.52) 74%,
+        transparent 94%
+    );
+    mask-image: radial-gradient(
+        125% 115% at 72% 50%,
+        #000 34%,
+        rgba(0, 0, 0, 0.92) 56%,
+        rgba(0, 0, 0, 0.52) 74%,
+        transparent 94%
+    );
     pointer-events: none;
     z-index: 0;
 }
@@ -153,8 +170,18 @@
 
 [data-theme='dark'] .hero {
     background:
-        radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 34%, rgba(255, 255, 255, 0) 58%),
-        radial-gradient(circle at 76% 48%, rgba(51, 106, 151, 0.2) 0%, rgba(51, 106, 151, 0.08) 26%, rgba(51, 106, 151, 0) 58%),
+        radial-gradient(
+            circle at 50% 18%,
+            rgba(255, 255, 255, 0.08) 0%,
+            rgba(255, 255, 255, 0.02) 34%,
+            rgba(255, 255, 255, 0) 58%
+        ),
+        radial-gradient(
+            circle at 76% 48%,
+            rgba(51, 106, 151, 0.2) 0%,
+            rgba(51, 106, 151, 0.08) 26%,
+            rgba(51, 106, 151, 0) 58%
+        ),
         linear-gradient(180deg, #19354a 0%, #112533 54%, #0c1821 100%);
 }
 
@@ -162,8 +189,20 @@
     opacity: 0.055;
     filter: grayscale(0.34) brightness(0.72) contrast(1.04) blur(2.2px);
     mix-blend-mode: soft-light;
-    -webkit-mask-image: radial-gradient(132% 120% at 74% 50%, #000 30%, rgba(0, 0, 0, 0.92) 52%, rgba(0, 0, 0, 0.52) 72%, transparent 94%);
-    mask-image: radial-gradient(132% 120% at 74% 50%, #000 30%, rgba(0, 0, 0, 0.92) 52%, rgba(0, 0, 0, 0.52) 72%, transparent 94%);
+    -webkit-mask-image: radial-gradient(
+        132% 120% at 74% 50%,
+        #000 30%,
+        rgba(0, 0, 0, 0.92) 52%,
+        rgba(0, 0, 0, 0.52) 72%,
+        transparent 94%
+    );
+    mask-image: radial-gradient(
+        132% 120% at 74% 50%,
+        #000 30%,
+        rgba(0, 0, 0, 0.92) 52%,
+        rgba(0, 0, 0, 0.52) 72%,
+        transparent 94%
+    );
 }
 
 [data-theme='dark'] .hero::after {
@@ -175,7 +214,12 @@
             rgba(13, 24, 34, 0.1) 50%,
             rgba(13, 24, 34, 0) 72%
         ),
-        radial-gradient(circle at 76% 46%, rgba(70, 128, 178, 0.14) 0%, rgba(70, 128, 178, 0.06) 24%, rgba(70, 128, 178, 0) 56%);
+        radial-gradient(
+            circle at 76% 46%,
+            rgba(70, 128, 178, 0.14) 0%,
+            rgba(70, 128, 178, 0.06) 24%,
+            rgba(70, 128, 178, 0) 56%
+        );
 }
 
 [data-theme='dark'] .hero h1 {
@@ -2139,7 +2183,6 @@
 .airport-info-block__value {
     color: var(--text-primary);
 }
-
 
 @media (min-width: 768px) {
     .airport-transfer-info {

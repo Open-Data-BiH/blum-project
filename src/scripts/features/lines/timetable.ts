@@ -207,7 +207,8 @@ export function loadTimetable(lineId: string): void {
     }
 
     const resolvedLineType = realTimetableData?.find((t) => t.lineId === lineId)?.lineType ?? 'urban';
-    const timetableFile = LINE_CONFIG[resolvedLineType]?.timetableFile ?? withBase('data/transport/timetables/urban_timetables.json');
+    const timetableFile =
+        LINE_CONFIG[resolvedLineType]?.timetableFile ?? withBase('data/transport/timetables/urban_timetables.json');
 
     fetch(timetableFile)
         .then((r) => r.json())
@@ -297,7 +298,8 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
     };
     const noServiceTitleText = lang === 'bhs' ? 'Linija ne saobraća ovaj dan' : 'Line does not operate on this day';
     const noServiceBodyPrefix = lang === 'bhs' ? 'Nema planiranih polazaka za' : 'No departures are scheduled for';
-    const noServiceLabelSuffix = lang === 'bhs' ? ' - linija ne saobraća ovaj dan' : ' - line does not operate on this day';
+    const noServiceLabelSuffix =
+        lang === 'bhs' ? ' - linija ne saobraća ovaj dan' : ' - line does not operate on this day';
     const noServiceHintText = lang === 'bhs' ? 'linija ne saobraća' : 'line does not operate';
 
     type Departure = { timeStr: string; note: string | null };

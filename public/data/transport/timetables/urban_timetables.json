@@ -5753,10 +5753,10 @@
             ]
         },
         {
-            "lineId": "12P",
+            "lineId": "12",
             "lineName": {
-                "en": "Line 12P: Centar - Paprikovac (Vidik)",
-                "bhs": "Linija 12P: Centar - Paprikovac (Vidik)"
+                "en": "Line 12: Centar - Paprikovac (Vidik)",
+                "bhs": "Linija 12: Centar - Paprikovac (Vidik)"
             },
             "directions": {
                 "en": ["Centar → Paprikovac (Vidik)", "Paprikovac (Vidik) → Centar"],

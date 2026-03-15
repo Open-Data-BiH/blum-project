@@ -62,7 +62,7 @@
             ]
         },
         {
-            "companyName": "\"RALE TURS\" d.o.o. Banja Luka",
+            "companyName": "\"RALE Tours\" d.o.o. Banja Luka",
             "lines": [
                 {
                     "lineId": "13C",
@@ -81,7 +81,7 @@
             ]
         },
         {
-            "companyName": "\"BOČAC TURS\" d.o.o. Banja Luka",
+            "companyName": "\"BOČAC Tours\" d.o.o. Banja Luka",
             "lines": [
                 {
                     "lineId": "3",
@@ -156,7 +156,7 @@
             ]
         },
         {
-            "companyName": "\"ALDEMO TURS\" d.o.o. Banja Luka",
+            "companyName": "\"ALDEMO Tours\" d.o.o. Banja Luka",
             "lines": [
                 {
                     "lineId": "3B",
@@ -189,7 +189,7 @@
             ]
         },
         {
-            "companyName": "\"PAVLOVIĆ TURS\" d.o.o. Banja Luka",
+            "companyName": "\"PAVLOVIĆ Tours\" d.o.o. Banja Luka",
             "lines": [
                 {
                     "lineId": "1",
@@ -220,7 +220,7 @@
                     "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/11/9-Кумсале-Центар-Десна-Новоселија.pdf"
                 },
                 {
-                    "lineId": "12P",
+                    "lineId": "12",
                     "lineName": {
                         "en": "Centar - Paprikovac (Vidik)",
                         "bhs": "Centar - Paprikovac (Vidik)"
@@ -267,7 +267,7 @@
                         "en": "Autobuska stanica - Borik - Starčevica",
                         "bhs": "Autobuska stanica - Borik - Starčevica"
                     },
-                    "cooperatingCompanyName": "\"ALDEMO TURS\" d.o.o. Banja Luka",
+                    "cooperatingCompanyName": "\"ALDEMO Tours\" d.o.o. Banja Luka",
                     "group": "III",
                     "no_stops": 19,
                     "min_duration": 30,

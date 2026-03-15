@@ -59,8 +59,8 @@
         {
             "id": "pavlovic",
             "name": {
-                "bhs": "PAVLOVIĆ TURS d.o.o. Banja Luka",
-                "en": "PAVLOVIĆ TURS Ltd. Banja Luka"
+                "bhs": "PAVLOVIĆ Tours d.o.o. Banja Luka",
+                "en": "PAVLOVIĆ Tours Ltd. Banja Luka"
             },
             "department": {
                 "bhs": "Prevoznik - III grupa linija",
@@ -77,8 +77,8 @@
         {
             "id": "bocac",
             "name": {
-                "bhs": "BOČAC TURS d.o.o. Banja Luka",
-                "en": "BOČAC TURS Ltd. Banja Luka"
+                "bhs": "BOČAC Tours d.o.o. Banja Luka",
+                "en": "BOČAC Tours Ltd. Banja Luka"
             },
             "department": {
                 "bhs": "Prevoznik - II grupa linija",
@@ -95,8 +95,8 @@
         {
             "id": "aldemo",
             "name": {
-                "bhs": "ALDEMO TURS d.o.o. Banja Luka",
-                "en": "ALDEMO TURS Ltd. Banja Luka"
+                "bhs": "ALDEMO Tours d.o.o. Banja Luka",
+                "en": "ALDEMO Tours Ltd. Banja Luka"
             },
             "department": {
                 "bhs": "Prevoznik - II i III grupa linija",
@@ -113,8 +113,8 @@
         {
             "id": "rale",
             "name": {
-                "bhs": "RALE TURS d.o.o. Banja Luka",
-                "en": "RALE TURS Ltd. Banja Luka"
+                "bhs": "RALE Tours d.o.o. Banja Luka",
+                "en": "RALE Tours Ltd. Banja Luka"
             },
             "department": {
                 "bhs": "Prevoznik - I grupa linija",

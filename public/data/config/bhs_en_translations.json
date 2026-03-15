@@ -23,11 +23,13 @@
             "map": {
                 "title": "Interactive Transport Map",
                 "note": {
-                    "stops": "Bus stops and lines",
-                    "nextbike": "Nextbike stations",
-                    "rail": "Train stations",
-                    "tipLabel": "Tip:",
-                    "tipText": "Click on any marker to see walking distance (5 min radius)."
+                    "title": "About the interactive map",
+                    "description": "Markers on the map show key public transport points and other important locations across the city, including bus stops, the main bus station, railway stations, Nextbike stations, and the airport shuttle. Additional locations and features will be added over time.",
+                    "tipsTitle": "Tips:",
+                    "tips": {
+                        "marker": "Click on a marker to see the approximate walking time (radius ~5 min).",
+                        "layers": "Use the layer controls to show or hide different types of locations on the map."
+                    }
                 }
             },
             "lines": {
@@ -36,8 +38,10 @@
                 "timetableTitle": "Timetable",
                 "mapNote": "Use the mouse scroll wheel to zoom in and out, and drag the map to move around. You can also use the +, - buttons and the Home button to reset the view. On touch devices, zoom using pinch gestures, and move around by dragging with your finger.",
                 "mapCreditsToggle": "Map credits",
-                "accordionToggle": "About ticket groups & operators",
-                "accordionText": "Public transport in Banja Luka is organized into three line groups. You need to purchase the appropriate ticket for each group. Tickets are not transferable between groups.",
+                "infoTitle": "Line groups and operators",
+                "infoText": "Urban lines are organized into three groups, and each line card shows both its group and the operator responsible for that route.",
+                "accordionToggle": "Line groups and operators",
+                "accordionText": "Urban lines are organized into three groups, and each line card shows both its group and the operator responsible for that route.",
                 "lineDetails": {
                     "operator": "Operator",
                     "group": "Group",
@@ -152,11 +156,13 @@
             "map": {
                 "title": "Interaktivna mapa prevoza",
                 "note": {
-                    "stops": "Autobuska stajališta i linije",
-                    "nextbike": "Nextbike stanice",
-                    "rail": "Željezničke stanice",
-                    "tipLabel": "Savjet:",
-                    "tipText": "Kliknite na bilo koji marker da vidite udaljenost hodanja (radijus 5 min)."
+                    "title": "O interaktivnoj mapi",
+                    "description": "Markeri na mapi prikazuju ključne tačke javnog prevoza i druge važne lokacije u gradu, uključujući autobuska stajališta, glavnu autobusku stanicu, željezničke stanice, Nextbike stanice i aerodromski transfer. Novi sadržaji i lokacije biće postepeno dodavani.",
+                    "tipsTitle": "Savjeti:",
+                    "tips": {
+                        "marker": "Kliknite na marker da vidite približno vrijeme hodanja (radijus ~5 min).",
+                        "layers": "Korištenjem kontrola za slojeve možete uključiti ili isključiti pojedine vrste lokacija na mapi."
+                    }
                 }
             },
             "lines": {
@@ -165,8 +171,10 @@
                 "timetableTitle": "Red vožnje",
                 "mapNote": "Koristite točkić miša za zumiranje, a prevlačenjem miša pomjerajte mapu. Takođe, možete koristiti dugmad +, - za zumiranje i dugme Home za povratak na početni prikaz. Na pametnim uređajima, zumiranje vršite razdvajanjem ili približavanjem prstiju, a pomjeranje dodirom i prevlačenjem prsta po ekranu.",
                 "mapCreditsToggle": "Više informacija o mapi",
-                "accordionToggle": "O grupama karata i prevoznicima",
-                "accordionText": "Javni prevoz u Banjoj Luci organizovan je u tri grupe linija. Za svaku grupu linija potrebno je kupiti odgovarajuću kartu. Karte nisu prenosive između grupa.",
+                "infoTitle": "Grupe linija i prevoznici",
+                "infoText": "Gradske linije su organizovane u tri grupe, a svaka kartica linije prikazuje grupu i prevoznika koji održava tu liniju.",
+                "accordionToggle": "Grupe linija i prevoznici",
+                "accordionText": "Gradske linije su organizovane u tri grupe, a svaka kartica linije prikazuje grupu i prevoznika koji održava tu liniju.",
                 "lineDetails": {
                     "operator": "Prevoznik",
                     "group": "Grupa",

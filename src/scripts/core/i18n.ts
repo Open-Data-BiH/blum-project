@@ -313,11 +313,11 @@ export const applyTranslation = (lang: Language): void => {
 
     // Map section
     safelyUpdateText('map-title', t.sections?.map?.title);
-    safelyUpdateText('map-note-item-stops', safeGet(t, 'sections', 'map', 'note', 'stops'));
-    safelyUpdateText('map-note-item-bike', safeGet(t, 'sections', 'map', 'note', 'nextbike'));
-    safelyUpdateText('map-note-item-rail', safeGet(t, 'sections', 'map', 'note', 'rail'));
-    safelyUpdateText('map-note-tip-label', safeGet(t, 'sections', 'map', 'note', 'tipLabel'));
-    safelyUpdateText('map-note-tip-text', safeGet(t, 'sections', 'map', 'note', 'tipText'));
+    safelyUpdateText('map-note-title', safeGet(t, 'sections', 'map', 'note', 'title'));
+    safelyUpdateText('map-note-description', safeGet(t, 'sections', 'map', 'note', 'description'));
+    safelyUpdateText('map-note-tips-title', safeGet(t, 'sections', 'map', 'note', 'tipsTitle'));
+    safelyUpdateText('map-note-tip-item-1', safeGet(t, 'sections', 'map', 'note', 'tips', 'marker'));
+    safelyUpdateText('map-note-tip-item-2', safeGet(t, 'sections', 'map', 'note', 'tips', 'layers'));
 
     // Map credits (data-lang toggle)
     const mapCreditsLabelBhs = document.querySelector<HTMLElement>('.map-credits__label[data-lang="bhs"]');
@@ -339,8 +339,14 @@ export const applyTranslation = (lang: Language): void => {
     safelyUpdateText('operator-legend-title', lang === 'bhs' ? 'Prevoznici' : 'Operators');
     safelyUpdateText('lines-map-note', safeGet(t, 'sections', 'lines', 'mapNote'));
     safelyUpdateText('lines-map-credits-label', safeGet(t, 'sections', 'lines', 'mapCreditsToggle'));
-    safelyUpdateText('lines-accordion-toggle', safeGet(t, 'sections', 'lines', 'accordionToggle'));
-    safelyUpdateText('lines-accordion-text', safeGet(t, 'sections', 'lines', 'accordionText'));
+    safelyUpdateText(
+        'lines-info-title-text',
+        safeGet(t, 'sections', 'lines', 'infoTitle') ?? safeGet(t, 'sections', 'lines', 'accordionToggle'),
+    );
+    safelyUpdateText(
+        'lines-info-text',
+        safeGet(t, 'sections', 'lines', 'infoText') ?? safeGet(t, 'sections', 'lines', 'accordionText'),
+    );
     safelyUpdateText('lines-timetable-title', safeGet(t, 'sections', 'lines', 'timetableTitle'));
 
     // Wheelchair badge title/aria-label (SSR-baked as BHS, update on language switch)

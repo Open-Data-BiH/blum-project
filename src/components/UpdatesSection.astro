@@ -103,7 +103,7 @@ const { categories, updates } = updatesData as { categories: Category[]; updates
                       <span data-lang="en" style="display:none">Affected lines:</span>
                     </span>
                     {update.affectedLines.map((line) => (
-                      <a href={`/lines/?line=${encodeURIComponent(String(line))}`} class="line-badge">{line}</a>
+                      <a href={`/lines/${encodeURIComponent(String(line))}/`} class="line-badge">{line}</a>
                     ))}
                   </div>
                 )}

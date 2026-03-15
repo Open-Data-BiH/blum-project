@@ -8,7 +8,8 @@ import { debounce, escapeHtml, sortLinesByID, withBase } from '../../core/utils'
 import { safeGet, getTranslations, getCurrentLanguage } from '../../core/i18n';
 import { LINE_CONFIG, getLineTypeTitle } from './line-config';
 import { isReducedScheduleDay } from './school-holidays';
-import type { TimetableEntry } from '../../../types/timetable';
+import { getUniqueSortedDepartures } from '../../../lib/timetable-departures';
+import type { TimetableEntry, TimetableTime } from '../../../types/timetable';
 
 let realTimetableData: (TimetableEntry & { lineType: string })[] | null = null;
 let timetableLanguageListenerAdded = false;
@@ -61,6 +62,7 @@ export function setupTimetableSelection(): void {
             if (lineSelect.dataset.timetableChangeBound !== 'true') {
                 lineSelect.addEventListener('change', function (this: HTMLSelectElement) {
                     if (this.value) {
+                        sessionStorage.removeItem('selectedLine');
                         loadTimetable(this.value);
                     } else {
                         const lang = getCurrentLanguage();
@@ -306,26 +308,16 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
     const departuresByView: Record<string, Departure[]> = {};
 
     const collectDepartures = (dayType: 'weekday' | 'saturday' | 'sunday', dirIndex: number): Departure[] => {
-        const seen = new Set<string>();
-        const allDepartures: Departure[] = [];
+        const stationDayTimes: TimetableTime[] = [];
         const reducedKey = `${dayType}Reduced` as keyof (typeof timetable.stations)[0]['times'];
 
         timetable.stations.forEach((station) => {
             const reduced = showingReduced ? station.times[reducedKey] : undefined;
             const stationTimes = (reduced ?? station.times[dayType])[dirIndex] ?? [];
-            stationTimes.forEach((t) => {
-                const timeStr = typeof t === 'string' ? t : t.time;
-                const note = typeof t === 'string' ? null : t.note;
-                const key = note ? `${timeStr}|${note}` : timeStr;
-                if (!seen.has(key)) {
-                    seen.add(key);
-                    allDepartures.push({ timeStr, note });
-                }
-            });
+            stationDayTimes.push(...stationTimes);
         });
 
-        allDepartures.sort((a, b) => a.timeStr.localeCompare(b.timeStr));
-        return allDepartures;
+        return getUniqueSortedDepartures(stationDayTimes).map(({ time, note }) => ({ timeStr: time, note }));
     };
 
     dayTypes.forEach((dayType) => {
@@ -533,6 +525,13 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
 
     container.innerHTML = html;
 
+    const showTimetableView = (day: string, direction: string): void => {
+        const targetId = `timetable-${day}-${direction}`;
+        container.querySelectorAll<HTMLElement>('.timetable-view').forEach((view) => {
+            view.style.display = view.id === targetId ? 'block' : 'none';
+        });
+    };
+
     // ── Direction button handlers ────────────────────────────────────────────
     container.querySelectorAll<HTMLElement>('.direction-btn').forEach((button) => {
         button.addEventListener('click', function (this: HTMLElement) {
@@ -547,10 +546,8 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
                 container.querySelector<HTMLElement>('.day-btn.active')?.getAttribute('data-day') ?? 'weekday';
             const direction = this.getAttribute('data-direction') ?? '';
 
-            container.querySelectorAll<HTMLElement>('.timetable-view').forEach((v) => (v.style.display = 'none'));
-            const target = container.querySelector<HTMLElement>(`#timetable-${activeDay}-${direction}`);
-            if (target) {
-                target.style.display = 'block';
+            if (direction) {
+                showTimetableView(activeDay, direction);
             }
 
             updateTimeHighlighting();
@@ -582,10 +579,8 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
                 directionAId;
             const day = this.getAttribute('data-day') ?? 'weekday';
 
-            container.querySelectorAll<HTMLElement>('.timetable-view').forEach((v) => (v.style.display = 'none'));
-            const target = container.querySelector<HTMLElement>(`#timetable-${day}-${activeDirection}`);
-            if (target) {
-                target.style.display = 'block';
+            if (activeDirection) {
+                showTimetableView(day, activeDirection);
             }
 
             updateTimeHighlighting();

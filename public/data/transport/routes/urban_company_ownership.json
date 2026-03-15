@@ -43,7 +43,7 @@
                     "min_duration": 30,
                     "bus_type": "solo",
                     "wheelchair_accessible": true,
-                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/13-A-Нова-болница-Залужани-1.pdf"
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/13-А-Нова-болница-Залужани-1.pdf"
                 },
                 {
                     "lineId": "17",
@@ -222,8 +222,8 @@
                 {
                     "lineId": "12",
                     "lineName": {
-                        "en": "Centar - Paprikovac (Vidik)",
-                        "bhs": "Centar - Paprikovac (Vidik)"
+                        "en": "Paprikovac (Vidik) - Centar - Rebrovac",
+                        "bhs": "Paprikovac (Vidik) - Centar - Rebrovac"
                     },
                     "cooperatingCompanyName": null,
                     "group": "III",

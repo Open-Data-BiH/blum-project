@@ -1835,11 +1835,11 @@
         }
     },
     "12": {
-        "route": "Centar - Paprikovac (Vidik)",
+        "route": "Paprikovac (Vidik) - Centar - Rebrovac",
         "color": "#ff9f43",
         "directions": {
             "1": {
-                "route": "Centar - Paprikovac (Vidik)",
+                "route": "Paprikovac (Vidik) - Centar - Rebrovac",
                 "stops": [
                     "Centar (Vidovdanska)",
                     "Kalvan",

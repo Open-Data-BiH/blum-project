@@ -8,10 +8,16 @@ import { getCurrentLanguage } from '../../core/i18n';
 // ─── Scroll to timetable ────────────────────────────────────────────────────
 
 export const scrollToTimetable = (lineId: string): void => {
+    // Store pending selection so the timetable module picks it up after lazy init
+    sessionStorage.setItem('selectedLine', lineId);
+
     const lineSelect = document.getElementById('line-select') as HTMLSelectElement | null;
     if (lineSelect) {
         lineSelect.value = lineId;
-        lineSelect.dispatchEvent(new Event('change'));
+        // Only dispatch if the option exists in the dropdown (module already initialized)
+        if (lineSelect.value === lineId) {
+            lineSelect.dispatchEvent(new Event('change'));
+        }
     }
     const timetableElement = document.getElementById('timetable');
     if (timetableElement) {

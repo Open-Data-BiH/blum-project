@@ -41,6 +41,7 @@ const MAP_CONFIG = {
     ZOOM: 13,
     MIN_ZOOM: 12,
     MAX_ZOOM: 17,
+    MARKER_FOCUS_MAX_ZOOM: 16,
     ZOOM_THRESHOLD: 15,
     WALKING_RADIUS_5MIN: 400,
     BUS_ROUTES_URL: withBase('data/transport/routes/urban_bus_routes.json'),
@@ -209,6 +210,12 @@ const createWalkingCircles = (L: LeafletNS, map: LeafletMap, coordinates: LatLng
     }).addTo(map);
 
     walkingLayers = [circle5min, iconMarker];
+};
+
+const focusMapOnMarker = (map: LeafletMap, coordinates: LatLngExpression): void => {
+    const currentZoom = map.getZoom();
+    const targetZoom = currentZoom < MAP_CONFIG.MARKER_FOCUS_MAX_ZOOM ? MAP_CONFIG.MARKER_FOCUS_MAX_ZOOM : currentZoom;
+    map.setView(coordinates, targetZoom, { animate: true });
 };
 
 const autoSelectNearestStop = async (
@@ -571,6 +578,7 @@ const buildBusStopsLayer = (
                     marker.bindPopup(() => createPopupContent(stop.name, sortedLines));
                     marker.on('popupopen', bindPopupLineLinks);
                     marker.on('click', () => {
+                        focusMapOnMarker(map, stop.coordinates);
                         window.setTimeout(() => createWalkingCircles(L, map, stop.coordinates), 100);
                     });
                     busStopMarkers.set(stopName, marker);
@@ -591,6 +599,7 @@ const buildBusStopsLayer = (
                 circle.bindPopup(() => createPopupContent(stop.name, sortedLines));
                 circle.on('popupopen', bindPopupLineLinks);
                 circle.on('click', () => {
+                    focusMapOnMarker(map, stop.coordinates);
                     window.setTimeout(() => createWalkingCircles(L, map, stop.coordinates), 100);
                 });
 
@@ -650,7 +659,11 @@ const loadTransportHubs = (
         }
 
         if (marker) {
-            marker.on('click', () => window.setTimeout(() => createWalkingCircles(L, map, [hub.lat, hub.lng]), 100));
+            marker.on('click', () => {
+                const coordinates: [number, number] = [hub.lat, hub.lng];
+                focusMapOnMarker(map, coordinates);
+                window.setTimeout(() => createWalkingCircles(L, map, coordinates), 100);
+            });
         }
     });
 };
@@ -661,9 +674,11 @@ const loadBikeStations = (L: LeafletNS, map: LeafletMap, stations: BikeStation[]
             icon: createFontAwesomeIcon(L, 'fa-bicycle', '#004899'),
         }).bindPopup(() => createBikeStationPopup(station.name, station.capacity));
 
-        marker.on('click', () =>
-            window.setTimeout(() => createWalkingCircles(L, map, [station.lat, station.lon]), 100),
-        );
+        marker.on('click', () => {
+            const coordinates: [number, number] = [station.lat, station.lon];
+            focusMapOnMarker(map, coordinates);
+            window.setTimeout(() => createWalkingCircles(L, map, coordinates), 100);
+        });
         marker.addTo(group);
     });
 };
@@ -674,9 +689,11 @@ const loadLandmarks = (L: LeafletNS, map: LeafletMap, landmarks: Landmark[], gro
             icon: createFontAwesomeIcon(L, landmark.icon, '#e74c3c'),
         }).bindPopup(() => createLandmarkPopup(landmark));
 
-        marker.on('click', () =>
-            window.setTimeout(() => createWalkingCircles(L, map, [landmark.lat, landmark.lng]), 100),
-        );
+        marker.on('click', () => {
+            const coordinates: [number, number] = [landmark.lat, landmark.lng];
+            focusMapOnMarker(map, coordinates);
+            window.setTimeout(() => createWalkingCircles(L, map, coordinates), 100);
+        });
         marker.addTo(group);
     });
 };

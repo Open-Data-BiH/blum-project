@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import UrbanLinesViewer from '../components/lines/UrbanLinesViewer.astro';
 import LinesSection from '../components/lines/LinesSection.astro';
 import TimetableSection from '../components/lines/TimetableSection.astro';
-import MapNote from '../components/map/MapNote.astro';
 
 import ownershipData from '../../public/data/transport/routes/urban_company_ownership.json';
 import timetableData from '../../public/data/transport/timetables/urban_timetables.json';
@@ -98,69 +97,71 @@ processedLines.sort(sortLinesByID);
 
       <UrbanLinesViewer />
 
-      <MapNote iconHidden={false}>
-        <span id="lines-map-note"></span>
-      </MapNote>
-
-      <!-- Map Credits Dropdown -->
-      <div class="map-credits">
-        <button class="map-credits__toggle" id="map-credits-toggle">
-          <span class="map-credits__label" data-lang="bhs">Informacije o mapi</span>
-          <span class="map-credits__label" data-lang="en" style="display:none">Map information</span>
-          <i class="map-credits__icon fas fa-chevron-down"></i>
-        </button>
-
-        <div class="map-credits__content" id="map-credits-content">
-          <div class="map-context__content" data-lang="bhs">
-            <p>
-              Mapa prikazuje trase linija javnog prevoza i rezultat je rada
-              <strong>Udruženja Građana "<a
-                href="https://www.imamoplan.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="map-context__link"
-              >Uticajna Grupa - Imamo Plan</a>"</strong>
-              iz Srbije, koje su osnovali
-              <strong>Jug Cerović, Marko Njegić i Stefan Milojević 2012. godine</strong>.
-            </p>
-            <p>
-              Ova mapa predstavlja <strong>poklon gradu i građanima</strong>, nastala iz entuzijazma
-              i volonterskog angažmana, s ciljem da se unaprijedi preglednost i dostupnost
-              informacija o javnom prevozu.
-            </p>
-            <div class="map-context__note">
-              <strong>NAPOMENA:</strong> Prikazi na mapi možda nisu u potpunosti ažurni, jer
-              informacije sa internet stranice gradske uprave nisu uvijek dostupne, potpune ili
-              ažurirane.
-            </div>
-            <p>Zahvaljujemo se autorima za doprinos zajednici.</p>
-          </div>
-
-          <div class="map-context__content" data-lang="en" style="display:none">
-            <p>
-              This map displays public transport routes and was created by the
-              <strong>Citizens' Association "<a
-                href="https://www.imamoplan.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="map-context__link"
-              >Uticajna Grupa - Imamo Plan</a>"</strong>
-              from Serbia, founded in
-              <strong>2012 by Jug Cerović, Marko Njegić and Stefan Milojević</strong>.
-            </p>
-            <p>
-              The map is a <strong>gift to the city and its citizens</strong>, developed as a
-              volunteer initiative aimed at improving access to and visibility of public transport
-              information.
-            </p>
-            <div class="map-context__note">
-              <strong>Note:</strong> Some route details may not be fully up to date due to limited
-              availability or lack of accurate information on the city administration website.
-            </div>
-            <p>We thank the authors for their valuable contribution to the community.</p>
-          </div>
+      <article class="map-context-card" aria-labelledby="map-context-title">
+        <div class="map-context-card__header">
+          <i class="fas fa-map-location-dot map-context-card__icon" aria-hidden="true"></i>
+          <h3 class="map-context-card__title" id="map-context-title">
+            <span data-lang="bhs">Informacije o mapi</span>
+            <span data-lang="en" style="display:none">Map information</span>
+          </h3>
         </div>
-      </div>
+
+        <div class="map-context__content" data-lang="bhs">
+          <p>
+            Mapa prikazuje trase linija javnog prevoza i rezultat je rada
+            <strong>Udruženja Građana "<a
+              href="https://www.imamoplan.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="map-context__link"
+            >Uticajna Grupa - Imamo Plan</a>"</strong>
+            iz Srbije, koje su osnovali
+            <strong>Jug Cerović, Marko Njegić i Stefan Milojević 2012. godine</strong>.
+          </p>
+          <p>
+            Ova mapa predstavlja <strong>poklon gradu i građanima</strong>, nastala iz entuzijazma i
+            volonterskog angažmana, s ciljem da se unaprijedi preglednost i dostupnost informacija o
+            javnom prevozu.
+          </p>
+          <div class="map-context__note">
+            <strong>NAPOMENA:</strong> Prikazi na mapi su informativnog karaktera i zasnovani su na javno dostupnim podacima, koji možda nisu uvijek potpuni ili u potpunosti ažurni.
+          </div>
+          <p>Zahvaljujemo se autorima za doprinos zajednici.</p>
+        </div>
+
+        <div class="map-context__content" data-lang="en" style="display:none">
+          <p>
+            This map displays public transport routes and was created by the
+            <strong>Citizens' Association "<a
+              href="https://www.imamoplan.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="map-context__link"
+            >Uticajna Grupa - Imamo Plan</a>"</strong>
+            from Serbia, founded in
+            <strong>2012 by Jug Cerović, Marko Njegić and Stefan Milojević</strong>.
+          </p>
+          <p>
+            The map is a <strong>gift to the city and its citizens</strong>, developed as a volunteer
+            initiative aimed at improving access to and visibility of public transport information.
+          </p>
+          <div class="map-context__note">
+            <strong>NOTE:</strong> Map displays are for informational purposes and are based on publicly available data, which may not always be complete or fully up to date.
+          </div>
+          <p>We thank the authors for their valuable contribution to the community.</p>
+        </div>
+      </article>
+
+      <details class="map-help-disclosure">
+        <summary class="map-help-disclosure__summary">
+          <span data-lang="bhs">Kako koristiti mapu</span>
+          <span data-lang="en" style="display:none">How to use the map</span>
+          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+        </summary>
+        <div class="map-help-disclosure__content">
+          <p class="map-help-disclosure__text" id="lines-map-note"></p>
+        </div>
+      </details>
     </div>
   </section>
 
@@ -169,55 +170,50 @@ processedLines.sort(sortLinesByID);
     <div class="container">
       <h2 class="section__title" id="lines-title"></h2>
 
-      <!-- Collapsible Info Accordion -->
-      <div class="lines-info-accordion">
-        <button
-          class="accordion-toggle"
-          id="lines-info-toggle"
-          aria-expanded="false"
-          aria-controls="lines-info-content"
-        >
-          <span id="lines-accordion-toggle"></span>
-          <i class="fas fa-chevron-down" aria-hidden="true"></i>
-        </button>
-        <div class="accordion-content" id="lines-info-content" hidden>
-          <p id="lines-accordion-text"></p>
+      <article class="lines-info-card" aria-labelledby="lines-info-title">
+        <div class="lines-info-card__header">
+          <i class="fas fa-diagram-project lines-info-card__icon" aria-hidden="true"></i>
+          <h3 class="lines-info-card__title" id="lines-info-title">
+            <span id="lines-info-title-text"></span>
+          </h3>
+        </div>
 
-          <div class="operator-legend operator-legend--compact">
-            <div class="legend-item autoprevoz-legend">
-              <span class="color-box"></span>
-              <span class="operator-name">AUTOPREVOZ</span>
-            </div>
-            <div class="legend-item pavlovic-legend">
-              <span class="color-box"></span>
-              <span class="operator-name">PAVLOVIĆ Turs</span>
-            </div>
-            <div class="legend-item bocac-legend">
-              <span class="color-box"></span>
-              <span class="operator-name">BOČAC TOURS</span>
-            </div>
-            <div class="legend-item aldemo-legend">
-              <span class="color-box"></span>
-              <span class="operator-name">ALDEMO TOURS</span>
-            </div>
-            <div class="legend-item rale-legend">
-              <span class="color-box"></span>
-              <span class="operator-name">RALE TOURS</span>
-            </div>
+        <p class="lines-info-card__text" id="lines-info-text"></p>
+
+        <div class="operator-legend operator-legend--compact">
+          <div class="legend-item autoprevoz-legend">
+            <span class="color-box"></span>
+            <span class="operator-name">AUTOPREVOZ GS</span>
+          </div>
+          <div class="legend-item pavlovic-legend">
+            <span class="color-box"></span>
+            <span class="operator-name">PAVLOVIĆ Tours</span>
+          </div>
+          <div class="legend-item bocac-legend">
+            <span class="color-box"></span>
+            <span class="operator-name">BOČAC Tours</span>
+          </div>
+          <div class="legend-item aldemo-legend">
+            <span class="color-box"></span>
+            <span class="operator-name">ALDEMO Tours</span>
+          </div>
+          <div class="legend-item rale-legend">
+            <span class="color-box"></span>
+            <span class="operator-name">RALE Tours</span>
           </div>
         </div>
-      </div>
+
+        <p class="lines-info-card__note">
+          <span data-lang="bhs">Boja oznake broja linije na kartici prati boju prevoznika iz legende.</span>
+          <span data-lang="en" style="display:none">
+            The line number badge color on each card matches the operator color shown in the legend.
+          </span>
+        </p>
+      </article>
 
       <LinesSection lines={processedLines} />
     </div>
   </section>
 
   <TimetableSection />
-
-  <script>
-    import { setupLinesInfoAccordion, setupMapCreditsDropdown } from '../scripts/components/site-interactions';
-
-    setupLinesInfoAccordion();
-    setupMapCreditsDropdown();
-  </script>
 </BaseLayout>

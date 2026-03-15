@@ -17,87 +17,70 @@
 }
 
 /* ==========================================================================
-   INFO ACCORDION (Operator Legend)
-   Collapsed by default to prioritize line content
+   LINES INFO CARD (Groups + Operators)
+   Always visible under the section title for quick context
    ========================================================================== */
 
-.lines-info-accordion {
-    margin-bottom: var(--space-6);
+.lines-info-card {
+    margin-bottom: var(--space-5);
+    padding: var(--space-4) var(--space-5);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-lg);
     background: var(--surface-2);
-    overflow: hidden;
 }
 
-.accordion-toggle {
-    width: 100%;
+.lines-info-card__header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: var(--space-4);
-    background: transparent;
-    border: none;
-    cursor: pointer;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+}
+
+.lines-info-card__icon {
+    color: var(--accent);
     font-size: var(--font-size-base);
-    font-weight: var(--font-weight-medium);
+}
+
+.lines-info-card__title {
+    margin: 0;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
     color: var(--text-primary);
-    transition: background-color var(--transition-fast);
 }
 
-.accordion-toggle:hover {
-    background: var(--surface-3);
-}
-
-.accordion-toggle[aria-expanded='true'] {
-    background: var(--surface-3);
-    border-bottom: 1px solid var(--border-subtle);
-}
-
-.accordion-toggle:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: -2px;
-}
-
-.accordion-toggle i {
-    transition: transform var(--transition-normal);
-}
-
-.accordion-toggle[aria-expanded='true'] i {
-    transform: rotate(180deg);
-}
-
-.accordion-content {
-    padding: 0 var(--space-4) var(--space-4);
-}
-
-.accordion-content[hidden] {
-    display: none;
-}
-
-.accordion-content p {
-    margin: 0 0 var(--space-4);
-    color: var(--text-secondary);
+.lines-info-card__text {
+    margin: 0 0 var(--space-3);
     font-size: var(--font-size-sm);
     line-height: var(--line-height-relaxed);
+    color: var(--text-secondary);
 }
 
 /* Compact Operator Legend */
 .operator-legend--compact {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: var(--space-2);
 }
 
 .operator-legend--compact .legend-item {
     display: flex;
     align-items: center;
     gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-1);
     font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.operator-legend--compact .operator-name {
+    line-height: var(--line-height-tight);
 }
 
 .operator-legend--compact .color-box {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     border-radius: var(--radius-sm);
     flex-shrink: 0;
 }
@@ -116,6 +99,137 @@
 }
 .rale-legend .color-box {
     background-color: var(--company-rale);
+}
+
+.lines-info-card__note {
+    margin: var(--space-3) 0 0;
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-relaxed);
+    color: var(--text-light);
+}
+
+/* ==========================================================================
+   URBAN MAP CONTEXT
+   Primary map information visible, usage help tucked into compact disclosure
+   ========================================================================== */
+
+.map-context-card {
+    margin-top: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--surface-2);
+}
+
+.map-context-card__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+}
+
+.map-context-card__icon {
+    color: var(--color-primary);
+    font-size: var(--font-size-lg);
+}
+
+.map-context-card__title {
+    margin: 0;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.map-context-card .map-context__content {
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: var(--text-secondary);
+}
+
+.map-context-card .map-context__content p:last-child {
+    margin-bottom: 0;
+}
+
+.map-help-disclosure {
+    margin-top: var(--space-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--surface-2);
+    overflow: hidden;
+}
+
+.map-help-disclosure__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    cursor: pointer;
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary);
+    list-style: none;
+}
+
+.map-help-disclosure__summary:hover {
+    background: var(--surface-3);
+    color: var(--text-primary);
+}
+
+.map-help-disclosure__summary:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+}
+
+.map-help-disclosure__summary::-webkit-details-marker {
+    display: none;
+}
+
+.map-help-disclosure__summary i {
+    transition: transform var(--transition-fast);
+    color: var(--text-light);
+}
+
+.map-help-disclosure[open] .map-help-disclosure__summary {
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+}
+
+.map-help-disclosure[open] .map-help-disclosure__summary i {
+    transform: rotate(180deg);
+}
+
+.map-help-disclosure__content {
+    padding: var(--space-3) var(--space-4) var(--space-4);
+}
+
+.map-help-disclosure__text {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+}
+
+@media (max-width: 576px) {
+    .map-context-card {
+        padding: var(--space-4);
+    }
+
+    .lines-info-card {
+        padding: var(--space-4);
+    }
+
+    .operator-legend--compact {
+        grid-template-columns: 1fr;
+    }
+
+    .map-help-disclosure__summary {
+        padding: var(--space-3);
+    }
+
+    .map-help-disclosure__content {
+        padding: var(--space-3);
+    }
 }
 
 /* ==========================================================================

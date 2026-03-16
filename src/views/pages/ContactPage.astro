@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContactForm from '../../components/contacts/ContactForm.astro';
+import ContactsSection from '../../components/contacts/ContactsSection.astro';
+import { getAlternatePaths, getLocalizedMeta, getPagePath, getSwitchLocale, type Locale } from '../../lib/site-config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const meta = getLocalizedMeta('contact', locale);
+const alternatePaths = getAlternatePaths('contact');
+---
+
+<BaseLayout
+  pageKey="contact"
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonicalPath={getPagePath('contact', locale)}
+  alternatePaths={alternatePaths}
+  switchLanguagePath={getPagePath('contact', getSwitchLocale(locale))}
+>
+  <ContactForm locale={locale} />
+  <ContactsSection locale={locale} />
+</BaseLayout>

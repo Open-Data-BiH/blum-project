@@ -6,13 +6,15 @@
  */
 
 import '../../styles/pages/_line-styles.scss';
+import { getLineDetailPath, type Locale } from '../../lib/site-config';
 import type { ProcessedLine } from '../../types/lines';
 
 interface Props {
   lines: ProcessedLine[];
+  locale: Locale;
 }
 
-const { lines } = Astro.props;
+const { lines, locale } = Astro.props;
 
 // Derive the sorted set of groups for the filter buttons
 const groups = [...new Set(lines.map((l) => l.group).filter(Boolean))].sort();
@@ -20,7 +22,7 @@ const totalLines = lines.length;
 
 // Labels are rendered in BHS (default lang). Client-side i18n updates count
 // text via applyFilters(), but the initial label is baked in.
-const lang = 'bhs'; // SSR default; JS will re-render count on languageChanged
+const lang = locale;
 ---
 
 <div id="simplified-lines" class="simplified-lines-container">
@@ -94,12 +96,12 @@ const lang = 'bhs'; // SSR default; JS will re-render count on languageChanged
             <div class="line-card__header">
               <div class="line-card__identity">
                 <a
-                  href={`/lines/${safeLineId.toLowerCase()}/`}
+                  href={getLineDetailPath(locale, safeLineId)}
                   class="badge badge--line-number badge--line-number-link"
-                  title={`Linija ${safeLineId} – detalji i red vožnje`}
+                  title={lang === 'en' ? `Line ${safeLineId} - details and timetable` : `Linija ${safeLineId} - detalji i red voznje`}
                 >{safeLineId}</a>
                 {/* BHS name shown by default; JS re-applies on languageChanged via card text already in DOM */}
-                <span class="line-card__name" data-name-bhs={nameBhs} data-name-en={nameEn}>{nameBhs}</span>
+                <span class="line-card__name" data-name-bhs={nameBhs} data-name-en={nameEn}>{lang === 'en' ? nameEn : nameBhs}</span>
               </div>
               <div class="line-card__badges">
                 {safeGroup && (

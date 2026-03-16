@@ -1,7 +1,14 @@
 ---
+import { getPagePath, type Locale } from '../lib/site-config';
 import '../styles/pages/_updates.scss';
 import updatesData from '../../public/data/transport/updates.json';
 import type { Category, Update } from '../types/updates';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 
 const { categories, updates } = updatesData as { categories: Category[]; updates: Update[] };
 
@@ -12,6 +19,7 @@ const activeUpdates = updates
 
 const baseUrl = import.meta.env.BASE_URL;
 const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
+const updatesBasePath = getPagePath('updates', locale);
 ---
 
 <section class="section section--narrow" id="home-updates">
@@ -34,7 +42,7 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
         {activeUpdates.map((update) => {
           const cat = categories.find((c) => c.id === update.type);
           const catIcon = cat ? cat.icon : 'fa-info-circle';
-          const updateHref = withBase(`updates/?update=${encodeURIComponent(update.id)}`);
+          const updateHref = `${withBase(updatesBasePath)}#update-${encodeURIComponent(update.id)}`;
           return (
             <a href={updateHref} class="home-update-card-link">
               <article class={`home-update-card home-update-card--${update.severity}`}>
@@ -49,7 +57,7 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
                     )}
                   </span>
                   <span class="home-update-card__date">
-                    {new Date(update.datePublished).toLocaleDateString('bs-BA', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                    {new Date(update.datePublished).toLocaleDateString(locale === 'en' ? 'en-BA' : 'bs-BA', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                   </span>
                 </div>
                 <h3 class="home-update-card__title">
@@ -68,7 +76,7 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
     )}
 
     <div class="home-updates-cta">
-      <a href={withBase('updates/')} class="btn btn--sm">
+      <a href={withBase(updatesBasePath)} class="btn btn--sm">
         <i class="fas fa-bell" aria-hidden="true"></i>
         <span data-lang="bhs">Sva obavještenja</span>
         <span data-lang="en" style="display:none">All updates</span>

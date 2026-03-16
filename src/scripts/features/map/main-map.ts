@@ -33,6 +33,7 @@ import type {
     TransportHub,
     TransportHubsFile,
 } from './types';
+import { addHashToPath, getPagePath } from '../../../lib/site-config';
 
 type LeafletNS = typeof import('leaflet');
 
@@ -490,9 +491,10 @@ const buildBusStopsLayer = (
                 ].join('; ');
                 const lineIdLabel = escapeHtml(lineId);
                 const safeTimetableLabel = escapeHtml(timetableLabel);
+                const timetableHref = withBase(addHashToPath(getPagePath('lines', getCurrentLanguage()), 'timetable'));
 
                 return [
-                    `<a href="${withBase('lines/#timetable')}"`,
+                    `<a href="${timetableHref}"`,
                     ` class="line-number-link"`,
                     ` style="${badgeStyle}"`,
                     ` data-line-id="${lineIdLabel}"`,

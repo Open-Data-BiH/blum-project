@@ -1,11 +1,18 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ownershipData from '../../../public/data/transport/routes/urban_company_ownership.json';
+import {
+  getLineAlternatePaths,
+  getLineDetailPath,
+  getLineDetailUrl,
+  getPagePath,
+  getSwitchLocale,
+  type Locale,
+} from '../../lib/site-config';
 import routeData from '../../../public/data/transport/routes/urban_bus_routes.json';
 import timetableData from '../../../public/data/transport/timetables/urban_timetables.json';
 import '../../styles/pages/_line-styles.scss';
 import '../../styles/pages/_line-detail.scss';
-import type { CompanyOwnership, Line } from '../../types/lines';
+import type { Line } from '../../types/lines';
 import { getCompanyClass, getShortOperatorName } from '../../lib/lineHelpers';
 import {
   compareDepartureNotes,
@@ -66,27 +73,14 @@ const dayTabs: { key: DayKey; bhs: string; en: string }[] = [
   { key: 'sunday', bhs: 'Nedjelja / Praznik', en: 'Sunday / Holiday' },
 ];
 
-export async function getStaticPaths() {
-  const data = ownershipData as CompanyOwnership;
-  const paths: { params: { lineId: string }; props: { originalLineId: string; line: Line; companyName: string } }[] = [];
-
-  data.urban.forEach((company) => {
-    company.lines.forEach((line) => {
-      paths.push({
-        params: { lineId: line.lineId.toLowerCase() },
-        props: {
-          originalLineId: line.lineId,
-          line,
-          companyName: company.companyName,
-        },
-      });
-    });
-  });
-
-  return paths;
+interface Props {
+  locale: Locale;
+  originalLineId: string;
+  line: Line;
+  companyName: string;
 }
 
-const { originalLineId, line, companyName } = Astro.props;
+const { locale, originalLineId, line, companyName } = Astro.props;
 
 const lastItem = <T,>(items: T[]): T | null => (items.length > 0 ? items[items.length - 1] : null);
 
@@ -320,15 +314,23 @@ const allStopsForSchema = Array.from(new Set([...directionAStops, ...directionBS
   (name) => name.trim().length > 0,
 );
 
-const canonicalUrl = `https://blprevoz.com/lines/${originalLineId.toLowerCase()}/`;
-const pageTitle = `Linija ${originalLineId} - ${routeSummaryBhs} | Red vo\u017enje Banja Luka`;
-const metaDesc = `Red vo\u017enje za autobusku liniju ${originalLineId} (${routeSummaryBhs}) u Banjoj Luci. Polasci radnim danom, subotom i nedjeljom i lista stajali\u0161ta po smjerovima.`;
+const canonicalPath = getLineDetailPath(locale, originalLineId);
+const canonicalUrl = getLineDetailUrl(locale, originalLineId);
+const alternatePaths = getLineAlternatePaths(originalLineId);
+const pageTitle =
+  locale === 'en'
+    ? `Line ${originalLineId} - ${routeSummaryEn} | Banja Luka Timetable`
+    : `Linija ${originalLineId} - ${routeSummaryBhs} | Red voznje Banja Luka`;
+const metaDesc =
+  locale === 'en'
+    ? `Timetable for bus line ${originalLineId} (${routeSummaryEn}) in Banja Luka. Weekday, Saturday, and Sunday departures with route stop lists by direction.`
+    : `Red voznje za autobusku liniju ${originalLineId} (${routeSummaryBhs}) u Banjoj Luci. Polasci radnim danom, subotom i nedjeljom i lista stajalista po smjerovima.`;
 
 const lineSchema = {
   '@context': 'https://schema.org',
   '@type': 'BusRoute',
-  name: `Autobuska linija ${originalLineId} - ${routeSummaryBhs}`,
-  alternateName: `Bus line ${originalLineId} - ${routeSummaryEn}`,
+  name: locale === 'en' ? `Bus line ${originalLineId} - ${routeSummaryEn}` : `Autobuska linija ${originalLineId} - ${routeSummaryBhs}`,
+  alternateName: locale === 'en' ? `Autobuska linija ${originalLineId} - ${routeSummaryBhs}` : `Bus line ${originalLineId} - ${routeSummaryEn}`,
   provider: { '@type': 'Organization', name: companyName },
   ...(allStopsForSchema.length > 0 && {
     hasPart: allStopsForSchema.map((name) => ({
@@ -343,26 +345,29 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'BL Prevoz', item: 'https://blprevoz.com/' },
-    { '@type': 'ListItem', position: 2, name: 'Linije', item: 'https://blprevoz.com/lines/' },
-    { '@type': 'ListItem', position: 3, name: `Linija ${originalLineId}`, item: canonicalUrl },
+    { '@type': 'ListItem', position: 1, name: 'BL Prevoz', item: locale === 'en' ? 'https://blprevoz.com/en/' : 'https://blprevoz.com/' },
+    { '@type': 'ListItem', position: 2, name: locale === 'en' ? 'Lines' : 'Linije', item: new URL(getPagePath('lines', locale), 'https://blprevoz.com/').toString() },
+    { '@type': 'ListItem', position: 3, name: locale === 'en' ? `Line ${originalLineId}` : `Linija ${originalLineId}`, item: canonicalUrl },
   ],
 };
 ---
 
 <BaseLayout
   pageKey="lines"
+  locale={locale}
   title={pageTitle}
   description={metaDesc}
-  canonicalUrl={canonicalUrl}
+  canonicalPath={canonicalPath}
+  alternatePaths={alternatePaths}
+  switchLanguagePath={getLineDetailPath(getSwitchLocale(locale), originalLineId)}
 >
   <script type="application/ld+json" set:html={JSON.stringify(lineSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
   <section class="section section--narrow" id="line-detail">
     <div class="container ldp-page">
-      <nav class="ldp-breadcrumb" aria-label="Navigacija">
-        <a href="/lines/">
+      <nav class="ldp-breadcrumb" aria-label={locale === 'en' ? 'Navigation' : 'Navigacija'}>
+        <a href={getPagePath('lines', locale)}>
           <i class="fas fa-arrow-left" aria-hidden="true"></i>
           <span data-lang="bhs">Sve linije</span>
           <span data-lang="en" style="display:none">All lines</span>

@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HomeMap from '../../components/map/HomeMap.astro';
+import HomeUpdatesPreview from '../../components/HomeUpdatesPreview.astro';
+import {
+  addHashToPath,
+  getAlternatePaths,
+  getLocalizedMeta,
+  getPagePath,
+  getSwitchLocale,
+  type Locale,
+} from '../../lib/site-config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const baseUrl = import.meta.env.BASE_URL;
+const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
+const heroNetworkBackgroundUrl = withBase('assets/images/public_transport_network.webp');
+const meta = getLocalizedMeta('home', locale);
+const alternatePaths = getAlternatePaths('home');
+const linesTimetablePath = withBase(addHashToPath(getPagePath('lines', locale), 'timetable'));
+const airportPath = withBase(getPagePath('airport', locale));
+---
+
+<BaseLayout
+  pageKey="home"
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonicalPath={getPagePath('home', locale)}
+  alternatePaths={alternatePaths}
+  switchLanguagePath={getPagePath('home', getSwitchLocale(locale))}
+>
+  <section class="hero" style={`--hero-network-url: url("${heroNetworkBackgroundUrl}")`}>
+    <div class="container hero__inner">
+      <h1 id="hero-title">BL Prevoz</h1>
+      <p class="hero__subtitle" id="hero-subtitle">
+        {locale === 'en' ? 'Information for easier movement through the city.' : 'Informacije za lakse kretanje gradom.'}
+      </p>
+      <p class="hero__description" id="hero-description">
+        {locale === 'en'
+          ? 'Independent platform for routes, timetables, and public transport notices in Banja Luka.'
+          : 'Nezavisna platforma za linije, red voznje i obavjestenja o javnom prevozu u Banjoj Luci.'}
+      </p>
+      <div class="hero__details" id="hero-details" aria-label={locale === 'en' ? 'Key information' : 'Kljucne informacije'}>
+        <p class="hero__detail" id="hero-detail-1">
+          <i class="fas fa-map-signs" aria-hidden="true"></i>
+          <span>{locale === 'en' ? 'Routes and timetables in one place' : 'Linije i red voznje na jednom mjestu'}</span>
+        </p>
+        <p class="hero__detail" id="hero-detail-2">
+          <i class="fas fa-circle-info" aria-hidden="true"></i>
+          <span>{locale === 'en' ? 'Up-to-date information and practical tools for getting around the city' : 'Azurne informacije i korisni alati za kretanje gradom'}</span>
+        </p>
+      </div>
+      <div class="hero__actions">
+        <a href={linesTimetablePath} class="btn btn--primary btn--lg" id="hero-btn-timetables">
+          <i class="fas fa-clock" aria-hidden="true"></i>
+          <span class="btn__label">{locale === 'en' ? 'Timetables' : 'Red voznje'}</span>
+        </a>
+        <a href={airportPath} class="btn btn--secondary btn--lg" id="hero-btn-airport">
+          <i class="fas fa-plane-departure" aria-hidden="true"></i>
+          <span class="btn__label">{locale === 'en' ? 'Airport transfer' : 'Transfer do aerodroma'}</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <HomeMap locale={locale} />
+
+  <HomeUpdatesPreview locale={locale} />
+</BaseLayout>

@@ -1,12 +1,24 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getAlternatePaths, getLocalizedMeta, getPagePath, getSwitchLocale, type Locale } from '../../lib/site-config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const meta = getLocalizedMeta('privacy', locale);
+const alternatePaths = getAlternatePaths('privacy');
 ---
 
 <BaseLayout
   pageKey="privacy"
-  title="Politika privatnosti - BL Prevoz"
-  description="Politika privatnosti platforme BL Prevoz. Informacije o analitici, kolačićima, pristanku i zaštiti privatnosti korisnika."
-  canonicalUrl="https://blprevoz.com/privacy/"
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonicalPath={getPagePath('privacy', locale)}
+  alternatePaths={alternatePaths}
+  switchLanguagePath={getPagePath('privacy', getSwitchLocale(locale))}
 >
   <section class="section section--narrow" id="privacy">
     <div class="container">

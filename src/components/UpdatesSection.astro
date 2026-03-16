@@ -1,9 +1,20 @@
 ---
+import { getLineDetailPath, type Locale } from '../lib/site-config';
 import '../styles/pages/_updates.scss';
 import updatesData from '../../public/data/transport/updates.json';
+import ownershipData from '../../public/data/transport/routes/urban_company_ownership.json';
 import type { Category, Update } from '../types/updates';
+import type { CompanyOwnership } from '../types/lines';
 
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'bhs' } = Astro.props;
 const { categories, updates } = updatesData as { categories: Category[]; updates: Update[] };
+const existingLineIds = new Set(
+  ((ownershipData as CompanyOwnership).urban ?? []).flatMap((company) => company.lines.map((line) => line.lineId)),
+);
 ---
 
 <div class="updates-container" id="updates-section">
@@ -82,7 +93,7 @@ const { categories, updates } = updatesData as { categories: Category[]; updates
                   <div class="update-card__date">
                     <i class="fas fa-calendar" aria-hidden="true"></i>
                     <span class="update-card__date-text" data-date={update.datePublished}>
-                      {new Date(update.datePublished).toLocaleDateString('bs-BA', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                      {new Date(update.datePublished).toLocaleDateString(locale === 'en' ? 'en-BA' : 'bs-BA', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                     </span>
                   </div>
                 </div>
@@ -102,9 +113,14 @@ const { categories, updates } = updatesData as { categories: Category[]; updates
                       <span data-lang="bhs">Zahvaćene linije:</span>
                       <span data-lang="en" style="display:none">Affected lines:</span>
                     </span>
-                    {update.affectedLines.map((line) => (
-                      <a href={`/lines/${encodeURIComponent(String(line))}/`} class="line-badge">{line}</a>
-                    ))}
+                    {update.affectedLines.map((line) => {
+                      const lineId = String(line);
+                      return existingLineIds.has(lineId) ? (
+                        <a href={getLineDetailPath(locale, lineId)} class="line-badge">{lineId}</a>
+                      ) : (
+                        <span class="line-badge">{lineId}</span>
+                      );
+                    })}
                   </div>
                 )}
 
@@ -126,7 +142,7 @@ const { categories, updates } = updatesData as { categories: Category[]; updates
                       <span>
                         <span data-lang="bhs">Važi do:</span>
                         <span data-lang="en" style="display:none">Valid until:</span>
-                        {' '}{new Date(update.dateExpiry).toLocaleDateString('bs-BA', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                        {' '}{new Date(update.dateExpiry).toLocaleDateString(locale === 'en' ? 'en-BA' : 'bs-BA', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                       </span>
                     </div>
                   )}

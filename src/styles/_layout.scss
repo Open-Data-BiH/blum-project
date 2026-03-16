@@ -196,6 +196,7 @@ header.header--scrolled {
     background: var(--surface-2);
     color: var(--text-muted);
     border: 1px solid var(--border-subtle);
+    display: inline-block;
     padding: var(--space-1) var(--space-2);
     border-radius: 15px;
     cursor: pointer;
@@ -205,6 +206,7 @@ header.header--scrolled {
     min-width: auto;
     text-align: center;
     line-height: 1;
+    text-decoration: none;
 }
 
 .lang-btn:hover {

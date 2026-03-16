@@ -89,7 +89,7 @@ function toggleEmptyState(empty: boolean): void {
         </p>
       `;
             // Re-apply current language visibility
-            const lang = (localStorage.getItem('selectedLanguage') as 'bhs' | 'en') || 'bhs';
+            const lang = document.documentElement.lang === 'en' ? 'en' : 'bhs';
             emptyEl.querySelectorAll<HTMLElement>('[data-lang]').forEach((el) => {
                 el.style.display = el.dataset.lang === lang ? '' : 'none';
             });

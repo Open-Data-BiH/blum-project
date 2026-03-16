@@ -1,23 +1,33 @@
 ---
+import { getPagePath, type Locale } from '../lib/site-config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 const year = new Date().getFullYear();
 const baseUrl = import.meta.env.BASE_URL;
 const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
+const localizedPath = (path: 'faq' | 'about' | 'contact' | 'privacy'): string => withBase(getPagePath(path, locale));
 ---
 
 <footer class="footer">
   <div class="footer__main">
     <div class="footer__description">
       <p id="footer-mission-text">
-        BL Prevoz je nezavisna platforma za informacije o javnom prevozu u Banjoj Luci.
+        {locale === 'en'
+          ? 'BL Prevoz is an independent platform for public transport information in Banja Luka.'
+          : 'BL Prevoz je nezavisna platforma za informacije o javnom prevozu u Banjoj Luci.'}
       </p>
     </div>
 
-    <nav class="footer__nav" aria-label="Footer links">
-      <span class="footer__nav-heading" id="footer-nav-heading">Informacije</span>
-      <a href={withBase('faq/')} id="footer-link-faq">FAQ</a>
-      <a href={withBase('about/')} id="footer-link-about">O projektu</a>
-      <a href={withBase('contact/')} id="footer-link-contact">Kontakt</a>
-      <a href={withBase('privacy/')} id="footer-link-privacy">Politika privatnosti</a>
+    <nav class="footer__nav" aria-label={locale === 'en' ? 'Footer links' : 'Linkovi u podnozju'}>
+      <span class="footer__nav-heading" id="footer-nav-heading">{locale === 'en' ? 'Information' : 'Informacije'}</span>
+      <a href={localizedPath('faq')} id="footer-link-faq">FAQ</a>
+      <a href={localizedPath('about')} id="footer-link-about">{locale === 'en' ? 'About' : 'O projektu'}</a>
+      <a href={localizedPath('contact')} id="footer-link-contact">{locale === 'en' ? 'Contact' : 'Kontakt'}</a>
+      <a href={localizedPath('privacy')} id="footer-link-privacy">{locale === 'en' ? 'Privacy Policy' : 'Politika privatnosti'}</a>
     </nav>
 
     <div class="footer__action">

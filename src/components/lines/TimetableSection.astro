@@ -4,14 +4,21 @@
  * All data loading and rendering happens client-side via timetable.ts.
  */
 import '../../styles/pages/_timetables.scss';
+import type { Locale } from '../../lib/site-config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 ---
 
 <section class="section section--wide" id="timetable">
   <div class="container">
-    <h2 class="section__title" id="lines-timetable-title"></h2>
+    <h2 class="section__title" id="lines-timetable-title">{locale === 'en' ? 'Timetable' : 'Red voznje'}</h2>
     <div class="line-selector-wrapper">
-      <label for="line-select" class="visually-hidden">Izaberite liniju</label>
-      <select id="line-select" aria-label="Izaberite liniju"></select>
+      <label for="line-select" class="visually-hidden">{locale === 'en' ? 'Select a line' : 'Izaberite liniju'}</label>
+      <select id="line-select" aria-label={locale === 'en' ? 'Select a line' : 'Izaberite liniju'}></select>
     </div>
     <div id="timetable-display"></div>
   </div>

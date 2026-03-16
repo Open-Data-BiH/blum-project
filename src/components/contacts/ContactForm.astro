@@ -1,5 +1,13 @@
 ---
+import type { Locale } from '../../lib/site-config';
+
 const maintainerEmail = import.meta.env.PUBLIC_MAINTAINER_EMAIL ?? 'blprevoz@proton.me';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'bhs' } = Astro.props;
 
 const subjects = [
   { value: 'timetable', bhs: 'Prijava netačnog reda vožnje', en: 'Report incorrect timetable' },
@@ -28,10 +36,10 @@ const subjects = [
           <span data-lang="en" style="display:none">Subject</span>
         </label>
         <select id="contact-subject" name="subject" required data-placeholder-bhs="-- Izaberite predmet --" data-placeholder-en="-- Select a subject --">
-          <option value="" disabled selected>-- Izaberite predmet --</option>
+          <option value="" disabled selected>{locale === 'en' ? '-- Select a subject --' : '-- Izaberite predmet --'}</option>
           {subjects.map((s) => (
             <option value={s.value} data-bhs={s.bhs} data-en={s.en}>
-              {s.bhs}
+              {locale === 'en' ? s.en : s.bhs}
             </option>
           ))}
         </select>
@@ -54,7 +62,7 @@ const subjects = [
           maxlength="120"
           data-placeholder-bhs="Unesite predmet..."
           data-placeholder-en="Enter subject..."
-          placeholder="Unesite predmet..."
+          placeholder={locale === 'en' ? 'Enter subject...' : 'Unesite predmet...'}
         />
         <span class="contact-form__error" id="custom-subject-error" hidden>
           <span data-lang="bhs">Predmet mora imati najmanje 3 karaktera</span>
@@ -74,7 +82,7 @@ const subjects = [
           required
           data-placeholder-bhs="Opišite detaljnije..."
           data-placeholder-en="Describe in detail..."
-          placeholder="Opišite detaljnije..."
+          placeholder={locale === 'en' ? 'Describe in detail...' : 'Opisite detaljnije...'}
         ></textarea>
         <span class="contact-form__error" id="message-error" hidden>
           <span data-lang="bhs">Poruka mora imati najmanje 10 karaktera</span>
@@ -158,7 +166,7 @@ const subjects = [
     const copySuccess = document.getElementById('copy-success') as HTMLElement;
     const backBtn = document.getElementById('back-to-form') as HTMLButtonElement;
 
-    const getLang = (): string => localStorage.getItem('selectedLanguage') || 'bhs';
+    const getLang = (): string => (document.documentElement.lang === 'en' ? 'en' : 'bhs');
 
     const updateSelectLanguage = (lang: string): void => {
       const placeholder = subjectSelect.options[0];

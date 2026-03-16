@@ -7,9 +7,12 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
 
 <BaseLayout
   pageKey="home"
+  locale="bhs"
   title="Stranica nije pronađena - BL Prevoz"
   description="Tražena stranica ne postoji."
-  canonicalUrl="https://blprevoz.com/404/"
+  canonicalPath="/404/"
+  alternatePaths={{ bhs: '/404/', en: '/404/', default: '/404/' }}
+  switchLanguagePath="/404/"
 >
   <section class="not-found">
     <div class="container">

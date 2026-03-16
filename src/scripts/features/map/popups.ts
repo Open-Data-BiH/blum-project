@@ -2,6 +2,7 @@
 
 import { getCurrentLanguage, langText } from '../../core/i18n';
 import { escapeHtml, withBase } from '../../core/utils';
+import { addHashToPath, getPagePath } from '../../../lib/site-config';
 import type { Landmark, LocalizedText, TransportHub } from './types';
 
 export interface NearbyStopSummary {
@@ -43,7 +44,7 @@ export const createShuttlePopup = (hub: TransportHub): string => `
     <h3>${escapeHtml(localizedField(hub.name))}</h3>
     <p>${escapeHtml(localizedField(hub.info))}</p>
     <p>${langText('Karte se kupuju u autobusu', 'Tickets are available on the bus')}</p>
-    <a href="${withBase('airport/#airport')}" class="popup-link">${langText('Informacije o aerodromskom prevozu', 'Airport Transfer Info')}</a>
+    <a href="${withBase(addHashToPath(getPagePath('airport', getCurrentLanguage()), 'airport'))}" class="popup-link">${langText('Informacije o aerodromskom prevozu', 'Airport Transfer Info')}</a>
   </div>
 `;
 

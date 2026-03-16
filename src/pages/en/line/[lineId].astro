@@ -1,0 +1,8 @@
+---
+import LineDetailPage from '../../../views/lines/LineDetailPage.astro';
+import { getLineStaticPaths } from '../../../lib/line-static-paths';
+
+export const getStaticPaths = getLineStaticPaths;
+---
+
+<LineDetailPage locale="en" {...Astro.props} />

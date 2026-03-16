@@ -1,18 +1,30 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PricingSection from '../components/PricingSection.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PricingSection from '../../components/PricingSection.astro';
+import { getAlternatePaths, getLocalizedMeta, getPagePath, getSwitchLocale, type Locale } from '../../lib/site-config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const meta = getLocalizedMeta('pricing', locale);
+const alternatePaths = getAlternatePaths('pricing');
 ---
 
 <BaseLayout
   pageKey="pricing"
-  title="Cijene karata - Javni prevoz Banja Luka"
-  description="Aktuelne cijene karata, mjesečnih pretplata i đačkih markica za autobuski prevoz u Banjoj Luci."
-  canonicalUrl="https://blprevoz.com/pricing/"
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonicalPath={getPagePath('pricing', locale)}
+  alternatePaths={alternatePaths}
+  switchLanguagePath={getPagePath('pricing', getSwitchLocale(locale))}
 >
   <section class="section pricing-hero" id="pricing">
     <div class="container">
       <div class="pricing-main">
-        <h2 class="section__title" id="price-tables-title">Cjenovnik karata</h2>
+        <h2 class="section__title" id="price-tables-title">{locale === 'en' ? 'Ticket prices' : 'Cjenovnik karata'}</h2>
         <PricingSection />
       </div>
     </div>

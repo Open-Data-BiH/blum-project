@@ -15,13 +15,7 @@ export const initFooterKofi = (): void => {
         const script = document.createElement('script');
         script.src = 'https://storage.ko-fi.com/cdn/widget/Widget_2.js';
         script.onload = () => {
-            const lang = (() => {
-                try {
-                    return localStorage.getItem('selectedLanguage') || 'bhs';
-                } catch {
-                    return 'bhs';
-                }
-            })();
+            const lang = document.documentElement.lang === 'en' ? 'en' : 'bhs';
             const buttonText = lang === 'en' ? 'Support this project' : 'Podržite ovaj projekat';
 
             if (typeof window.kofiwidget2 !== 'undefined') {

@@ -1,6 +1,7 @@
 ---
 import contactsData from '../../../public/data/transport/contacts.json';
 import translationsData from '../../../public/data/config/bhs_en_translations.json';
+import type { Locale } from '../../lib/site-config';
 import type { ContactsFile, Contact } from '../../types/contacts';
 
 interface Translations {
@@ -16,6 +17,12 @@ interface Translations {
 
 const { contacts } = contactsData as ContactsFile;
 const translations = translationsData as Translations;
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'bhs' } = Astro.props;
 
 const labels = {
   bhs: {
@@ -38,14 +45,15 @@ const isAuthorityType = (contact: Contact): boolean =>
 
 const authorityContacts = contacts.filter(isAuthorityType);
 const operatorContacts = contacts.filter((contact) => !isAuthorityType(contact));
+const activeLabels = labels[locale];
 ---
 
 <section class="section section--narrow" id="contact">
   <div class="container">
-    <h2 class="section__title" id="contact-title">Korisni kontakti</h2>
+    <h2 class="section__title" id="contact-title">{locale === 'en' ? 'Useful contacts' : 'Korisni kontakti'}</h2>
 
     <div class="contact-group contact-group--primary">
-      <h3 class="contact-group__title" id="contact-group-authorities-title">Gradske službe</h3>
+      <h3 class="contact-group__title" id="contact-group-authorities-title">{locale === 'en' ? 'City services' : 'Gradske sluzbe'}</h3>
       <div class="contact-cards">
         {authorityContacts.map((contact) => (
           <div
@@ -73,7 +81,7 @@ const operatorContacts = contacts.filter((contact) => !isAuthorityType(contact))
                 <a
                   class="contact-detail"
                   href={`tel:${formatTelHref(contact.phoneDisplay)}`}
-                  aria-label={`${labels.bhs.phone} ${contact.phoneDisplay}`}
+                  aria-label={`${activeLabels.phone} ${contact.phoneDisplay}`}
                 >
                   <i class="fas fa-phone" aria-hidden="true"></i>
                   <span class="contact-detail__value">{contact.phoneDisplay}</span>
@@ -84,7 +92,7 @@ const operatorContacts = contacts.filter((contact) => !isAuthorityType(contact))
                 <a
                   class="contact-detail"
                   href={`mailto:${contact.email}`}
-                  aria-label={`${labels.bhs.email} ${contact.email}`}
+                  aria-label={`${activeLabels.email} ${contact.email}`}
                 >
                   <i class="fas fa-envelope" aria-hidden="true"></i>
                   <span class="contact-detail__value">{contact.email}</span>
@@ -109,7 +117,7 @@ const operatorContacts = contacts.filter((contact) => !isAuthorityType(contact))
     </div>
 
     <div class="contact-group">
-      <h3 class="contact-group__title" id="contact-group-operators-title">Prevoznici</h3>
+      <h3 class="contact-group__title" id="contact-group-operators-title">{locale === 'en' ? 'Operators' : 'Prevoznici'}</h3>
       <div class="contact-cards">
         {operatorContacts.map((contact) => (
           <div
@@ -137,7 +145,7 @@ const operatorContacts = contacts.filter((contact) => !isAuthorityType(contact))
                 <a
                   class="contact-detail"
                   href={`tel:${formatTelHref(contact.phoneDisplay)}`}
-                  aria-label={`${labels.bhs.phone} ${contact.phoneDisplay}`}
+                  aria-label={`${activeLabels.phone} ${contact.phoneDisplay}`}
                 >
                   <i class="fas fa-phone" aria-hidden="true"></i>
                   <span class="contact-detail__value">{contact.phoneDisplay}</span>
@@ -148,7 +156,7 @@ const operatorContacts = contacts.filter((contact) => !isAuthorityType(contact))
                 <a
                   class="contact-detail"
                   href={`mailto:${contact.email}`}
-                  aria-label={`${labels.bhs.email} ${contact.email}`}
+                  aria-label={`${activeLabels.email} ${contact.email}`}
                 >
                   <i class="fas fa-envelope" aria-hidden="true"></i>
                   <span class="contact-detail__value">{contact.email}</span>

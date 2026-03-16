@@ -12,6 +12,11 @@ type UnknownRecord = Record<string, unknown>;
 
 const translations: TranslationCatalog = translationsData;
 const getInitialLanguage = (): Language => {
+    if (typeof window !== 'undefined') {
+        const pathname = window.location.pathname;
+        return pathname === '/en' || pathname.startsWith('/en/') ? 'en' : 'bhs';
+    }
+
     try {
         const stored = localStorage.getItem('selectedLanguage');
         return stored === 'en' || stored === 'bhs' ? stored : 'bhs';
@@ -253,7 +258,11 @@ export const applyTranslation = (lang: Language): void => {
 
     currentLang = lang;
     document.documentElement.lang = lang === 'bhs' ? 'bs' : 'en';
-    updateSeoTags(lang);
+    try {
+        localStorage.setItem('selectedLanguage', lang);
+    } catch {
+        // Ignore storage failures in private / restricted contexts.
+    }
 
     // Header
     safelyUpdateText('site-title', 'BL Prevoz');
@@ -455,9 +464,13 @@ export const applyTranslation = (lang: Language): void => {
 };
 
 export const setupLanguageSwitcher = (): void => {
-    document.querySelectorAll<HTMLButtonElement>('.lang-btn').forEach((btn) => {
+    document.querySelectorAll<HTMLElement>('.lang-btn').forEach((btn) => {
         const btnLang = btn.dataset.lang as Language;
         btn.classList.toggle('lang-btn--active', btnLang === currentLang);
+
+        if (btn.tagName.toLowerCase() === 'a') {
+            return;
+        }
 
         btn.addEventListener('click', function () {
             const lang = this.dataset.lang as Language;

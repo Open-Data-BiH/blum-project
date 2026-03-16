@@ -2,25 +2,41 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieConsent from '../components/CookieConsent.astro';
+import {
+  HTML_LANG_BY_LOCALE,
+  getSwitchLocale,
+  type Locale,
+  type PageKey,
+  withSiteUrl,
+} from '../lib/site-config';
 import '../styles/global.scss';
 // Self-hosted fonts — eliminates cross-origin request chains for Google Fonts and Font Awesome CDN
 import '@fontsource-variable/noto-sans';
 import '@fortawesome/fontawesome-free/css/fontawesome.min.css';
 import '@fortawesome/fontawesome-free/css/solid.min.css';
 
-export type PageKey = 'home' | 'lines' | 'pricing' | 'airport' | 'faq' | 'updates' | 'contact' | 'privacy' | 'about';
-
 interface Props {
   pageKey: PageKey;
+  locale: Locale;
   title: string;
   description: string;
-  canonicalUrl: string;
+  canonicalPath: string;
+  alternatePaths: Record<'bhs' | 'en' | 'default', string>;
+  switchLanguagePath?: string;
   pageStyles?: string; // optional page-specific stylesheet href
 }
 
-const { pageKey, title, description, canonicalUrl, pageStyles } = Astro.props;
+const { pageKey, locale, title, description, canonicalPath, alternatePaths, switchLanguagePath, pageStyles } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL;
 const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
+const htmlLang = HTML_LANG_BY_LOCALE[locale];
+const canonicalUrl = withSiteUrl(canonicalPath);
+const alternateUrls = {
+  bhs: withSiteUrl(alternatePaths.bhs),
+  en: withSiteUrl(alternatePaths.en),
+  default: withSiteUrl(alternatePaths.default),
+};
+const resolvedSwitchLanguagePath = switchLanguagePath ?? alternatePaths[getSwitchLocale(locale)];
 const ogImage = new URL(
   withBase('assets/images/gradski-prevoz-mapa-banja-luka.webp'),
   Astro.site ?? 'https://blprevoz.com/',
@@ -28,7 +44,7 @@ const ogImage = new URL(
 ---
 
 <!doctype html>
-<html lang="bs">
+<html lang={htmlLang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -39,15 +55,16 @@ const ogImage = new URL(
     />
     <title>{title}</title>
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="alternate" hreflang="bs" href={canonicalUrl} />
-    <link rel="alternate" hreflang="en" href={canonicalUrl} />
-    <link rel="alternate" hreflang="x-default" href={canonicalUrl} />
+    <link rel="alternate" hreflang="bs" href={alternateUrls.bhs} />
+    <link rel="alternate" hreflang="en" href={alternateUrls.en} />
+    <link rel="alternate" hreflang="x-default" href={alternateUrls.default} />
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'bs_BA'} />
     <meta property="og:site_name" content="BL Prevoz" />
     <meta name="twitter:card" content="summary_large_image" />
 
@@ -68,21 +85,36 @@ const ogImage = new URL(
 
     <!-- Theme init runs before body render to prevent flash -->
     <script src={withBase('scripts/theme-init.js')}></script>
+
+    <style is:inline>
+      html[lang='bs'] [data-lang='en']:not(.lang-btn) {
+        display: none !important;
+      }
+
+      html[lang='en'] [data-lang='bhs']:not(.lang-btn) {
+        display: none !important;
+      }
+
+      html[lang='bs'] [data-lang='bhs']:not(.lang-btn),
+      html[lang='en'] [data-lang='en']:not(.lang-btn) {
+        display: revert !important;
+      }
+    </style>
   </head>
-  <body data-page={pageKey}>
+  <body data-page={pageKey} data-locale={locale}>
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <div class="page-container">
-      <Header currentPage={pageKey} />
+      <Header currentPage={pageKey} locale={locale} switchLanguagePath={resolvedSwitchLanguagePath} />
 
       <main id="main-content" class="content-wrap">
         <slot />
       </main>
 
-      <Footer />
+      <Footer locale={locale} />
     </div>
 
-    <CookieConsent />
+    <CookieConsent locale={locale} />
 
     <!-- Global error handlers (replaces page-init.js) -->
     <script>

@@ -1,16 +1,27 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import UrbanLinesViewer from '../components/lines/UrbanLinesViewer.astro';
-import LinesSection from '../components/lines/LinesSection.astro';
-import TimetableSection from '../components/lines/TimetableSection.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import UrbanLinesViewer from '../../components/lines/UrbanLinesViewer.astro';
+import LinesSection from '../../components/lines/LinesSection.astro';
+import TimetableSection from '../../components/lines/TimetableSection.astro';
+import translationsData from '../../../public/data/config/bhs_en_translations.json';
+import { getAlternatePaths, getLocalizedMeta, getPagePath, getSwitchLocale, type Locale } from '../../lib/site-config';
 
-import ownershipData from '../../public/data/transport/routes/urban_company_ownership.json';
-import timetableData from '../../public/data/transport/timetables/urban_timetables.json';
-import type { CompanyOwnership } from '../types/lines';
-import type { ProcessedLine, ScheduleStats } from '../types/lines';
-import type { TimetableFile, TimetableTime } from '../types/timetable';
-import { getCompanyClass, getShortOperatorName } from '../lib/lineHelpers';
-import { normalizeForSearch, sortLinesByID } from '../scripts/core/utils';
+import ownershipData from '../../../public/data/transport/routes/urban_company_ownership.json';
+import timetableData from '../../../public/data/transport/timetables/urban_timetables.json';
+import type { CompanyOwnership } from '../../types/lines';
+import type { ProcessedLine, ScheduleStats } from '../../types/lines';
+import type { TimetableFile, TimetableTime } from '../../types/timetable';
+import { getCompanyClass, getShortOperatorName } from '../../lib/lineHelpers';
+import { normalizeForSearch, sortLinesByID } from '../../scripts/core/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const meta = getLocalizedMeta('lines', locale);
+const alternatePaths = getAlternatePaths('lines');
+const translations = translationsData[locale];
 
 // ─── Helper functions (mirrors lines-ui.js, run at build time) ──────────────
 
@@ -86,14 +97,17 @@ processedLines.sort(sortLinesByID);
 
 <BaseLayout
   pageKey="lines"
-  title="Red vožnje i autobuske linije - Javni prevoz Banja Luka"
-  description="Sve autobuske linije i red vožnje javnog prevoza u Banjoj Luci. Mape trasa, polasci i stajališta na jednom mjestu."
-  canonicalUrl="https://blprevoz.com/lines/"
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonicalPath={getPagePath('lines', locale)}
+  alternatePaths={alternatePaths}
+  switchLanguagePath={getPagePath('lines', getSwitchLocale(locale))}
 >
   <!-- Urban Lines Map Section -->
   <section class="section section--wide" id="urban-lines">
     <div class="container">
-      <h2 class="section__title" id="urban-lines-title"></h2>
+      <h2 class="section__title" id="urban-lines-title">{translations.sections?.urban_lines?.title ?? (locale === 'en' ? 'Urban lines map' : 'Mapa gradskih linija')}</h2>
 
       <UrbanLinesViewer />
 
@@ -159,7 +173,9 @@ processedLines.sort(sortLinesByID);
           <i class="fas fa-chevron-down" aria-hidden="true"></i>
         </summary>
         <div class="map-help-disclosure__content">
-          <p class="map-help-disclosure__text" id="lines-map-note"></p>
+          <p class="map-help-disclosure__text" id="lines-map-note">
+            {translations.sections?.lines?.mapNote}
+          </p>
         </div>
       </details>
     </div>
@@ -168,17 +184,21 @@ processedLines.sort(sortLinesByID);
   <!-- Lines Section -->
   <section class="section section--wide" id="lines">
     <div class="container">
-      <h2 class="section__title" id="lines-title"></h2>
+      <h2 class="section__title" id="lines-title">{translations.sections?.lines?.title ?? (locale === 'en' ? 'Lines' : 'Linije')}</h2>
 
       <article class="lines-info-card" aria-labelledby="lines-info-title">
         <div class="lines-info-card__header">
           <i class="fas fa-diagram-project lines-info-card__icon" aria-hidden="true"></i>
           <h3 class="lines-info-card__title" id="lines-info-title">
-            <span id="lines-info-title-text"></span>
+            <span id="lines-info-title-text">{translations.sections?.lines?.infoTitle ?? (locale === 'en' ? 'Line groups and operators' : 'Grupe linija i prevoznici')}</span>
           </h3>
         </div>
 
-        <p class="lines-info-card__text" id="lines-info-text"></p>
+        <p class="lines-info-card__text" id="lines-info-text">
+          {translations.sections?.lines?.infoText ?? (locale === 'en'
+            ? 'Urban lines are organized into three groups, and each line card shows both its group and the operator responsible for that route.'
+            : 'Gradske linije su organizovane u tri grupe, a svaka kartica linije prikazuje grupu i prevoznika koji odrzava tu liniju.')}
+        </p>
 
         <div class="operator-legend operator-legend--compact">
           <div class="legend-item autoprevoz-legend">
@@ -211,9 +231,9 @@ processedLines.sort(sortLinesByID);
         </p>
       </article>
 
-      <LinesSection lines={processedLines} />
+      <LinesSection lines={processedLines} locale={locale} />
     </div>
   </section>
 
-  <TimetableSection />
+  <TimetableSection locale={locale} />
 </BaseLayout>

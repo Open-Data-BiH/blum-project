@@ -1,15 +1,40 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  addHashToPath,
+  getAlternatePaths,
+  getLocalizedMeta,
+  getPagePath,
+  getSwitchLocale,
+  type Locale,
+} from '../../lib/site-config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 
 const baseUrl = import.meta.env.BASE_URL;
 const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
+const meta = getLocalizedMeta('about', locale);
+const alternatePaths = getAlternatePaths('about');
+const linesPath = withBase(getPagePath('lines', locale));
+const timetablePath = withBase(addHashToPath(getPagePath('lines', locale), 'timetable'));
+const pricingPath = withBase(getPagePath('pricing', locale));
+const airportPath = withBase(getPagePath('airport', locale));
+const updatesPath = withBase(getPagePath('updates', locale));
+const contactPath = withBase(getPagePath('contact', locale));
 ---
 
 <BaseLayout
   pageKey="about"
-  title="O projektu - BL Prevoz | Javni prevoz Banja Luka"
-  description="BL Prevoz je nezavisna, volonterski vođena platforma za informacije o javnom prevozu u Banjoj Luci. Red vožnje, linije i važne informacije na jednom mjestu."
-  canonicalUrl="https://blprevoz.com/about/"
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonicalPath={getPagePath('about', locale)}
+  alternatePaths={alternatePaths}
+  switchLanguagePath={getPagePath('about', getSwitchLocale(locale))}
 >
   <section class="section section--narrow" id="about">
     <div class="container">
@@ -33,23 +58,23 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
 
           <h2>Šta možete uraditi na BL Prevozu?</h2>
           <div class="about-features">
-            <a href={withBase('lines/')} class="about-feature">
+            <a href={linesPath} class="about-feature">
               <i class="fa-solid fa-route" aria-hidden="true"></i>
               <span>Pregledajte autobuske linije i rute</span>
             </a>
-            <a href={withBase('lines/#timetable')} class="about-feature">
+            <a href={timetablePath} class="about-feature">
               <i class="fa-solid fa-clock" aria-hidden="true"></i>
               <span>Provjerite red vožnje</span>
             </a>
-            <a href={withBase('pricing/')} class="about-feature">
+            <a href={pricingPath} class="about-feature">
               <i class="fa-solid fa-ticket" aria-hidden="true"></i>
               <span>Pogledajte cijene karata</span>
             </a>
-            <a href={withBase('airport/')} class="about-feature">
+            <a href={airportPath} class="about-feature">
               <i class="fa-solid fa-plane-departure" aria-hidden="true"></i>
               <span>Informacije o aerodromskom transferu</span>
             </a>
-            <a href={withBase('updates/')} class="about-feature">
+            <a href={updatesPath} class="about-feature">
               <i class="fa-solid fa-bell" aria-hidden="true"></i>
               <span>Pratite obavještenja o izmjenama</span>
             </a>
@@ -105,7 +130,7 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
               <p>
                 Pomozite da informacije budu što tačnije i korisnije.
                 Ako ste primijetili netačan podatak ili imate prijedlog za poboljšanje,
-                <a href={withBase('contact/')}>javite nam se</a>.
+                <a href={contactPath}>javite nam se</a>.
               </p>
             </div>
           </div>
@@ -125,23 +150,23 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
 
           <h2>What can you do on BL Prevoz?</h2>
           <div class="about-features">
-            <a href={withBase('lines/')} class="about-feature">
+            <a href={linesPath} class="about-feature">
               <i class="fa-solid fa-route" aria-hidden="true"></i>
               <span>View bus lines and routes</span>
             </a>
-            <a href={withBase('lines/#timetable')} class="about-feature">
+            <a href={timetablePath} class="about-feature">
               <i class="fa-solid fa-clock" aria-hidden="true"></i>
               <span>Check timetables</span>
             </a>
-            <a href={withBase('pricing/')} class="about-feature">
+            <a href={pricingPath} class="about-feature">
               <i class="fa-solid fa-ticket" aria-hidden="true"></i>
               <span>See ticket pricing</span>
             </a>
-            <a href={withBase('airport/')} class="about-feature">
+            <a href={airportPath} class="about-feature">
               <i class="fa-solid fa-plane-departure" aria-hidden="true"></i>
               <span>Airport transport information</span>
             </a>
-            <a href={withBase('updates/')} class="about-feature">
+            <a href={updatesPath} class="about-feature">
               <i class="fa-solid fa-bell" aria-hidden="true"></i>
               <span>Follow transport updates</span>
             </a>
@@ -197,7 +222,7 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
               <p>
                 Help keep the information as accurate and useful as possible.
                 If you've noticed incorrect data or have a suggestion,
-                <a href={withBase('contact/')}>get in touch</a>.
+                <a href={contactPath}>get in touch</a>.
               </p>
             </div>
           </div>

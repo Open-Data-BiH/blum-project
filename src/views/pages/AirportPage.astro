@@ -1,81 +1,99 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import AirportMap from '../components/AirportMap.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AirportMap from '../../components/AirportMap.astro';
+import {
+  addHashToPath,
+  getAlternatePaths,
+  getLocalizedMeta,
+  getPagePath,
+  getSwitchLocale,
+  type Locale,
+} from '../../lib/site-config';
 // FontAwesome brands icons (fa-google-play, fa-apple) only used on this page
 import '@fortawesome/fontawesome-free/css/brands.min.css';
 
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL;
 const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
 
 const airportFaqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'Kako doći od aerodroma Banja Luka do centra grada?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Shuttle autobusom kompanije Smiljić za oko 10 KM (30-45 min), ili taksijem za 40-60 KM (30-35 min). Autobus čeka ispred terminala nakon svakog leta i završava na Staroj i Glavnoj autobuskoj stanici.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'How do I get from Banja Luka Airport to the city center?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Take the Smiljić shuttle bus for approximately 10 KM (30-45 minutes), or a taxi for 40-60 KM (30-35 minutes). The shuttle waits outside the terminal after each flight arrival and ends at the Old and Main Bus Station.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Koliko košta shuttle autobus od aerodroma Banja Luka?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Shuttle autobus kompanije Smiljić košta oko 10 KM (jedna vožnja). Karte se kupuju u autobusu.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'How much does the Banja Luka airport bus cost?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'The Smiljić airport shuttle costs approximately 10 KM one way. Tickets are purchased on the bus.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Koliko je daleko aerodrom Banja Luka od centra?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Aerodrom Banja Luka (BNX) nalazi se u Mahovljanima, oko 25 km sjeverno od centra grada, autoputem E661.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'How far is Banja Luka Airport from the city center?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Banja Luka Airport (BNX) is located in Mahovljani, approximately 25 km north of the city center via the E661 motorway.',
-      },
-    },
-  ],
+  mainEntity: locale === 'en'
+    ? [
+        {
+          '@type': 'Question',
+          name: 'How do I get from Banja Luka Airport to the city center?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Take the Smiljic shuttle bus for approximately 10 KM (30-45 minutes), or a taxi for 40-60 KM (30-35 minutes). The shuttle waits outside the terminal after each flight arrival and ends at the Old and Main Bus Station.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How much does the Banja Luka airport bus cost?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'The Smiljic airport shuttle costs approximately 10 KM one way. Tickets are purchased on the bus.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How far is Banja Luka Airport from the city center?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Banja Luka Airport (BNX) is located in Mahovljani, approximately 25 km north of the city center via the E661 motorway.',
+          },
+        },
+      ]
+    : [
+        {
+          '@type': 'Question',
+          name: 'Kako doci od aerodroma Banja Luka do centra grada?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Shuttle autobusom kompanije Smiljic za oko 10 KM (30-45 min), ili taksijem za 40-60 KM (30-35 min). Autobus ceka ispred terminala nakon svakog leta i zavrsava na Staroj i Glavnoj autobuskoj stanici.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Koliko kosta shuttle autobus od aerodroma Banja Luka?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Shuttle autobus kompanije Smiljic kosta oko 10 KM (jedna voznja). Karte se kupuju u autobusu.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Koliko je daleko aerodrom Banja Luka od centra?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Aerodrom Banja Luka (BNX) nalazi se u Mahovljanima, oko 25 km sjeverno od centra grada, autoputem E661.',
+          },
+        },
+      ],
 };
 
 const airportShuttleSchema = {
   '@context': 'https://schema.org',
   '@type': 'BusTrip',
-  name: 'Banja Luka Airport Shuttle (Smiljić)',
+  name: locale === 'en' ? 'Banja Luka Airport Shuttle (Smiljic)' : 'Shuttle prevoz do Aerodroma Banja Luka (Smiljic)',
   description:
-    'Airport shuttle bus connecting Banja Luka city center to Banja Luka International Airport (BNX). Operated by Smiljić company.',
+    locale === 'en'
+      ? 'Airport shuttle bus connecting Banja Luka city center to Banja Luka International Airport (BNX). Operated by Smiljic company.'
+      : 'Shuttle autobus koji povezuje centar Banje Luke sa Medjunarodnim aerodromom Banja Luka (BNX). Prevoznik je kompanija Smiljic.',
   provider: {
     '@type': 'Organization',
-    name: 'Smiljić',
+    name: 'Smiljic',
     url: 'https://smiljiccompany.ba/avio-transferi/',
   },
   departureStop: {
     '@type': 'BusStation',
-    name: 'Stara i Glavna autobuska stanica Banja Luka',
+    name: locale === 'en' ? 'Old and Main Bus Station Banja Luka' : 'Stara i Glavna autobuska stanica Banja Luka',
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Banja Luka',
@@ -84,7 +102,7 @@ const airportShuttleSchema = {
   },
   arrivalStop: {
     '@type': 'Airport',
-    name: 'Aerodrom Banja Luka',
+    name: locale === 'en' ? 'Banja Luka Airport' : 'Aerodrom Banja Luka',
     iataCode: 'BNX',
     address: {
       '@type': 'PostalAddress',
@@ -94,13 +112,21 @@ const airportShuttleSchema = {
     },
   },
 };
+const meta = getLocalizedMeta('airport', locale);
+const alternatePaths = getAlternatePaths('airport');
+const linesPath = withBase(getPagePath('lines', locale));
+const timetablePath = withBase(addHashToPath(getPagePath('lines', locale), 'timetable'));
+const pricingPath = withBase(getPagePath('pricing', locale));
 ---
 
 <BaseLayout
   pageKey="airport"
-  title="Prevoz do aerodroma Banja Luka - Shuttle, taksi, cijene | BNX"
-  description="Kako doći do Aerodroma Banja Luka (BNX). Shuttle autobus ~10 KM (30-45 min), taksi 40-60 KM. Polasci od Glavne stanice, parking i interaktivna mapa rute."
-  canonicalUrl="https://blprevoz.com/airport/"
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonicalPath={getPagePath('airport', locale)}
+  alternatePaths={alternatePaths}
+  switchLanguagePath={getPagePath('airport', getSwitchLocale(locale))}
 >
   <script type="application/ld+json" set:html={JSON.stringify(airportFaqSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(airportShuttleSchema)} />
@@ -641,7 +667,7 @@ const airportShuttleSchema = {
         </span>
       </p>
       <div class="airport-links-grid">
-        <a href={withBase('lines/')} class="airport-link-card">
+        <a href={linesPath} class="airport-link-card">
           <i class="fa-solid fa-route" aria-hidden="true"></i>
           <div>
             <strong>
@@ -654,7 +680,7 @@ const airportShuttleSchema = {
             </span>
           </div>
         </a>
-        <a href={withBase('lines/#timetable')} class="airport-link-card">
+        <a href={timetablePath} class="airport-link-card">
           <i class="fa-solid fa-clock" aria-hidden="true"></i>
           <div>
             <strong>
@@ -667,7 +693,7 @@ const airportShuttleSchema = {
             </span>
           </div>
         </a>
-        <a href={withBase('pricing/')} class="airport-link-card">
+        <a href={pricingPath} class="airport-link-card">
           <i class="fa-solid fa-ticket" aria-hidden="true"></i>
           <div>
             <strong>

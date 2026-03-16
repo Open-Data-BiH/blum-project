@@ -3,17 +3,24 @@
 // Loads Leaflet styles via ESM import to avoid CDN dependency
 import 'leaflet/dist/leaflet.css';
 import '../../styles/pages/_map-legend.scss';
+import type { Locale } from '../../lib/site-config';
 import MapContainer from './MapContainer.astro';
 import MapNote from './MapNote.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 ---
 
 <section class="section section--wide" id="map">
   <div class="container">
-    <h2 class="section__title" id="map-title">Interaktivna mapa prevoza</h2>
+    <h2 class="section__title" id="map-title">{locale === 'en' ? 'Interactive transport map' : 'Interaktivna mapa prevoza'}</h2>
 
     <MapContainer
       mapId="map-container"
-      label="Interaktivna mapa prevoza"
+      label={locale === 'en' ? 'Interactive transport map' : 'Interaktivna mapa prevoza'}
       role="application"
       live="polite"
     >
@@ -21,26 +28,33 @@ import MapNote from './MapNote.astro';
         <i class="map-note__icon fas fa-info-circle" aria-hidden="true"></i>
         <div class="map-note__content">
           <p>
-            JavaScript je potreban za prikaz interaktivne mape. Omogućite JavaScript u pregledaču kako biste vidjeli
-            stajališta i linije.
+            {locale === 'en'
+              ? 'JavaScript is required to display the interactive map. Enable JavaScript in your browser to view stops and lines.'
+              : 'JavaScript je potreban za prikaz interaktivne mape. Omogucite JavaScript u pregledacu kako biste vidjeli stajalista i linije.'}
           </p>
         </div>
       </noscript>
     </MapContainer>
 
     <MapNote id="bus-stops-note" className="map-note--info" showIcon={false}>
-      <h3 class="map-note__title" id="map-note-title">O interaktivnoj mapi</h3>
+      <h3 class="map-note__title" id="map-note-title">{locale === 'en' ? 'About the interactive map' : 'O interaktivnoj mapi'}</h3>
       <p class="map-note__description" id="map-note-description">
-        Markeri na mapi prikazuju ključne tačke javnog prevoza i druge važne lokacije u gradu, uključujući autobuska
-        stajališta, glavnu autobusku stanicu, željezničke stanice, Nextbike stanice i aerodromski transfer. Novi
-        sadržaji i lokacije biće postepeno dodavani.
+        {locale === 'en'
+          ? 'Map markers show key public transport points and other important city locations, including bus stops, the main bus station, railway stations, Nextbike stations, and the airport shuttle. New locations will be added gradually.'
+          : 'Markeri na mapi prikazuju kljucne tacke javnog prevoza i druge vazne lokacije u gradu, ukljucujuci autobuska stajalista, glavnu autobusku stanicu, zeljeznicke stanice, Nextbike stanice i aerodromski transfer. Novi sadrzaji i lokacije bice postepeno dodavani.'}
       </p>
       <div class="map-note__tips" aria-labelledby="map-note-tips-title">
-        <p class="map-note__tips-title" id="map-note-tips-title">Savjeti:</p>
+        <p class="map-note__tips-title" id="map-note-tips-title">{locale === 'en' ? 'Tips:' : 'Savjeti:'}</p>
         <ul class="map-note__tips-list">
-          <li id="map-note-tip-item-1">Kliknite na marker da vidite približno vrijeme hodanja (radijus ~5 min).</li>
+          <li id="map-note-tip-item-1">
+            {locale === 'en'
+              ? 'Click a marker to see the approximate walking time (radius about 5 minutes).'
+              : 'Kliknite na marker da vidite priblizno vrijeme hodanja (radijus oko 5 min).'}
+          </li>
           <li id="map-note-tip-item-2">
-            Korištenjem kontrola za slojeve možete uključiti ili isključiti pojedine vrste lokacija na mapi.
+            {locale === 'en'
+              ? 'Use the layer controls to show or hide specific location types on the map.'
+              : 'Koristenjem kontrola za slojeve mozete ukljuciti ili iskljuciti pojedine vrste lokacija na mapi.'}
           </li>
         </ul>
       </div>

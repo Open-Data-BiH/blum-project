@@ -1,32 +1,63 @@
 ---
 import { Image } from 'astro:assets';
-import type { PageKey } from '../layouts/BaseLayout.astro';
+import { getPagePath, type Locale, type PageKey } from '../lib/site-config';
 import logo from '../assets/images/favicon/blum_logo_main.png';
 
 interface Props {
   currentPage: PageKey;
+  locale: Locale;
+  switchLanguagePath: string;
 }
 
-const { currentPage } = Astro.props;
+const { currentPage, locale, switchLanguagePath } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL;
 const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
+const localizedPath = (pageKey: PageKey): string => withBase(getPagePath(pageKey, locale));
+const switcherHref = withBase(switchLanguagePath);
+const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const bhsHref = locale === 'bhs' ? currentPath : switcherHref;
+const enHref = locale === 'en' ? currentPath : switcherHref;
 
 const navLinks: { key: PageKey; href: string; id: string }[] = [
-  { key: 'home',    href: withBase(''),           id: 'nav-map-desktop' },
-  { key: 'lines',   href: withBase('lines/'),     id: 'nav-lines-desktop' },
-  { key: 'pricing', href: withBase('pricing/'),   id: 'nav-prices-desktop' },
-  { key: 'updates', href: withBase('updates/'),   id: 'nav-updates-desktop' },
-  { key: 'airport', href: withBase('airport/'),   id: 'nav-airport-desktop' },
-  { key: 'faq',     href: withBase('faq/'),       id: 'nav-faq-desktop' },
-  { key: 'contact', href: withBase('contact/'),   id: 'nav-contact-desktop' },
+  { key: 'home',    href: localizedPath('home'),    id: 'nav-map-desktop' },
+  { key: 'lines',   href: localizedPath('lines'),   id: 'nav-lines-desktop' },
+  { key: 'pricing', href: localizedPath('pricing'), id: 'nav-prices-desktop' },
+  { key: 'updates', href: localizedPath('updates'), id: 'nav-updates-desktop' },
+  { key: 'airport', href: localizedPath('airport'), id: 'nav-airport-desktop' },
+  { key: 'faq',     href: localizedPath('faq'),     id: 'nav-faq-desktop' },
+  { key: 'contact', href: localizedPath('contact'), id: 'nav-contact-desktop' },
 ];
+
+const navLabels: Record<PageKey, string> = locale === 'en'
+  ? {
+      home: 'Map',
+      lines: 'Lines',
+      pricing: 'Prices',
+      updates: 'Updates',
+      airport: 'Airport',
+      faq: 'FAQ',
+      contact: 'Contact',
+      privacy: 'Privacy',
+      about: 'About',
+    }
+  : {
+      home: 'Mapa',
+      lines: 'Linije',
+      pricing: 'Cjenovnik',
+      updates: 'Obavjestenja',
+      airport: 'Aerodrom',
+      faq: 'Cesta pitanja',
+      contact: 'Kontakt',
+      privacy: 'Politika privatnosti',
+      about: 'O projektu',
+    };
 ---
 
 <header>
   <div class="header__container">
     <div class="header__content">
       <div class="header__brand">
-        <a href={withBase('')} class="header__brand-link">
+        <a href={localizedPath('home')} class="header__brand-link">
           <Image
             src={logo}
             alt="BL Prevoz logo"
@@ -38,18 +69,30 @@ const navLinks: { key: PageKey; href: string; id: string }[] = [
           />
           <div class="header__brand-text">
             <h1 class="header__title" id="site-title">BL Prevoz</h1>
-            <p class="header__subtitle" id="site-subtitle">Pregled linija javnog prevoza u Banjoj Luci</p>
+            <p class="header__subtitle" id="site-subtitle">
+              {locale === 'en' ? 'Overview of public transport lines in Banja Luka' : 'Pregled linija javnog prevoza u Banjoj Luci'}
+            </p>
           </div>
         </a>
       </div>
 
       <div class="header__controls">
-        <div class="language-selector" role="group" aria-label="Jezik / Language">
-          <button class="lang-btn lang-btn--active" data-lang="bhs">BHS</button>
-          <button class="lang-btn" data-lang="en">EN</button>
+        <div class="language-selector" role="group" aria-label={locale === 'en' ? 'Language selector' : 'Izbor jezika'}>
+          <a
+            href={bhsHref}
+            class:list={['lang-btn', locale === 'bhs' && 'lang-btn--active']}
+            data-lang="bhs"
+            aria-current={locale === 'bhs' ? 'page' : undefined}
+          >BHS</a>
+          <a
+            href={enHref}
+            class:list={['lang-btn', locale === 'en' && 'lang-btn--active']}
+            data-lang="en"
+            aria-current={locale === 'en' ? 'page' : undefined}
+          >EN</a>
         </div>
 
-        <button class="theme-toggle" id="theme-toggle" aria-label="Tema / Theme">
+        <button class="theme-toggle" id="theme-toggle" aria-label={locale === 'en' ? 'Theme' : 'Tema'}>
           <i class="fas fa-desktop"></i>
         </button>
 
@@ -77,7 +120,7 @@ const navLinks: { key: PageKey; href: string; id: string }[] = [
                 class={`nav__link${currentPage === key ? ' active' : ''}`}
                 id={id}
                 data-page={key}
-              ></a>
+              >{navLabels[key]}</a>
             </li>
           ))
         }

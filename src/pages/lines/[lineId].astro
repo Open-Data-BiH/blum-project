@@ -20,8 +20,8 @@ const canonicalUrl = getLineDetailUrl('bhs', originalLineId);
   </head>
   <body>
     <a href={destination}>Redirecting to {destination}</a>
-    <script is:inline>
-      window.location.replace({JSON.stringify(destination)});
+    <script is:inline define:vars={{ destination }}>
+      window.location.replace(destination);
     </script>
   </body>
 </html>

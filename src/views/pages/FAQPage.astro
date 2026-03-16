@@ -35,7 +35,7 @@ const alternatePaths = getAlternatePaths('faq');
   alternatePaths={alternatePaths}
   switchLanguagePath={getPagePath('faq', getSwitchLocale(locale))}
 >
-  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <section class="section section--narrow" id="faq">
     <div class="container">
       <h2 class="section__title" id="faq-title">{locale === 'en' ? 'Frequently asked questions' : 'Cesta pitanja'}</h2>

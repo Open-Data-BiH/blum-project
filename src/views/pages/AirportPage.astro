@@ -128,8 +128,8 @@ const pricingPath = withBase(getPagePath('pricing', locale));
   alternatePaths={alternatePaths}
   switchLanguagePath={getPagePath('airport', getSwitchLocale(locale))}
 >
-  <script type="application/ld+json" set:html={JSON.stringify(airportFaqSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(airportShuttleSchema)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(airportFaqSchema)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(airportShuttleSchema)} />
   <!-- Airport Overview -->
   <section class="section" id="airport-overview">
     <div class="container">

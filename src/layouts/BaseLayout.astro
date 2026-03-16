@@ -79,12 +79,12 @@ const ogImage = new URL(
     {pageStyles && <link rel="stylesheet" href={pageStyles} />}
 
     <!-- Google tag (gtag.js) -->
-    <script src={withBase('scripts/analytics-consent-default.js')}></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TH1G57KP0X"></script>
-    <script src={withBase('scripts/analytics-init.js')}></script>
+    <script is:inline src="/scripts/analytics-consent-default.js"></script>
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-TH1G57KP0X"></script>
+    <script is:inline src="/scripts/analytics-init.js"></script>
 
     <!-- Theme init runs before body render to prevent flash -->
-    <script src={withBase('scripts/theme-init.js')}></script>
+    <script is:inline src="/scripts/theme-init.js"></script>
 
     <style is:inline>
       html[lang='bs'] [data-lang='en']:not(.lang-btn) {

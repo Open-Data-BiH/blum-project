@@ -361,8 +361,8 @@ const breadcrumbSchema = {
   alternatePaths={alternatePaths}
   switchLanguagePath={getLineDetailPath(getSwitchLocale(locale), originalLineId)}
 >
-  <script type="application/ld+json" set:html={JSON.stringify(lineSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(lineSchema)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
   <section class="section section--narrow" id="line-detail">
     <div class="container ldp-page">

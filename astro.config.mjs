@@ -8,7 +8,6 @@ export default defineConfig({
     trailingSlash: 'always',
     redirects: {
         '/lines': '/linije',
-        '/lines/[lineId]': '/linija/[lineId]',
         '/pricing': '/cjenovnik',
         '/airport': '/aerodrom',
         '/faq': '/cesta-pitanja',
@@ -17,7 +16,11 @@ export default defineConfig({
         '/privacy': '/politika-privatnosti',
         '/about': '/o-projektu',
     },
-    integrations: [sitemap()],
+    integrations: [
+        sitemap({
+            filter: (page) => !page.startsWith('https://blprevoz.com/lines/'),
+        }),
+    ],
     vite: {
         optimizeDeps: {
             include: ['leaflet'],

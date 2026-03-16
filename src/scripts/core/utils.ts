@@ -1,6 +1,3 @@
-// Shared utility functions (pure, stateless)
-// Ported from js/core/utils.js
-
 const BASE_URL = import.meta.env.BASE_URL;
 export const withBase = (path: string): string => `${BASE_URL}${path.replace(/^\/+/, '')}`;
 

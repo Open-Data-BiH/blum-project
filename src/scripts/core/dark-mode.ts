@@ -1,6 +1,3 @@
-// Dark mode manager — ported from js/core/dark-mode.js
-// layoutLoaded event removed; header is always present in Astro SSR output.
-
 type ThemeMode = 'light' | 'dark' | 'auto';
 
 class DarkModeManager {

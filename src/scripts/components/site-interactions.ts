@@ -1,6 +1,3 @@
-// Site interactions — ported from js/components/site-interactions.js
-// Key change: language access comes from getCurrentLanguage() in i18n.ts
-
 import { getCurrentLanguage } from '../core/i18n';
 
 export const setupMapCreditsDropdown = (): void => {

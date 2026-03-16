@@ -1,6 +1,3 @@
-// Urban Lines Viewer — ported from js/urban-lines-viewer.js
-// Key change: window.L replaced with import L from 'leaflet'
-
 import L from 'leaflet';
 import { withBase } from './core/utils';
 

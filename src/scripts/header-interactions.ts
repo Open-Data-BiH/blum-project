@@ -1,7 +1,3 @@
-// Header interactions — ported from js/layout/layout.js
-// Handles: mobile menu toggle, scroll shadow, active nav link, smooth scrolling
-// layoutLoaded event removed: header is server-rendered and always present.
-
 import { setupLanguageSwitcher, applyTranslation, getCurrentLanguage } from './core/i18n';
 import { darkModeManager } from './core/dark-mode';
 

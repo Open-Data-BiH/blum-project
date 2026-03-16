@@ -1,0 +1,27 @@
+---
+import { getLineStaticPaths } from '../../lib/line-static-paths';
+import { getLineDetailPath, getLineDetailUrl } from '../../lib/site-config';
+
+export const getStaticPaths = getLineStaticPaths;
+
+const { originalLineId } = Astro.props;
+const destination = getLineDetailPath('bhs', originalLineId);
+const canonicalUrl = getLineDetailUrl('bhs', originalLineId);
+---
+
+<!doctype html>
+<html lang="bs">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0;url=${destination}`} />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonicalUrl} />
+    <title>Redirecting...</title>
+  </head>
+  <body>
+    <a href={destination}>Redirecting to {destination}</a>
+    <script is:inline>
+      window.location.replace({JSON.stringify(destination)});
+    </script>
+  </body>
+</html>

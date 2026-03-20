@@ -9,6 +9,7 @@ interface Props {
 const { locale } = Astro.props;
 const meta = getLocalizedMeta('privacy', locale);
 const alternatePaths = getAlternatePaths('privacy');
+const isEnglish = locale === 'en';
 ---
 
 <BaseLayout
@@ -22,14 +23,143 @@ const alternatePaths = getAlternatePaths('privacy');
 >
   <section class="section section--narrow" id="privacy">
     <div class="container">
-      <h1 class="section__title" id="privacy-title">
-        <span data-lang="bhs">Politika privatnosti</span>
-        <span data-lang="en" style="display:none">Privacy Policy</span>
-      </h1>
+      <h1 class="section__title" id="privacy-title">{isEnglish ? 'Privacy Policy' : 'Politika privatnosti'}</h1>
 
       <div class="privacy-content">
-        <!-- Introduction -->
-        <div data-lang="bhs">
+        {isEnglish ? (
+          <div>
+            <h2>Introduction</h2>
+            <p>
+              This privacy policy applies to the use of the website <a href="https://blprevoz.com">blprevoz.com</a>.
+            </p>
+            <p>
+              BL Prevoz is a non-commercial platform for
+              public transport information in Banja Luka.
+            </p>
+            <p>
+              The website was launched as part of a broader, likewise independent open data initiative
+              focused on making public information more accessible in Bosnia and Herzegovina, and it is not affiliated with government institutions,
+              transport operators, or any organization.
+            </p>
+            <p>
+              This privacy policy has been prepared in accordance with applicable data protection legislation in Bosnia and Herzegovina
+              and the principles of the European Union's General Data Protection Regulation (GDPR), to the extent applicable to this type of website.
+            </p>
+            <p>
+              Your privacy matters to us. This page explains what data is used,
+              how cookies work, and when analytics is activated.
+            </p>
+
+            <h2>Site Operator</h2>
+            <p>
+              The website blprevoz.com is maintained by the volunteer initiative Open Data BiH.
+            </p>
+
+            <h2>Analytics</h2>
+            <p>
+              This site uses <strong>Google Analytics 4</strong> to understand how the website is used
+              and to improve its content and user experience.
+            </p>
+            <p>
+              Analytics is activated <strong>only after your consent</strong> through the cookie banner.
+              If you do not accept analytics cookies, Google Analytics will not load.
+            </p>
+            <p>After consent, limited statistical data may be processed, such as:</p>
+            <ul>
+              <li>page view counts</li>
+              <li>visit duration</li>
+              <li>device and browser type</li>
+              <li>approximate country of access, without precise location</li>
+            </ul>
+            <p>
+              BL Prevoz does not collect personal data through user accounts, forms, or registration.
+              We do not ask for or store information such as names, email addresses, or phone numbers.
+            </p>
+            <p>
+              If you consent to analytics, Google Analytics may process technical data needed to generate aggregated statistics,
+              including cookie identifiers and a shortened IP address, in accordance with its own privacy policy.
+            </p>
+            <p>
+              More information is available in <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google's Privacy Policy</a>.
+            </p>
+
+            <h2>Cookies</h2>
+            <p>This site uses the following cookies and local data:</p>
+            <p>
+              <strong>analytics-consent</strong> (localStorage)<br />
+              Stores your decision to accept or decline analytics cookies so we know whether Google Analytics may be loaded.
+            </p>
+            <p>
+              <strong>Google Analytics cookies</strong> (<code>_ga</code>, <code>_gid</code>)<br />
+              Set only if you accept analytics. They are used to distinguish anonymous visits and sessions
+              for aggregated usage statistics.
+            </p>
+            <p>
+              Through the cookie banner, you can accept or decline the use of analytics cookies.
+              You can change your decision later by clearing browser data for this site, including localStorage and cookies,
+              and then making a new choice in the banner.
+            </p>
+
+            <h2>Maps and User Location</h2>
+            <p>
+              Maps on this website are displayed using the Leaflet library and OpenStreetMap data.
+            </p>
+            <p>
+              Some maps may allow you to display your current location using your browser's geolocation feature.
+              This function is activated only with your permission through the browser.
+            </p>
+            <p>
+              BL Prevoz does not collect, store, or process location data.
+              Location information is used only locally in your browser to display your position on the map.
+            </p>
+
+            <h2>User Rights</h2>
+            <p>You have the right to:</p>
+            <ul>
+              <li>request information about data processing</li>
+              <li>withdraw consent for analytics cookies</li>
+              <li>request deletion of data that may relate to you</li>
+            </ul>
+            <p>
+              Since this site does not collect personal data or use user accounts,
+              most of these rights are not practically applicable. If you want to withdraw analytics consent,
+              you can do so by clearing cookies and localStorage data for this site.
+            </p>
+
+            <h2>Data Retention</h2>
+            <p>
+              Analytics data is stored according to the retention settings configured in Google Analytics
+              and is used solely for statistical analysis of site usage.
+            </p>
+
+            <h2>External Links</h2>
+            <p>
+              This site may contain links to external websites, including transport operators,
+              city institutions, and airport-related resources.
+            </p>
+            <p>
+              BL Prevoz is not responsible for the privacy policies or content of external websites.
+              We recommend reviewing the privacy policies of those sites separately.
+            </p>
+
+            <h2>Contact</h2>
+            <p>
+              For any privacy-related questions, contact us at
+              <a href="mailto:blprevoz@proton.me">blprevoz@proton.me</a>.
+            </p>
+
+            <h2>Disclaimer</h2>
+            <p>
+              BL Prevoz is an independent informational service and is not affiliated with official city authorities,
+              transport operators, or other public institutions.
+            </p>
+            <p>
+              Data is not sold and is not used for advertising. Limited statistical data is shared with the Google Analytics service
+              only if you have given consent and only for the purposes described above.
+            </p>
+          </div>
+        ) : (
+          <div>
           <h2>Uvod</h2>
           <p>
             Ova politika privatnosti odnosi se na korištenje internet stranice <a href="https://blprevoz.com">blprevoz.com</a>.
@@ -158,140 +288,8 @@ const alternatePaths = getAlternatePaths('privacy');
             Podaci se ne prodaju niti se koriste za oglašavanje. Ograničeni statistički podaci dijele se sa servisom Google Analytics
             samo ako ste dali pristanak i samo u gore opisane svrhe.
           </p>
-        </div>
-
-        <!-- English version -->
-        <div data-lang="en" style="display:none">
-          <h2>Introduction</h2>
-          <p>
-            This privacy policy applies to the use of the website <a href="https://blprevoz.com">blprevoz.com</a>.
-          </p>
-          <p>
-            BL Prevoz is a non-commercial platform for
-            public transport information in Banja Luka.
-          </p>
-          <p>
-            The website was launched as part of a broader, likewise independent open data initiative
-            focused on making public information more accessible in Bosnia and Herzegovina, and it is not affiliated with government institutions,
-            transport operators, or any organization.
-          </p>
-          <p>
-            This privacy policy has been prepared in accordance with applicable data protection legislation in Bosnia and Herzegovina
-            and the principles of the European Union's General Data Protection Regulation (GDPR), to the extent applicable to this type of website.
-          </p>
-          <p>
-            Your privacy matters to us. This page explains what data is used,
-            how cookies work, and when analytics is activated.
-          </p>
-
-          <h2>Site Operator</h2>
-          <p>
-            The website blprevoz.com is maintained by the volunteer initiative Open Data BiH.
-          </p>
-
-          <h2>Analytics</h2>
-          <p>
-            This site uses <strong>Google Analytics 4</strong> to understand how the website is used
-            and to improve its content and user experience.
-          </p>
-          <p>
-            Analytics is activated <strong>only after your consent</strong> through the cookie banner.
-            If you do not accept analytics cookies, Google Analytics will not load.
-          </p>
-          <p>After consent, limited statistical data may be processed, such as:</p>
-          <ul>
-            <li>page view counts</li>
-            <li>visit duration</li>
-            <li>device and browser type</li>
-            <li>approximate country of access, without precise location</li>
-          </ul>
-          <p>
-            BL Prevoz does not collect personal data through user accounts, forms, or registration.
-            We do not ask for or store information such as names, email addresses, or phone numbers.
-          </p>
-          <p>
-            If you consent to analytics, Google Analytics may process technical data needed to generate aggregated statistics,
-            including cookie identifiers and a shortened IP address, in accordance with its own privacy policy.
-          </p>
-          <p>
-            More information is available in <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google's Privacy Policy</a>.
-          </p>
-
-          <h2>Cookies</h2>
-          <p>This site uses the following cookies and local data:</p>
-          <p>
-            <strong>analytics-consent</strong> (localStorage)<br />
-            Stores your decision to accept or decline analytics cookies so we know whether Google Analytics may be loaded.
-          </p>
-          <p>
-            <strong>Google Analytics cookies</strong> (<code>_ga</code>, <code>_gid</code>)<br />
-            Set only if you accept analytics. They are used to distinguish anonymous visits and sessions
-            for aggregated usage statistics.
-          </p>
-          <p>
-            Through the cookie banner, you can accept or decline the use of analytics cookies.
-            You can change your decision later by clearing browser data for this site, including localStorage and cookies,
-            and then making a new choice in the banner.
-          </p>
-
-          <h2>Maps and User Location</h2>
-          <p>
-            Maps on this website are displayed using the Leaflet library and OpenStreetMap data.
-          </p>
-          <p>
-            Some maps may allow you to display your current location using your browser's geolocation feature.
-            This function is activated only with your permission through the browser.
-          </p>
-          <p>
-            BL Prevoz does not collect, store, or process location data.
-            Location information is used only locally in your browser to display your position on the map.
-          </p>
-
-          <h2>User Rights</h2>
-          <p>You have the right to:</p>
-          <ul>
-            <li>request information about data processing</li>
-            <li>withdraw consent for analytics cookies</li>
-            <li>request deletion of data that may relate to you</li>
-          </ul>
-          <p>
-            Since this site does not collect personal data or use user accounts,
-            most of these rights are not practically applicable. If you want to withdraw analytics consent,
-            you can do so by clearing cookies and localStorage data for this site.
-          </p>
-
-          <h2>Data Retention</h2>
-          <p>
-            Analytics data is stored according to the retention settings configured in Google Analytics
-            and is used solely for statistical analysis of site usage.
-          </p>
-
-          <h2>External Links</h2>
-          <p>
-            This site may contain links to external websites, including transport operators,
-            city institutions, and airport-related resources.
-          </p>
-          <p>
-            BL Prevoz is not responsible for the privacy policies or content of external websites.
-            We recommend reviewing the privacy policies of those sites separately.
-          </p>
-
-          <h2>Contact</h2>
-          <p>
-            For any privacy-related questions, contact us at
-            <a href="mailto:blprevoz@proton.me">blprevoz@proton.me</a>.
-          </p>
-
-          <h2>Disclaimer</h2>
-          <p>
-            BL Prevoz is an independent informational service and is not affiliated with official city authorities,
-            transport operators, or other public institutions.
-          </p>
-          <p>
-            Data is not sold and is not used for advertising. Limited statistical data is shared with the Google Analytics service
-            only if you have given consent and only for the purposes described above.
-          </p>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   </section>

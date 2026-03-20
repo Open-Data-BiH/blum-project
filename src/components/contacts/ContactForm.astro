@@ -8,6 +8,7 @@ interface Props {
 }
 
 const { locale = 'bhs' } = Astro.props;
+const isEnglish = locale === 'en';
 
 const subjects = [
   { value: 'timetable', bhs: 'Prijava netačnog reda vožnje', en: 'Report incorrect timetable' },
@@ -20,20 +21,17 @@ const subjects = [
 
 <section class="section section--narrow" id="contact-form">
   <div class="container">
-    <h2 class="section__title" id="contact-form-title">
-      <span data-lang="bhs">Kontaktirajte nas</span>
-      <span data-lang="en" style="display:none">Contact us</span>
-    </h2>
+    <h2 class="section__title" id="contact-form-title">{isEnglish ? 'Contact us' : 'Kontaktirajte nas'}</h2>
     <p class="contact-form__intro">
-      <span data-lang="bhs">Imate pitanje, prijedlog ili želite prijaviti problem? Popunite formu ispod.</span>
-      <span data-lang="en" style="display:none">Have a question, suggestion, or want to report an issue? Fill out the form below.</span>
+      {isEnglish
+        ? 'Have a question, suggestion, or want to report an issue? Fill out the form below.'
+        : 'Imate pitanje, prijedlog ili želite prijaviti problem? Popunite formu ispod.'}
     </p>
 
     <form class="contact-form" id="contact-form-el" data-email={maintainerEmail} novalidate>
       <div class="contact-form__field">
         <label for="contact-subject">
-          <span data-lang="bhs">Predmet</span>
-          <span data-lang="en" style="display:none">Subject</span>
+          {isEnglish ? 'Subject' : 'Predmet'}
         </label>
         <select id="contact-subject" name="subject" required data-placeholder-bhs="-- Izaberite predmet --" data-placeholder-en="-- Select a subject --">
           <option value="" disabled selected>{locale === 'en' ? '-- Select a subject --' : '-- Izaberite predmet --'}</option>
@@ -43,16 +41,12 @@ const subjects = [
             </option>
           ))}
         </select>
-        <span class="contact-form__error" id="subject-error" hidden>
-          <span data-lang="bhs">Molimo izaberite predmet</span>
-          <span data-lang="en" style="display:none">Please select a subject</span>
-        </span>
+        <span class="contact-form__error" id="subject-error" hidden>{isEnglish ? 'Please select a subject' : 'Molimo izaberite predmet'}</span>
       </div>
 
       <div class="contact-form__field contact-form__field--custom" id="custom-subject-field" style="display:none">
         <label for="contact-custom-subject">
-          <span data-lang="bhs">Vas predmet</span>
-          <span data-lang="en" style="display:none">Your subject</span>
+          {isEnglish ? 'Your subject' : 'Vas predmet'}
         </label>
         <input
           type="text"
@@ -64,16 +58,12 @@ const subjects = [
           data-placeholder-en="Enter subject..."
           placeholder={locale === 'en' ? 'Enter subject...' : 'Unesite predmet...'}
         />
-        <span class="contact-form__error" id="custom-subject-error" hidden>
-          <span data-lang="bhs">Predmet mora imati najmanje 3 karaktera</span>
-          <span data-lang="en" style="display:none">Subject must be at least 3 characters</span>
-        </span>
+        <span class="contact-form__error" id="custom-subject-error" hidden>{isEnglish ? 'Subject must be at least 3 characters' : 'Predmet mora imati najmanje 3 karaktera'}</span>
       </div>
 
       <div class="contact-form__field">
         <label for="contact-message">
-          <span data-lang="bhs">Poruka</span>
-          <span data-lang="en" style="display:none">Message</span>
+          {isEnglish ? 'Message' : 'Poruka'}
         </label>
         <textarea
           id="contact-message"
@@ -84,16 +74,12 @@ const subjects = [
           data-placeholder-en="Describe in detail..."
           placeholder={locale === 'en' ? 'Describe in detail...' : 'Opisite detaljnije...'}
         ></textarea>
-        <span class="contact-form__error" id="message-error" hidden>
-          <span data-lang="bhs">Poruka mora imati najmanje 10 karaktera</span>
-          <span data-lang="en" style="display:none">Message must be at least 10 characters</span>
-        </span>
+        <span class="contact-form__error" id="message-error" hidden>{isEnglish ? 'Message must be at least 10 characters' : 'Poruka mora imati najmanje 10 karaktera'}</span>
       </div>
 
       <button type="submit" class="btn btn--primary contact-form__submit">
         <i class="fas fa-paper-plane" aria-hidden="true"></i>
-        <span data-lang="bhs">Nastavi</span>
-        <span data-lang="en" style="display:none">Continue</span>
+        {isEnglish ? 'Continue' : 'Nastavi'}
       </button>
     </form>
 
@@ -101,12 +87,10 @@ const subjects = [
     <div class="contact-form__send-panel" id="send-panel" hidden>
       <h3 class="contact-form__send-title">
         <i class="fas fa-check-circle" aria-hidden="true"></i>
-        <span data-lang="bhs">Poruka pripremljena!</span>
-        <span data-lang="en" style="display:none">Message ready!</span>
+        {isEnglish ? 'Message ready!' : 'Poruka pripremljena!'}
       </h3>
       <p class="contact-form__send-desc">
-        <span data-lang="bhs">Izaberite kako želite poslati poruku:</span>
-        <span data-lang="en" style="display:none">Choose how you'd like to send it:</span>
+        {isEnglish ? "Choose how you'd like to send it:" : 'Izaberite kako želite poslati poruku:'}
       </p>
 
       <div class="contact-form__send-options">
@@ -120,26 +104,22 @@ const subjects = [
         </a>
         <a id="mailto-link" class="btn btn--secondary contact-form__send-btn">
           <i class="fas fa-desktop" aria-hidden="true"></i>
-          <span data-lang="bhs">Email klijent</span>
-          <span data-lang="en" style="display:none">Email client</span>
+          {isEnglish ? 'Email client' : 'Email klijent'}
         </a>
         <button type="button" id="copy-btn" class="btn btn--secondary contact-form__send-btn">
           <i class="fas fa-copy" aria-hidden="true"></i>
-          <span data-lang="bhs">Kopiraj</span>
-          <span data-lang="en" style="display:none">Copy</span>
+          {isEnglish ? 'Copy' : 'Kopiraj'}
         </button>
       </div>
 
       <div class="contact-form__copy-success" id="copy-success" hidden>
         <i class="fas fa-check" aria-hidden="true"></i>
-        <span data-lang="bhs">Kopirano! Posaljite na: <strong id="copy-email-bhs"></strong></span>
-        <span data-lang="en" style="display:none">Copied! Send to: <strong id="copy-email-en"></strong></span>
+        <span>{isEnglish ? 'Copied! Send to: ' : 'Kopirano! Pošaljite na: '}<strong id="copy-email"></strong></span>
       </div>
 
       <button type="button" id="back-to-form" class="contact-form__back-link">
         <i class="fas fa-arrow-left" aria-hidden="true"></i>
-        <span data-lang="bhs">Nazad na formu</span>
-        <span data-lang="en" style="display:none">Back to form</span>
+        {isEnglish ? 'Back to form' : 'Nazad na formu'}
       </button>
     </div>
   </div>
@@ -236,10 +216,8 @@ const subjects = [
     });
 
     // Set copy email targets
-    const copyEmailBhs = document.getElementById('copy-email-bhs');
-    const copyEmailEn = document.getElementById('copy-email-en');
-    if (copyEmailBhs) copyEmailBhs.textContent = email;
-    if (copyEmailEn) copyEmailEn.textContent = email;
+    const copyEmail = document.getElementById('copy-email');
+    if (copyEmail) copyEmail.textContent = email;
 
     form.addEventListener('submit', (e: Event) => {
       e.preventDefault();
@@ -264,15 +242,19 @@ const subjects = [
       }
       if (!valid) return;
 
+      const lang = getLang();
       const selectedOption = subjectSelect.options[subjectSelect.selectedIndex];
       let subject: string;
       if (subjectSelect.value === 'custom') {
         subject = customInput.value.trim();
       } else {
-        subject = `BL prevoz - ${selectedOption.dataset.bhs ?? selectedOption.textContent ?? ''}`;
+        subject = `BL prevoz - ${
+          lang === 'en'
+            ? selectedOption.dataset.en ?? selectedOption.textContent ?? ''
+            : selectedOption.dataset.bhs ?? selectedOption.textContent ?? ''
+        }`;
       }
 
-      const lang = getLang();
       const greeting = lang === 'en' ? 'Hello,' : 'Pozdrav,';
       const message = messageEl.value.trim();
       const body = message ? `${greeting}\n\n${message}` : `${greeting}\n\n`;

@@ -10,6 +10,7 @@ interface Props {
 const { locale } = Astro.props;
 const meta = getLocalizedMeta('pricing', locale);
 const alternatePaths = getAlternatePaths('pricing');
+const isEnglish = locale === 'en';
 ---
 
 <BaseLayout
@@ -25,14 +26,47 @@ const alternatePaths = getAlternatePaths('pricing');
     <div class="container">
       <div class="pricing-main">
         <h2 class="section__title" id="price-tables-title">{locale === 'en' ? 'Ticket prices' : 'Cjenovnik karata'}</h2>
-        <PricingSection />
+        <PricingSection locale={locale} />
       </div>
     </div>
   </section>
 
   <section class="section pricing-section pricing-section--info" id="where-to-buy">
     <div class="pricing-section__inner">
-      <div class="pricing-info-block" data-lang="bhs">
+      {isEnglish ? (
+        <div class="pricing-info-block">
+          <h2 class="pricing-section__title">Where to Buy Tickets</h2>
+          <div class="pricing-info-grid">
+            <div class="pricing-info-card">
+              <h3 class="pricing-info-card__title">Single and Day Tickets</h3>
+              <ul class="pricing-info-list">
+                <li><strong>Single tickets</strong> and <strong>sets of 5 single tickets</strong> - available on the bus, with cash payment to the driver when boarding, or at operator sales points</li>
+                <li><strong>Day tickets</strong> - available at operator sales points</li>
+              </ul>
+            </div>
+            <div class="pricing-info-card">
+              <h3 class="pricing-info-card__title">Monthly Tickets</h3>
+              <ul class="pricing-info-list">
+                <li>Worker, pensioner, and student monthly tickets - available <strong>at operator sales points only</strong></li>
+                <li>Unified monthly card (JMK) - valid on all urban lines across all three operators</li>
+                <li>Supplement card - combined with a suburban zone ticket, valid on all urban lines too</li>
+              </ul>
+            </div>
+            <div class="pricing-info-card">
+              <h3 class="pricing-info-card__title">Free Travel &amp; Discounts</h3>
+              <ul class="pricing-info-list">
+                <li><strong>Free:</strong> parents of fallen soldiers; blind persons with a companion</li>
+                <li><strong>Free from 2024:</strong> pensioners and persons over 65 with Banja Luka residency; students from large families (4+); JU Dom "Rada Vranješević" residents; children in foster care</li>
+                <li><strong>Discounts:</strong> children of fallen soldiers (secondary school and university) and their non-pensioner, non-disabled (cat. I/II) spouses; student subsidies for urban and suburban lines</li>
+              </ul>
+            </div>
+          </div>
+          <div class="pricing-notice">
+            <p>To apply for free travel or a discount, contact the competent institutions with the required documentation.</p>
+          </div>
+        </div>
+      ) : (
+        <div class="pricing-info-block">
         <h2 class="pricing-section__title">Gdje kupiti kartu</h2>
         <div class="pricing-info-grid">
           <div class="pricing-info-card">
@@ -62,45 +96,37 @@ const alternatePaths = getAlternatePaths('pricing');
         <div class="pricing-notice">
           <p>Za ostvarivanje prava na besplatan prevoz ili popust obratite se nadležnim institucijama uz potrebnu dokumentaciju.</p>
         </div>
-      </div>
-
-      <div class="pricing-info-block" data-lang="en" style="display:none">
-        <h2 class="pricing-section__title">Where to Buy Tickets</h2>
-        <div class="pricing-info-grid">
-          <div class="pricing-info-card">
-            <h3 class="pricing-info-card__title">Single and Day Tickets</h3>
-            <ul class="pricing-info-list">
-              <li><strong>Single tickets</strong> and <strong>sets of 5 single tickets</strong> – available on the bus, with cash payment to the driver when boarding, or at operator sales points</li>
-              <li><strong>Day tickets</strong> – available at operator sales points</li>
-            </ul>
-          </div>
-          <div class="pricing-info-card">
-            <h3 class="pricing-info-card__title">Monthly Tickets</h3>
-            <ul class="pricing-info-list">
-              <li>Worker, pensioner, and student monthly tickets - available <strong>at operator sales points only</strong></li>
-              <li>Unified monthly card (JMK) - valid on all urban lines across all three operators</li>
-              <li>Supplement card - combined with a suburban zone ticket, valid on all urban lines too</li>
-            </ul>
-          </div>
-          <div class="pricing-info-card">
-            <h3 class="pricing-info-card__title">Free Travel &amp; Discounts</h3>
-            <ul class="pricing-info-list">
-              <li><strong>Free:</strong> parents of fallen soldiers; blind persons with a companion</li>
-              <li><strong>Free from 2024:</strong> pensioners and persons over 65 with Banja Luka residency; students from large families (4+); JU Dom "Rada Vranješević" residents; children in foster care</li>
-              <li><strong>Discounts:</strong> children of fallen soldiers (secondary school and university) and their non-pensioner, non-disabled (cat. I/II) spouses; student subsidies for urban and suburban lines</li>
-            </ul>
-          </div>
         </div>
-        <div class="pricing-notice">
-          <p>To apply for free travel or a discount, contact the competent institutions with the required documentation.</p>
-        </div>
-      </div>
+      )}
     </div>
   </section>
 
   <section class="section pricing-section pricing-section--rules" id="ticket-inspection">
     <div class="pricing-section__inner">
-      <div class="pricing-info-block" data-lang="bhs">
+      {isEnglish ? (
+        <div class="pricing-info-block">
+          <h2 class="pricing-section__title">Ticket Inspection Rules</h2>
+          <div class="pricing-info-grid pricing-info-grid--two">
+            <div class="pricing-info-card pricing-info-card--expanded">
+              <h3 class="pricing-info-card__title">Passenger Obligations</h3>
+              <ul class="pricing-info-list">
+                <li>Every passenger must hold a <strong>valid ticket</strong> for the entire journey.</li>
+                <li>Upon request from an authorised inspector, passengers must <strong>present their ticket</strong>.</li>
+                <li>Inspectors are authorised personnel and have the right to check tickets at any point during the journey.</li>
+              </ul>
+            </div>
+            <div class="pricing-info-card pricing-info-card--expanded">
+              <h3 class="pricing-info-card__title">Notes</h3>
+              <ul class="pricing-info-list">
+                <li>Tickets purchased on the bus are valid for that journey only and are non-transferable.</li>
+                <li>Tickets are not valid across different line groups (e.g. urban and suburban lines).</li>
+                <li>If you have an issue during an inspection, report it to the city inspection authority.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div class="pricing-info-block">
         <h2 class="pricing-section__title">Pravila kontrole karata</h2>
         <div class="pricing-info-grid pricing-info-grid--two">
           <div class="pricing-info-card pricing-info-card--expanded">
@@ -120,29 +146,8 @@ const alternatePaths = getAlternatePaths('pricing');
             </ul>
           </div>
         </div>
-      </div>
-
-      <div class="pricing-info-block" data-lang="en" style="display:none">
-        <h2 class="pricing-section__title">Ticket Inspection Rules</h2>
-        <div class="pricing-info-grid pricing-info-grid--two">
-          <div class="pricing-info-card pricing-info-card--expanded">
-            <h3 class="pricing-info-card__title">Passenger Obligations</h3>
-            <ul class="pricing-info-list">
-              <li>Every passenger must hold a <strong>valid ticket</strong> for the entire journey.</li>
-              <li>Upon request from an authorised inspector, passengers must <strong>present their ticket</strong>.</li>
-              <li>Inspectors are authorised personnel and have the right to check tickets at any point during the journey.</li>
-            </ul>
-          </div>
-          <div class="pricing-info-card pricing-info-card--expanded">
-            <h3 class="pricing-info-card__title">Notes</h3>
-            <ul class="pricing-info-list">
-              <li>Tickets purchased on the bus are valid for that journey only and are non-transferable.</li>
-              <li>Tickets are not valid across different line groups (e.g. urban and suburban lines).</li>
-              <li>If you have an issue during an inspection, report it to the city inspection authority.</li>
-            </ul>
-          </div>
         </div>
-      </div>
+      )}
     </div>
   </section>
 </BaseLayout>

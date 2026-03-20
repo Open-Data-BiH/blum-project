@@ -4,6 +4,13 @@
 import 'leaflet/dist/leaflet.css';
 import '../styles/pages/_map-legend.scss';
 import MapContainer from './map/MapContainer.astro';
+
+interface Props {
+  locale: 'bhs' | 'en';
+}
+
+const { locale } = Astro.props;
+const isEnglish = locale === 'en';
 ---
 
 <div class="airport-transfer-info">
@@ -14,12 +21,10 @@ import MapContainer from './map/MapContainer.astro';
       </div>
       <div class="airport-info-block__content">
         <p class="airport-info-block__label">
-          <span data-lang="bhs">Cijena</span>
-          <span data-lang="en" style="display:none">Price</span>
+          {isEnglish ? 'Price' : 'Cijena'}
         </p>
         <p id="airport-price" class="airport-info-block__value">
-          <span data-lang="bhs">Cijena karte u jednom pravcu iznosi 10,00 KM</span>
-          <span data-lang="en" style="display:none">One-way ticket price is 10.00 KM</span>
+          {isEnglish ? 'One-way ticket price is 10.00 KM' : 'Cijena karte u jednom pravcu iznosi 10,00 KM'}
         </p>
       </div>
     </div>
@@ -30,31 +35,27 @@ import MapContainer from './map/MapContainer.astro';
       </div>
       <div class="airport-info-block__content">
         <p class="airport-info-block__label">
-          <span data-lang="bhs">Polazište</span>
-          <span data-lang="en" style="display:none">Departure point</span>
+          {isEnglish ? 'Departure point' : 'Polazište'}
         </p>
         <p id="airport-departure-location" class="airport-info-block__value">
-          <span data-lang="bhs">
-            Svi polasci su sa Stare autobuske stanice (Vidovdanska ulica) i Glavne (Nove) autobuske stanice.
-          </span>
-          <span data-lang="en" style="display:none">
-            All departures are from the Old Bus Station (Vidovdanska street) and the Main (New) Bus Station.
-          </span>
+          {isEnglish
+            ? 'All departures are from the Old Bus Station (Vidovdanska street) and the Main (New) Bus Station.'
+            : 'Svi polasci su sa Stare autobuske stanice (Vidovdanska ulica) i Glavne (Nove) autobuske stanice.'}
         </p>
       </div>
     </div>
 
     <p id="airport-more-info">
-      <span data-lang="bhs">Za više informacija o polascima posjetite <a href="https://smiljiccompany.ba/avio-transferi/" target="_blank" rel="noopener noreferrer">internet stranicu prevoznika</a>.</span>
-      <span data-lang="en" style="display:none">For more information about departures, visit the <a href="https://smiljiccompany.ba/avio-transferi/" target="_blank" rel="noopener noreferrer">operator's website</a>.</span>
+      {isEnglish ? 'For more information about departures, visit the ' : 'Za više informacija o polascima posjetite '}
+      <a href="https://smiljiccompany.ba/avio-transferi/" target="_blank" rel="noopener noreferrer">
+        {isEnglish ? "operator's website" : 'internet stranicu prevoznika'}
+      </a>
+      .
     </p>
   </div>
 
   <MapContainer mapId="airport-map" label="Airport and shuttle stops map" className="small-map">
-    <p class="airport-map-caption">
-      <span data-lang="bhs">Aerodrom i stajališta shuttle autobusa</span>
-      <span data-lang="en" style="display:none">Airport and shuttle bus stops</span>
-    </p>
+    <p class="airport-map-caption">{isEnglish ? 'Airport and shuttle bus stops' : 'Aerodrom i stajališta shuttle autobusa'}</p>
   </MapContainer>
 </div>
 

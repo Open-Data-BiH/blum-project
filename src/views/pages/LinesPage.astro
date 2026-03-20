@@ -22,6 +22,7 @@ const { locale } = Astro.props;
 const meta = getLocalizedMeta('lines', locale);
 const alternatePaths = getAlternatePaths('lines');
 const translations = translationsData[locale];
+const isEnglish = locale === 'en';
 
 // ─── Helper functions (mirrors lines-ui.js, run at build time) ──────────────
 
@@ -114,62 +115,60 @@ processedLines.sort(sortLinesByID);
       <article class="map-context-card" aria-labelledby="map-context-title">
         <div class="map-context-card__header">
           <i class="fas fa-map-location-dot map-context-card__icon" aria-hidden="true"></i>
-          <h3 class="map-context-card__title" id="map-context-title">
-            <span data-lang="bhs">Informacije o mapi</span>
-            <span data-lang="en" style="display:none">Map information</span>
-          </h3>
+          <h3 class="map-context-card__title" id="map-context-title">{isEnglish ? 'Map information' : 'Informacije o mapi'}</h3>
         </div>
 
-        <div class="map-context__content" data-lang="bhs">
-          <p>
-            Mapa prikazuje trase linija javnog prevoza i rezultat je rada
-            <strong>Udruženja Građana "<a
-              href="https://www.imamoplan.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="map-context__link"
-            >Uticajna Grupa - Imamo Plan</a>"</strong>
-            iz Srbije, koje su osnovali
-            <strong>Jug Cerović, Marko Njegić i Stefan Milojević 2012. godine</strong>.
-          </p>
-          <p>
-            Ova mapa predstavlja <strong>poklon gradu i građanima</strong>, nastala iz entuzijazma i
-            volonterskog angažmana, s ciljem da se unaprijedi preglednost i dostupnost informacija o
-            javnom prevozu.
-          </p>
-          <div class="map-context__note">
-            <strong>NAPOMENA:</strong> Prikazi na mapi su informativnog karaktera i zasnovani su na javno dostupnim podacima, koji možda nisu uvijek potpuni ili u potpunosti ažurni.
+        {isEnglish ? (
+          <div class="map-context__content">
+            <p>
+              This map displays public transport routes and was created by the
+              <strong>Citizens' Association "<a
+                href="https://www.imamoplan.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="map-context__link"
+              >Uticajna Grupa - Imamo Plan</a>"</strong>
+              from Serbia, founded in
+              <strong>2012 by Jug Cerović, Marko Njegić and Stefan Milojević</strong>.
+            </p>
+            <p>
+              The map is a <strong>gift to the city and its citizens</strong>, developed as a volunteer
+              initiative aimed at improving access to and visibility of public transport information.
+            </p>
+            <div class="map-context__note">
+              <strong>NOTE:</strong> Map displays are for informational purposes and are based on publicly available data, which may not always be complete or fully up to date.
+            </div>
+            <p>We thank the authors for their valuable contribution to the community.</p>
           </div>
-          <p>Zahvaljujemo se autorima za doprinos zajednici.</p>
-        </div>
-
-        <div class="map-context__content" data-lang="en" style="display:none">
-          <p>
-            This map displays public transport routes and was created by the
-            <strong>Citizens' Association "<a
-              href="https://www.imamoplan.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="map-context__link"
-            >Uticajna Grupa - Imamo Plan</a>"</strong>
-            from Serbia, founded in
-            <strong>2012 by Jug Cerović, Marko Njegić and Stefan Milojević</strong>.
-          </p>
-          <p>
-            The map is a <strong>gift to the city and its citizens</strong>, developed as a volunteer
-            initiative aimed at improving access to and visibility of public transport information.
-          </p>
-          <div class="map-context__note">
-            <strong>NOTE:</strong> Map displays are for informational purposes and are based on publicly available data, which may not always be complete or fully up to date.
+        ) : (
+          <div class="map-context__content">
+            <p>
+              Mapa prikazuje trase linija javnog prevoza i rezultat je rada
+              <strong>Udruženja Građana "<a
+                href="https://www.imamoplan.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="map-context__link"
+              >Uticajna Grupa - Imamo Plan</a>"</strong>
+              iz Srbije, koje su osnovali
+              <strong>Jug Cerović, Marko Njegić i Stefan Milojević 2012. godine</strong>.
+            </p>
+            <p>
+              Ova mapa predstavlja <strong>poklon gradu i građanima</strong>, nastala iz entuzijazma i
+              volonterskog angažmana, s ciljem da se unaprijedi preglednost i dostupnost informacija o
+              javnom prevozu.
+            </p>
+            <div class="map-context__note">
+              <strong>NAPOMENA:</strong> Prikazi na mapi su informativnog karaktera i zasnovani su na javno dostupnim podacima, koji možda nisu uvijek potpuni ili u potpunosti ažurni.
+            </div>
+            <p>Zahvaljujemo se autorima za doprinos zajednici.</p>
           </div>
-          <p>We thank the authors for their valuable contribution to the community.</p>
-        </div>
+        )}
       </article>
 
       <details class="map-help-disclosure">
         <summary class="map-help-disclosure__summary">
-          <span data-lang="bhs">Kako koristiti mapu</span>
-          <span data-lang="en" style="display:none">How to use the map</span>
+          {isEnglish ? 'How to use the map' : 'Kako koristiti mapu'}
           <i class="fas fa-chevron-down" aria-hidden="true"></i>
         </summary>
         <div class="map-help-disclosure__content">
@@ -224,10 +223,9 @@ processedLines.sort(sortLinesByID);
         </div>
 
         <p class="lines-info-card__note">
-          <span data-lang="bhs">Boja oznake broja linije na kartici prati boju prevoznika iz legende.</span>
-          <span data-lang="en" style="display:none">
-            The line number badge color on each card matches the operator color shown in the legend.
-          </span>
+          {isEnglish
+            ? 'The line number badge color on each card matches the operator color shown in the legend.'
+            : 'Boja oznake broja linije na kartici prati boju prevoznika iz legende.'}
         </p>
       </article>
 

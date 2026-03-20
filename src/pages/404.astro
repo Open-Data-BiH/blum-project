@@ -17,18 +17,11 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
   <section class="not-found">
     <div class="container">
       <h1 class="not-found__code">404</h1>
-      <p class="not-found__title">
-        <span data-lang="bhs">Stranica nije pronađena</span>
-        <span data-lang="en" style="display:none">Page not found</span>
-      </p>
-      <p class="not-found__desc">
-        <span data-lang="bhs">Stranica koju tražite ne postoji ili je premještena.</span>
-        <span data-lang="en" style="display:none">The page you're looking for doesn't exist or has been moved.</span>
-      </p>
+      <p class="not-found__title">Stranica nije pronađena</p>
+      <p class="not-found__desc">Stranica koju tražite ne postoji ili je premještena.</p>
       <a href={withBase('')} class="btn btn--primary">
         <i class="fas fa-home" aria-hidden="true"></i>
-        <span data-lang="bhs">Nazad na početnu</span>
-        <span data-lang="en" style="display:none">Back to home</span>
+        Nazad na početnu
       </a>
     </div>
   </section>

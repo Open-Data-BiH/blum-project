@@ -147,14 +147,6 @@ export const applyTranslation = (lang: Language): void => {
     safelyUpdateText('map-note-tip-item-1', safeGet(t, 'sections', 'map', 'note', 'tips', 'marker'));
     safelyUpdateText('map-note-tip-item-2', safeGet(t, 'sections', 'map', 'note', 'tips', 'layers'));
 
-    // Map credits (data-lang toggle)
-    const mapCreditsLabelBhs = document.querySelector<HTMLElement>('.map-credits__label[data-lang="bhs"]');
-    const mapCreditsLabelEn = document.querySelector<HTMLElement>('.map-credits__label[data-lang="en"]');
-    if (mapCreditsLabelBhs && mapCreditsLabelEn) {
-        mapCreditsLabelBhs.style.display = lang === 'bhs' ? '' : 'none';
-        mapCreditsLabelEn.style.display = lang === 'en' ? '' : 'none';
-    }
-
     // Urban lines viewer
     safelyUpdateText('urban-lines-title', t.sections?.urban_lines?.title);
     const mapNote = document.querySelector<HTMLElement>('#urban-lines .map-note span');
@@ -196,14 +188,6 @@ export const applyTranslation = (lang: Language): void => {
             lang === 'bhs' ? 'Pretraži liniju, odredište, naselje...' : 'Search line, destination, neighborhood...';
         linesSearchInput.setAttribute('aria-label', linesSearchInput.placeholder);
     }
-
-    // Line card names (switch between BHS/EN stored in data attributes)
-    document.querySelectorAll<HTMLElement>('.line-card__name').forEach((el) => {
-        const name = el.dataset[lang === 'bhs' ? 'nameBhs' : 'nameEn'];
-        if (name) {
-            el.textContent = name;
-        }
-    });
 
     // Timetable section
     safelyUpdateText('timetable-title', t.sections?.timetable?.title);
@@ -269,14 +253,6 @@ export const applyTranslation = (lang: Language): void => {
     if (kofiBtn) {
         kofiBtn.textContent = lang === 'bhs' ? 'Podržite ovaj projekat' : 'Support this project';
     }
-
-    // data-lang attribute visibility toggle
-    document.querySelectorAll<HTMLElement>('[data-lang]').forEach((element) => {
-        if (element.classList.contains('lang-btn')) {
-            return;
-        }
-        element.style.display = element.getAttribute('data-lang') === lang ? '' : 'none';
-    });
 
     // Dispatch languageChanged event for feature modules
     document.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang } }));

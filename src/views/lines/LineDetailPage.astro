@@ -319,12 +319,17 @@ const canonicalUrl = getLineDetailUrl(locale, originalLineId);
 const alternatePaths = getLineAlternatePaths(originalLineId);
 const pageTitle =
   locale === 'en'
-    ? `Line ${originalLineId} - ${routeSummaryEn} | Banja Luka Timetable`
-    : `Linija ${originalLineId} - ${routeSummaryBhs} | Red voznje Banja Luka`;
+    ? `Line ${originalLineId} - ${routeSummaryEn} | BL Prevoz`
+    : `Linija ${originalLineId} - ${routeSummaryBhs} | BL Prevoz`;
 const metaDesc =
   locale === 'en'
     ? `Timetable for bus line ${originalLineId} (${routeSummaryEn}) in Banja Luka. Weekday, Saturday, and Sunday departures with route stop lists by direction.`
-    : `Red voznje za autobusku liniju ${originalLineId} (${routeSummaryBhs}) u Banjoj Luci. Polasci radnim danom, subotom i nedjeljom i lista stajalista po smjerovima.`;
+    : `Red vožnje za autobusku liniju ${originalLineId} (${routeSummaryBhs}) u Banjoj Luci. Polasci radnim danom, subotom i nedjeljom i lista stajališta po smjerovima.`;
+const isEnglish = locale === 'en';
+const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
+const localizedName = t(nameBhs, nameEn);
+const localizedRouteSummary = t(routeSummaryBhs, routeSummaryEn);
+const accessibilityLabel = line.wheelchair_accessible ? t('Pristupačno', 'Accessible') : t('Nije pristupačno', 'Not accessible');
 
 const lineSchema = {
   '@context': 'https://schema.org',
@@ -369,17 +374,13 @@ const breadcrumbSchema = {
       <nav class="ldp-breadcrumb" aria-label={locale === 'en' ? 'Navigation' : 'Navigacija'}>
         <a href={getPagePath('lines', locale)}>
           <i class="fas fa-arrow-left" aria-hidden="true"></i>
-          <span data-lang="bhs">Sve linije</span>
-          <span data-lang="en" style="display:none">All lines</span>
+          {t('Sve linije', 'All lines')}
         </a>
       </nav>
 
       <section class="ldp-section" id="line-overview" aria-labelledby="line-overview-title">
         <div class="ldp-section-heading">
-          <h2 class="ldp-section-title" id="line-overview-title">
-            <span data-lang="bhs">Pregled linije</span>
-            <span data-lang="en" style="display:none">Line Overview</span>
-          </h2>
+          <h2 class="ldp-section-title" id="line-overview-title">{t('Pregled linije', 'Line Overview')}</h2>
         </div>
 
         <article class:list={['ldp-overview-card', 'line-card', companyClass]}>
@@ -387,34 +388,26 @@ const breadcrumbSchema = {
             <div class="line-card__identity">
               <span class="badge badge--line-number">{originalLineId}</span>
               <div class="ldp-overview-card__title-wrap">
-                <h1 class="ldp-overview-card__title">
-                  <span data-lang="bhs">{nameBhs}</span>
-                  <span data-lang="en" style="display:none">{nameEn}</span>
-                </h1>
-                <p class="ldp-overview-card__route">
-                  <span data-lang="bhs">{routeSummaryBhs}</span>
-                  <span data-lang="en" style="display:none">{routeSummaryEn}</span>
-                </p>
+                <h1 class="ldp-overview-card__title">{localizedName}</h1>
+                <p class="ldp-overview-card__route">{localizedRouteSummary}</p>
               </div>
             </div>
 
             <div class="line-card__badges">
               {line.group && (
                 <span class="badge badge--group">
-                  <span data-lang="bhs">Grupa </span>
-                  <span data-lang="en" style="display:none">Group</span>
-                  {' '}{line.group}
+                  {t('Grupa', 'Group')} {line.group}
                 </span>
               )}
               {line.wheelchair_accessible ? (
                 <span
                   class="badge badge--accessible"
-                  title="Pristupačno za invalidska kolica / Wheelchair accessible"
+                  title={t('Pristupačno za invalidska kolica', 'Wheelchair accessible')}
                 >
                   <i class="fas fa-wheelchair" aria-hidden="true"></i>
                 </span>
               ) : (
-                <span class="badge badge--not-accessible" title="Nije pristupačno / Not accessible">
+                <span class="badge badge--not-accessible" title={t('Nije pristupačno', 'Not accessible')}>
                   <i class="fas fa-wheelchair" aria-hidden="true"></i>
                 </span>
               )}
@@ -423,54 +416,36 @@ const breadcrumbSchema = {
 
           <div class="ldp-overview-grid" aria-label="Line summary metrics">
             <article class="ldp-overview-metric">
-              <p class="ldp-overview-metric__label">
-                <span data-lang="bhs">Prevoznik</span>
-                <span data-lang="en" style="display:none">Operator</span>
-              </p>
+              <p class="ldp-overview-metric__label">{t('Prevoznik', 'Operator')}</p>
               <p class="ldp-overview-metric__value">{shortOperator}</p>
             </article>
 
             <article class="ldp-overview-metric">
-              <p class="ldp-overview-metric__label">
-                <span data-lang="bhs">Broj stajališta</span>
-                <span data-lang="en" style="display:none">Stops</span>
-              </p>
+              <p class="ldp-overview-metric__label">{t('Broj stajališta', 'Stops')}</p>
               <p class="ldp-overview-metric__value">
                 {line.no_stops ?? (directionAStops.length > 0 ? directionAStops.length : 'N/A')}
               </p>
             </article>
 
             <article class="ldp-overview-metric">
-              <p class="ldp-overview-metric__label">
-                <span data-lang="bhs">Trajanje vožnje</span>
-                <span data-lang="en" style="display:none">Trip duration</span>
-              </p>
+              <p class="ldp-overview-metric__label">{t('Trajanje vožnje', 'Trip duration')}</p>
               <p class="ldp-overview-metric__value">
                 {line.min_duration ? `${line.min_duration} min` : 'N/A'}
               </p>
             </article>
 
             <article class="ldp-overview-metric">
-              <p class="ldp-overview-metric__label">
-                <span data-lang="bhs">Prvi polazak</span>
-                <span data-lang="en" style="display:none">First departure</span>
-              </p>
+              <p class="ldp-overview-metric__label">{t('Prvi polazak', 'First departure')}</p>
               <p class="ldp-overview-metric__value">{firstDeparture ?? '--:--'}</p>
             </article>
 
             <article class="ldp-overview-metric">
-              <p class="ldp-overview-metric__label">
-                <span data-lang="bhs">Zadnji polazak</span>
-                <span data-lang="en" style="display:none">Last departure</span>
-              </p>
+              <p class="ldp-overview-metric__label">{t('Zadnji polazak', 'Last departure')}</p>
               <p class="ldp-overview-metric__value">{lastDeparture ?? '--:--'}</p>
             </article>
 
             <article class="ldp-overview-metric">
-              <p class="ldp-overview-metric__label">
-                <span data-lang="bhs">Pristupačnost</span>
-                <span data-lang="en" style="display:none">Accessibility</span>
-              </p>
+              <p class="ldp-overview-metric__label">{t('Pristupačnost', 'Accessibility')}</p>
               <p
                 class:list={[
                   'ldp-overview-metric__value',
@@ -479,8 +454,7 @@ const breadcrumbSchema = {
                 ]}
               >
                 <i class:list={['fas', line.wheelchair_accessible ? 'fa-check-circle' : 'fa-times-circle']} aria-hidden="true"></i>
-                <span data-lang="bhs">{line.wheelchair_accessible ? 'Pristupačno' : 'Nije pristupačno'}</span>
-                <span data-lang="en" style="display:none">{line.wheelchair_accessible ? 'Accessible' : 'Not accessible'}</span>
+                {accessibilityLabel}
               </p>
             </article>
           </div>
@@ -489,8 +463,7 @@ const breadcrumbSchema = {
             <div class="ldp-overview-actions">
               <a href={line.pdf_url} target="_blank" rel="noopener noreferrer" class="btn--link pdf-btn">
                 <i class="fas fa-file-pdf" aria-hidden="true"></i>
-                <span data-lang="bhs">Zvanični red vožnje (PDF)</span>
-                <span data-lang="en" style="display:none">Official timetable (PDF)</span>
+                {t('Zvanični red vožnje (PDF)', 'Official timetable (PDF)')}
               </a>
             </div>
           )}
@@ -499,14 +472,8 @@ const breadcrumbSchema = {
 
       <section class="ldp-section" id="line-timetable" aria-labelledby="line-timetable-title">
         <div class="ldp-section-heading">
-          <h2 class="ldp-section-title" id="line-timetable-title">
-            <span data-lang="bhs">Red vožnje</span>
-            <span data-lang="en" style="display:none">Timetable</span>
-          </h2>
-          <p class="ldp-section-subtitle">
-            <span data-lang="bhs">Pregled polazaka po smjeru i danu, grupisano po satima i minutama.</span>
-            <span data-lang="en" style="display:none">Departures by direction and day, grouped by hours and minutes.</span>
-          </p>
+          <h2 class="ldp-section-title" id="line-timetable-title">{t('Red vožnje', 'Timetable')}</h2>
+          <p class="ldp-section-subtitle">{t('Pregled polazaka po smjeru i danu, grupisano po satima i minutama.', 'Departures by direction and day, grouped by hours and minutes.')}</p>
         </div>
 
         {directionPanels.length > 0 ? (
@@ -524,12 +491,10 @@ const breadcrumbSchema = {
                     data-direction-target={direction.id}
                   >
                     <span class="ldp-direction-tab__label">
-                      <span data-lang="bhs">Smjer {direction.order}</span>
-                      <span data-lang="en" style="display:none">Direction {direction.order}</span>
+                      {t(`Smjer ${direction.order}`, `Direction ${direction.order}`)}
                     </span>
                     <span class="ldp-direction-tab__route">
-                      <span data-lang="bhs">{direction.routeBhs}</span>
-                      <span data-lang="en" style="display:none">{direction.routeEn}</span>
+                      {isEnglish ? direction.routeEn : direction.routeBhs}
                     </span>
                   </button>
                 ))}
@@ -546,14 +511,8 @@ const breadcrumbSchema = {
                 hidden={index !== 0}
               >
                 <header class="ldp-direction-panel__head">
-                  <h3>
-                    <span data-lang="bhs">{direction.labelBhs}</span>
-                    <span data-lang="en" style="display:none">{direction.labelEn}</span>
-                  </h3>
-                  <p>
-                    <span data-lang="bhs">Smjer {direction.order}</span>
-                    <span data-lang="en" style="display:none">Direction {direction.order}</span>
-                  </p>
+                  <h3>{isEnglish ? direction.labelEn : direction.labelBhs}</h3>
+                  <p>{t(`Smjer ${direction.order}`, `Direction ${direction.order}`)}</p>
                 </header>
 
                 {direction.hasTimetable ? (
@@ -562,7 +521,9 @@ const breadcrumbSchema = {
                       {dayTabs.map((day) => {
                         const dayAvailable = direction.dayAvailability[day.key];
                         const isDefaultDay = dayAvailable && direction.defaultDay === day.key;
-                        const noServiceHint = `${day.bhs}: linija ne saobraća / ${day.en}: line does not operate`;
+                        const noServiceHint = isEnglish
+                          ? `${day.en}: line does not operate`
+                          : `${day.bhs}: linija ne saobraća`;
 
                         return (
                           <button
@@ -575,8 +536,7 @@ const breadcrumbSchema = {
                             title={!dayAvailable ? noServiceHint : undefined}
                             aria-label={!dayAvailable ? noServiceHint : undefined}
                           >
-                            <span data-lang="bhs">{day.bhs}</span>
-                            <span data-lang="en" style="display:none">{day.en}</span>
+                            {day[locale]}
                           </button>
                         );
                       })}
@@ -602,8 +562,7 @@ const breadcrumbSchema = {
                                   <article class="ldp-station-card">
                                     <h4 class="ldp-station-card__title">
                                       <i class="fas fa-clock" aria-hidden="true"></i>
-                                      <span data-lang="bhs">Polasci</span>
-                                      <span data-lang="en" style="display:none">Departures</span>
+                                      {t('Polasci', 'Departures')}
                                     </h4>
 
                                     <div class="ldp-station-card__table-wrap">
@@ -611,12 +570,10 @@ const breadcrumbSchema = {
                                         <thead>
                                           <tr>
                                             <th scope="col">
-                                              <span data-lang="bhs">Sat</span>
-                                              <span data-lang="en" style="display:none">Hour</span>
+                                              {t('Sat', 'Hour')}
                                             </th>
                                             <th scope="col">
-                                              <span data-lang="bhs">Minute</span>
-                                              <span data-lang="en" style="display:none">Minutes</span>
+                                              {t('Minute', 'Minutes')}
                                             </th>
                                           </tr>
                                         </thead>
@@ -656,8 +613,7 @@ const breadcrumbSchema = {
                                       return (
                                         <p>
                                           <sup class="time-note time-note--legend">{note}</sup>
-                                          <span data-lang="bhs">{description.bhs}</span>
-                                          <span data-lang="en" style="display:none">{description.en}</span>
+                                          {description[locale]}
                                         </p>
                                       );
                                     })}
@@ -667,14 +623,8 @@ const breadcrumbSchema = {
                             ) : (
                               <div class="no-service-message ldp-no-service-message" role="status">
                                 <i class="fas fa-ban" aria-hidden="true"></i>
-                                <strong>
-                                  <span data-lang="bhs">Linija ne saobraća ovaj dan</span>
-                                  <span data-lang="en" style="display:none">Line does not operate on this day</span>
-                                </strong>
-                                <p>
-                                  <span data-lang="bhs">Izaberite drugi dan za prikaz dostupnih polazaka.</span>
-                                  <span data-lang="en" style="display:none">Choose another day to see available departures.</span>
-                                </p>
+                                <strong>{t('Linija ne saobraća ovaj dan', 'Line does not operate on this day')}</strong>
+                                <p>{t('Izaberite drugi dan za prikaz dostupnih polazaka.', 'Choose another day to see available departures.')}</p>
                               </div>
                             )}
                           </div>
@@ -683,45 +633,27 @@ const breadcrumbSchema = {
                     </div>
                   </>
                 ) : (
-                  <p class="ldp-empty">
-                    <span data-lang="bhs">Nema dostupnih podataka o polascima za ovaj smjer.</span>
-                    <span data-lang="en" style="display:none">No departure data available for this direction.</span>
-                  </p>
+                  <p class="ldp-empty">{t('Nema dostupnih podataka o polascima za ovaj smjer.', 'No departure data available for this direction.')}</p>
                 )}
               </article>
             ))}
           </div>
         ) : (
-          <p class="ldp-empty">
-            <span data-lang="bhs">Za ovu liniju trenutno nema podataka o redu vožnje.</span>
-            <span data-lang="en" style="display:none">No timetable data is currently available for this line.</span>
-          </p>
+          <p class="ldp-empty">{t('Za ovu liniju trenutno nema podataka o redu vožnje.', 'No timetable data is currently available for this line.')}</p>
         )}
       </section>
 
       <section class="ldp-section" id="line-stops" aria-labelledby="line-stops-title">
         <div class="ldp-section-heading">
-          <h2 class="ldp-section-title" id="line-stops-title">
-            <span data-lang="bhs">Stajališta na trasi</span>
-            <span data-lang="en" style="display:none">Stops Along The Route</span>
-          </h2>
-          <p class="ldp-section-subtitle">
-            <span data-lang="bhs">Prikaz stajališta po smjerovima u preglednim tabelama.</span>
-            <span data-lang="en" style="display:none">Stops by direction in clear side-by-side tables.</span>
-          </p>
+          <h2 class="ldp-section-title" id="line-stops-title">{t('Stajališta na trasi', 'Stops Along The Route')}</h2>
+          <p class="ldp-section-subtitle">{t('Prikaz stajališta po smjerovima u preglednim tabelama.', 'Stops by direction in clear side-by-side tables.')}</p>
         </div>
 
         <div class="ldp-stops-tables">
           {directionPanels.map((direction) => (
             <article class="ldp-stops-card card">
-              <h3>
-                <span data-lang="bhs">Smjer {direction.order}</span>
-                <span data-lang="en" style="display:none">Direction {direction.order}</span>
-              </h3>
-              <p class="ldp-stops-card__route">
-                <span data-lang="bhs">{direction.routeBhs}</span>
-                <span data-lang="en" style="display:none">{direction.routeEn}</span>
-              </p>
+              <h3>{t(`Smjer ${direction.order}`, `Direction ${direction.order}`)}</h3>
+              <p class="ldp-stops-card__route">{isEnglish ? direction.routeEn : direction.routeBhs}</p>
 
               {direction.stops.length > 0 ? (
                 <div class="ldp-stop-table-wrap">
@@ -729,10 +661,7 @@ const breadcrumbSchema = {
                     <thead>
                       <tr>
                         <th scope="col">#</th>
-                        <th scope="col">
-                          <span data-lang="bhs">Stajalište</span>
-                          <span data-lang="en" style="display:none">Stop</span>
-                        </th>
+                        <th scope="col">{t('Stajalište', 'Stop')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -746,10 +675,7 @@ const breadcrumbSchema = {
                   </table>
                 </div>
               ) : (
-                <p class="ldp-empty">
-                  <span data-lang="bhs">Podaci o stajalištima nisu dostupni za ovaj smjer.</span>
-                  <span data-lang="en" style="display:none">Stop data is unavailable for this direction.</span>
-                </p>
+                <p class="ldp-empty">{t('Podaci o stajalištima nisu dostupni za ovaj smjer.', 'Stop data is unavailable for this direction.')}</p>
               )}
             </article>
           ))}

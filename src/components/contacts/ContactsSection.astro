@@ -62,18 +62,9 @@ const activeLabels = labels[locale];
             style={contact.color ? `--contact-accent:${contact.color};` : undefined}
           >
             <div class="contact-card__top">
-              <p class="contact-type">
-                <span data-lang="bhs">{contact.type.bhs}</span>
-                <span data-lang="en" style="display:none">{contact.type.en}</span>
-              </p>
-              <h3 class="contact-name">
-                <span data-lang="bhs">{contact.name.bhs}</span>
-                <span data-lang="en" style="display:none">{contact.name.en}</span>
-              </h3>
-              <p class="contact-department">
-                <span data-lang="bhs">{contact.department.bhs}</span>
-                <span data-lang="en" style="display:none">{contact.department.en}</span>
-              </p>
+              <p class="contact-type">{contact.type[locale]}</p>
+              <h3 class="contact-name">{contact.name[locale]}</h3>
+              <p class="contact-department">{contact.department[locale]}</p>
             </div>
 
             <div class="contact-details">
@@ -103,8 +94,7 @@ const activeLabels = labels[locale];
             <div class="contact-card__footer">
               {contact.website ? (
                 <a class="contact-website" href={contact.website} target="_blank" rel="noopener noreferrer">
-                  <span data-lang="bhs">{labels.bhs.visit}</span>
-                  <span data-lang="en" style="display:none">{labels.en.visit}</span>
+                  {activeLabels.visit}
                   <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                 </a>
               ) : (
@@ -126,18 +116,9 @@ const activeLabels = labels[locale];
             style={contact.color ? `--contact-accent:${contact.color};` : undefined}
           >
             <div class="contact-card__top">
-              <p class="contact-type">
-                <span data-lang="bhs">{contact.type.bhs}</span>
-                <span data-lang="en" style="display:none">{contact.type.en}</span>
-              </p>
-              <h3 class="contact-name">
-                <span data-lang="bhs">{contact.name.bhs}</span>
-                <span data-lang="en" style="display:none">{contact.name.en}</span>
-              </h3>
-              <p class="contact-department">
-                <span data-lang="bhs">{contact.department.bhs}</span>
-                <span data-lang="en" style="display:none">{contact.department.en}</span>
-              </p>
+              <p class="contact-type">{contact.type[locale]}</p>
+              <h3 class="contact-name">{contact.name[locale]}</h3>
+              <p class="contact-department">{contact.department[locale]}</p>
             </div>
 
             <div class="contact-details">
@@ -167,8 +148,7 @@ const activeLabels = labels[locale];
             <div class="contact-card__footer">
               {contact.website ? (
                 <a class="contact-website" href={contact.website} target="_blank" rel="noopener noreferrer">
-                  <span data-lang="bhs">{labels.bhs.visit}</span>
-                  <span data-lang="en" style="display:none">{labels.en.visit}</span>
+                  {activeLabels.visit}
                   <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                 </a>
               ) : (

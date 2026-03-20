@@ -86,20 +86,6 @@ const ogImage = new URL(
     <!-- Theme init runs before body render to prevent flash -->
     <script is:inline src="/scripts/theme-init.js"></script>
 
-    <style is:inline>
-      html[lang='bs'] [data-lang='en']:not(.lang-btn) {
-        display: none !important;
-      }
-
-      html[lang='en'] [data-lang='bhs']:not(.lang-btn) {
-        display: none !important;
-      }
-
-      html[lang='bs'] [data-lang='bhs']:not(.lang-btn),
-      html[lang='en'] [data-lang='en']:not(.lang-btn) {
-        display: revert !important;
-      }
-    </style>
   </head>
   <body data-page={pageKey} data-locale={locale}>
     <a href="#main-content" class="skip-link">Skip to main content</a>

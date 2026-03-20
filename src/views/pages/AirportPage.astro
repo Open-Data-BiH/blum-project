@@ -30,7 +30,7 @@ const airportFaqSchema = {
           name: 'How do I get from Banja Luka Airport to the city center?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Take the Smiljic shuttle bus for approximately 10 KM (30-45 minutes), or a taxi for 40-60 KM (30-35 minutes). The shuttle waits outside the terminal after each flight arrival and ends at the Old and Main Bus Station.',
+            text: 'Take the Smiljić shuttle bus for approximately 10 KM (30-45 minutes), or a taxi for 40-60 KM (30-35 minutes). The shuttle waits outside the terminal after each flight arrival and ends at the Old and Main Bus Station.',
           },
         },
         {
@@ -38,7 +38,7 @@ const airportFaqSchema = {
           name: 'How much does the Banja Luka airport bus cost?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'The Smiljic airport shuttle costs approximately 10 KM one way. Tickets are purchased on the bus.',
+            text: 'The Smiljić airport shuttle costs approximately 10 KM one way. Tickets are purchased on the bus.',
           },
         },
         {
@@ -53,10 +53,10 @@ const airportFaqSchema = {
     : [
         {
           '@type': 'Question',
-          name: 'Kako doci od aerodroma Banja Luka do centra grada?',
+          name: 'Kako doći od aerodroma Banja Luka do centra grada?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Shuttle autobusom kompanije Smiljic za oko 10 KM (30-45 min), ili taksijem za 40-60 KM (30-35 min). Autobus ceka ispred terminala nakon svakog leta i zavrsava na Staroj i Glavnoj autobuskoj stanici.',
+            text: 'Shuttle autobusom kompanije Smiljić za oko 10 KM (30-45 min), ili taksijem za 40-60 KM (30-35 min). Autobus čeka ispred terminala nakon svakog leta i završava na Staroj i Glavnoj autobuskoj stanici.',
           },
         },
         {
@@ -64,7 +64,7 @@ const airportFaqSchema = {
           name: 'Koliko kosta shuttle autobus od aerodroma Banja Luka?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Shuttle autobus kompanije Smiljic kosta oko 10 KM (jedna voznja). Karte se kupuju u autobusu.',
+            text: 'Shuttle autobus kompanije Smiljić košta oko 10 KM (jedna vožnja). Karte se kupuju u autobusu.',
           },
         },
         {
@@ -81,14 +81,14 @@ const airportFaqSchema = {
 const airportShuttleSchema = {
   '@context': 'https://schema.org',
   '@type': 'BusTrip',
-  name: locale === 'en' ? 'Banja Luka Airport Shuttle (Smiljic)' : 'Shuttle prevoz do Aerodroma Banja Luka (Smiljic)',
+  name: locale === 'en' ? 'Banja Luka Airport Shuttle (Smiljić)' : 'Shuttle prevoz do Aerodroma Banja Luka (Smiljić)',
   description:
     locale === 'en'
-      ? 'Airport shuttle bus connecting Banja Luka city center to Banja Luka International Airport (BNX). Operated by Smiljic company.'
-      : 'Shuttle autobus koji povezuje centar Banje Luke sa Medjunarodnim aerodromom Banja Luka (BNX). Prevoznik je kompanija Smiljic.',
+      ? 'Airport shuttle bus connecting Banja Luka city center to Banja Luka International Airport (BNX). Operated by Smiljić company.'
+      : 'Shuttle autobus koji povezuje centar Banje Luke sa Međunarodnim aerodromom Banja Luka (BNX). Prevoznik je kompanija Smiljić.',
   provider: {
     '@type': 'Organization',
-    name: 'Smiljic',
+    name: 'Smiljić',
     url: 'https://smiljiccompany.ba/avio-transferi/',
   },
   departureStop: {
@@ -117,6 +117,8 @@ const alternatePaths = getAlternatePaths('airport');
 const linesPath = withBase(getPagePath('lines', locale));
 const timetablePath = withBase(addHashToPath(getPagePath('lines', locale), 'timetable'));
 const pricingPath = withBase(getPagePath('pricing', locale));
+const isEnglish = locale === 'en';
+const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
 ---
 
 <BaseLayout
@@ -133,72 +135,54 @@ const pricingPath = withBase(getPagePath('pricing', locale));
   <!-- Airport Overview -->
   <section class="section" id="airport-overview">
     <div class="container">
-      <h1 class="section__title" id="airport-title">
-        <span data-lang="bhs">Prevoz do Aerodroma Banja Luka</span>
-        <span data-lang="en" style="display:none">Getting to Banja Luka Airport</span>
-      </h1>
+      <h1 class="section__title" id="airport-title">{t('Prevoz do Aerodroma Banja Luka', 'Getting to Banja Luka Airport')}</h1>
       <p class="airport-intro" id="airport-intro">
-        <span data-lang="bhs">
-          Međunarodni aerodrom Banja Luka (IATA: BNX) nalazi se u Mahovljanima, oko 25 km
-          sjeverno od centra grada. Najbrži pristup je autoputem E661 (Banja Luka - Gradiška).
-          Aerodrom je povezan sa gradom shuttle autobusom kompanije Smiljić, a dostupne su
-          i taksi usluge. Ispod su sve informacije potrebne za planiranje vašeg dolaska ili odlaska.
-        </span>
-        <span data-lang="en" style="display:none">
-          Banja Luka International Airport (IATA: BNX) is located in Mahovljani, approximately
+        {isEnglish
+          ? `Banja Luka International Airport (IATA: BNX) is located in Mahovljani, approximately
           25 km north of the city center. The fastest access is via the E661 motorway (Banja Luka - Gradiška).
           The airport is connected to the city by Smiljić shuttle bus, and taxi services are
-          also available. Below you'll find all the information you need to plan your arrival or departure.
-        </span>
+          also available. Below you'll find all the information you need to plan your arrival or departure.`
+          : `Međunarodni aerodrom Banja Luka (IATA: BNX) nalazi se u Mahovljanima, oko 25 km
+          sjeverno od centra grada. Najbrži pristup je autoputem E661 (Banja Luka - Gradiška).
+          Aerodrom je povezan sa gradom shuttle autobusom kompanije Smiljić, a dostupne su
+          i taksi usluge. Ispod su sve informacije potrebne za planiranje vašeg dolaska ili odlaska.`}
       </p>
 
       <!-- Fast Answer Block -->
       <div class="airport-fast-answer">
         <div class="airport-fast-answer__header">
           <i class="fa-solid fa-bolt" aria-hidden="true"></i>
-          <h2>
-            <span data-lang="bhs">Kako od aerodroma do centra grada?</span>
-            <span data-lang="en" style="display:none">How to get from the airport to the city center?</span>
-          </h2>
+          <h2>{t('Kako od aerodroma do centra grada?', 'How to get from the airport to the city center?')}</h2>
         </div>
         <div class="airport-fast-answer__options">
           <div class="airport-fast-answer__option">
             <i class="fa-solid fa-bus" aria-hidden="true"></i>
             <div>
-              <strong>
-                <span data-lang="bhs">Shuttle autobus</span>
-                <span data-lang="en" style="display:none">Shuttle bus</span>
-              </strong>
+              <strong>{t('Shuttle autobus', 'Shuttle bus')}</strong>
               <span>~10 KM · 30-45 min</span>
             </div>
           </div>
           <div class="airport-fast-answer__option">
             <i class="fa-solid fa-taxi" aria-hidden="true"></i>
             <div>
-              <strong>
-                <span data-lang="bhs">Taksi</span>
-                <span data-lang="en" style="display:none">Taxi</span>
-              </strong>
+              <strong>{t('Taksi', 'Taxi')}</strong>
               <span>~40-60 KM · 30-35 min</span>
             </div>
           </div>
           <div class="airport-fast-answer__option">
             <i class="fa-solid fa-car" aria-hidden="true"></i>
             <div>
-              <strong>
-                <span data-lang="bhs">Rent-a-car</span>
-                <span data-lang="en" style="display:none">Rent-a-car</span>
-              </strong>
-              <span>
-                <span data-lang="bhs">Dostupno na aerodromu</span>
-                <span data-lang="en" style="display:none">Available at the airport</span>
-              </span>
+              <strong>Rent-a-car</strong>
+              <span>{t('Dostupno na aerodromu', 'Available at the airport')}</span>
             </div>
           </div>
         </div>
         <p class="airport-fast-answer__note">
-          <span data-lang="bhs">Udaljenost od aerodroma do centra: <strong>~25 km</strong> (autoput E661, petlja Mahovljani)</span>
-          <span data-lang="en" style="display:none">Distance from airport to city center: <strong>~25 km</strong> (E661 motorway, Mahovljani interchange)</span>
+          {isEnglish ? (
+            <span>Distance from airport to city center: <strong>~25 km</strong> (E661 motorway, Mahovljani interchange)</span>
+          ) : (
+            <span>Udaljenost od aerodroma do centra: <strong>~25 km</strong> (autoput E661, petlja Mahovljani)</span>
+          )}
         </p>
       </div>
     </div>
@@ -207,63 +191,42 @@ const pricingPath = withBase(getPagePath('pricing', locale));
   <!-- Quick Facts -->
   <section class="section airport-quickfacts" id="airport-quickfacts">
     <div class="container">
-      <h2 class="section__title airport-section-title">
-        <span data-lang="bhs">Osnovne informacije</span>
-        <span data-lang="en" style="display:none">Quick Facts</span>
-      </h2>
+      <h2 class="section__title airport-section-title">{t('Osnovne informacije', 'Quick Facts')}</h2>
       <div class="quickfacts-grid">
         <div class="quickfact-card">
           <div class="quickfact-card__icon" aria-hidden="true">
             <i class="fa-solid fa-road"></i>
           </div>
-          <div class="quickfact-card__label">
-            <span data-lang="bhs">Udaljenost</span>
-            <span data-lang="en" style="display:none">Distance</span>
-          </div>
+          <div class="quickfact-card__label">{t('Udaljenost', 'Distance')}</div>
           <div class="quickfact-card__value">~25 km</div>
         </div>
         <div class="quickfact-card">
           <div class="quickfact-card__icon" aria-hidden="true">
             <i class="fa-solid fa-clock"></i>
           </div>
-          <div class="quickfact-card__label">
-            <span data-lang="bhs">Vrijeme vožnje</span>
-            <span data-lang="en" style="display:none">Travel time</span>
-          </div>
+          <div class="quickfact-card__label">{t('Vrijeme vožnje', 'Travel time')}</div>
           <div class="quickfact-card__value">30-45 min</div>
         </div>
         <div class="quickfact-card">
           <div class="quickfact-card__icon" aria-hidden="true">
             <i class="fa-solid fa-money-bill-wave"></i>
           </div>
-          <div class="quickfact-card__label">
-            <span data-lang="bhs">Cijena autobusa</span>
-            <span data-lang="en" style="display:none">Bus price</span>
-          </div>
+          <div class="quickfact-card__label">{t('Cijena autobusa', 'Bus price')}</div>
           <div class="quickfact-card__value">~10 KM</div>
         </div>
         <div class="quickfact-card">
           <div class="quickfact-card__icon" aria-hidden="true">
             <i class="fa-solid fa-building"></i>
           </div>
-          <div class="quickfact-card__label">
-            <span data-lang="bhs">Prevoznik</span>
-            <span data-lang="en" style="display:none">Operator</span>
-          </div>
+          <div class="quickfact-card__label">{t('Prevoznik', 'Operator')}</div>
           <div class="quickfact-card__value">Smiljić</div>
         </div>
         <div class="quickfact-card">
           <div class="quickfact-card__icon" aria-hidden="true">
             <i class="fa-solid fa-calendar-day"></i>
           </div>
-          <div class="quickfact-card__label">
-            <span data-lang="bhs">Učestalost</span>
-            <span data-lang="en" style="display:none">Frequency</span>
-          </div>
-          <div class="quickfact-card__value">
-            <span data-lang="bhs">Nekoliko polazaka dnevno</span>
-            <span data-lang="en" style="display:none">Few departures per day</span>
-          </div>
+          <div class="quickfact-card__label">{t('Učestalost', 'Frequency')}</div>
+          <div class="quickfact-card__value">{t('Nekoliko polazaka dnevno', 'Few departures per day')}</div>
         </div>
       </div>
     </div>
@@ -275,17 +238,10 @@ const pricingPath = withBase(getPagePath('pricing', locale));
       <div class="direction-heading">
         <div class="direction-heading__badge direction-heading__badge--arrival">
           <i class="fa-solid fa-plane-arrival" aria-hidden="true"></i>
-          <span data-lang="bhs">Dolazak</span>
-          <span data-lang="en" style="display:none">Arrival</span>
+          {t('Dolazak', 'Arrival')}
         </div>
-        <h2 class="section__title airport-section-title">
-          <span data-lang="bhs">Od aerodroma do grada</span>
-          <span data-lang="en" style="display:none">From the airport to the city</span>
-        </h2>
-        <p class="direction-heading__subtitle">
-          <span data-lang="bhs">Sletjeli ste na aerodrom BNX i trebate doći do centra Banje Luke.</span>
-          <span data-lang="en" style="display:none">You've landed at BNX Airport and need to get to downtown Banja Luka.</span>
-        </p>
+        <h2 class="section__title airport-section-title">{t('Od aerodroma do grada', 'From the airport to the city')}</h2>
+        <p class="direction-heading__subtitle">{t('Sletjeli ste na aerodrom BNX i trebate doći do centra Banje Luke.', "You've landed at BNX Airport and need to get to downtown Banja Luka.")}</p>
       </div>
 
       <div class="transport-options-grid">
@@ -295,36 +251,28 @@ const pricingPath = withBase(getPagePath('pricing', locale));
             <div class="transport-option-card__icon" aria-hidden="true">
               <i class="fa-solid fa-bus"></i>
             </div>
-            <h3>
-              <span data-lang="bhs">Shuttle autobus (Smiljić)</span>
-              <span data-lang="en" style="display:none">Shuttle bus (Smiljić)</span>
-            </h3>
+            <h3>{t('Shuttle autobus (Smiljić)', 'Shuttle bus (Smiljić)')}</h3>
           </div>
           <ul class="transport-option-card__details">
             <li>
               <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              <span data-lang="bhs">Vrijeme vožnje: 30-45 min</span>
-              <span data-lang="en" style="display:none">Travel time: 30-45 min</span>
+              <span>{t('Vrijeme vožnje: 30-45 min', 'Travel time: 30-45 min')}</span>
             </li>
             <li>
               <i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i>
-              <span data-lang="bhs">Cijena: ~10 KM (jedna vožnja)</span>
-              <span data-lang="en" style="display:none">Price: ~10 KM (one way)</span>
+              <span>{t('Cijena: ~10 KM (jedna vožnja)', 'Price: ~10 KM (one way)')}</span>
             </li>
             <li>
               <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
-              <span data-lang="bhs">Autobus čeka ispred terminala nakon dolaska leta</span>
-              <span data-lang="en" style="display:none">Bus waits in front of the terminal after flight arrival</span>
+              <span>{t('Autobus čeka ispred terminala nakon dolaska leta', 'Bus waits in front of the terminal after flight arrival')}</span>
             </li>
             <li>
               <i class="fa-solid fa-flag-checkered" aria-hidden="true"></i>
-              <span data-lang="bhs">Završava na Staroj i Glavnoj autobuskoj stanici</span>
-              <span data-lang="en" style="display:none">Ends at Old and Main Bus Station</span>
+              <span>{t('Završava na Staroj i Glavnoj autobuskoj stanici', 'Ends at Old and Main Bus Station')}</span>
             </li>
             <li>
               <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-              <span data-lang="bhs">Karte se kupuju u autobusu</span>
-              <span data-lang="en" style="display:none">Tickets are purchased on the bus</span>
+              <span>{t('Karte se kupuju u autobusu', 'Tickets are purchased on the bus')}</span>
             </li>
           </ul>
         </div>
@@ -335,31 +283,24 @@ const pricingPath = withBase(getPagePath('pricing', locale));
             <div class="transport-option-card__icon" aria-hidden="true">
               <i class="fa-solid fa-taxi"></i>
             </div>
-            <h3>
-              <span data-lang="bhs">Taksi</span>
-              <span data-lang="en" style="display:none">Taxi</span>
-            </h3>
+            <h3>{t('Taksi', 'Taxi')}</h3>
           </div>
           <ul class="transport-option-card__details">
             <li>
               <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              <span data-lang="bhs">Vrijeme vožnje: 30-35 min</span>
-              <span data-lang="en" style="display:none">Travel time: 30-35 min</span>
+              <span>{t('Vrijeme vožnje: 30-35 min', 'Travel time: 30-35 min')}</span>
             </li>
             <li>
               <i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i>
-              <span data-lang="bhs">Cijena: ~40-60 KM</span>
-              <span data-lang="en" style="display:none">Price: ~40-60 KM</span>
+              <span>{t('Cijena: ~40-60 KM', 'Price: ~40-60 KM')}</span>
             </li>
             <li>
               <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
-              <span data-lang="bhs">Dostupno ispred terminala aerodroma</span>
-              <span data-lang="en" style="display:none">Available in front of the airport terminal</span>
+              <span>{t('Dostupno ispred terminala aerodroma', 'Available in front of the airport terminal')}</span>
             </li>
             <li>
               <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-              <span data-lang="bhs">Dogovorite cijenu prije ulaska u vozilo</span>
-              <span data-lang="en" style="display:none">Agree on the fare before getting in</span>
+              <span>{t('Dogovorite cijenu prije ulaska u vozilo', 'Agree on the fare before getting in')}</span>
             </li>
           </ul>
         </div>
@@ -375,13 +316,11 @@ const pricingPath = withBase(getPagePath('pricing', locale));
           <ul class="transport-option-card__details">
             <li>
               <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              <span data-lang="bhs">Vrijeme vožnje do centra: 30-35 min</span>
-              <span data-lang="en" style="display:none">Drive time to center: 30-35 min</span>
+              <span>{t('Vrijeme vožnje do centra: 30-35 min', 'Drive time to center: 30-35 min')}</span>
             </li>
             <li>
               <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-              <span data-lang="bhs">Preporučuje se unaprijed rezervisati online</span>
-              <span data-lang="en" style="display:none">Advance online booking recommended</span>
+              <span>{t('Preporučuje se unaprijed rezervisati online', 'Advance online booking recommended')}</span>
             </li>
           </ul>
         </div>
@@ -395,17 +334,10 @@ const pricingPath = withBase(getPagePath('pricing', locale));
       <div class="direction-heading">
         <div class="direction-heading__badge direction-heading__badge--departure">
           <i class="fa-solid fa-plane-departure" aria-hidden="true"></i>
-          <span data-lang="bhs">Odlazak</span>
-          <span data-lang="en" style="display:none">Departure</span>
+          {t('Odlazak', 'Departure')}
         </div>
-        <h2 class="section__title airport-section-title">
-          <span data-lang="bhs">Od grada do aerodroma</span>
-          <span data-lang="en" style="display:none">From the city to the airport</span>
-        </h2>
-        <p class="direction-heading__subtitle">
-          <span data-lang="bhs">Putujete iz Banje Luke i trebate doći do aerodroma BNX.</span>
-          <span data-lang="en" style="display:none">You're leaving Banja Luka and need to get to BNX Airport.</span>
-        </p>
+        <h2 class="section__title airport-section-title">{t('Od grada do aerodroma', 'From the city to the airport')}</h2>
+        <p class="direction-heading__subtitle">{t('Putujete iz Banje Luke i trebate doći do aerodroma BNX.', "You're leaving Banja Luka and need to get to BNX Airport.")}</p>
       </div>
 
       <div class="transport-options-grid">
@@ -415,36 +347,28 @@ const pricingPath = withBase(getPagePath('pricing', locale));
             <div class="transport-option-card__icon" aria-hidden="true">
               <i class="fa-solid fa-bus"></i>
             </div>
-            <h3>
-              <span data-lang="bhs">Shuttle autobus (Smiljić)</span>
-              <span data-lang="en" style="display:none">Shuttle bus (Smiljić)</span>
-            </h3>
+            <h3>{t('Shuttle autobus (Smiljić)', 'Shuttle bus (Smiljić)')}</h3>
           </div>
           <ul class="transport-option-card__details">
             <li>
               <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              <span data-lang="bhs">Vrijeme vožnje: 30-45 min</span>
-              <span data-lang="en" style="display:none">Travel time: 30-45 min</span>
+              <span>{t('Vrijeme vožnje: 30-45 min', 'Travel time: 30-45 min')}</span>
             </li>
             <li>
               <i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i>
-              <span data-lang="bhs">Cijena: ~10 KM (jedna vožnja)</span>
-              <span data-lang="en" style="display:none">Price: ~10 KM (one way)</span>
+              <span>{t('Cijena: ~10 KM (jedna vožnja)', 'Price: ~10 KM (one way)')}</span>
             </li>
             <li>
               <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
-              <span data-lang="bhs">Polazi od Stare i Glavne autobuske stanice</span>
-              <span data-lang="en" style="display:none">Departs from Old and Main Bus Station</span>
+              <span>{t('Polazi od Stare i Glavne autobuske stanice', 'Departs from Old and Main Bus Station')}</span>
             </li>
             <li>
               <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
-              <span data-lang="bhs">Dođite barem 15 min prije polaska autobusa</span>
-              <span data-lang="en" style="display:none">Arrive at least 15 min before bus departure</span>
+              <span>{t('Dođite barem 15 min prije polaska autobusa', 'Arrive at least 15 min before bus departure')}</span>
             </li>
             <li>
               <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-              <span data-lang="bhs">Karte se kupuju u autobusu</span>
-              <span data-lang="en" style="display:none">Tickets are purchased on the bus</span>
+              <span>{t('Karte se kupuju u autobusu', 'Tickets are purchased on the bus')}</span>
             </li>
           </ul>
         </div>
@@ -455,31 +379,24 @@ const pricingPath = withBase(getPagePath('pricing', locale));
             <div class="transport-option-card__icon" aria-hidden="true">
               <i class="fa-solid fa-taxi"></i>
             </div>
-            <h3>
-              <span data-lang="bhs">Taksi</span>
-              <span data-lang="en" style="display:none">Taxi</span>
-            </h3>
+            <h3>{t('Taksi', 'Taxi')}</h3>
           </div>
           <ul class="transport-option-card__details">
             <li>
               <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              <span data-lang="bhs">Vrijeme vožnje: 30-35 min</span>
-              <span data-lang="en" style="display:none">Travel time: 30-35 min</span>
+              <span>{t('Vrijeme vožnje: 30-35 min', 'Travel time: 30-35 min')}</span>
             </li>
             <li>
               <i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i>
-              <span data-lang="bhs">Cijena: ~40-60 KM</span>
-              <span data-lang="en" style="display:none">Price: ~40-60 KM</span>
+              <span>{t('Cijena: ~40-60 KM', 'Price: ~40-60 KM')}</span>
             </li>
             <li>
               <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
-              <span data-lang="bhs">Preuzimanje na vašoj adresi u gradu</span>
-              <span data-lang="en" style="display:none">Pickup from your address in the city</span>
+              <span>{t('Preuzimanje na vašoj adresi u gradu', 'Pickup from your address in the city')}</span>
             </li>
             <li>
               <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-              <span data-lang="bhs">Preporučujemo da naručite unaprijed ili koristite aplikaciju</span>
-              <span data-lang="en" style="display:none">We recommend booking in advance or using an app</span>
+              <span>{t('Preporučujemo da naručite unaprijed ili koristite aplikaciju', 'We recommend booking in advance or using an app')}</span>
             </li>
           </ul>
         </div>
@@ -490,26 +407,24 @@ const pricingPath = withBase(getPagePath('pricing', locale));
             <div class="transport-option-card__icon" aria-hidden="true">
               <i class="fa-solid fa-car"></i>
             </div>
-            <h3>
-              <span data-lang="bhs">Sopstveni automobil</span>
-              <span data-lang="en" style="display:none">Own car</span>
-            </h3>
+            <h3>{t('Sopstveni automobil', 'Own car')}</h3>
           </div>
           <ul class="transport-option-card__details">
             <li>
               <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              <span data-lang="bhs">Vrijeme vožnje: 30-35 min</span>
-              <span data-lang="en" style="display:none">Drive time: 30-35 min</span>
+              <span>{t('Vrijeme vožnje: 30-35 min', 'Drive time: 30-35 min')}</span>
             </li>
             <li>
               <i class="fa-solid fa-square-parking" aria-hidden="true"></i>
-              <span data-lang="bhs">Parking na aerodromu: od 3 KM/sat</span>
-              <span data-lang="en" style="display:none">Airport parking: from 3 KM/hour</span>
+              <span>{t('Parking na aerodromu: od 3 KM/sat', 'Airport parking: from 3 KM/hour')}</span>
             </li>
             <li>
               <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-              <span data-lang="bhs">Pogledajte <a href="#airport-parking">detalje o parkingu</a> ispod</span>
-              <span data-lang="en" style="display:none">See <a href="#airport-parking">parking details</a> below</span>
+              {isEnglish ? (
+                <span>See <a href="#airport-parking">parking details</a> below</span>
+              ) : (
+                <span>Pogledajte <a href="#airport-parking">detalje o parkingu</a> ispod</span>
+              )}
             </li>
           </ul>
         </div>
@@ -518,14 +433,11 @@ const pricingPath = withBase(getPagePath('pricing', locale));
       <div class="airport-tip" style="margin-top: var(--space-5);">
         <i class="fa-solid fa-lightbulb" aria-hidden="true"></i>
         <p>
-          <span data-lang="bhs">
-            <strong>Savjet:</strong> Mnogi hoteli u Banjoj Luci mogu organizovati transfer
-            do aerodroma za goste. Raspitajte se na recepciji prilikom prijave.
-          </span>
-          <span data-lang="en" style="display:none">
-            <strong>Tip:</strong> Many hotels in Banja Luka can arrange airport transfers
-            for guests. Ask at reception during check-in.
-          </span>
+          {isEnglish ? (
+            <span><strong>Tip:</strong> Many hotels in Banja Luka can arrange airport transfers for guests. Ask at reception during check-in.</span>
+          ) : (
+            <span><strong>Savjet:</strong> Mnogi hoteli u Banjoj Luci mogu organizovati transfer do aerodroma za goste. Raspitajte se na recepciji prilikom prijave.</span>
+          )}
         </p>
       </div>
     </div>
@@ -534,61 +446,48 @@ const pricingPath = withBase(getPagePath('pricing', locale));
   <!-- Shuttle Bus + Map -->
   <section class="section section--wide" id="airport">
     <div class="container">
-      <h2 class="section__title airport-section-title" id="airport-shuttle-title">
-        <span data-lang="bhs">Aerodromski shuttle autobus</span>
-        <span data-lang="en" style="display:none">Airport Shuttle Bus</span>
-      </h2>
-      <AirportMap />
+      <h2 class="section__title airport-section-title" id="airport-shuttle-title">{t('Aerodromski shuttle autobus', 'Airport Shuttle Bus')}</h2>
+      <AirportMap locale={locale} />
     </div>
   </section>
 
   <!-- Airport Parking -->
   <section class="section" id="airport-parking">
     <div class="container">
-      <h2 class="section__title airport-section-title">
-        <span data-lang="bhs">Parking na aerodromu</span>
-        <span data-lang="en" style="display:none">Airport Parking</span>
-      </h2>
+      <h2 class="section__title airport-section-title">{t('Parking na aerodromu', 'Airport Parking')}</h2>
       <div class="airport-content-block">
         <p>
-          <span data-lang="bhs">
-            Aerodrom Banja Luka koristi automatizovani sistem naplate parkinga sa prepoznavanjem
-            registarskih tablica. Plaćanje je moguće putem SMS-a, na terminalu za naplatu u
-            zgradi aerodroma, ili putem <a href="#goparking">GoParking mobilne aplikacije</a>.
-          </span>
-          <span data-lang="en" style="display:none">
-            Banja Luka Airport uses an automated parking payment system with license plate
-            recognition. Payment is available via SMS, at the payment terminal inside the
-            airport building, or through the <a href="#goparking">GoParking mobile app</a>.
-          </span>
+          {isEnglish ? (
+            <span>
+              Banja Luka Airport uses an automated parking payment system with license plate
+              recognition. Payment is available via SMS, at the payment terminal inside the
+              airport building, or through the <a href="#goparking">GoParking mobile app</a>.
+            </span>
+          ) : (
+            <span>
+              Aerodrom Banja Luka koristi automatizovani sistem naplate parkinga sa prepoznavanjem
+              registarskih tablica. Placanje je moguce putem SMS-a, na terminalu za naplatu u
+              zgradi aerodroma, ili putem <a href="#goparking">GoParking mobilne aplikacije</a>.
+            </span>
+          )}
         </p>
 
         <div class="parking-prices">
           <h3 class="parking-prices__title">
             <i class="fa-solid fa-square-parking" aria-hidden="true"></i>
-            <span data-lang="bhs">Cjenovnik parkinga</span>
-            <span data-lang="en" style="display:none">Parking Prices</span>
+            {t('Cjenovnik parkinga', 'Parking Prices')}
           </h3>
           <div class="parking-prices__grid">
             <div class="parking-price-item">
-              <span class="parking-price-item__label">
-                <span data-lang="bhs">Prvi sat</span>
-                <span data-lang="en" style="display:none">First hour</span>
-              </span>
+              <span class="parking-price-item__label">{t('Prvi sat', 'First hour')}</span>
               <span class="parking-price-item__value">3 KM</span>
             </div>
             <div class="parking-price-item">
-              <span class="parking-price-item__label">
-                <span data-lang="bhs">Prvih 24 sata</span>
-                <span data-lang="en" style="display:none">First 24 hours</span>
-              </span>
+              <span class="parking-price-item__label">{t('Prvih 24 sata', 'First 24 hours')}</span>
               <span class="parking-price-item__value">5 KM</span>
             </div>
             <div class="parking-price-item">
-              <span class="parking-price-item__label">
-                <span data-lang="bhs">Svaki sljedeći započeti dan</span>
-                <span data-lang="en" style="display:none">Each subsequent started day</span>
-              </span>
+              <span class="parking-price-item__label">{t('Svaki sljedeći započeti dan', 'Each subsequent started day')}</span>
               <span class="parking-price-item__value">5 KM</span>
             </div>
           </div>
@@ -597,34 +496,30 @@ const pricingPath = withBase(getPagePath('pricing', locale));
         <div class="airport-tip">
           <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
           <p>
-            <span data-lang="bhs">
-              Detaljan cjenovnik parking usluga dostupan je na
-              <a href="https://bnx.aero/en/home/" target="_blank" rel="noopener noreferrer">službenoj stranici aerodroma</a>.
-            </span>
-            <span data-lang="en" style="display:none">
-              A detailed parking price list is available on the
-              <a href="https://bnx.aero/en/home/" target="_blank" rel="noopener noreferrer">official airport website</a>.
-            </span>
+            {isEnglish ? (
+              <span>
+                A detailed parking price list is available on the
+                <a href="https://bnx.aero/en/home/" target="_blank" rel="noopener noreferrer"> official airport website</a>.
+              </span>
+            ) : (
+              <span>
+                Detaljan cjenovnik parking usluga dostupan je na
+                <a href="https://bnx.aero/en/home/" target="_blank" rel="noopener noreferrer"> službenoj stranici aerodroma</a>.
+              </span>
+            )}
           </p>
         </div>
 
         <div class="goparking-box" id="goparking">
           <div class="goparking-box__header">
             <i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i>
-            <h3>
-              <span data-lang="bhs">Platite parking putem GoParking aplikacije</span>
-              <span data-lang="en" style="display:none">Pay for parking via GoParking app</span>
-            </h3>
+            <h3>{t('Platite parking putem GoParking aplikacije', 'Pay for parking via GoParking app')}</h3>
           </div>
           <p>
-            <span data-lang="bhs">
-              Skenirajte QR kod sa tiketa ili unesite broj karte, izaberite način plaćanja
-              (SMS ili bankovna kartica) - jednostavno, brzo i sigurno.
-            </span>
-            <span data-lang="en" style="display:none">
-              Scan the QR code from your ticket or enter the card number, choose payment method
-              (SMS or bank card) - simple, fast and secure.
-            </span>
+            {t(
+              'Skenirajte QR kod sa tiketa ili unesite broj karte, izaberite način plaćanja (SMS ili bankovna kartica) - jednostavno, brzo i sigurno.',
+              'Scan the QR code from your ticket or enter the card number, choose payment method (SMS or bank card) - simple, fast and secure.',
+            )}
           </p>
           <div class="goparking-box__stores">
             <a
@@ -654,56 +549,30 @@ const pricingPath = withBase(getPagePath('pricing', locale));
   <!-- Continue your journey - Internal links -->
   <section class="section" id="airport-continue">
     <div class="container">
-      <h2 class="section__title airport-section-title">
-        <span data-lang="bhs">Nastavite putovanje javnim prevozom</span>
-        <span data-lang="en" style="display:none">Continue your journey by public transport</span>
-      </h2>
+      <h2 class="section__title airport-section-title">{t('Nastavite putovanje javnim prevozom', 'Continue your journey by public transport')}</h2>
       <p class="airport-intro" style="margin-bottom: var(--space-5);">
-        <span data-lang="bhs">
-          Nakon dolaska u Banju Luku, možete nastaviti putovanje gradskim autobuskim linijama.
-        </span>
-        <span data-lang="en" style="display:none">
-          After arriving in Banja Luka, you can continue your journey using city bus lines.
-        </span>
+        {t('Nakon dolaska u Banju Luku, možete nastaviti putovanje gradskim autobuskim linijama.', 'After arriving in Banja Luka, you can continue your journey using city bus lines.')}
       </p>
       <div class="airport-links-grid">
         <a href={linesPath} class="airport-link-card">
           <i class="fa-solid fa-route" aria-hidden="true"></i>
           <div>
-            <strong>
-              <span data-lang="bhs">Autobuske linije</span>
-              <span data-lang="en" style="display:none">Bus lines</span>
-            </strong>
-            <span class="airport-link-card__desc">
-              <span data-lang="bhs">Sve gradske linije i mapa stajališta</span>
-              <span data-lang="en" style="display:none">All city lines and stop maps</span>
-            </span>
+            <strong>{t('Autobuske linije', 'Bus lines')}</strong>
+            <span class="airport-link-card__desc">{t('Sve gradske linije i mapa stajališta', 'All city lines and stop maps')}</span>
           </div>
         </a>
         <a href={timetablePath} class="airport-link-card">
           <i class="fa-solid fa-clock" aria-hidden="true"></i>
           <div>
-            <strong>
-              <span data-lang="bhs">Red vožnje</span>
-              <span data-lang="en" style="display:none">Timetables</span>
-            </strong>
-            <span class="airport-link-card__desc">
-              <span data-lang="bhs">Polasci gradskih autobuskih linija</span>
-              <span data-lang="en" style="display:none">City bus line departures</span>
-            </span>
+            <strong>{t('Red vožnje', 'Timetables')}</strong>
+            <span class="airport-link-card__desc">{t('Polasci gradskih autobuskih linija', 'City bus line departures')}</span>
           </div>
         </a>
         <a href={pricingPath} class="airport-link-card">
           <i class="fa-solid fa-ticket" aria-hidden="true"></i>
           <div>
-            <strong>
-              <span data-lang="bhs">Cijene karata</span>
-              <span data-lang="en" style="display:none">Ticket prices</span>
-            </strong>
-            <span class="airport-link-card__desc">
-              <span data-lang="bhs">Cjenovnik javnog prevoza</span>
-              <span data-lang="en" style="display:none">Public transport pricing</span>
-            </span>
+            <strong>{t('Cijene karata', 'Ticket prices')}</strong>
+            <span class="airport-link-card__desc">{t('Cjenovnik javnog prevoza', 'Public transport pricing')}</span>
           </div>
         </a>
       </div>
@@ -713,10 +582,7 @@ const pricingPath = withBase(getPagePath('pricing', locale));
   <!-- Useful Links -->
   <section class="section" id="airport-links">
     <div class="container">
-      <h2 class="section__title airport-section-title">
-        <span data-lang="bhs">Korisni linkovi</span>
-        <span data-lang="en" style="display:none">Useful Links</span>
-      </h2>
+      <h2 class="section__title airport-section-title">{t('Korisni linkovi', 'Useful Links')}</h2>
       <div class="airport-links-grid">
         <a
           href="https://bnx.aero/en/home/"
@@ -726,10 +592,7 @@ const pricingPath = withBase(getPagePath('pricing', locale));
         >
           <i class="fa-solid fa-plane" aria-hidden="true"></i>
           <div>
-            <strong>
-              <span data-lang="bhs">Aerodrom Banja Luka</span>
-              <span data-lang="en" style="display:none">Banja Luka Airport</span>
-            </strong>
+            <strong>{t('Aerodrom Banja Luka', 'Banja Luka Airport')}</strong>
             <span class="airport-link-card__url">bnx.aero</span>
           </div>
           <i class="fa-solid fa-arrow-up-right-from-square airport-link-card__arrow" aria-hidden="true"></i>
@@ -742,10 +605,7 @@ const pricingPath = withBase(getPagePath('pricing', locale));
         >
           <i class="fa-solid fa-van-shuttle" aria-hidden="true"></i>
           <div>
-            <strong>
-              <span data-lang="bhs">Smiljić - Avio transferi</span>
-              <span data-lang="en" style="display:none">Smiljić - Airport Transfers</span>
-            </strong>
+            <strong>{t('Smiljić - Avio transferi', 'Smiljić - Airport Transfers')}</strong>
             <span class="airport-link-card__url">smiljiccompany.ba</span>
           </div>
           <i class="fa-solid fa-arrow-up-right-from-square airport-link-card__arrow" aria-hidden="true"></i>
@@ -758,8 +618,7 @@ const pricingPath = withBase(getPagePath('pricing', locale));
   <div class="container">
     <p class="airport-last-updated">
       <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
-      <span data-lang="bhs">Informacije posljednji put provjerene: mart 2026.</span>
-      <span data-lang="en" style="display:none">Information last reviewed: March 2026.</span>
+      {t('Informacije posljednji put provjerene: mart 2026.', 'Information last reviewed: March 2026.')}
     </p>
   </div>
 </BaseLayout>

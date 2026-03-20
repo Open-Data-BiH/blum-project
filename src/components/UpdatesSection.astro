@@ -15,6 +15,16 @@ const { categories, updates } = updatesData as { categories: Category[]; updates
 const existingLineIds = new Set(
   ((ownershipData as CompanyOwnership).urban ?? []).flatMap((company) => company.lines.map((line) => line.lineId)),
 );
+const isEnglish = locale === 'en';
+const severityLabel = (severity: Update['severity']): string => {
+  if (severity === 'warning') {
+    return isEnglish ? 'Warning' : 'Upozorenje';
+  }
+  if (severity === 'urgent') {
+    return isEnglish ? 'Urgent' : 'Hitno';
+  }
+  return 'Info';
+};
 ---
 
 <div class="updates-container" id="updates-section">
@@ -22,14 +32,12 @@ const existingLineIds = new Set(
   <div class="updates-filters" id="updates-filters" role="group" aria-label="Filter updates">
     <button class="updates-filter-btn active" data-filter="all">
       <i class="fas fa-list" aria-hidden="true"></i>
-      <span data-lang="bhs">Sve</span>
-      <span data-lang="en" style="display:none">All</span>
+      {isEnglish ? 'All' : 'Sve'}
     </button>
     {categories.map((cat) => (
       <button class="updates-filter-btn" data-filter={cat.id}>
         <i class={`fas ${cat.icon}`} aria-hidden="true"></i>
-        <span data-lang="bhs">{cat.label.bhs}</span>
-        <span data-lang="en" style="display:none">{cat.label.en}</span>
+        {cat.label[locale]}
       </button>
     ))}
   </div>
@@ -42,13 +50,11 @@ const existingLineIds = new Set(
         return (
           <div class="updates-empty">
             <i class="updates-empty__icon fas fa-check-circle" aria-hidden="true"></i>
-            <h3 class="updates-empty__title">
-              <span data-lang="bhs">Nema aktivnih obavještenja</span>
-              <span data-lang="en" style="display:none">No Active Updates</span>
-            </h3>
+            <h3 class="updates-empty__title">{isEnglish ? 'No Active Updates' : 'Nema aktivnih obavještenja'}</h3>
             <p class="updates-empty__text">
-              <span data-lang="bhs">Trenutno nema aktivnih obavještenja.</span>
-              <span data-lang="en" style="display:none">There are currently no active updates or announcements.</span>
+              {isEnglish
+                ? 'There are currently no active updates or announcements.'
+                : 'Trenutno nema aktivnih obavještenja.'}
             </p>
           </div>
         );
@@ -74,20 +80,10 @@ const existingLineIds = new Set(
                   <div class="update-card__badges">
                     <span class={`update-badge update-badge--${update.type}`}>
                       <i class={`fas ${catIcon}`} aria-hidden="true"></i>
-                      {cat && (
-                        <>
-                          <span data-lang="bhs">{cat.label.bhs}</span>
-                          <span data-lang="en" style="display:none">{cat.label.en}</span>
-                        </>
-                      )}
+                      {cat && cat.label[locale]}
                     </span>
                     <span class={`update-badge update-badge--severity-${update.severity}`}>
-                      <span data-lang="bhs">
-                        {update.severity === 'warning' ? 'Upozorenje' : update.severity === 'urgent' ? 'Hitno' : 'Info'}
-                      </span>
-                      <span data-lang="en" style="display:none">
-                        {update.severity === 'warning' ? 'Warning' : update.severity === 'urgent' ? 'Urgent' : 'Info'}
-                      </span>
+                      {severityLabel(update.severity)}
                     </span>
                   </div>
                   <div class="update-card__date">
@@ -98,21 +94,12 @@ const existingLineIds = new Set(
                   </div>
                 </div>
 
-                <h3 class="update-card__title">
-                  <span data-lang="bhs">{update.title.bhs}</span>
-                  <span data-lang="en" style="display:none">{update.title.en}</span>
-                </h3>
-                <p class="update-card__description">
-                  <span data-lang="bhs">{update.description.bhs}</span>
-                  <span data-lang="en" style="display:none">{update.description.en}</span>
-                </p>
+                <h3 class="update-card__title">{update.title[locale]}</h3>
+                <p class="update-card__description">{update.description[locale]}</p>
 
                 {update.affectedLines && update.affectedLines.length > 0 && (
                   <div class="update-card__lines">
-                    <span class="update-card__lines-label">
-                      <span data-lang="bhs">Zahvaćene linije:</span>
-                      <span data-lang="en" style="display:none">Affected lines:</span>
-                    </span>
+                    <span class="update-card__lines-label">{isEnglish ? 'Affected lines:' : 'Zahvaćene linije:'}</span>
                     {update.affectedLines.map((line) => {
                       const lineId = String(line);
                       return existingLineIds.has(lineId) ? (
@@ -126,8 +113,7 @@ const existingLineIds = new Set(
 
                 <div class="update-card__footer">
                   <div class="update-card__source">
-                    <span data-lang="bhs">Izvor:</span>
-                    <span data-lang="en" style="display:none">Source:</span>
+                    {isEnglish ? 'Source:' : 'Izvor:'}
                     {update.sourceUrl
                       ? <a href={update.sourceUrl} target="_blank" rel="noopener noreferrer">
                           {update.source}
@@ -140,8 +126,7 @@ const existingLineIds = new Set(
                     <div class="update-card__expiry">
                       <i class="fas fa-clock" aria-hidden="true"></i>
                       <span>
-                        <span data-lang="bhs">Važi do:</span>
-                        <span data-lang="en" style="display:none">Valid until:</span>
+                        {isEnglish ? 'Valid until:' : 'Važi do:'}
                         {' '}{new Date(update.dateExpiry).toLocaleDateString(locale === 'en' ? 'en-BA' : 'bs-BA', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                       </span>
                     </div>

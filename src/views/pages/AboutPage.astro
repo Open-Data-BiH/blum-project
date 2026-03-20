@@ -25,6 +25,7 @@ const pricingPath = withBase(getPagePath('pricing', locale));
 const airportPath = withBase(getPagePath('airport', locale));
 const updatesPath = withBase(getPagePath('updates', locale));
 const contactPath = withBase(getPagePath('contact', locale));
+const isEnglish = locale === 'en';
 ---
 
 <BaseLayout
@@ -38,14 +39,102 @@ const contactPath = withBase(getPagePath('contact', locale));
 >
   <section class="section section--narrow" id="about">
     <div class="container">
-      <h1 class="section__title" id="about-title">
-        <span data-lang="bhs">O projektu</span>
-        <span data-lang="en" style="display:none">About</span>
-      </h1>
+      <h1 class="section__title" id="about-title">{isEnglish ? 'About' : 'O projektu'}</h1>
 
       <div class="about-content">
-        <!-- BHS version -->
-        <div data-lang="bhs">
+        {isEnglish ? (
+          <div>
+            <h2>Why does BL Prevoz exist?</h2>
+            <p>
+              Public transport in Banja Luka is provided by multiple operators, and information about routes, timetables, and ticket prices is often scattered across different sources or difficult to find.
+            </p>
+            <p>
+              BL Prevoz was created to bring that information together and make it accessible to everyone:
+              simply, clearly, and free of charge. The platform's goal is to help every user quickly find
+              what they need to move around the city.
+            </p>
+
+            <h2>What can you do on BL Prevoz?</h2>
+            <div class="about-features">
+              <a href={linesPath} class="about-feature">
+                <i class="fa-solid fa-route" aria-hidden="true"></i>
+                <span>View bus lines and routes</span>
+              </a>
+              <a href={timetablePath} class="about-feature">
+                <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                <span>Check timetables</span>
+              </a>
+              <a href={pricingPath} class="about-feature">
+                <i class="fa-solid fa-ticket" aria-hidden="true"></i>
+                <span>See ticket pricing</span>
+              </a>
+              <a href={airportPath} class="about-feature">
+                <i class="fa-solid fa-plane-departure" aria-hidden="true"></i>
+                <span>Airport transport information</span>
+              </a>
+              <a href={updatesPath} class="about-feature">
+                <i class="fa-solid fa-bell" aria-hidden="true"></i>
+                <span>Follow transport updates</span>
+              </a>
+            </div>
+
+            <h2>An independent project</h2>
+            <p>
+              BL Prevoz is <strong>not an official website</strong> of the City of Banja Luka, any transport operator, or any institution.
+              It is an independent, volunteer-driven platform with no commercial backing and no affiliation with any transport company or public authority.
+            </p>
+            <p>
+              The website is free to use and continues to be developed as part of a broader, likewise independent open data initiative in Bosnia and Herzegovina,
+              which is not affiliated with government institutions, transport operators, or any organization.
+            </p>
+
+            <h2>Where does the information come from?</h2>
+            <p>
+              All information on the platform is gathered from:
+            </p>
+            <ul class="about-sources-list">
+              <li>publicly available data and sources</li>
+              <li>official operator announcements</li>
+              <li>information published by transport operators</li>
+            </ul>
+            <p>
+              We present information in a way that is useful for the public. We aim to keep it accurate and up to date,
+              but we still recommend checking with operators for the latest changes.
+            </p>
+
+            <h2>Open data</h2>
+            <p>
+              BL Prevoz is guided by open data principles. Public transport information serves the public interest and should be freely available to everyone.
+            </p>
+            <p>
+              The source code of this project is publicly available, and the data shown on the site may be freely used for informational purposes.
+              We hope this approach can encourage similar open data initiatives in our city and beyond.
+            </p>
+
+            <h2>Future plans</h2>
+            <p>
+              The platform continues to evolve. Planned improvements include:
+            </p>
+            <ul class="about-sources-list">
+              <li>updating and improving bus stop locations</li>
+              <li>expanding information about other modes of transport</li>
+              <li>improving the map and adding bus route visualization</li>
+            </ul>
+
+            <div class="about-cta">
+              <i class="fa-solid fa-comment-dots" aria-hidden="true"></i>
+              <div>
+                <strong>Noticed an error or have a suggestion?</strong>
+                <p>
+                  Help keep the information as accurate and useful as possible.
+                  If you've noticed incorrect data or have a suggestion,
+                  <a href={contactPath}>get in touch</a>.
+                </p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div>
           <h2>Zašto BL Prevoz postoji?</h2>
           <p>
             Javni prevoz u Banjoj Luci obavlja više prevoznika, a informacije o linijama, redovima vožnje i cijenama karata često su raspoređene na različitim mjestima ili ih nije lako pronaći.
@@ -118,9 +207,9 @@ const contactPath = withBase(getPagePath('contact', locale));
             Platforma se i dalje razvija. Neka od planiranih unapređenja uključuju:
           </p>
           <ul class="about-sources-list">
-            <li>ažuriranje i preciziranje lokacija autobusnih stajališta</li>
+            <li>ažuriranje i preciziranje lokacija autobuskih stajališta</li>
             <li>proširenje informacija o drugim vidovima prevoza</li>
-            <li>unapređenje mape i dodavanje prikaza ruta autobusnih linija</li>
+            <li>unapređenje mape i dodavanje prikaza ruta autobuskih linija</li>
           </ul>
 
           <div class="about-cta">
@@ -134,99 +223,8 @@ const contactPath = withBase(getPagePath('contact', locale));
               </p>
             </div>
           </div>
-        </div>
-
-        <!-- English version -->
-        <div data-lang="en" style="display:none">
-          <h2>Why does BL Prevoz exist?</h2>
-          <p>
-            Public transport in Banja Luka is provided by multiple operators, and information about routes, timetables, and ticket prices is often scattered across different sources or difficult to find.
-          </p>
-          <p>
-            BL Prevoz was created to bring that information together and make it accessible to everyone:
-            simply, clearly, and free of charge. The platform's goal is to help every user quickly find
-            what they need to move around the city.
-          </p>
-
-          <h2>What can you do on BL Prevoz?</h2>
-          <div class="about-features">
-            <a href={linesPath} class="about-feature">
-              <i class="fa-solid fa-route" aria-hidden="true"></i>
-              <span>View bus lines and routes</span>
-            </a>
-            <a href={timetablePath} class="about-feature">
-              <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              <span>Check timetables</span>
-            </a>
-            <a href={pricingPath} class="about-feature">
-              <i class="fa-solid fa-ticket" aria-hidden="true"></i>
-              <span>See ticket pricing</span>
-            </a>
-            <a href={airportPath} class="about-feature">
-              <i class="fa-solid fa-plane-departure" aria-hidden="true"></i>
-              <span>Airport transport information</span>
-            </a>
-            <a href={updatesPath} class="about-feature">
-              <i class="fa-solid fa-bell" aria-hidden="true"></i>
-              <span>Follow transport updates</span>
-            </a>
           </div>
-
-          <h2>An independent project</h2>
-          <p>
-            BL Prevoz is <strong>not an official website</strong> of the City of Banja Luka, any transport operator, or any institution.
-            It is an independent, volunteer-driven platform with no commercial backing and no affiliation with any transport company or public authority.
-          </p>
-          <p>
-            The website is free to use and continues to be developed as part of a broader, likewise independent open data initiative in Bosnia and Herzegovina,
-            which is not affiliated with government institutions, transport operators, or any organization.
-          </p>
-
-          <h2>Where does the information come from?</h2>
-          <p>
-            All information on the platform is gathered from:
-          </p>
-          <ul class="about-sources-list">
-            <li>publicly available data and sources</li>
-            <li>official operator announcements</li>
-            <li>information published by transport operators</li>
-          </ul>
-          <p>
-            We present information in a way that is useful for the public. We aim to keep it accurate and up to date,
-            but we still recommend checking with operators for the latest changes.
-          </p>
-
-          <h2>Open data</h2>
-          <p>
-            BL Prevoz is guided by open data principles. Public transport information serves the public interest and should be freely available to everyone.
-          </p>
-          <p>
-            The source code of this project is publicly available, and the data shown on the site may be freely used for informational purposes.
-            We hope this approach can encourage similar open data initiatives in our city and beyond.
-          </p>
-
-          <h2>Future plans</h2>
-          <p>
-            The platform continues to evolve. Planned improvements include:
-          </p>
-          <ul class="about-sources-list">
-            <li>updating and improving bus stop locations</li>
-            <li>expanding information about other modes of transport</li>
-            <li>improving the map and adding bus route visualization</li>
-          </ul>
-
-          <div class="about-cta">
-            <i class="fa-solid fa-comment-dots" aria-hidden="true"></i>
-            <div>
-              <strong>Noticed an error or have a suggestion?</strong>
-              <p>
-                Help keep the information as accurate and useful as possible.
-                If you've noticed incorrect data or have a suggestion,
-                <a href={contactPath}>get in touch</a>.
-              </p>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   </section>

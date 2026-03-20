@@ -77,22 +77,12 @@ function toggleEmptyState(empty: boolean): void {
         if (!emptyEl) {
             emptyEl = document.createElement('div');
             emptyEl.className = 'updates-empty';
+            const isEnglish = document.documentElement.lang === 'en';
             emptyEl.innerHTML = `
         <i class="updates-empty__icon fas fa-check-circle" aria-hidden="true"></i>
-        <h3 class="updates-empty__title">
-          <span data-lang="bhs">Nema aktivnih obavještenja</span>
-          <span data-lang="en" style="display:none">No Active Updates</span>
-        </h3>
-        <p class="updates-empty__text">
-          <span data-lang="bhs">Trenutno nema aktivnih obavještenja za izabranu kategoriju.</span>
-          <span data-lang="en" style="display:none">There are currently no active updates for the selected category.</span>
-        </p>
+        <h3 class="updates-empty__title">${isEnglish ? 'No Active Updates' : 'Nema aktivnih obavještenja'}</h3>
+        <p class="updates-empty__text">${isEnglish ? 'There are currently no active updates for the selected category.' : 'Trenutno nema aktivnih obavještenja za izabranu kategoriju.'}</p>
       `;
-            // Re-apply current language visibility
-            const lang = document.documentElement.lang === 'en' ? 'en' : 'bhs';
-            emptyEl.querySelectorAll<HTMLElement>('[data-lang]').forEach((el) => {
-                el.style.display = el.dataset.lang === lang ? '' : 'none';
-            });
             content.appendChild(emptyEl);
         } else {
             emptyEl.style.display = '';

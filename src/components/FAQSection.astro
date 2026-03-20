@@ -14,17 +14,19 @@ interface Category {
   questions: Question[];
 }
 
+interface Props {
+  locale: 'bhs' | 'en';
+}
+
 const { categories } = faqData as { categories: Category[] };
+const { locale } = Astro.props;
 ---
 
 <div class="faq-container" id="faq-content">
   <div class="faq-categories">
     {categories.map((category) => (
       <div class="faq-category" data-category-id={category.id}>
-        <h3 class="faq-category__title">
-          <span data-lang="bhs">{category.title.bhs}</span>
-          <span data-lang="en" style="display:none">{category.title.en}</span>
-        </h3>
+        <h3 class="faq-category__title">{category.title[locale]}</h3>
         <div class="faq-questions">
           {category.questions.map((q) => (
             <div class="faq-item" data-question-id={q.id} data-category-id={category.id}>
@@ -33,18 +35,12 @@ const { categories } = faqData as { categories: Category[] };
                 aria-expanded="false"
                 aria-controls={`answer-${q.id}`}
               >
-                <span class="faq-question__text">
-                  <span data-lang="bhs">{q.question.bhs}</span>
-                  <span data-lang="en" style="display:none">{q.question.en}</span>
-                </span>
+                <span class="faq-question__text">{q.question[locale]}</span>
                 <i class="faq-question__icon fas fa-chevron-down" aria-hidden="true"></i>
               </button>
               <div class="faq-answer" id={`answer-${q.id}`} aria-hidden="true">
                 <div class="faq-answer__content">
-                  <p>
-                    <span data-lang="bhs">{q.answer.bhs}</span>
-                    <span data-lang="en" style="display:none">{q.answer.en}</span>
-                  </p>
+                  <p>{q.answer[locale]}</p>
                 </div>
               </div>
             </div>

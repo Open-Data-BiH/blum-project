@@ -53,91 +53,91 @@ export const PAGE_PATHS: Record<PageKey, Record<Locale, string>> = {
 export const PAGE_META: Record<PageKey, { title: LocalizedText; description: LocalizedText }> = {
     home: {
         title: {
-            bhs: 'BL Prevoz - Red voznje i linije javnog prevoza u Banjoj Luci',
-            en: 'Banja Luka Public Transport - Bus Schedules, Routes & Airport Shuttle',
+            bhs: 'Javni prevoz Banja Luka | BL Prevoz',
+            en: 'Banja Luka Public Transport | BL Prevoz',
         },
         description: {
-            bhs: 'Red voznje, linije i mapa javnog prevoza u Banjoj Luci. Polasci, stajalista i informacije o gradskom autobusu.',
+            bhs: 'Red vožnje, linije i mapa javnog prevoza u Banjoj Luci. Polasci, stajališta i informacije o prevozu do aerodroma.',
             en: 'Bus schedules, routes, and map for public transport in Banja Luka. Departures, stops, and airport shuttle information.',
         },
     },
     lines: {
         title: {
-            bhs: 'Red voznje i autobuske linije - Javni prevoz Banja Luka',
-            en: 'Timetables & Bus Routes - Banja Luka Public Transport',
+            bhs: 'Red vožnje i autobuske linije | BL Prevoz',
+            en: 'Timetables & Bus Routes | BL Prevoz',
         },
         description: {
-            bhs: 'Sve autobuske linije i red voznje javnog prevoza u Banjoj Luci. Mape trasa, polasci i stajalista na jednom mjestu.',
+            bhs: 'Sve autobuske linije i red vožnje javnog prevoza u Banjoj Luci. Mape trasa, polasci i stajališta na jednom mjestu.',
             en: 'All bus routes and timetables for public transport in Banja Luka. Route maps, departures, and stops in one place.',
         },
     },
     pricing: {
         title: {
-            bhs: 'Cijene karata - Javni prevoz Banja Luka',
-            en: 'Ticket Prices - Banja Luka Public Transport',
+            bhs: 'Cijene karata | BL Prevoz',
+            en: 'Ticket Prices | BL Prevoz',
         },
         description: {
-            bhs: 'Aktuelne cijene karata, mjesecnih pretplata i djackih markica za autobuski prevoz u Banjoj Luci.',
+            bhs: 'Aktuelne cijene karata, mjesečnih pretplata i đačkih markica za autobuski prevoz u Banjoj Luci.',
             en: 'Current ticket prices, monthly passes, and student cards for bus transport in Banja Luka.',
         },
     },
     airport: {
         title: {
-            bhs: 'Prevoz do aerodroma Banja Luka - Shuttle, taksi, cijene | BNX',
-            en: 'Banja Luka Airport Bus & Shuttle - Transfer Guide (BNX)',
+            bhs: 'Prevoz do aerodroma Banja Luka (BNX) | BL Prevoz',
+            en: 'Banja Luka Airport Bus & Shuttle (BNX) | BL Prevoz',
         },
         description: {
-            bhs: 'Kako doci do Aerodroma Banja Luka (BNX). Shuttle autobus oko 10 KM (30-45 min), taksi 40-60 KM. Polasci od Glavne stanice, parking i interaktivna mapa rute.',
+            bhs: 'Kako doći do Aerodroma Banja Luka (BNX). Shuttle autobus oko 10 KM (30-45 min), taksi 40-60 KM. Polasci od Glavne stanice, parking i interaktivna mapa rute.',
             en: 'How to get from Banja Luka Airport (BNX) to the city center. Shuttle bus around 10 KM (30-45 minutes), taxi 40-60 KM. Timetable, route map, and parking info.',
         },
     },
     faq: {
         title: {
-            bhs: 'Cesta pitanja - Javni prevoz Banja Luka',
-            en: 'FAQ - Banja Luka Public Transport',
+            bhs: 'Česta pitanja | BL Prevoz',
+            en: 'FAQ | BL Prevoz',
         },
         description: {
-            bhs: 'Odgovori na najcesca pitanja o autobuskim linijama, kartama i javnom prevozu u Banjoj Luci.',
+            bhs: 'Odgovori na najčešća pitanja o autobuskim linijama, kartama i javnom prevozu u Banjoj Luci.',
             en: 'Answers to frequently asked questions about bus routes, tickets, and public transport in Banja Luka.',
         },
     },
     updates: {
         title: {
-            bhs: 'Obavjestenja - Izmjene linija i reda voznje Banja Luka',
-            en: 'Updates - Route & Timetable Changes in Banja Luka',
+            bhs: 'Obavještenja i izmjene reda vožnje | BL Prevoz',
+            en: 'Updates & Timetable Changes | BL Prevoz',
         },
         description: {
-            bhs: 'Najnovija obavjestenja o izmjenama autobuskih linija, reda voznje i radovima na javnom prevozu u Banjoj Luci.',
+            bhs: 'Najnovija obavještenja o izmjenama autobuskih linija, reda vožnje i radovima na javnom prevozu u Banjoj Luci.',
             en: 'Latest updates on bus route changes, timetable adjustments, and service notices in Banja Luka.',
         },
     },
     contact: {
         title: {
-            bhs: 'Kontakt - BL Prevoz',
-            en: 'Contact - BL Prevoz',
+            bhs: 'Kontakt | BL Prevoz',
+            en: 'Contact | BL Prevoz',
         },
         description: {
-            bhs: 'Kontaktirajte nas za pitanja o javnom prevozu u Banjoj Luci. Prijavite problem ili predlozite poboljsanje.',
+            bhs: 'Kontaktirajte nas za pitanja o javnom prevozu u Banjoj Luci. Prijavite problem ili predložite poboljšanje.',
             en: 'Contact us about public transport in Banja Luka. Report an issue or suggest an improvement.',
         },
     },
     privacy: {
         title: {
-            bhs: 'Politika privatnosti - BL Prevoz',
-            en: 'Privacy Policy - BL Prevoz',
+            bhs: 'Politika privatnosti | BL Prevoz',
+            en: 'Privacy Policy | BL Prevoz',
         },
         description: {
-            bhs: 'Politika privatnosti platforme BL Prevoz. Informacije o analitici, kolacicima, pristanku i zastiti privatnosti korisnika.',
+            bhs: 'Politika privatnosti platforme BL Prevoz. Informacije o analitici, kolačićima, pristanku i zaštiti privatnosti korisnika.',
             en: 'Privacy Policy for BL Prevoz. Information about analytics, cookies, consent, and user privacy protection.',
         },
     },
     about: {
         title: {
-            bhs: 'O projektu - BL Prevoz | Javni prevoz Banja Luka',
-            en: 'About - BL Prevoz',
+            bhs: 'O projektu | BL Prevoz',
+            en: 'About | BL Prevoz',
         },
         description: {
-            bhs: 'BL Prevoz je nezavisna, volonterski vodjena platforma za informacije o javnom prevozu u Banjoj Luci. Saznajte vise o projektu.',
+            bhs: 'BL Prevoz je nezavisna, volonterski vođena platforma za informacije o javnom prevozu u Banjoj Luci. Saznajte više o projektu.',
             en: 'BL Prevoz is an independent, volunteer-driven platform for public transport information in Banja Luka. Learn more about the project.',
         },
     },

@@ -20,22 +20,17 @@ const activeUpdates = updates
 const baseUrl = import.meta.env.BASE_URL;
 const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
 const updatesBasePath = getPagePath('updates', locale);
+const isEnglish = locale === 'en';
 ---
 
 <section class="section section--narrow" id="home-updates">
   <div class="container">
-    <h2 class="section__title" id="home-updates-title">
-      <span data-lang="bhs">Obavještenja</span>
-      <span data-lang="en" style="display:none">Updates</span>
-    </h2>
+    <h2 class="section__title" id="home-updates-title">{isEnglish ? 'Updates' : 'Obavjestenja'}</h2>
 
     {activeUpdates.length === 0 ? (
       <div class="home-updates-empty">
         <i class="fas fa-check-circle" aria-hidden="true"></i>
-        <p>
-          <span data-lang="bhs">Nema aktivnih obavještenja. Javni prevoz saobraća redovno.</span>
-          <span data-lang="en" style="display:none">No active updates. Public transport is operating normally.</span>
-        </p>
+        <p>{isEnglish ? 'No active updates. Public transport is operating normally.' : 'Nema aktivnih obavještenja. Javni prevoz saobraća redovno.'}</p>
       </div>
     ) : (
       <div class="home-updates-list">
@@ -49,25 +44,14 @@ const updatesBasePath = getPagePath('updates', locale);
                 <div class="home-update-card__header">
                   <span class={`update-badge update-badge--${update.type}`}>
                     <i class={`fas ${catIcon}`} aria-hidden="true"></i>
-                    {cat && (
-                      <>
-                        <span data-lang="bhs">{cat.label.bhs}</span>
-                        <span data-lang="en" style="display:none">{cat.label.en}</span>
-                      </>
-                    )}
+                    {cat && cat.label[locale]}
                   </span>
                   <span class="home-update-card__date">
                     {new Date(update.datePublished).toLocaleDateString(locale === 'en' ? 'en-BA' : 'bs-BA', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                   </span>
                 </div>
-                <h3 class="home-update-card__title">
-                  <span data-lang="bhs">{update.title.bhs}</span>
-                  <span data-lang="en" style="display:none">{update.title.en}</span>
-                </h3>
-                <p class="home-update-card__description">
-                  <span data-lang="bhs">{update.description.bhs}</span>
-                  <span data-lang="en" style="display:none">{update.description.en}</span>
-                </p>
+                <h3 class="home-update-card__title">{update.title[locale]}</h3>
+                <p class="home-update-card__description">{update.description[locale]}</p>
               </article>
             </a>
           );
@@ -78,8 +62,7 @@ const updatesBasePath = getPagePath('updates', locale);
     <div class="home-updates-cta">
       <a href={withBase(updatesBasePath)} class="btn btn--sm">
         <i class="fas fa-bell" aria-hidden="true"></i>
-        <span data-lang="bhs">Sva obavještenja</span>
-        <span data-lang="en" style="display:none">All updates</span>
+        {isEnglish ? 'All updates' : 'Sva obavještenja'}
       </a>
     </div>
   </div>

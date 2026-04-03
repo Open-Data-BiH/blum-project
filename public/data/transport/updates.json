@@ -27,6 +27,25 @@
     ],
     "updates": [
         {
+            "id": "closure-2026-04-03-kralja-petra-dan-policije",
+            "type": "closure",
+            "severity": "urgent",
+            "title": {
+                "bhs": "Privremena obustava saobraćaja u Ulici kralja Petra I Karađorđevića",
+                "en": "Temporary Traffic Closure on Kralja Petra I Karađorđevića Street"
+            },
+            "description": {
+                "bhs": "Biće obustavljen saobraćaj u Ulici kralja Petra I Karađorđevića, na dijelu od Aleje Svetog Save do Bulevara cara Dušana, 03.04.2026. od 03:00 do 07:00 i 06.04.2026. od 10:00 do 14:00, zbog probe i obilježavanja Dana policije. Autobusi iz smjera sjevera preusmjeravaju se ulicama Vuka Karadžića, Ranka Šipke, Zapadni tranzit i dalje Bulevarom cara Dušana, dok u suprotnom smjeru saobraćaju ulicama Kninska i Vidovdanska.",
+                "en": "Traffic will be suspended on Kralja Petra I Karađorđevića Street, on the section from Aleja Svetog Save to Bulevar cara Dušana, on 03 April 2026 from 03:00 to 07:00 and on 06 April 2026 from 10:00 to 14:00, due to a police rehearsal and Police Day event. Buses coming from the north will be diverted via Vuka Karadžića, Ranka Šipke, Zapadni tranzit and then Bulevar cara Dušana, while buses in the opposite direction will operate via Kninska and Vidovdanska."
+            },
+            "affectedLines": [],
+            "datePublished": "2026-04-02",
+            "dateExpiry": "2026-04-06",
+            "isActive": true,
+            "source": "Grad Banja Luka",
+            "sourceUrl": "https://www.banjaluka.rs.ba/zbog-obiljezavanja-dana-policije-sutra-i-u-ponedjeljak-bice-izmijenjen-rezim-saobracaja-u-centru-banja-luka/"
+        },
+        {
             "id": "schedule-2026-01-regular-school-year",
             "type": "schedule_change",
             "severity": "info",

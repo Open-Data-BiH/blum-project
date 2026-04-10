@@ -27,6 +27,25 @@
     ],
     "updates": [
         {
+            "id": "schedule-2026-04-easter-holidays",
+            "type": "schedule_change",
+            "severity": "info",
+            "title": {
+                "bhs": "Izmjena reda vožnje za vrijeme vaskršnjih praznika i raspusta",
+                "en": "Timetable Changes During Easter Holidays and School Break"
+            },
+            "description": {
+                "bhs": "Obavještavaju se građani da će i ove godine za vrijeme vaskršnjih praznika i proljetnog školskog raspusta autobusi saobraćati po izmijenjenom redu vožnje. Dana 10. i 13. aprila (Veliki petak i Vaskršnji ponedjeljak) autobusi će saobraćati po redu vožnje kao subotom. U periodu od 14. do 17. aprila, za vrijeme proljetnog školskog raspusta, primjenjivaće se redukovani školski polasci.",
+                "en": "Passengers are informed that during the Easter holidays and the spring school break, buses will operate according to a modified timetable. On April 10 and April 13 (Good Friday and Easter Monday), buses will run according to the Saturday schedule. From April 14 to April 17, during the spring school break, reduced school departures will be in effect."
+            },
+            "affectedLines": [],
+            "datePublished": "2026-04-10",
+            "dateExpiry": "2026-04-17",
+            "isActive": true,
+            "source": "BL prevoz",
+            "sourceUrl": ""
+        },
+        {
             "id": "schedule-2026-01-regular-school-year",
             "type": "schedule_change",
             "severity": "info",

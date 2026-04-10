@@ -54,7 +54,7 @@ export const createTouristBusPopup = (hub: TransportHub): string => `
     <p>${escapeHtml(localizedField(hub.info))}</p>
     <p>${langText('Trajanje vožnje', 'Trip duration')}: ${escapeHtml(localizedField(hub.duration ?? ''))}</p>
     <p>${langText('Cijena', 'Price')}: ${escapeHtml(localizedField(hub.price ?? ''))}</p>
-    <a href="https://www.banjaluka.rs.ba/banj-bus-na-raspolaganju-od-1-maja/" target="_blank" rel="noopener noreferrer" class="popup-link">${langText('Informacije o Banj Bus-u', 'Banj Bus Info')}</a>
+    <a href="https://www.banjaluka.rs.ba/banj-bus-ponovo-vozi/" target="_blank" rel="noopener noreferrer" class="popup-link">${langText('Informacije o Banj Bus-u', 'Banj Bus Info')}</a>
   </div>
 `;
 

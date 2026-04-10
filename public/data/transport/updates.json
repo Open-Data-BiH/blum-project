@@ -27,25 +27,6 @@
     ],
     "updates": [
         {
-            "id": "closure-2026-04-03-kralja-petra-dan-policije",
-            "type": "closure",
-            "severity": "urgent",
-            "title": {
-                "bhs": "Privremena obustava saobraćaja u Ulici kralja Petra I Karađorđevića",
-                "en": "Temporary Traffic Closure on Kralja Petra I Karađorđevića Street"
-            },
-            "description": {
-                "bhs": "Biće obustavljen saobraćaj u Ulici kralja Petra I Karađorđevića, na dijelu od Aleje Svetog Save do Bulevara cara Dušana, 03.04.2026. od 03:00 do 07:00 i 06.04.2026. od 10:00 do 14:00, zbog probe i obilježavanja Dana policije. Autobusi iz smjera sjevera preusmjeravaju se ulicama Vuka Karadžića, Ranka Šipke, Zapadni tranzit i dalje Bulevarom cara Dušana, dok u suprotnom smjeru saobraćaju ulicama Kninska i Vidovdanska.",
-                "en": "Traffic will be suspended on Kralja Petra I Karađorđevića Street, on the section from Aleja Svetog Save to Bulevar cara Dušana, on 03 April 2026 from 03:00 to 07:00 and on 06 April 2026 from 10:00 to 14:00, due to a police rehearsal and Police Day event. Buses coming from the north will be diverted via Vuka Karadžića, Ranka Šipke, Zapadni tranzit and then Bulevar cara Dušana, while buses in the opposite direction will operate via Kninska and Vidovdanska."
-            },
-            "affectedLines": [],
-            "datePublished": "2026-04-02",
-            "dateExpiry": "2026-04-06",
-            "isActive": true,
-            "source": "Grad Banja Luka",
-            "sourceUrl": "https://www.banjaluka.rs.ba/zbog-obiljezavanja-dana-policije-sutra-i-u-ponedjeljak-bice-izmijenjen-rezim-saobracaja-u-centru-banja-luka/"
-        },
-        {
             "id": "schedule-2026-01-regular-school-year",
             "type": "schedule_change",
             "severity": "info",
@@ -63,25 +44,6 @@
             "isActive": true,
             "source": "BL prevoz",
             "sourceUrl": ""
-        },
-        {
-            "id": "line-12-2026-03-rebrovac-extension",
-            "type": "line_change",
-            "severity": "info",
-            "title": {
-                "bhs": "Produženje trase linije 12 do Rebrovca",
-                "en": "Route 12 Service Extended to Rebrovac"
-            },
-            "description": {
-                "bhs": "Autobuska linija broj 12, koja saobraća na relaciji Paprikovac - Centar, produžena je do naselja Rebrovac. Iz centra grada autobus nastavlja kroz naselje Obilićevo (ulice Patre - Cara Lazara - Bulevar vojvode Stepe Stepanovića) do Rebrovca, gdje koristi kružni tok kao okretnicu za povratak prema centru grada, a zatim preko naselja Petrićevac do Paprikovca (Lijevčanska). Relacijska tabla zbog dominantnog kretanja kroz Petrićevac glasi: 12 Petrićevac (Lijevčanska) - Centar - Rebrovac (kružni tok).",
-                "en": "Bus line 12, operating on the Paprikovac - Center route, has been extended to the Rebrovac neighborhood. From the city center, buses continue through the Obilićevo area (Patre Street - Cara Lazara Street - Bulevar vojvode Stepe Stepanovića) to Rebrovac, where the roundabout serves as the turning point before returning toward the city center and then via Petrićevac to Paprikovac (Lijevčanska). Due to the dominant direction through Petrićevac, the destination display is: 12 Petrićevac (Lijevčanska) - Center - Rebrovac (roundabout)."
-            },
-            "affectedLines": ["12"],
-            "datePublished": "2026-02-06",
-            "dateExpiry": null,
-            "isActive": true,
-            "source": "Pavlović Tours",
-            "sourceUrl": "https://pavlovic-turs.com/produzenje-trase-linije-broj-12/"
         },
         {
             "id": "template-001",

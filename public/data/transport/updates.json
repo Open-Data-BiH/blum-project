@@ -39,7 +39,8 @@
                 "en": "From 2026-06-22, during the summer school break, a reduced number of departures will be in effect on urban and suburban lines. The regular timetable will resume with the start of the new school year."
             },
             "affectedLines": [],
-            "datePublished": "2026-06-22",
+            "datePublished": "2026-06-07",
+            "dateStart": "2026-06-22",
             "dateExpiry": "2026-09-01",
             "source": "BL prevoz",
             "sourceUrl": ""

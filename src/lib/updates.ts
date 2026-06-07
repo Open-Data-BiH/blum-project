@@ -1,11 +1,10 @@
 import type { Update } from '../types/updates';
 
 export function isUpdateVisible(update: Update, now: Date = new Date()): boolean {
-    const startSource = update.dateStart ?? update.datePublished;
-    if (startSource) {
-        const start = new Date(startSource);
-        start.setHours(0, 0, 0, 0);
-        if (start > now) {
+    if (update.datePublished) {
+        const published = new Date(update.datePublished);
+        published.setHours(0, 0, 0, 0);
+        if (published > now) {
             return false;
         }
     }

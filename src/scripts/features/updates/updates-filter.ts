@@ -47,11 +47,11 @@ function setFilter(filter: string): void {
 }
 
 function isOutOfWindow(card: HTMLElement, now: Date = new Date()): boolean {
-    const start = card.dataset.start;
-    if (start) {
-        const startDate = new Date(start);
-        startDate.setHours(0, 0, 0, 0);
-        if (startDate > now) {
+    const published = card.dataset.published;
+    if (published) {
+        const publishedDate = new Date(published);
+        publishedDate.setHours(0, 0, 0, 0);
+        if (publishedDate > now) {
             return true;
         }
     }

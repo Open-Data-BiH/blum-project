@@ -268,7 +268,8 @@
     text-decoration: underline;
 }
 
-.update-card__expiry {
+.update-card__expiry,
+.update-card__effective {
     font-size: var(--font-size-xs);
     color: var(--text-secondary);
     display: flex;

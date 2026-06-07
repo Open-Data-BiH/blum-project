@@ -6,10 +6,12 @@ This project reads updates from:
 
 An update card is visible when **today** falls inside its visibility window:
 
-- `dateStart` (or `datePublished` if `dateStart` is omitted) is in the past or today
+- `datePublished` is in the past or today
 - `dateExpiry` is empty OR still in the future
 
 Both checks run server-side at build time and again client-side on page load.
+
+`dateStart` is **informational** — it is shown on the card as "Effective from" but does **not** affect visibility. Use it when the announcement is published before the change actually takes effect.
 
 ## Data Structure
 
@@ -36,7 +38,9 @@ Each update object uses this shape:
 }
 ```
 
-`dateStart` is optional. Omit it when the update should be visible from `datePublished`. Set it explicitly when you want to schedule a notice in advance (e.g., published today, but only shown starting next month).
+- `datePublished` — when the announcement was published. Controls visibility start.
+- `dateStart` — *optional*, informational. When the announced change actually takes effect. Shown on the card as "Effective from". Omit when the change takes effect on the same day it is published.
+- `dateExpiry` — last day the card stays visible, or `null` for no expiry.
 
 Copy-paste scaffolds for each `type` live in `examples/updates.example.json`.
 
@@ -52,8 +56,8 @@ Copy-paste scaffolds for each `type` live in `examples/updates.example.json`.
 5. Add both language texts (`title.bhs`, `title.en`, `description.bhs`, `description.en`).
 6. Add affected lines in `affectedLines` (or leave `[]` if not specific).
 7. Set the dates in `YYYY-MM-DD`:
-    - `datePublished` — date shown on the card.
-    - `dateStart` — optional. Drop the field if it matches `datePublished`.
+    - `datePublished` — today (or any past date you want the card visible from).
+    - `dateStart` — optional. Drop the field when it would match `datePublished`.
     - `dateExpiry` — last day the card stays visible, or `null` for no expiry.
 8. Add `source` and `sourceUrl` (leave `sourceUrl` empty only if no URL exists).
 9. Save and refresh `/updates/`.
@@ -61,7 +65,7 @@ Copy-paste scaffolds for each `type` live in `examples/updates.example.json`.
 ## Hide An Update
 
 - To hide immediately: set `dateExpiry` to a past date or delete the entry.
-- To delay publication: set `dateStart` to a future date.
+- To delay publication: set `datePublished` to a future date.
 
 ## Quick Validation Checklist
 

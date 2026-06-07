@@ -75,7 +75,6 @@ const severityLabel = (severity: Update['severity']): string => {
                 data-update-id={update.id}
                 data-type={update.type}
                 data-published={update.datePublished}
-                data-start={update.dateStart ?? update.datePublished}
                 data-expiry={update.dateExpiry ?? ''}
                 data-severity={update.severity}
               >
@@ -125,6 +124,15 @@ const severityLabel = (severity: Update['severity']): string => {
                       : update.source
                     }
                   </div>
+                  {update.dateStart && update.dateStart !== update.datePublished && (
+                    <div class="update-card__effective">
+                      <i class="fas fa-calendar-day" aria-hidden="true"></i>
+                      <span>
+                        {isEnglish ? 'Effective from:' : 'Stupa na snagu:'}
+                        {' '}{new Date(update.dateStart).toLocaleDateString(locale === 'en' ? 'en-BA' : 'bs-BA', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                      </span>
+                    </div>
+                  )}
                   {update.dateExpiry && (
                     <div class="update-card__expiry">
                       <i class="fas fa-clock" aria-hidden="true"></i>

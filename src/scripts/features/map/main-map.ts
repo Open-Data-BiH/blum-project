@@ -747,7 +747,11 @@ export const initMainMap = async (): Promise<void> => {
         ]);
 
         const baseLayers = buildBaseLayers(L);
-        const defaultBase = legendConfig.baseMaps.find((base) => base.default)?.id ?? 'light';
+        const configDefault = legendConfig.baseMaps.find((base) => base.default)?.id ?? 'light';
+        const siteIsDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        // Start on dark tiles in dark mode, but only when the default style is theme-based.
+        const defaultBase =
+            siteIsDark && (configDefault === 'light' || configDefault === 'dark') ? 'dark' : configDefault;
 
         const bounds: LatLngBoundsExpression = [
             [44.67794605215712, 16.90471973252053],
@@ -789,6 +793,11 @@ export const initMainMap = async (): Promise<void> => {
 
         const legend = new MapLegendControl(L, map, legendConfig, baseLayers, overlayGroups);
         legend.init();
+
+        window.addEventListener('themeChanged', (event) => {
+            const isDark = (event as CustomEvent<{ isDark?: boolean }>).detail?.isDark ?? false;
+            legend.syncToTheme(isDark);
+        });
 
         createLocateControl(L, map, busStops.getLayersForGeolocation);
     } catch (error) {

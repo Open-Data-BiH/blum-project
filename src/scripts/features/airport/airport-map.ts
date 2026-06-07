@@ -34,12 +34,27 @@ export async function initAirportMap(): Promise<void> {
 
         L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            attribution:
-                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-                '&copy; <a href="https://carto.com/attribution">CARTO</a>',
-            subdomains: 'abcd',
-        }).addTo(map);
+        const tileUrls = {
+            light: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+            dark: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+        };
+        const tileAttribution =
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+            '&copy; <a href="https://carto.com/attribution">CARTO</a>';
+
+        const addBaseTile = (isDark: boolean) =>
+            L.tileLayer(isDark ? tileUrls.dark : tileUrls.light, {
+                attribution: tileAttribution,
+                subdomains: 'abcd',
+            }).addTo(map);
+
+        let baseTile = addBaseTile(document.documentElement.getAttribute('data-theme') === 'dark');
+
+        window.addEventListener('themeChanged', (event) => {
+            const isDark = (event as CustomEvent<{ isDark?: boolean }>).detail?.isDark ?? false;
+            map.removeLayer(baseTile);
+            baseTile = addBaseTile(isDark);
+        });
 
         const shuttleIcon = L.divIcon({
             html: `<i class="fa-solid fa-shuttle-van fa-icon-marker" style="color:#4d4d99;"></i>`,

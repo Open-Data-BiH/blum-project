@@ -7,6 +7,8 @@ type LeafletNS = typeof import('leaflet');
 type BaseLayers = Record<string, TileLayer>;
 type OverlayLayers = Record<OverlayLayerId, LayerGroup>;
 
+const isSiteDark = (): boolean => document.documentElement.getAttribute('data-theme') === 'dark';
+
 export class MapLegendControl {
     private controlContainer: HTMLElement | null = null;
     private leafletControl: Control | null = null;
@@ -24,7 +26,12 @@ export class MapLegendControl {
         private overlayLayers: OverlayLayers,
     ) {
         const defaultBase = config.baseMaps.find((base) => base.default) ?? config.baseMaps[0];
-        this.selectedBaseMap = defaultBase?.id ?? 'light';
+        let initialBaseMap = defaultBase?.id ?? 'light';
+        // Honor the site theme on first load when the default style is theme-based.
+        if ((initialBaseMap === 'light' || initialBaseMap === 'dark') && isSiteDark()) {
+            initialBaseMap = 'dark';
+        }
+        this.selectedBaseMap = initialBaseMap;
 
         const defaultLayers = config.overlayLayers.filter((layer) => layer.defaultVisible).map((layer) => layer.id);
         this.selectedLayers = new Set(defaultLayers);
@@ -287,6 +294,14 @@ export class MapLegendControl {
         this.isCollapsed = !this.isCollapsed;
         this.render();
         this.controlContainer?.querySelector<HTMLButtonElement>('.map-legend__toggle')?.focus();
+    }
+
+    /** Follow the site light/dark theme, but only while a theme-based style is active. */
+    syncToTheme(isDark: boolean): void {
+        if (this.selectedBaseMap !== 'light' && this.selectedBaseMap !== 'dark') {
+            return;
+        }
+        this.selectBaseMap(isDark ? 'dark' : 'light');
     }
 
     private selectBaseMap(id: string): void {

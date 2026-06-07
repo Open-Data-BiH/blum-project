@@ -152,6 +152,20 @@
                     "bus_type": "solo",
                     "wheelchair_accessible": true,
                     "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2025/10/9-Б-Чесма-Медено-поље-Центар.pdf"
+                },
+                {
+                    "lineId": "9C",
+                    "lineName": {
+                        "en": "Česma - Centar",
+                        "bhs": "Česma - Centar"
+                    },
+                    "cooperatingCompanyName": null,
+                    "group": "II",
+                    "no_stops": 12,
+                    "min_duration": 20,
+                    "bus_type": "solo",
+                    "wheelchair_accessible": true,
+                    "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2026/06/9-Ц-Чесма-Мост-Врбас-Центар.pdf"
                 }
             ]
         },

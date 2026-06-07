@@ -1834,6 +1834,100 @@
             }
         }
     },
+    "9C": {
+        "route": "Česma - Centar",
+        "color": "#00adef",
+        "pdf_url": "https://www.banjaluka.rs.ba/wp-content/uploads/2026/06/9-Ц-Чесма-Мост-Врбас-Центар.pdf",
+        "directions": {
+            "1": {
+                "route": "Česma - Centar",
+                "stops": [
+                    "Česma stadion",
+                    "Salon igara",
+                    "Raskrsnica Sarajevska",
+                    "Petra Velikog 35",
+                    "Vitaminka",
+                    "DI Vrbas",
+                    "Lesnina",
+                    "Mljekara",
+                    "PMF",
+                    "Pozorište",
+                    "Centar (Pošta)"
+                ],
+                "streets": [
+                    "Petra Velikog",
+                    "Petra Velikog",
+                    "Petra Velikog",
+                    "Petra Velikog",
+                    "Braće Pišteljića",
+                    "Braće Pišteljića",
+                    "Bulevar srpske vojske",
+                    "Dr. Mladena Stojanovića",
+                    "Dr. Mladena Stojanovića",
+                    "Kralja Petra I Karađorđevića",
+                    "Kralja Petra I Karađorđevića"
+                ],
+                "coordinates": [
+                    [44.79048495377189, 17.23631668442444],
+                    [44.78515273207164, 17.23074677971238],
+                    [44.78406380157932, 17.229459319421395],
+                    [44.78137755823082, 17.226516936054367],
+                    [44.78251361960012, 17.21922765549028],
+                    [44.78361400189299, 17.216220899213067],
+                    [44.78625965387317, 17.20554505647926],
+                    [44.782749179260584, 17.20185970133243],
+                    [44.77980204332297, 17.19879125420463],
+                    [44.7750954523274, 17.193952549106964],
+                    [44.771214891778584, 17.189993608585475]
+                ]
+            },
+            "2": {
+                "route": "Centar - Česma",
+                "stops": [
+                    "Centar (Vidovdanska)",
+                    "IRBRS",
+                    "Skupština",
+                    "PMF",
+                    "Mljekara",
+                    "Lesnina",
+                    "DI Vrbas",
+                    "Vitaminka",
+                    "Petra Velikog 35",
+                    "Raskrsnica Sarajevska",
+                    "Salon igara",
+                    "Česma stadion"
+                ],
+                "streets": [
+                    "Kninska",
+                    "Vidovdanska",
+                    "Prvog krajiškog korpusa",
+                    "Dr. Mladena Stojanovića",
+                    "Dr. Mladena Stojanovića",
+                    "Bulevar srpske vojske",
+                    "Braće Pišteljića",
+                    "Braće Pišteljića",
+                    "Petra Velikog",
+                    "Petra Velikog",
+                    "Petra Velikog",
+                    "Petra Velikog"
+                ],
+                "coordinates": [
+                    [44.77081274771814, 17.188150983217824],
+                    [44.774840742504026, 17.19147802326792],
+                    [44.77598920687695, 17.192759999631352],
+                    [44.77980204332297, 17.19879125420463],
+                    [44.782749179260584, 17.20185970133243],
+                    [44.78625965387317, 17.20554505647926],
+                    [44.78361400189299, 17.216220899213067],
+                    [44.78251361960012, 17.21922765549028],
+                    [44.78137755823082, 17.226516936054367],
+                    [44.78406380157932, 17.229459319421395],
+                    [44.78515273207164, 17.23074677971238],
+                    [44.79048495377189, 17.23631668442444]
+                ]
+            }
+        }
+    },
     "12": {
         "route": "Paprikovac (Vidik) - Centar - Rebrovac",
         "color": "#ff9f43",

@@ -73,6 +73,15 @@
             "wheelchair_accessible": true
         },
         {
+            "lineId": "9C",
+            "lineName": "Česma - Centar",
+            "group": "II",
+            "no_stops": 12,
+            "min_duration": 20,
+            "bus_type": "solo",
+            "wheelchair_accessible": true
+        },
+        {
             "lineId": "10",
             "lineName": "Autobuska stanica - Obilićevo",
             "group": "I",

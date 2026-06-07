@@ -1,5 +1,6 @@
 ---
 import { getLineDetailPath, type Locale } from '../lib/site-config';
+import { isUpdateVisible } from '../lib/updates';
 import '../styles/pages/_updates.scss';
 import updatesData from '../../public/data/transport/updates.json';
 import ownershipData from '../../public/data/transport/routes/urban_company_ownership.json';
@@ -45,7 +46,8 @@ const severityLabel = (severity: Update['severity']): string => {
   <!-- Update cards — rendered server-side, hidden/shown via TS filter -->
   <div id="updates-content">
     {(() => {
-      const activeUpdates = updates.filter((u) => u.isActive);
+      const now = new Date();
+      const activeUpdates = updates.filter((u) => isUpdateVisible(u, now));
       if (activeUpdates.length === 0) {
         return (
           <div class="updates-empty">
@@ -73,6 +75,7 @@ const severityLabel = (severity: Update['severity']): string => {
                 data-update-id={update.id}
                 data-type={update.type}
                 data-published={update.datePublished}
+                data-start={update.dateStart ?? update.datePublished}
                 data-expiry={update.dateExpiry ?? ''}
                 data-severity={update.severity}
               >

@@ -2,23 +2,17 @@
 // Static cards are rendered at build time; this script handles:
 //   - filter button activation
 //   - hiding/showing cards by type
-//   - hiding expired cards at page load (expiry checked client-side)
+//   - hiding cards outside their visibility window at page load
+//     (start/expiry checked client-side)
 
 const TARGETED_CARD_CLASS = 'update-card--targeted';
 const TARGETED_CARD_TIMEOUT_MS = 4000;
 
-function hideExpiredCards(): void {
+function hideOutOfWindowCards(): void {
     const now = new Date();
-    now.setHours(0, 0, 0, 0);
-
     document.querySelectorAll<HTMLElement>('.update-card').forEach((card) => {
-        const expiry = card.dataset.expiry;
-        if (expiry) {
-            const expiryDate = new Date(expiry);
-            expiryDate.setHours(23, 59, 59, 999);
-            if (expiryDate < now) {
-                card.style.display = 'none';
-            }
+        if (isOutOfWindow(card, now)) {
+            card.style.display = 'none';
         }
     });
 }
@@ -40,8 +34,7 @@ function setFilter(filter: string): void {
         }
 
         if (filter === 'all' || card.dataset.type === filter) {
-            // Only show if not expired (already hidden by hideExpiredCards)
-            if (!isExpired(card)) {
+            if (!isOutOfWindow(card)) {
                 card.style.display = '';
                 visibleCount++;
             }
@@ -53,16 +46,26 @@ function setFilter(filter: string): void {
     toggleEmptyState(visibleCount === 0);
 }
 
-function isExpired(card: HTMLElement): boolean {
-    const expiry = card.dataset.expiry;
-    if (!expiry) {
-        return false;
+function isOutOfWindow(card: HTMLElement, now: Date = new Date()): boolean {
+    const start = card.dataset.start;
+    if (start) {
+        const startDate = new Date(start);
+        startDate.setHours(0, 0, 0, 0);
+        if (startDate > now) {
+            return true;
+        }
     }
-    const now = new Date();
-    now.setHours(0, 0, 0, 0);
-    const expiryDate = new Date(expiry);
-    expiryDate.setHours(23, 59, 59, 999);
-    return expiryDate < now;
+
+    const expiry = card.dataset.expiry;
+    if (expiry) {
+        const expiryDate = new Date(expiry);
+        expiryDate.setHours(23, 59, 59, 999);
+        if (expiryDate < now) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function toggleEmptyState(empty: boolean): void {
@@ -167,9 +170,8 @@ function focusRequestedUpdate(): void {
 }
 
 export function initUpdatesFilter(): void {
-    hideExpiredCards();
+    hideOutOfWindowCards();
 
-    // Check if any cards visible after expiry filter
     const totalVisible = Array.from(document.querySelectorAll<HTMLElement>('.update-card')).filter(
         (c) => c.style.display !== 'none',
     ).length;

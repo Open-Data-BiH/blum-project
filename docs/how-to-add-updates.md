@@ -4,10 +4,12 @@ This project reads updates from:
 
 - `public/data/transport/updates.json`
 
-The updates page (`/updates/`) automatically renders all records where:
+An update card is visible when **today** falls inside its visibility window:
 
-- `isActive` is `true`
-- `dateExpiry` is empty OR still in the future (client-side check)
+- `dateStart` (or `datePublished` if `dateStart` is omitted) is in the past or today
+- `dateExpiry` is empty OR still in the future
+
+Both checks run server-side at build time and again client-side on page load.
 
 ## Data Structure
 
@@ -27,17 +29,21 @@ Each update object uses this shape:
     "description": { "bhs": "...", "en": "..." },
     "affectedLines": ["13A", "7"],
     "datePublished": "YYYY-MM-DD",
+    "dateStart": "YYYY-MM-DD",
     "dateExpiry": "YYYY-MM-DD or null",
-    "isActive": true,
     "source": "Source name",
     "sourceUrl": "https://..."
 }
 ```
 
+`dateStart` is optional. Omit it when the update should be visible from `datePublished`. Set it explicitly when you want to schedule a notice in advance (e.g., published today, but only shown starting next month).
+
+Copy-paste scaffolds for each `type` live in `examples/updates.example.json`.
+
 ## Step-By-Step
 
-1. Open `public/data/transport/updates.json`.
-2. Copy one of the existing template/example records in `updates`.
+1. Open `examples/updates.example.json` and copy one of the template records.
+2. Paste it into the `updates` array in `public/data/transport/updates.json`.
 3. Set a new unique `id` (recommended format: `topic-YYYY-MM-short-slug`).
 4. Set `type` to one of the existing categories:
     - `line_change`
@@ -45,15 +51,17 @@ Each update object uses this shape:
     - `schedule_change`
 5. Add both language texts (`title.bhs`, `title.en`, `description.bhs`, `description.en`).
 6. Add affected lines in `affectedLines` (or leave `[]` if not specific).
-7. Set `datePublished` and `dateExpiry` in `YYYY-MM-DD`.
-8. Set `isActive: true`.
-9. Add `source` and `sourceUrl` (leave `sourceUrl` empty only if no URL exists).
-10. Save and refresh `/updates/`.
+7. Set the dates in `YYYY-MM-DD`:
+    - `datePublished` — date shown on the card.
+    - `dateStart` — optional. Drop the field if it matches `datePublished`.
+    - `dateExpiry` — last day the card stays visible, or `null` for no expiry.
+8. Add `source` and `sourceUrl` (leave `sourceUrl` empty only if no URL exists).
+9. Save and refresh `/updates/`.
 
-## Deactivate Or Archive Old Updates
+## Hide An Update
 
-- To hide an update immediately: set `isActive` to `false`.
-- To auto-hide after a date: keep `isActive: true` and set `dateExpiry` in the past.
+- To hide immediately: set `dateExpiry` to a past date or delete the entry.
+- To delay publication: set `dateStart` to a future date.
 
 ## Quick Validation Checklist
 

@@ -1,5 +1,6 @@
 ---
 import { getPagePath, type Locale } from '../lib/site-config';
+import { isUpdateVisible } from '../lib/updates';
 import '../styles/pages/_updates.scss';
 import updatesData from '../../public/data/transport/updates.json';
 import type { Category, Update } from '../types/updates';
@@ -12,8 +13,9 @@ const { locale } = Astro.props;
 
 const { categories, updates } = updatesData as { categories: Category[]; updates: Update[] };
 
+const now = new Date();
 const activeUpdates = updates
-  .filter((u) => u.isActive)
+  .filter((u) => isUpdateVisible(u, now))
   .sort((a, b) => new Date(b.datePublished).getTime() - new Date(a.datePublished).getTime())
   .slice(0, 3);
 

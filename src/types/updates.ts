@@ -12,8 +12,8 @@ export interface Update {
     description: { bhs: string; en: string };
     affectedLines: string[];
     datePublished: string;
+    dateStart?: string;
     dateExpiry: string | null;
-    isActive: boolean;
     source: string;
     sourceUrl: string;
 }

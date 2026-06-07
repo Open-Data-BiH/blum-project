@@ -27,6 +27,8 @@ export const initUrbanLinesViewer = (): void => {
         return;
     }
 
+    viewer.replaceChildren();
+
     const map = L.map('urban-lines-viewer', VIEWER_CONFIG.MAP_OPTIONS);
 
     const calculateImageBounds = (): L.LatLngBounds => {

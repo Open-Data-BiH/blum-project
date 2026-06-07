@@ -19,6 +19,8 @@ export async function initAirportMap(): Promise<void> {
             [44.97, 17.38],
         ];
 
+        container.replaceChildren();
+
         const map: Map = L.map('airport-map', {
             center: [44.85, 17.25],
             zoom: 11,

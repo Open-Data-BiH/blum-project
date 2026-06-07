@@ -754,6 +754,8 @@ export const initMainMap = async (): Promise<void> => {
             [44.996414749446565, 17.620029520676],
         ];
 
+        container.replaceChildren();
+
         const map: LeafletMap = L.map('map-container', {
             center: MAP_CONFIG.CENTER,
             zoom: MAP_CONFIG.ZOOM,

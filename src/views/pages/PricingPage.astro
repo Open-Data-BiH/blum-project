@@ -36,15 +36,15 @@ const isEnglish = locale === 'en';
       {isEnglish ? (
         <div class="pricing-info-block">
           <h2 class="pricing-section__title">Where to Buy Tickets</h2>
-          <div class="pricing-info-grid">
-            <div class="pricing-info-card">
+          <div class="pricing-info-grid pricing-info-grid--two">
+            <div class="pricing-info-card pricing-info-card--expanded">
               <h3 class="pricing-info-card__title">Single and Day Tickets</h3>
               <ul class="pricing-info-list">
                 <li><strong>Single tickets</strong> and <strong>sets of 5 single tickets</strong> - available on the bus, with cash payment to the driver when boarding, or at operator sales points</li>
                 <li><strong>Day tickets</strong> - available at operator sales points</li>
               </ul>
             </div>
-            <div class="pricing-info-card">
+            <div class="pricing-info-card pricing-info-card--expanded">
               <h3 class="pricing-info-card__title">Monthly Tickets</h3>
               <ul class="pricing-info-list">
                 <li>Worker, pensioner, and student monthly tickets - available <strong>at operator sales points only</strong></li>
@@ -52,12 +52,51 @@ const isEnglish = locale === 'en';
                 <li>Supplement card - combined with a suburban zone ticket, valid on all urban lines too</li>
               </ul>
             </div>
-            <div class="pricing-info-card">
-              <h3 class="pricing-info-card__title">Free Travel &amp; Discounts</h3>
+          </div>
+        </div>
+      ) : (
+        <div class="pricing-info-block">
+          <h2 class="pricing-section__title">Gdje kupiti kartu</h2>
+          <div class="pricing-info-grid pricing-info-grid--two">
+            <div class="pricing-info-card pricing-info-card--expanded">
+              <h3 class="pricing-info-card__title">Pojedinačne i dnevne karte</h3>
               <ul class="pricing-info-list">
-                <li><strong>Free:</strong> parents of fallen soldiers; blind persons with a companion</li>
-                <li><strong>Free from 2024:</strong> pensioners and persons over 65 with Banja Luka residency; students from large families (4+); JU Dom "Rada Vranješević" residents; children in foster care</li>
-                <li><strong>Discounts:</strong> children of fallen soldiers (secondary school and university) and their non-pensioner, non-disabled (cat. I/II) spouses; student subsidies for urban and suburban lines</li>
+                <li><strong>Pojedinačna karta</strong> i <strong>blok od 5 pojedinačnih karata</strong> – kupovina u autobusu, uz plaćanje gotovinom vozaču pri ulasku, ili na prodajnim mjestima prevoznika</li>
+                <li><strong>Dnevna karta</strong> – kupovina na prodajnim mjestima prevoznika</li>
+              </ul>
+            </div>
+            <div class="pricing-info-card pricing-info-card--expanded">
+              <h3 class="pricing-info-card__title">Mjesečne karte</h3>
+              <ul class="pricing-info-list">
+                <li>Radnička, penzionerska i đačka karta - isključivo na <strong>prodajnim mjestima prevoznika</strong></li>
+                <li>Jedinstvena mjesečna karta (JMK) - važi na svim gradskim linijama sva tri prevoznika</li>
+                <li>Doplatna karta - uz zonsku prigradsku kartu, važi i na gradskim linijama</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="section pricing-section pricing-section--concessions" id="free-travel-discounts">
+    <div class="pricing-section__inner">
+      {isEnglish ? (
+        <div class="pricing-info-block">
+          <h2 class="pricing-section__title">Free Travel &amp; Discounts</h2>
+          <div class="pricing-info-grid pricing-info-grid--two">
+            <div class="pricing-info-card pricing-info-card--expanded">
+              <h3 class="pricing-info-card__title">Free Travel</h3>
+              <ul class="pricing-info-list">
+                <li><strong>Existing:</strong> parents of fallen soldiers; blind persons with a companion</li>
+                <li><strong>From 2024:</strong> pensioners and persons over 65 with Banja Luka residency; students from large families (4+); JU Dom "Rada Vranješević" residents; children in foster care</li>
+              </ul>
+            </div>
+            <div class="pricing-info-card pricing-info-card--expanded">
+              <h3 class="pricing-info-card__title">Discounts</h3>
+              <ul class="pricing-info-list">
+                <li>Children of fallen soldiers (secondary school and university) and their non-pensioner, non-disabled (cat. I/II) spouses</li>
+                <li>Student subsidies for urban and suburban lines</li>
               </ul>
             </div>
           </div>
@@ -67,35 +106,26 @@ const isEnglish = locale === 'en';
         </div>
       ) : (
         <div class="pricing-info-block">
-        <h2 class="pricing-section__title">Gdje kupiti kartu</h2>
-        <div class="pricing-info-grid">
-          <div class="pricing-info-card">
-            <h3 class="pricing-info-card__title">Pojedinačne i dnevne karte</h3>
-            <ul class="pricing-info-list">
-              <li><strong>Pojedinačna karta</strong> i <strong>blok od 5 pojedinačnih karata</strong> – kupovina u autobusu, uz plaćanje gotovinom vozaču pri ulasku, ili na prodajnim mjestima prevoznika</li>
-              <li><strong>Dnevna karta</strong> – kupovina na prodajnim mjestima prevoznika</li>
-            </ul>
+          <h2 class="pricing-section__title">Besplatna vožnja i popusti</h2>
+          <div class="pricing-info-grid pricing-info-grid--two">
+            <div class="pricing-info-card pricing-info-card--expanded">
+              <h3 class="pricing-info-card__title">Besplatna vožnja</h3>
+              <ul class="pricing-info-list">
+                <li><strong>Postojeće:</strong> roditelji poginulih boraca; slijepa lica sa pratiocem</li>
+                <li><strong>Od 2024.:</strong> penzioneri i lica starija od 65 godina s prebivalištem u Banjoj Luci; učenici i studenti iz višečlanih porodica (4+); korisnici JU Dom „Rada Vranješević"; djeca iz hraniteljskih porodica</li>
+              </ul>
+            </div>
+            <div class="pricing-info-card pricing-info-card--expanded">
+              <h3 class="pricing-info-card__title">Popusti</h3>
+              <ul class="pricing-info-list">
+                <li>Djeca poginulih boraca (srednja škola i fakultet) i supruge poginulih boraca koje nisu penzioneri ni invalidi I/II kategorije</li>
+                <li>Učenici i studenti (subvencije za gradske i prigradske linije)</li>
+              </ul>
+            </div>
           </div>
-          <div class="pricing-info-card">
-            <h3 class="pricing-info-card__title">Mjesečne karte</h3>
-            <ul class="pricing-info-list">
-              <li>Radnička, penzionerska i đačka karta - isključivo na <strong>prodajnim mjestima prevoznika</strong></li>
-              <li>Jedinstvena mjesečna karta (JMK) - važi na svim gradskim linijama sva tri prevoznika</li>
-              <li>Doplatna karta - uz zonsku prigradsku kartu, važi i na gradskim linijama</li>
-            </ul>
+          <div class="pricing-notice">
+            <p>Za ostvarivanje prava na besplatan prevoz ili popust obratite se nadležnim institucijama uz potrebnu dokumentaciju.</p>
           </div>
-          <div class="pricing-info-card">
-            <h3 class="pricing-info-card__title">Besplatna vožnja i popusti</h3>
-            <ul class="pricing-info-list">
-              <li><strong>Besplatno:</strong> roditelji poginulih boraca; slijepa lica sa pratiocem</li>
-              <li><strong>Besplatno od 2024.:</strong> penzioneri i lica starija od 65 godina s prebivalištem u Banjoj Luci; učenici i studenti iz višečlanih porodica (4+); korisnici JU Dom „Rada Vranješević"; djeca iz hraniteljskih porodica</li>
-              <li><strong>Popust:</strong> djeca poginulih boraca (srednja škola i fakultet) i supruge poginulih boraca koje nisu penzioneri ni invalidi I/II kategorije; učenici i studenti (subvencije za gradske i prigradske linije)</li>
-            </ul>
-          </div>
-        </div>
-        <div class="pricing-notice">
-          <p>Za ostvarivanje prava na besplatan prevoz ili popust obratite se nadležnim institucijama uz potrebnu dokumentaciju.</p>
-        </div>
         </div>
       )}
     </div>
@@ -187,6 +217,19 @@ const isEnglish = locale === 'en';
   }
 
   .pricing-section--info::before {
+    content: '';
+    display: block;
+    width: min(60%, 600px);
+    height: 1px;
+    margin: 0 auto var(--space-16);
+    background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+  }
+
+  .pricing-section--concessions {
+    padding-top: 0;
+  }
+
+  .pricing-section--concessions::before {
     content: '';
     display: block;
     width: min(60%, 600px);
@@ -360,6 +403,7 @@ const isEnglish = locale === 'en';
     }
 
     .pricing-section--info::before,
+    .pricing-section--concessions::before,
     .pricing-section--rules::before {
       margin-bottom: var(--space-10);
     }
@@ -394,6 +438,7 @@ const isEnglish = locale === 'en';
     }
 
     .pricing-section--info::before,
+    .pricing-section--concessions::before,
     .pricing-section--rules::before {
       margin-bottom: var(--space-8);
     }

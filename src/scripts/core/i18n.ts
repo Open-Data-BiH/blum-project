@@ -95,7 +95,7 @@ export const applyTranslation = (lang: Language): void => {
     // Navigation
     safelyUpdateText('nav-map-desktop', t.header.nav.map);
     safelyUpdateText('nav-lines-desktop', t.header.nav.lines);
-    safelyUpdateText('nav-prices-desktop', t.header.nav.prices ?? (lang === 'bhs' ? 'Cjenovnik' : 'Prices'));
+    safelyUpdateText('nav-prices-desktop', t.header.nav.prices ?? (lang === 'bhs' ? 'Karte' : 'Tickets'));
     safelyUpdateText('nav-airport-desktop', t.header.nav.airport);
     safelyUpdateText('nav-updates-desktop', t.header.nav.updates ?? (lang === 'bhs' ? 'Obavještenja' : 'Updates'));
     safelyUpdateText('nav-faq-desktop', t.header.nav.faq);

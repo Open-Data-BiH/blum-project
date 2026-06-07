@@ -9,7 +9,7 @@
                 "timetable": "Timetable",
                 "airport": "Airport",
                 "contact": "Useful Contacts",
-                "prices": "Prices",
+                "prices": "Tickets",
                 "urban_lines": "Urban Lines Map",
                 "faq": "FAQ",
                 "updates": "Updates"
@@ -142,7 +142,7 @@
                 "timetable": "Red vožnje",
                 "airport": "Aerodrom",
                 "contact": "Korisni kontakti",
-                "prices": "Cjenovnik",
+                "prices": "Karte",
                 "urban_lines": "Mapa gradskih linija",
                 "faq": "Često postavljana pitanja",
                 "updates": "Obavještenja"

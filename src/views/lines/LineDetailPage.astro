@@ -104,6 +104,17 @@ const sortDirectionKeys = (a: string, b: string): number => {
 const formatRouteLabel = (label: string | null | undefined): string =>
   (label ?? '').replace(/\s*-\s*/g, ' \u2192 ').trim();
 
+// Split a route label into its main origin\u2192destination text and any parenthetical
+// street/location segments, so the parenthetical can be rendered as secondary text.
+type RoutePart = { text: string; secondary: boolean };
+
+const splitRouteParts = (route: string): RoutePart[] =>
+  route
+    .split(/(\([^)]*\))/)
+    .map((segment) => segment.trim())
+    .filter((segment) => segment.length > 0)
+    .map((segment) => ({ text: segment, secondary: segment.startsWith('(') }));
+
 const timetables = (timetableData as TimetableFile).urban;
 const entry = timetables.find((t) => t.lineId === originalLineId);
 const noteDescriptions = entry?.noteDescriptions ?? {};
@@ -547,7 +558,11 @@ const breadcrumbSchema = {
                       {t(`Smjer ${direction.order}`, `Direction ${direction.order}`)}
                     </span>
                     <span class="ldp-direction-tab__route">
-                      {isEnglish ? direction.routeEn : direction.routeBhs}
+                      {splitRouteParts(isEnglish ? direction.routeEn : direction.routeBhs).map((part) => (
+                        <span
+                          class:list={['ldp-direction-tab__route-part', part.secondary && 'is-secondary']}
+                        >{part.text}</span>
+                      ))}
                     </span>
                   </button>
                 ))}
@@ -563,11 +578,6 @@ const breadcrumbSchema = {
                 data-direction-panel={direction.id}
                 hidden={index !== 0}
               >
-                <header class="ldp-direction-panel__head">
-                  <h3>{isEnglish ? direction.labelEn : direction.labelBhs}</h3>
-                  <p>{t(`Smjer ${direction.order}`, `Direction ${direction.order}`)}</p>
-                </header>
-
                 {direction.hasTimetable ? (
                   <>
                     <div class="ldp-day-tabs" role="tablist" aria-label="Tip dana / Day type">

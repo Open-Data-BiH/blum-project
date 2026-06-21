@@ -204,7 +204,7 @@
 
 .ldp-direction-tab.is-active {
     background: var(--accent-soft);
-    border-color: var(--accent);
+    border-color: var(--accent-soft);
     color: var(--text-primary);
 }
 
@@ -213,12 +213,22 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
     font-weight: var(--font-weight-semibold);
+    color: var(--text-light);
 }
 
 .ldp-direction-tab__route {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.35em;
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-tight);
+}
+
+.ldp-direction-tab__route-part.is-secondary {
+    font-weight: var(--font-weight-normal);
+    color: var(--text-light);
 }
 
 .ldp-direction-panel {
@@ -233,29 +243,6 @@
 
 .ldp-direction-panel.is-active {
     display: flex;
-}
-
-.ldp-direction-panel__head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--space-3);
-    flex-wrap: wrap;
-}
-
-.ldp-direction-panel__head h3 {
-    margin: 0;
-    font-size: var(--font-size-lg);
-    color: var(--text-primary);
-}
-
-.ldp-direction-panel__head p {
-    margin: 0;
-    font-size: var(--font-size-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-weight: var(--font-weight-semibold);
-    color: var(--text-light);
 }
 
 .ldp-day-tabs {

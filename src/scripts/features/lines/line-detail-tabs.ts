@@ -1,7 +1,22 @@
+import { isReducedScheduleDay } from './school-holidays';
+
 export const initLineDetailTabs = (): void => {
     const root = document.getElementById('line-detail');
     if (!root) {
         return;
+    }
+
+    // On school-holiday dates, swap the regular schedule for the reduced one and reveal the notice.
+    if (isReducedScheduleDay()) {
+        root.querySelectorAll<HTMLElement>('.ldp-schedule--regular').forEach((el) => {
+            el.hidden = true;
+        });
+        root.querySelectorAll<HTMLElement>('.ldp-schedule--reduced').forEach((el) => {
+            el.hidden = false;
+        });
+        root.querySelectorAll<HTMLElement>('.timetable-reduced-notice').forEach((el) => {
+            el.hidden = false;
+        });
     }
 
     const activateDirection = (targetId: string): void => {

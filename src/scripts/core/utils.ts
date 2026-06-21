@@ -9,9 +9,6 @@ export const escapeHtml = (value: string): string =>
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
 
-/**
- * Debounce expensive operations
- */
 export const debounce = <TArgs extends unknown[]>(
     func: (...args: TArgs) => void,
     wait: number,

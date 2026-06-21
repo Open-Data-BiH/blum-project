@@ -5,8 +5,6 @@
 import { debounce, normalizeForSearch } from '../../core/utils';
 import { getCurrentLanguage } from '../../core/i18n';
 
-// ─── Scroll to timetable ────────────────────────────────────────────────────
-
 export const scrollToTimetable = (lineId: string): void => {
     // Store pending selection so the timetable module picks it up after lazy init
     sessionStorage.setItem('selectedLine', lineId);
@@ -25,14 +23,10 @@ export const scrollToTimetable = (lineId: string): void => {
     }
 };
 
-// ─── Labels helper ──────────────────────────────────────────────────────────
-
 const getLabels = (lang: string) => ({
     showing: lang === 'bhs' ? 'Prikazano' : 'Showing',
     lines: lang === 'bhs' ? 'linija' : 'lines',
 });
-
-// ─── Filter logic ───────────────────────────────────────────────────────────
 
 let currentSearchQuery = '';
 let currentGroupFilter = 'all';
@@ -72,8 +66,6 @@ const applyFilters = (): void => {
         emptyState.hidden = visibleCount > 0;
     }
 };
-
-// ─── Event wiring ───────────────────────────────────────────────────────────
 
 export const initializeLinesEventListeners = (): void => {
     const container = document.getElementById('simplified-lines');
@@ -141,7 +133,6 @@ export const initializeLinesEventListeners = (): void => {
         applyFilters();
     });
 
-    // Details expand/collapse via event delegation on the list container
     linesList?.addEventListener('click', (e) => {
         const detailsBtn = (e.target as Element).closest<HTMLElement>('.details-btn');
         if (detailsBtn) {
@@ -163,7 +154,6 @@ export const initializeLinesEventListeners = (): void => {
         }
     });
 
-    // Escape closes all open detail panels
     container.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             container.querySelectorAll<HTMLElement>('.line-card__details:not([hidden])').forEach((panel) => {

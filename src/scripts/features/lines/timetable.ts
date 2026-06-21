@@ -16,12 +16,8 @@ let timetableLanguageListenerAdded = false;
 let mapBusLineListenerAdded = false;
 let timeHighlightInterval: ReturnType<typeof setInterval> | null = null;
 
-// ─── escapeHTML helper (no DOMPurify dependency in TS modules) ──────────────
-
 const escapeHTML = (text: string | number | null | undefined): string =>
     escapeHtml(text === null || text === undefined ? '' : String(text));
-
-// ─── Public entry point ─────────────────────────────────────────────────────
 
 export function setupTimetableSelection(): void {
     const lineSelect = document.getElementById('line-select') as HTMLSelectElement | null;
@@ -137,8 +133,6 @@ export function setupTimetableSelection(): void {
         });
 }
 
-// ─── Select population ──────────────────────────────────────────────────────
-
 function updateTimetableSelect(
     lineSelect: HTMLSelectElement,
     timetableData: (TimetableEntry & { lineType: string })[],
@@ -187,8 +181,6 @@ function updateTimetableSelect(
         lineSelect.appendChild(optgroup);
     });
 }
-
-// ─── Load single timetable ──────────────────────────────────────────────────
 
 export function loadTimetable(lineId: string): void {
     const timetableDisplay = document.getElementById('timetable-display');
@@ -247,8 +239,6 @@ export function loadTimetable(lineId: string): void {
         });
 }
 
-// ─── Day type ───────────────────────────────────────────────────────────────
-
 function getTodayDayType(): 'weekday' | 'saturday' | 'sunday' {
     const day = new Date().getDay(); // 0=Sunday, 6=Saturday
     if (day === 0) {
@@ -259,8 +249,6 @@ function getTodayDayType(): 'weekday' | 'saturday' | 'sunday' {
     }
     return 'weekday';
 }
-
-// ─── Render timetable ───────────────────────────────────────────────────────
 
 function renderTimetable(timetable: TimetableEntry & { lineType?: string }, container: HTMLElement): void {
     const todayDayType = getTodayDayType();
@@ -532,7 +520,6 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
         });
     };
 
-    // ── Direction button handlers ────────────────────────────────────────────
     container.querySelectorAll<HTMLElement>('.direction-btn').forEach((button) => {
         button.addEventListener('click', function (this: HTMLElement) {
             container.querySelectorAll<HTMLElement>('.direction-btn').forEach((btn) => {
@@ -564,7 +551,6 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
         }
     });
 
-    // ── Day button handlers ──────────────────────────────────────────────────
     container.querySelectorAll<HTMLElement>('.day-btn').forEach((button) => {
         button.addEventListener('click', function (this: HTMLElement) {
             container.querySelectorAll<HTMLElement>('.day-btn').forEach((btn) => {
@@ -591,8 +577,6 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
     setupTimeHighlighting();
     setTimeout(scrollToCurrentHour, 100);
 }
-
-// ─── Time highlighting ──────────────────────────────────────────────────────
 
 const setupTimeHighlighting = (): void => {
     if (timeHighlightInterval) {
@@ -649,7 +633,6 @@ const updateTimeHighlighting = (): void => {
     }
 
     visibleViews.forEach((tableView) => {
-        // Update current-hour row class
         tableView.querySelectorAll<HTMLElement>('tbody tr').forEach((row) => {
             const hourAttr = row.getAttribute('data-hour');
             if (hourAttr !== null) {
@@ -658,7 +641,6 @@ const updateTimeHighlighting = (): void => {
             }
         });
 
-        // Collect all departure times from this view
         const allDepartureTimes: { hour: number; minute: number; timeInMinutes: number; element: HTMLElement }[] = [];
         tableView.querySelectorAll<HTMLElement>('tbody tr').forEach((row) => {
             const hourCell = row.querySelector<HTMLElement>('.hour-cell');

@@ -83,7 +83,6 @@ export const applyTranslation = (lang: Language): void => {
         // Ignore storage failures in private / restricted contexts.
     }
 
-    // Header
     safelyUpdateText('site-title', 'BL Prevoz');
     safelyUpdateText(
         'site-subtitle',
@@ -92,7 +91,6 @@ export const applyTranslation = (lang: Language): void => {
             : 'Overview of public transport lines in Banja Luka',
     );
 
-    // Navigation
     safelyUpdateText('nav-map-desktop', t.header.nav.map);
     safelyUpdateText('nav-lines-desktop', t.header.nav.lines);
     safelyUpdateText('nav-prices-desktop', t.header.nav.prices ?? (lang === 'bhs' ? 'Karte' : 'Tickets'));
@@ -101,7 +99,6 @@ export const applyTranslation = (lang: Language): void => {
     safelyUpdateText('nav-faq-desktop', t.header.nav.faq);
     safelyUpdateText('nav-contact-desktop', lang === 'bhs' ? 'Kontakt' : 'Contact');
 
-    // Hero section
     const heroDefaults =
         lang === 'bhs'
             ? {
@@ -139,7 +136,6 @@ export const applyTranslation = (lang: Language): void => {
         heroDetails.setAttribute('aria-label', lang === 'bhs' ? 'Ključne informacije' : 'Key information');
     }
 
-    // Map section
     safelyUpdateText('map-title', t.sections?.map?.title);
     safelyUpdateText('map-note-title', safeGet(t, 'sections', 'map', 'note', 'title'));
     safelyUpdateText('map-note-description', safeGet(t, 'sections', 'map', 'note', 'description'));
@@ -147,14 +143,12 @@ export const applyTranslation = (lang: Language): void => {
     safelyUpdateText('map-note-tip-item-1', safeGet(t, 'sections', 'map', 'note', 'tips', 'marker'));
     safelyUpdateText('map-note-tip-item-2', safeGet(t, 'sections', 'map', 'note', 'tips', 'layers'));
 
-    // Urban lines viewer
     safelyUpdateText('urban-lines-title', t.sections?.urban_lines?.title);
     const mapNote = document.querySelector<HTMLElement>('#urban-lines .map-note span');
     if (mapNote) {
         mapNote.textContent = t.sections?.urban_lines?.map_note;
     }
 
-    // Lines section
     safelyUpdateText('lines-title', t.sections?.lines?.title);
     safelyUpdateText('operator-legend-title', lang === 'bhs' ? 'Prevoznici' : 'Operators');
     safelyUpdateText('lines-map-note', safeGet(t, 'sections', 'lines', 'mapNote'));
@@ -169,7 +163,6 @@ export const applyTranslation = (lang: Language): void => {
     );
     safelyUpdateText('lines-timetable-title', safeGet(t, 'sections', 'lines', 'timetableTitle'));
 
-    // Wheelchair badge title/aria-label (SSR-baked as BHS, update on language switch)
     document.querySelectorAll<HTMLElement>('.badge--accessible').forEach((badge) => {
         const text = lang === 'bhs' ? 'Pristupačno za invalidska kolica' : 'Wheelchair accessible';
         badge.setAttribute('title', text);
@@ -181,7 +174,6 @@ export const applyTranslation = (lang: Language): void => {
         badge.setAttribute('aria-label', text);
     });
 
-    // Lines search input placeholder
     const linesSearchInput = document.getElementById('lines-search-input') as HTMLInputElement | null;
     if (linesSearchInput) {
         linesSearchInput.placeholder =
@@ -189,7 +181,6 @@ export const applyTranslation = (lang: Language): void => {
         linesSearchInput.setAttribute('aria-label', linesSearchInput.placeholder);
     }
 
-    // Timetable section
     safelyUpdateText('timetable-title', t.sections?.timetable?.title);
     if (t.sections?.timetable) {
         t.sections.timetable.fromTo ??= lang === 'bhs' ? 'Relacija:' : 'Route:';
@@ -198,13 +189,11 @@ export const applyTranslation = (lang: Language): void => {
         t.sections.timetable.minutesLabel ??= lang === 'bhs' ? 'Minute' : 'Minutes';
     }
 
-    // Pricing section
     safelyUpdateText(
         'price-tables-title',
         t.sections?.prices?.title ?? (lang === 'bhs' ? 'Cjenovnik karata' : 'Ticket Prices'),
     );
 
-    // Contact section
     safelyUpdateText('contact-title', t.sections?.contact?.title);
     safelyUpdateText('contact-group-authorities-title', safeGet(t, 'sections', 'contact', 'groups', 'authorities'));
     safelyUpdateText('contact-group-operators-title', safeGet(t, 'sections', 'contact', 'groups', 'operators'));
@@ -212,13 +201,11 @@ export const applyTranslation = (lang: Language): void => {
     safelyUpdateText('phone-label', t.sections?.contact?.phone);
     safelyUpdateText('timetable-info-label', t.sections?.contact?.timetableInfo);
 
-    // Airport section
     safelyUpdateText('airport-title', t.sections?.airport?.title);
     safelyUpdateText('airport-description-title', t.sections?.airport?.descriptionTitle);
     safelyUpdateText('airport-price', t.sections?.airport?.price);
     safelyUpdateText('airport-departure-location', t.sections?.airport?.departureLocation);
 
-    // Updates section
     safelyUpdateText('updates-title', safeGet(t, 'sections', 'updates', 'title'));
     safelyUpdateText(
         'updates-subtitle',
@@ -227,11 +214,9 @@ export const applyTranslation = (lang: Language): void => {
             : 'Notices about transport changes, street closures, and timetable updates',
     );
 
-    // FAQ section
     safelyUpdateText('faq-title', safeGet(t, 'sections', 'faq', 'title'));
     safelyUpdateText('faq-subtitle', safeGet(t, 'sections', 'faq', 'subtitle'));
 
-    // Footer
     safelyUpdateText(
         'footer-mission-text',
         lang === 'bhs'
@@ -248,13 +233,11 @@ export const applyTranslation = (lang: Language): void => {
         t.footer?.brandTagline ?? (lang === 'bhs' ? 'Urbana mobilnost u Banjoj Luci' : 'Urban mobility in Banja Luka'),
     );
 
-    // Ko-fi button
     const kofiBtn = document.querySelector<HTMLElement>('#footer-kofi-container .kofi-button a span.kofitext');
     if (kofiBtn) {
         kofiBtn.textContent = lang === 'bhs' ? 'Podržite ovaj projekat' : 'Support this project';
     }
 
-    // Dispatch languageChanged event for feature modules
     document.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang } }));
 };
 

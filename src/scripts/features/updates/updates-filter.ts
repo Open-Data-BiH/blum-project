@@ -18,12 +18,10 @@ function hideOutOfWindowCards(): void {
 }
 
 function setFilter(filter: string): void {
-    // Update button states
     document.querySelectorAll<HTMLButtonElement>('.updates-filter-btn').forEach((btn) => {
         btn.classList.toggle('active', btn.dataset.filter === filter);
     });
 
-    // Show/hide cards
     const cards = document.querySelectorAll<HTMLElement>('.update-card');
     let visibleCount = 0;
 

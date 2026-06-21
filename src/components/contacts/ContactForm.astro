@@ -177,18 +177,15 @@ const subjects = [
       messageEl.classList.remove('contact-form__field--invalid');
     };
 
-    // Apply current language on load
     const currentLang = getLang();
     updateSelectLanguage(currentLang);
     updatePlaceholders(currentLang);
 
-    // Listen for language changes
     document.addEventListener('languageChanged', ((e: CustomEvent) => {
       updateSelectLanguage(e.detail.language);
       updatePlaceholders(e.detail.language);
     }) as EventListener);
 
-    // Clear validation on interaction
     subjectSelect.addEventListener('change', () => {
       subjectError.hidden = true;
       subjectSelect.classList.remove('contact-form__field--invalid');
@@ -208,14 +205,12 @@ const subjects = [
       messageEl.classList.remove('contact-form__field--invalid');
     });
 
-    // Back button
     backBtn.addEventListener('click', () => {
       sendPanel.hidden = true;
       form.style.display = '';
       copySuccess.hidden = true;
     });
 
-    // Set copy email targets
     const copyEmail = document.getElementById('copy-email');
     if (copyEmail) copyEmail.textContent = email;
 
@@ -223,7 +218,6 @@ const subjects = [
       e.preventDefault();
       clearErrors();
 
-      // Validate
       let valid = true;
       if (!subjectSelect.value) {
         subjectError.hidden = false;
@@ -262,16 +256,10 @@ const subjects = [
       const encodedSubject = encodeURIComponent(subject);
       const encodedBody = encodeURIComponent(body);
 
-      // Gmail compose URL
       gmailLink.href = `https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(email)}&su=${encodedSubject}&body=${encodedBody}`;
-
-      // Outlook compose URL
       outlookLink.href = `https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(email)}&subject=${encodedSubject}&body=${encodedBody}`;
-
-      // Standard mailto
       mailtoLink.href = `mailto:${email}?subject=${encodedSubject}&body=${encodedBody}`;
 
-      // Copy button handler
       const copyText = `To: ${email}\nSubject: ${subject}\n\n${body}`;
       copyBtn.onclick = async () => {
         try {
@@ -282,7 +270,6 @@ const subjects = [
         }
       };
 
-      // Show the send panel, hide the form
       form.style.display = 'none';
       sendPanel.hidden = false;
       copySuccess.hidden = true;

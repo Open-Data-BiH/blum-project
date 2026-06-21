@@ -6,7 +6,6 @@ export const initLineDetailTabs = (): void => {
         return;
     }
 
-    // On school-holiday dates, swap the regular schedule for the reduced one and reveal the notice.
     if (isReducedScheduleDay()) {
         root.querySelectorAll<HTMLElement>('.ldp-schedule--regular').forEach((el) => {
             el.hidden = true;

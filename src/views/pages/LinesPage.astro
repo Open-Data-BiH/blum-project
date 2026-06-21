@@ -24,10 +24,6 @@ const alternatePaths = getAlternatePaths('lines');
 const translations = translationsData[locale];
 const isEnglish = locale === 'en';
 
-// ─── Helper functions (mirrors lines-ui.js, run at build time) ──────────────
-
-// ─── Schedule stats computation ─────────────────────────────────────────────
-
 const timetables = (timetableData as TimetableFile).urban;
 const timetableMap = new Map(timetables.map((t) => [t.lineId, t]));
 
@@ -66,8 +62,6 @@ const computeScheduleStats = (lineId: string): ScheduleStats => {
 
   return { firstBus, lastBus, avgFrequency };
 };
-
-// ─── Build flat processed line array ────────────────────────────────────────
 
 const data = ownershipData as CompanyOwnership;
 

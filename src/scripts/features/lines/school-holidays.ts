@@ -1,6 +1,3 @@
-// Republika Srpska school holiday periods — reduced bus schedules apply during these dates.
-// Update the REDUCED_PERIODS array each school year as needed.
-
 interface MonthDay {
     month: number; // 1-12
     day: number;

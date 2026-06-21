@@ -4,7 +4,7 @@
     "description": "Nezavisna open-source platforma za informacije o javnom prevozu i urbanoj mobilnosti u Banjoj Luci.",
     "main": "index.html",
     "engines": {
-        "node": ">=20.0.0"
+        "node": ">=22.12.0"
     },
     "scripts": {
         "dev": "astro dev",

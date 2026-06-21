@@ -28,8 +28,10 @@ export default defineConfig({
         build: {
             rollupOptions: {
                 output: {
-                    manualChunks: {
-                        leaflet: ['leaflet'],
+                    manualChunks(id) {
+                        if (id.includes('node_modules/leaflet')) {
+                            return 'leaflet';
+                        }
                     },
                 },
             },

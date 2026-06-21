@@ -25,43 +25,5 @@
             }
         }
     ],
-    "updates": [
-        {
-            "id": "schedule-2026-06-summer-school-break",
-            "type": "schedule_change",
-            "severity": "info",
-            "title": {
-                "bhs": "Redukovan red vožnje za vrijeme ljetnjeg školskog raspusta",
-                "en": "Reduced Timetable During Summer School Break"
-            },
-            "description": {
-                "bhs": "Od 22.06.2026. godine, za vrijeme ljetnjeg školskog raspusta, primjenjivaće se redukovan broj polazaka na gradskim i prigradskim linijama. Redovni red vožnje ponovo stupa na snagu sa početkom nove školske godine.",
-                "en": "From 2026-06-22, during the summer school break, a reduced number of departures will be in effect on urban and suburban lines. The regular timetable will resume with the start of the new school year."
-            },
-            "affectedLines": [],
-            "datePublished": "2026-06-07",
-            "dateStart": "2026-06-22",
-            "dateExpiry": "2026-09-01",
-            "source": "BL prevoz",
-            "sourceUrl": ""
-        },
-        {
-            "id": "schedule-2026-01-regular-school-year",
-            "type": "schedule_change",
-            "severity": "info",
-            "title": {
-                "bhs": "Redovni red vožnje od 19.01.2026.",
-                "en": "Regular Timetable From 2026-01-19"
-            },
-            "description": {
-                "bhs": "Javni prevoz trenutno saobraća u punom kapacitetu. Od 19.01.2026. godine na svim gradskim i prigradskim linijama primjenjuje se redovni red vožnje tokom trajanja školske godine. Napomena: za vrijeme proljetnog raspusta primjenjivaće se redukovan red vožnje.",
-                "en": "Public transport is currently operating at full capacity. From 2026-01-19, the regular timetable will apply on all urban and suburban lines during the school year. Note: a reduced timetable will be in effect during the spring break period."
-            },
-            "affectedLines": [],
-            "datePublished": "2026-01-19",
-            "dateExpiry": "2026-06-22",
-            "source": "BL prevoz",
-            "sourceUrl": ""
-        }
-    ]
+    "updates": []
 }

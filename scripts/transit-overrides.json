@@ -9,6 +9,9 @@
 
     "//addStops": "route id -> stop ids the export omits. Each is slotted in at the position its geometry implies.",
     "addStops": {
-        "19-sargovac-centar": ["st-cajevac", "st-194"]
-    }
+        "19-sargovac-centar": ["st-cajevac", "st-167"]
+    },
+
+    "//moveLines": "reassigns line badges the automatic name+distance matching attached to the wrong pole of a same-named pair.",
+    "moveLines": [{ "from": "st-194", "to": "st-1400", "lines": ["17", "19"] }]
 }

@@ -701,6 +701,29 @@ for (const [routeKey, stopIds] of Object.entries(overrides.addStops ?? {})) {
     }
 }
 
+// Reassigns line badges the automatic name+distance matching attached to the wrong pole
+// of a same-named pair (legacy coordinates aren't precise enough to always pick right).
+for (const { from, to, lines: movedLines } of overrides.moveLines ?? []) {
+    const fromStop = stopByAnyId.get(from);
+    const toStop = stopByAnyId.get(to);
+    if (!fromStop || !toStop) {
+        warn(`override: cannot move lines between unknown stops "${from}" -> "${to}"`);
+        continue;
+    }
+
+    for (const lineId of movedLines) {
+        if (!fromStop.lines.includes(lineId)) {
+            warn(`override: "${from}" does not carry line ${lineId}, nothing to move to "${to}"`);
+            continue;
+        }
+        fromStop.lines = fromStop.lines.filter((id) => id !== lineId);
+        if (!toStop.lines.includes(lineId)) {
+            toStop.lines = [...toStop.lines, lineId].sort(compareLineIds);
+        }
+    }
+    console.log(`  moved lines ${movedLines.join(',')} from ${from} ("${fromStop.name}") to ${to} ("${toStop.name}")`);
+}
+
 const seenIds = new Set();
 for (const stop of stops) {
     if (seenIds.has(stop.id)) {

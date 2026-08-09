@@ -1,0 +1,14 @@
+{
+    "comment": "Manual corrections applied by scripts/build-transit-network.mjs after the automatic matching. Renames run first, so a rename can also enable a merge.",
+
+    "//rename": "stop id -> display name, e.g. \"Prodavnica\" -> \"Prodavnica (Kuljani)\".",
+    "rename": {},
+
+    "//mergeInto": "stop id -> stop id it should be drawn as; lines are combined onto the target.",
+    "mergeInto": {},
+
+    "//addStops": "route id -> stop ids the export omits. Each is slotted in at the position its geometry implies.",
+    "addStops": {
+        "19-sargovac-centar": ["st-cajevac", "st-194"]
+    }
+}

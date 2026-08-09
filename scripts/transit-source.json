@@ -1,0 +1,6 @@
+{
+    "comment": "Read-only inputs for scripts/build-transit-network.mjs. 'dataset' bundles routes, stops and route_stops; 'shapes' holds GeoJSON LineStrings in [lon, lat].",
+    "dataset": "satwork/new-satbus-dataset.json",
+    "shapes": "satwork/new-satbus-route-shapes.geojson",
+    "flatRows": "satwork/new-satbus-raw.json"
+}

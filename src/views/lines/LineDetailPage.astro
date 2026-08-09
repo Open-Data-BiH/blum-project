@@ -10,6 +10,10 @@ import {
 } from '../../lib/site-config';
 import routeData from '../../../public/data/transport/routes/urban_bus_routes.json';
 import timetableData from '../../../public/data/transport/timetables/urban_timetables.json';
+import transitNetwork from '../../../public/data/transport/routes/transit_network.json';
+import LineRouteMap from '../../components/map/LineRouteMap.astro';
+import { createTransitIndex, getLineRoutes } from '../../lib/transit';
+import type { TransitNetwork } from '../../types/transit';
 import '../../styles/pages/_line-styles.scss';
 import '../../styles/pages/_line-detail.scss';
 import type { Line } from '../../types/lines';
@@ -371,6 +375,11 @@ const allStopsForSchema = Array.from(new Set([...directionAStops, ...directionBS
   (name) => name.trim().length > 0,
 );
 
+const transitIndex = createTransitIndex(transitNetwork as TransitNetwork);
+const transitRoutes = getLineRoutes(transitIndex, originalLineId);
+// Covered lines get the route map and its stop lists; the rest keep the listing tables.
+const hasTransitRoutes = transitRoutes.length > 0;
+
 const canonicalPath = getLineDetailPath(locale, originalLineId);
 const canonicalUrl = getLineDetailUrl(locale, originalLineId);
 const alternatePaths = getLineAlternatePaths(originalLineId);
@@ -711,10 +720,13 @@ const breadcrumbSchema = {
         )}
       </section>
 
+      {hasTransitRoutes ? (
+        <LineRouteMap locale={locale} lineId={originalLineId} routes={transitRoutes} index={transitIndex} />
+      ) : (
       <section class="ldp-section" id="line-stops" aria-labelledby="line-stops-title">
         <div class="ldp-section-heading">
           <h2 class="ldp-section-title" id="line-stops-title">{t('Stajališta na trasi', 'Stops Along The Route')}</h2>
-          <p class="ldp-section-subtitle">{t('Prikaz stajališta po smjerovima u preglednim tabelama.', 'Stops by direction in clear side-by-side tables.')}</p>
+          <p class="ldp-section-subtitle">{t('Za ovu liniju nema podataka o trasi, pa su prikazana samo stajališta po smjerovima.', 'No route data is published for this line, so only its stops are listed by direction.')}</p>
         </div>
 
         <div class="ldp-stops-tables">
@@ -749,6 +761,7 @@ const breadcrumbSchema = {
           ))}
         </div>
       </section>
+      )}
     </div>
   </section>
 

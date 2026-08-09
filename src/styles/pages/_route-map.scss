@@ -1,0 +1,259 @@
+/* ==========================================================================
+   Route display: stop markers, on-map route panel, direction switcher
+   ========================================================================== */
+
+/* Ordered stop markers ---------------------------------------------------- */
+
+.route-stop-marker__pin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-full);
+    border: 2px solid var(--route-color, var(--color-primary));
+    background-color: var(--surface-2);
+    color: var(--route-color, var(--color-primary));
+    box-shadow: var(--shadow-sm);
+    font-size: 0.625rem;
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    pointer-events: none;
+}
+
+.route-stop-marker__pin--terminus {
+    width: 28px;
+    height: 28px;
+    margin: -2px 0 0 -2px;
+    background-color: var(--route-color, var(--color-primary));
+    color: #fff;
+    font-size: 0.7rem;
+}
+
+/* Leaflet's vector overlay is intentionally wider than the container, so the global
+   `svg { max-width: 100% }` reset squashes it. Leaflet guards only its own overlay pane;
+   the route line lives in a custom pane and needs the same. */
+.leaflet-pane > svg {
+    max-width: none;
+    max-height: none;
+}
+
+/* Fade the regular stop layer so the route reads first. */
+.leaflet-container.is-route-active .leaflet-marker-pane,
+.leaflet-container.is-route-active .leaflet-overlay-pane {
+    opacity: 0.35;
+    transition: opacity var(--transition-fast);
+}
+
+/* On-map route panel ------------------------------------------------------ */
+
+.map-route-panel-control {
+    max-width: min(19rem, calc(100vw - 5rem));
+}
+
+.map-route-panel {
+    padding: var(--space-3);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    border-left: 4px solid var(--line-accent, var(--color-primary));
+    background-color: var(--surface-2);
+    box-shadow: var(--shadow-soft);
+    color: var(--text-primary);
+}
+
+.map-route-panel__head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.map-route-panel__line {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: var(--radius-full);
+    background-color: var(--line-accent, var(--color-primary));
+    color: #fff;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.3;
+}
+
+.map-route-panel__relation {
+    flex: 1;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.25;
+}
+
+.map-route-panel__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+    border: none;
+    border-radius: var(--radius-full);
+    background-color: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition:
+        background-color var(--transition-fast),
+        color var(--transition-fast);
+
+    &:hover,
+    &:focus-visible {
+        background-color: var(--surface-3);
+        color: var(--text-primary);
+    }
+}
+
+.map-route-panel__meta,
+.map-route-panel__note {
+    margin: 0.4rem 0 0;
+    color: var(--text-secondary);
+    font-size: var(--font-size-xs);
+    line-height: 1.4;
+}
+
+.map-route-panel__variants {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.6rem;
+}
+
+.map-route-panel__variant {
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background-color: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    text-align: left;
+    line-height: 1.3;
+    transition:
+        background-color var(--transition-fast),
+        border-color var(--transition-fast),
+        color var(--transition-fast);
+
+    &:hover,
+    &:focus-visible {
+        border-color: var(--line-accent, var(--color-primary));
+        color: var(--text-primary);
+    }
+
+    &.is-active {
+        border-color: var(--line-accent, var(--color-primary));
+        background-color: var(--surface-3);
+        color: var(--text-primary);
+    }
+}
+
+.map-route-panel__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.6rem;
+    color: var(--color-primary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+        text-decoration: underline;
+    }
+}
+
+/* Direction switcher on line detail pages --------------------------------- */
+
+.ldp-route-variants {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+}
+
+.ldp-route-variant {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: var(--space-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-1);
+    color: var(--text-secondary);
+    cursor: pointer;
+    text-align: left;
+    transition:
+        border-color var(--transition-fast),
+        background-color var(--transition-fast),
+        color var(--transition-fast);
+
+    &:hover,
+    &:focus-visible {
+        border-color: var(--color-primary);
+        color: var(--text-primary);
+    }
+
+    &.is-active {
+        border-color: var(--color-primary);
+        background-color: var(--surface-2);
+        color: var(--text-primary);
+        box-shadow: var(--shadow-sm);
+    }
+}
+
+.ldp-route-variant__label {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.ldp-route-variant__relation {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.3;
+}
+
+.ldp-route-variant__count {
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.map-container--line-route {
+    height: clamp(18rem, 45vh, 26rem);
+}
+
+/* The wrapper carries the height; Leaflet needs it on the element it mounts into. */
+.map-container--line-route #line-route-map-container {
+    width: 100%;
+    height: 100%;
+}
+
+.ldp-route-map__note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+    margin-top: var(--space-2);
+    color: var(--text-secondary);
+    font-size: var(--font-size-xs);
+    line-height: 1.45;
+}
+
+/* .card sets a display value that the hidden attribute alone would not override. */
+.ldp-stops-card.is-hidden {
+    display: none;
+}
+
+.ldp-stop-table__street {
+    color: var(--text-secondary);
+    font-size: var(--font-size-xs);
+}

@@ -1,0 +1,158 @@
+---
+// Route section for one line: map and ordered stop list, driven by one direction switcher.
+import 'leaflet/dist/leaflet.css';
+import '../../styles/pages/_route-map.scss';
+import type { Locale } from '../../lib/site-config';
+import { formatRelation, getRouteStops, type TransitIndex } from '../../lib/transit';
+import type { TransitRoute } from '../../types/transit';
+import MapContainer from './MapContainer.astro';
+
+interface Props {
+  locale: Locale;
+  lineId: string;
+  routes: TransitRoute[];
+  index: TransitIndex;
+}
+
+const { locale, lineId, routes, index } = Astro.props;
+
+const isEnglish = locale === 'en';
+const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
+
+const variants = routes.map((route, routeIndex) => ({
+  route,
+  order: routeIndex + 1,
+  stops: getRouteStops(index, route),
+  // Line 14 runs the same relation both ways.
+  label: routes.some((other) => other.id !== route.id && formatRelation(other) === formatRelation(route))
+    ? `${t('Smjer', 'Direction')} ${routeIndex + 1}`
+    : null,
+}));
+
+const defaultVariant = variants[0];
+const hasVariants = variants.length > 1;
+const missingShape = routes.some((route) => !route.hasShape);
+---
+
+{
+  defaultVariant && (
+    <section
+      class="ldp-section"
+      id="line-stops"
+      aria-labelledby="line-stops-title"
+      data-line-route-map
+      data-line-id={lineId}
+      data-default-route={defaultVariant.route.id}
+    >
+      <div class="ldp-section-heading">
+        <h2 class="ldp-section-title" id="line-stops-title">{t('Trasa i stajališta', 'Route and Stops')}</h2>
+        <p class="ldp-section-subtitle">
+          {hasVariants
+            ? t(
+                'Izaberite smjer za prikaz njegove trase i stajališta u redoslijedu vožnje.',
+                'Choose a direction to see its route and stops in travel order.',
+              )
+            : t('Stajališta su prikazana redoslijedom vožnje.', 'Stops are shown in travel order.')}
+        </p>
+      </div>
+
+      {hasVariants && (
+        <div class="ldp-route-variants" role="group" aria-label={t('Smjerovi linije', 'Line directions')}>
+          {variants.map((variant) => (
+            <button
+              type="button"
+              class:list={['ldp-route-variant', variant.order === 1 && 'is-active']}
+              data-route-target={variant.route.id}
+              aria-pressed={variant.order === 1 ? 'true' : 'false'}
+            >
+              <span class="ldp-route-variant__label">{t(`Smjer ${variant.order}`, `Direction ${variant.order}`)}</span>
+              <span class="ldp-route-variant__relation">{formatRelation(variant.route)}</span>
+              <span class="ldp-route-variant__count">{`${variant.stops.length} ${t('stajališta', 'stops')}`}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      <MapContainer
+        mapId="line-route-map-container"
+        className="map-container--line-route"
+        label={t(`Mapa trase linije ${lineId}`, `Route map for line ${lineId}`)}
+        role="application"
+      >
+        <noscript class="map-note">
+          <i class="map-note__icon fas fa-info-circle" aria-hidden="true" />
+          <div class="map-note__content">
+            <p>
+              {t(
+                'JavaScript je potreban za prikaz mape trase. Lista stajališta je dostupna ispod.',
+                'JavaScript is required to display the route map. The stop list is available below.',
+              )}
+            </p>
+          </div>
+        </noscript>
+      </MapContainer>
+
+      {missingShape && (
+        <p class="ldp-route-map__note">
+          <i class="fas fa-circle-info" aria-hidden="true" />
+          {t(
+            'Za pojedine smjerove trasa puta nije dostupna, pa su prikazana samo stajališta.',
+            'Some directions have no road path available, so only their stops are shown.',
+          )}
+        </p>
+      )}
+
+      <div class="ldp-stops-tables">
+        {variants.map((variant) => (
+          <article
+            class:list={['ldp-stops-card', 'card', variant.order !== 1 && 'is-hidden']}
+            data-route-stops={variant.route.id}
+            hidden={variant.order !== 1}
+          >
+            <h3>{variant.label ?? t(`Smjer ${variant.order}`, `Direction ${variant.order}`)}</h3>
+            <p class="ldp-stops-card__route">{formatRelation(variant.route)}</p>
+
+            <div class="ldp-stop-table-wrap">
+              <table class="ldp-stop-table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">{t('Stajalište', 'Stop')}</th>
+                    <th scope="col">{t('Ulica', 'Street')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {variant.stops.map(({ stop, position }) => (
+                    <tr>
+                      <td class="ldp-stop-table__index">{String(position).padStart(2, '0')}</td>
+                      <td class="ldp-stop-table__name">{stop.name}</td>
+                      <td class="ldp-stop-table__street">{stop.street ?? '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<script>
+  const routeMapSection = document.querySelector('[data-line-route-map]');
+  if (routeMapSection) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          observer.disconnect();
+          import('../../scripts/features/map/line-route-map').then(({ initLineRouteMap }) => {
+            initLineRouteMap();
+          });
+        }
+      },
+      { rootMargin: '300px' },
+    );
+    observer.observe(routeMapSection);
+  }
+</script>

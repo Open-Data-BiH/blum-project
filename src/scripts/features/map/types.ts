@@ -33,21 +33,6 @@ export interface LegendConfig {
     overlayLayers: OverlayLayerConfig[];
 }
 
-export interface BusRouteDirection {
-    stops: string[];
-    coordinates: [number, number][];
-    streets?: string[];
-    ulice?: string[];
-}
-
-export interface BusRoute {
-    color?: string;
-    colour?: string;
-    directions: Record<string, BusRouteDirection>;
-}
-
-export type BusRoutesFile = Record<string, BusRoute>;
-
 export interface TransportHub {
     id: string;
     type: 'train-station' | 'bus-station' | 'terminal-bus-station' | 'airport-transfer' | 'bus-terminal';

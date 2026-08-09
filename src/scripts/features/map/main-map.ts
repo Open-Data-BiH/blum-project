@@ -7,12 +7,22 @@ import type {
     Map as LeafletMap,
     Marker,
     Polyline,
-    TileLayer,
 } from 'leaflet';
 import { getCurrentLanguage, langText } from '../../core/i18n';
 import { debounce, escapeHtml, withBase } from '../../core/utils';
 import { MapLegendControl } from '../../components/map-legend-control';
+import { buildBaseLayers, resolveThemedBaseLayer } from './base-layers';
 import { GeolocationService } from './geolocation';
+import { createRouteOverlay } from './route-overlay';
+import { createRoutePanel } from './route-panel';
+import {
+    compareLineIds,
+    createTransitIndex,
+    getLineColor,
+    pickRouteForStop,
+    type TransitIndex,
+} from '../../../lib/transit';
+import type { TransitNetwork, TransitStop } from '../../../types/transit';
 import {
     createBikeStationPopup,
     createLandmarkPopup,
@@ -25,7 +35,6 @@ import {
 } from './popups';
 import type {
     BikeStation,
-    BusRoutesFile,
     Landmark,
     LandmarksFile,
     LegendConfig,
@@ -45,7 +54,7 @@ const MAP_CONFIG = {
     MARKER_FOCUS_MAX_ZOOM: 16,
     ZOOM_THRESHOLD: 15,
     WALKING_RADIUS_5MIN: 400,
-    BUS_ROUTES_URL: withBase('data/transport/routes/urban_bus_routes.json'),
+    TRANSIT_NETWORK_URL: withBase('data/transport/routes/transit_network.json'),
 };
 
 const MAP_NOTIFICATION_MESSAGES = {
@@ -107,17 +116,6 @@ const ensureNotificationRegion = (): HTMLElement => {
 };
 
 let notificationTimer: number | null = null;
-
-const compareLineIds = (a: string, b: string): number => {
-    const aNum = parseInt(a.replace(/[^\d]/g, ''), 10);
-    const bNum = parseInt(b.replace(/[^\d]/g, ''), 10);
-
-    if (!Number.isNaN(aNum) && !Number.isNaN(bNum) && aNum !== bNum) {
-        return aNum - bNum;
-    }
-
-    return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
-};
 
 const hexToRgba = (value: string, alpha: number): string | null => {
     const normalized = value.trim().replace(/^#/, '');
@@ -426,42 +424,20 @@ const createFontAwesomeIcon = (L: LeafletNS, iconClass: string, color: string) =
 const buildBusStopsLayer = (
     L: LeafletNS,
     map: LeafletMap,
-    busRoutes: BusRoutesFile,
+    index: TransitIndex,
+    onRouteSelect: (routeId: string) => void,
 ): { layer: LayerGroup; getLayersForGeolocation: () => Array<Marker | CircleMarker> } => {
     const layer = L.layerGroup();
-    const uniqueStops = new Map<
-        string,
-        { name: string; coordinates: LatLngExpression; street?: string; lines: Set<string> }
-    >();
-
-    Object.entries(busRoutes).forEach(([lineId, line]) => {
-        Object.values(line.directions).forEach((direction) => {
-            direction.stops.forEach((stopName, index) => {
-                const coordinates = direction.coordinates[index];
-                const street = direction.streets ? direction.streets[index] : direction.ulice?.[index];
-
-                if (!uniqueStops.has(stopName)) {
-                    uniqueStops.set(stopName, {
-                        name: stopName,
-                        coordinates,
-                        street,
-                        lines: new Set([lineId]),
-                    });
-                } else {
-                    uniqueStops.get(stopName)?.lines.add(lineId);
-                }
-            });
-        });
-    });
+    const stops = index.network.stops;
 
     const busStopMarkers = new Map<string, Marker>();
     const busStopCircles = new Map<string, CircleMarker>();
 
     const getLayersForGeolocation = (): Array<Marker | CircleMarker> => {
         const layers: Array<Marker | CircleMarker> = [];
-        uniqueStops.forEach((_stop, stopName) => {
-            const marker = busStopMarkers.get(stopName);
-            const circle = busStopCircles.get(stopName);
+        stops.forEach((stop) => {
+            const marker = busStopMarkers.get(stop.id);
+            const circle = busStopCircles.get(stop.id);
             if (marker && layer.hasLayer(marker)) {
                 layers.push(marker);
             } else if (circle && layer.hasLayer(circle)) {
@@ -471,18 +447,16 @@ const buildBusStopsLayer = (
         return layers;
     };
 
-    const createPopupContent = (stopName: string, sortedLines: string[]): string => {
+    const createPopupContent = (stop: TransitStop): string => {
+        const sortedLines = [...stop.lines].sort(compareLineIds);
+        const timetableHref = withBase(addHashToPath(getPagePath('lines', getCurrentLanguage()), 'timetable'));
+
         const linesMarkup = sortedLines
             .map((lineId) => {
-                const line = busRoutes[lineId];
-                const lineColor = line?.color || line?.colour || '#72aaff';
+                const lineColor = getLineColor(index, lineId);
                 const accentSoft = hexToRgba(lineColor, 0.14) ?? 'rgba(114, 170, 255, 0.14)';
                 const accentHover = hexToRgba(lineColor, 0.2) ?? 'rgba(114, 170, 255, 0.2)';
                 const accentBorder = hexToRgba(lineColor, 0.28) ?? 'rgba(114, 170, 255, 0.28)';
-                const timetableLabel = langText(
-                    `Kliknite za red vožnje linije ${lineId}`,
-                    `Click to view the timetable for line ${lineId}`,
-                );
                 const badgeStyle = [
                     `--line-accent:${escapeHtml(lineColor)}`,
                     `--line-accent-soft:${accentSoft}`,
@@ -490,16 +464,37 @@ const buildBusStopsLayer = (
                     `--line-accent-border:${accentBorder}`,
                 ].join('; ');
                 const lineIdLabel = escapeHtml(lineId);
-                const safeTimetableLabel = escapeHtml(timetableLabel);
-                const timetableHref = withBase(addHashToPath(getPagePath('lines', getCurrentLanguage()), 'timetable'));
+                const routeId = pickRouteForStop(index, lineId, stop.id);
 
+                // Without route data the timetable link is all we can offer.
+                if (routeId) {
+                    const label = escapeHtml(
+                        langText(`Prikaži trasu linije ${lineId}`, `Show the route of line ${lineId}`),
+                    );
+                    return [
+                        `<button type="button"`,
+                        ` class="line-number-link"`,
+                        ` style="${badgeStyle}"`,
+                        ` data-route-id="${escapeHtml(routeId)}"`,
+                        ` title="${label}"`,
+                        ` aria-label="${label}">`,
+                        `${lineIdLabel}</button>`,
+                    ].join('');
+                }
+
+                const timetableLabel = escapeHtml(
+                    langText(
+                        `Kliknite za red vožnje linije ${lineId}`,
+                        `Click to view the timetable for line ${lineId}`,
+                    ),
+                );
                 return [
                     `<a href="${timetableHref}"`,
                     ` class="line-number-link"`,
                     ` style="${badgeStyle}"`,
                     ` data-line-id="${lineIdLabel}"`,
-                    ` title="${safeTimetableLabel}"`,
-                    ` aria-label="${safeTimetableLabel}">`,
+                    ` title="${timetableLabel}"`,
+                    ` aria-label="${timetableLabel}">`,
                     `${lineIdLabel}</a>`,
                 ].join('');
             })
@@ -507,14 +502,13 @@ const buildBusStopsLayer = (
 
         const stopTypeLabel = escapeHtml(langText('Autobusko stajalište', 'Bus stop'));
         const linesLabel = escapeHtml(langText('Linije na ovom stajalištu', 'Lines at this stop'));
-        const helperHint = escapeHtml(
-            langText('Kliknite na liniju za red vožnje', 'Click a line to view its timetable'),
-        );
+        const helperHint = escapeHtml(langText('Kliknite na liniju za prikaz trase', 'Click a line to show its route'));
 
         return `
             <div class="hub-popup hub-popup--bus-stop">
                 <span class="hub-popup__type-label">${stopTypeLabel}</span>
-                <h3>${escapeHtml(stopName)}</h3>
+                <h3>${escapeHtml(stop.name)}</h3>
+                ${stop.street ? `<p class="hub-popup__street">${escapeHtml(stop.street)}</p>` : ''}
                 <div class="hub-popup__lines" aria-label="${linesLabel}">
                     ${linesMarkup}
                 </div>
@@ -552,8 +546,8 @@ const buildBusStopsLayer = (
     const updateBusStopDisplay = (): void => {
         const currentZoom = map.getZoom();
 
-        uniqueStops.forEach((stop, stopName) => {
-            const sortedLines = Array.from(stop.lines).sort(compareLineIds);
+        stops.forEach((stop) => {
+            const coordinates: LatLngExpression = [stop.lat, stop.lon];
 
             const bindPopupLineLinks = (e: { popup: { getElement: () => HTMLElement | null } }): void => {
                 const container = e.popup.getElement();
@@ -568,44 +562,53 @@ const buildBusStopsLayer = (
                         }
                     });
                 });
+                container.querySelectorAll<HTMLButtonElement>('.line-number-link[data-route-id]').forEach((button) => {
+                    button.addEventListener('click', () => {
+                        const routeId = button.dataset.routeId;
+                        if (routeId) {
+                            map.closePopup();
+                            onRouteSelect(routeId);
+                        }
+                    });
+                });
             };
 
             if (currentZoom >= MAP_CONFIG.ZOOM_THRESHOLD) {
-                if (busStopCircles.has(stopName) && layer.hasLayer(busStopCircles.get(stopName)!)) {
-                    layer.removeLayer(busStopCircles.get(stopName)!);
+                if (busStopCircles.has(stop.id) && layer.hasLayer(busStopCircles.get(stop.id)!)) {
+                    layer.removeLayer(busStopCircles.get(stop.id)!);
                 }
 
-                if (!busStopMarkers.has(stopName)) {
-                    const marker = attachStopName(createBusStopIcon(stop.coordinates), stop.name);
-                    marker.bindPopup(() => createPopupContent(stop.name, sortedLines));
+                if (!busStopMarkers.has(stop.id)) {
+                    const marker = attachStopName(createBusStopIcon(coordinates), stop.name);
+                    marker.bindPopup(() => createPopupContent(stop));
                     marker.on('popupopen', bindPopupLineLinks);
                     marker.on('click', () => {
-                        focusMapOnMarker(map, stop.coordinates);
-                        window.setTimeout(() => createWalkingCircles(L, map, stop.coordinates), 100);
+                        focusMapOnMarker(map, coordinates);
+                        window.setTimeout(() => createWalkingCircles(L, map, coordinates), 100);
                     });
-                    busStopMarkers.set(stopName, marker);
+                    busStopMarkers.set(stop.id, marker);
                     marker.addTo(layer);
-                } else if (!layer.hasLayer(busStopMarkers.get(stopName)!)) {
-                    busStopMarkers.get(stopName)!.addTo(layer);
+                } else if (!layer.hasLayer(busStopMarkers.get(stop.id)!)) {
+                    busStopMarkers.get(stop.id)!.addTo(layer);
                 }
             } else {
-                if (busStopMarkers.has(stopName) && layer.hasLayer(busStopMarkers.get(stopName)!)) {
-                    layer.removeLayer(busStopMarkers.get(stopName)!);
+                if (busStopMarkers.has(stop.id) && layer.hasLayer(busStopMarkers.get(stop.id)!)) {
+                    layer.removeLayer(busStopMarkers.get(stop.id)!);
                 }
 
-                if (busStopCircles.has(stopName) && layer.hasLayer(busStopCircles.get(stopName)!)) {
-                    layer.removeLayer(busStopCircles.get(stopName)!);
+                if (busStopCircles.has(stop.id) && layer.hasLayer(busStopCircles.get(stop.id)!)) {
+                    layer.removeLayer(busStopCircles.get(stop.id)!);
                 }
 
-                const circle = attachStopName(createBusStopCircle(stop.coordinates), stop.name);
-                circle.bindPopup(() => createPopupContent(stop.name, sortedLines));
+                const circle = attachStopName(createBusStopCircle(coordinates), stop.name);
+                circle.bindPopup(() => createPopupContent(stop));
                 circle.on('popupopen', bindPopupLineLinks);
                 circle.on('click', () => {
-                    focusMapOnMarker(map, stop.coordinates);
-                    window.setTimeout(() => createWalkingCircles(L, map, stop.coordinates), 100);
+                    focusMapOnMarker(map, coordinates);
+                    window.setTimeout(() => createWalkingCircles(L, map, coordinates), 100);
                 });
 
-                busStopCircles.set(stopName, circle);
+                busStopCircles.set(stop.id, circle);
                 circle.addTo(layer);
             }
         });
@@ -700,36 +703,6 @@ const loadLandmarks = (L: LeafletNS, map: LeafletMap, landmarks: Landmark[], gro
     });
 };
 
-const buildBaseLayers = (L: LeafletNS): Record<string, TileLayer> => {
-    const standard = L.tileLayer('https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png', {
-        attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>',
-    });
-
-    const light = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-            '&copy; <a href="https://carto.com/attribution">CARTO</a>',
-        subdomains: 'abcd',
-    });
-
-    const dark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-            '&copy; <a href="https://carto.com/attribution">CARTO</a>',
-        subdomains: 'abcd',
-    });
-
-    const satellite = L.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        {
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye',
-        },
-    );
-
-    return { standard, light, dark, satellite };
-};
-
 export const initMainMap = async (): Promise<void> => {
     const container = document.getElementById('map-container');
     if (!container) {
@@ -737,21 +710,19 @@ export const initMainMap = async (): Promise<void> => {
     }
 
     try {
-        const [L, legendConfig, busRoutes, hubsFile, bikeStations, landmarksFile] = await Promise.all([
+        const [L, legendConfig, network, hubsFile, bikeStations, landmarksFile] = await Promise.all([
             import('leaflet').then((mod) => mod.default),
             fetchJson<LegendConfig>(withBase('data/legend-config.json')),
-            fetchJson<BusRoutesFile>(MAP_CONFIG.BUS_ROUTES_URL),
+            fetchJson<TransitNetwork>(MAP_CONFIG.TRANSIT_NETWORK_URL),
             fetchJson<TransportHubsFile>(withBase('data/transport/transport_hubs.json')),
             fetchJson<BikeStation[]>(withBase('data/transport/bike_stations.json')),
             fetchJson<LandmarksFile>(withBase('data/transport/landmarks.json')),
         ]);
 
+        const transitIndex = createTransitIndex(network);
         const baseLayers = buildBaseLayers(L);
         const configDefault = legendConfig.baseMaps.find((base) => base.default)?.id ?? 'light';
-        const siteIsDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        // Start on dark tiles in dark mode, but only when the default style is theme-based.
-        const defaultBase =
-            siteIsDark && (configDefault === 'light' || configDefault === 'dark') ? 'dark' : configDefault;
+        const defaultBase = resolveThemedBaseLayer(configDefault);
 
         const bounds: LatLngBoundsExpression = [
             [44.67794605215712, 16.90471973252053],
@@ -783,7 +754,10 @@ export const initMainMap = async (): Promise<void> => {
             landmarks: L.layerGroup(),
         };
 
-        const busStops = buildBusStopsLayer(L, map, busRoutes);
+        const routeOverlay = createRouteOverlay(L, map, transitIndex);
+        const routePanel = createRoutePanel(L, map, transitIndex, routeOverlay);
+
+        const busStops = buildBusStopsLayer(L, map, transitIndex, (routeId) => routePanel.open(routeId));
         overlayGroups.busStops = busStops.layer;
         overlayGroups.busStops.addTo(map);
 

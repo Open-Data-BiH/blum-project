@@ -27,7 +27,7 @@ export class MapLegendControl {
     ) {
         const defaultBase = config.baseMaps.find((base) => base.default) ?? config.baseMaps[0];
         let initialBaseMap = defaultBase?.id ?? 'light';
-        // Honor the site theme on first load when the default style is theme-based.
+        // Synchronize only the theme-based default styles.
         if ((initialBaseMap === 'light' || initialBaseMap === 'dark') && isSiteDark()) {
             initialBaseMap = 'dark';
         }
@@ -296,7 +296,7 @@ export class MapLegendControl {
         this.controlContainer?.querySelector<HTMLButtonElement>('.map-legend__toggle')?.focus();
     }
 
-    /** Follow the site light/dark theme, but only while a theme-based style is active. */
+    /** Synchronize only theme-based styles. */
     syncToTheme(isDark: boolean): void {
         if (this.selectedBaseMap !== 'light' && this.selectedBaseMap !== 'dark') {
             return;

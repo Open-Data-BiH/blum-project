@@ -1,8 +1,3 @@
-/* ==========================================================================
-   Route display: stop markers, on-map route panel, direction switcher
-   ========================================================================== */
-
-/* Ordered stop markers ---------------------------------------------------- */
 
 .route-stop-marker__pin {
     display: flex;
@@ -38,14 +33,12 @@
     max-height: none;
 }
 
-/* Fade the regular stop layer so the route reads first. */
+/* De-emphasize regular stops while a route is active. */
 .leaflet-container.is-route-active .leaflet-marker-pane,
 .leaflet-container.is-route-active .leaflet-overlay-pane {
     opacity: 0.35;
     transition: opacity var(--transition-fast);
 }
-
-/* On-map route panel ------------------------------------------------------ */
 
 .map-route-panel-control {
     max-width: min(19rem, calc(100vw - 5rem));
@@ -170,8 +163,6 @@
         text-decoration: underline;
     }
 }
-
-/* Direction switcher on line detail pages --------------------------------- */
 
 .ldp-route-variants {
     display: grid;

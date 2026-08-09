@@ -1,12 +1,4 @@
-/* ==========================================================================
-   LINES PAGE STYLES
-   Redesigned for better scannability and UX
-   ========================================================================== */
 
-/* ==========================================================================
-   COMPANY COLOR DEFINITIONS
-   Brand colors for transport companies - these are fixed
-   ========================================================================== */
 
 :root {
     --company-autoprevoz: #ed1d22;
@@ -16,10 +8,6 @@
     --company-rale: #7fd9e0;
 }
 
-/* ==========================================================================
-   LINES INFO CARD (Groups + Operators)
-   Always visible under the section title for quick context
-   ========================================================================== */
 
 .lines-info-card {
     margin-bottom: var(--space-5);
@@ -55,7 +43,6 @@
     color: var(--text-secondary);
 }
 
-/* Compact Operator Legend */
 .operator-legend--compact {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -108,10 +95,6 @@
     color: var(--text-light);
 }
 
-/* ==========================================================================
-   URBAN MAP CONTEXT
-   Primary map information visible, usage help tucked into compact disclosure
-   ========================================================================== */
 
 .map-context-card {
     margin-top: var(--space-4);
@@ -232,12 +215,8 @@
     }
 }
 
-/* ==========================================================================
-   CONTROLS ROW (Search + Filters)
-   Sticky on both desktop and mobile
-   ========================================================================== */
 
-/* Ensure parent containers allow sticky to work */
+/* Sticky controls require overflow-visible ancestors. */
 #lines,
 #lines .container,
 #lines-info,
@@ -246,11 +225,11 @@
 }
 
 .lines-controls {
-    position: -webkit-sticky; /* Safari support */
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
-    z-index: 1019; /* Keep above line cards but below global header */
-    isolation: isolate; /* Create stacking context so cards can't bleed above */
+    z-index: 1019; /* Above line cards, below the header. */
+    isolation: isolate; /* Prevent cards from escaping this stacking context. */
     background-color: var(--surface-1);
     padding: var(--space-4);
     margin-left: calc(-1 * var(--space-4));
@@ -263,7 +242,6 @@
     gap: var(--space-3);
 }
 
-/* Lines list container */
 .lines-list {
     position: relative;
     z-index: 1;
@@ -272,14 +250,12 @@
     gap: var(--space-3);
 }
 
-/* Tab content inside lines list */
 .lines-list > .tab-content {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
 }
 
-/* Search Input */
 .lines-search {
     position: relative;
     width: 100%;
@@ -355,7 +331,6 @@
     outline-offset: 2px;
 }
 
-/* Filter Row */
 .lines-filter-row {
     display: flex;
     align-items: center;
@@ -401,18 +376,13 @@
     color: var(--text-primary);
 }
 
-/* Results Count */
 .lines-results-count {
     font-size: var(--font-size-sm);
     color: var(--text-secondary);
     white-space: nowrap;
 }
 
-/* ==========================================================================
-   LINE CARDS LIST - Empty State & Cards
-   ========================================================================== */
 
-/* Empty State */
 .lines-empty-state {
     text-align: center;
     padding: var(--space-10) var(--space-4);
@@ -434,10 +404,6 @@
     margin-top: var(--space-2);
 }
 
-/* ==========================================================================
-   LINE CARD COMPONENT
-   Compact, scannable design with clear CTA hierarchy
-   ========================================================================== */
 
 .line-card {
     background: var(--surface-2);
@@ -460,7 +426,6 @@
     display: none;
 }
 
-/* Company Border Colors */
 .line-card.autoprevoz-line {
     border-left-color: var(--company-autoprevoz);
 }
@@ -477,7 +442,6 @@
     border-left-color: var(--company-rale);
 }
 
-/* Card Header */
 .line-card__header {
     display: flex;
     align-items: flex-start;
@@ -501,7 +465,6 @@
     line-height: var(--line-height-tight);
 }
 
-/* Badges Container */
 .line-card__badges {
     display: flex;
     align-items: center;
@@ -509,9 +472,6 @@
     flex-shrink: 0;
 }
 
-/* ==========================================================================
-   BADGES
-   ========================================================================== */
 
 .badge {
     display: inline-flex;
@@ -525,7 +485,6 @@
     white-space: nowrap;
 }
 
-/* Line Number Badge */
 .badge--line-number {
     min-width: var(--line-number-min-width);
     height: var(--line-number-height);
@@ -547,7 +506,6 @@ a.badge--line-number-link {
     }
 }
 
-/* Company-colored line number badges */
 .autoprevoz-line .badge--line-number {
     background: var(--company-autoprevoz);
 }
@@ -564,14 +522,12 @@ a.badge--line-number-link {
     background: var(--company-rale);
 }
 
-/* Group Badge */
 .badge--group {
     background: var(--surface-3);
     color: var(--text-secondary);
     border: 1px solid var(--border-subtle);
 }
 
-/* Accessibility Badge */
 .badge--accessible {
     width: 28px;
     height: 28px;
@@ -590,9 +546,6 @@ a.badge--line-number-link {
     border-radius: var(--radius-full);
 }
 
-/* ==========================================================================
-   META ROW (Compact Attributes)
-   ========================================================================== */
 
 .line-card__meta {
     display: flex;
@@ -615,9 +568,6 @@ a.badge--line-number-link {
     text-align: center;
 }
 
-/* ==========================================================================
-   SCHEDULE INFO ROW (First/Last bus, Avg. frequency)
-   ========================================================================== */
 
 .line-card__schedule {
     display: flex;
@@ -653,9 +603,6 @@ a.badge--line-number-link {
     font-weight: var(--font-weight-semibold);
 }
 
-/* ==========================================================================
-   ACTION BUTTONS
-   ========================================================================== */
 
 .line-card__actions {
     display: flex;
@@ -664,7 +611,6 @@ a.badge--line-number-link {
     gap: var(--space-2);
 }
 
-/* Primary Button (View Timetable) */
 .line-card__actions .btn--primary {
     background: var(--color-primary);
     color: var(--color-white);
@@ -689,7 +635,6 @@ a.badge--line-number-link {
     outline-offset: 2px;
 }
 
-/* Secondary Button (Details) */
 .line-card__actions .btn--secondary {
     background: transparent;
     color: var(--text-secondary);
@@ -722,7 +667,6 @@ a.badge--line-number-link {
     color: var(--text-primary);
 }
 
-/* Link Button (PDF) */
 .line-card__actions .btn--link {
     background: transparent;
     color: var(--link-color);
@@ -748,9 +692,6 @@ a.badge--line-number-link {
     outline-offset: 2px;
 }
 
-/* ==========================================================================
-   EXPANDABLE DETAILS PANEL
-   ========================================================================== */
 
 .line-card__details {
     margin-top: var(--space-4);
@@ -792,11 +733,7 @@ a.badge--line-number-link {
     color: var(--text-secondary);
 }
 
-/* ==========================================================================
-   RESPONSIVE STYLES
-   ========================================================================== */
 
-/* Mobile - stack layout */
 @media (max-width: 767px) {
     .lines-controls {
         margin: 0 calc(-1 * var(--space-4));
@@ -849,7 +786,6 @@ a.badge--line-number-link {
     }
 }
 
-/* Desktop - side by side layout */
 @media (min-width: 768px) {
     .lines-controls {
         flex-direction: row;
@@ -881,16 +817,12 @@ a.badge--line-number-link {
     }
 }
 
-/* Large screens */
 @media (min-width: 1024px) {
     .lines-search {
         max-width: 450px;
     }
 }
 
-/* ==========================================================================
-   DARK MODE OVERRIDES
-   ========================================================================== */
 
 [data-theme='dark'] .lines-search__input:focus {
     box-shadow: 0 0 0 3px rgba(43, 110, 168, 0.2);
@@ -912,17 +844,13 @@ a.badge--line-number-link {
     background: #0a9c4e;
 }
 
-/* ==========================================================================
-   LEGACY SUPPORT
-   Keep old class names working during transition
-   ========================================================================== */
 
-/* Hide timetable buttons for suburban lines since they don't have timetables */
+/* Suburban lines have no timetable. */
 #suburban-lines .timetable-btn {
     display: none;
 }
 
-/* Legacy filter/tab styles for compatibility */
+/* Retained for legacy markup. */
 .lines-tabs {
     display: flex;
     gap: var(--space-2);
@@ -954,7 +882,6 @@ a.badge--line-number-link {
     display: block;
 }
 
-/* Single type title (when only one line type is enabled) */
 .single-type-title {
-    display: none; /* Hide when using new design */
+    display: none;
 }

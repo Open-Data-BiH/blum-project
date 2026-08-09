@@ -83,7 +83,6 @@ const subjects = [
       </button>
     </form>
 
-    <!-- Send options panel (shown after form submit) -->
     <div class="contact-form__send-panel" id="send-panel" hidden>
       <h3 class="contact-form__send-title">
         <i class="fas fa-check-circle" aria-hidden="true"></i>
@@ -266,7 +265,7 @@ const subjects = [
           await navigator.clipboard.writeText(copyText);
           copySuccess.hidden = false;
         } catch {
-          // clipboard API unavailable (non-HTTPS or denied permission)
+          // Clipboard access may be unavailable.
         }
       };
 

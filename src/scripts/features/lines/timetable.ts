@@ -1,9 +1,3 @@
-// Timetable — ported from js/features/lines/timetable.js
-// Key changes:
-//   - FetchHelper.fetchJSON → fetch().then(r => r.json())
-//   - Translations resolved via safeGet(getTranslations(), getCurrentLanguage(), ...)
-//   - TypeScript types added throughout
-
 import { debounce, escapeHtml, sortLinesByID, withBase } from '../../core/utils';
 import { safeGet, getTranslations, getCurrentLanguage } from '../../core/i18n';
 import { LINE_CONFIG, getLineTypeTitle } from './line-config';

@@ -1,5 +1,3 @@
-// Type definitions for contact data
-
 export interface LocalizedString {
     bhs: string;
     en: string;

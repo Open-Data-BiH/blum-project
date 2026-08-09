@@ -1,9 +1,4 @@
-// Updates filter — ported from js/features/updates/updates.js
-// Static cards are rendered at build time; this script handles:
-//   - filter button activation
-//   - hiding/showing cards by type
-//   - hiding cards outside their visibility window at page load
-//     (start/expiry checked client-side)
+// Static cards are filtered client-side by category and visibility window.
 
 const TARGETED_CARD_CLASS = 'update-card--targeted';
 const TARGETED_CARD_TIMEOUT_MS = 4000;
@@ -26,7 +21,6 @@ function setFilter(filter: string): void {
     let visibleCount = 0;
 
     cards.forEach((card) => {
-        // Don't un-hide expired cards
         if (card.style.display === 'none' && !card.dataset.type) {
             return;
         }

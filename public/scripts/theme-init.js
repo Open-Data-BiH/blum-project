@@ -5,6 +5,6 @@
         var isDark = theme === 'dark' || (theme === 'auto' && prefersDark);
         document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
     } catch (_error) {
-        // Ignore unavailable storage/matchMedia errors.
+        // Storage or media queries may be unavailable.
     }
 })();

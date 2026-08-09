@@ -51,7 +51,7 @@ export const getUniqueSortedDeparturesFromParsed = (departures: TimetableDepartu
         const noteKey = departure.note ?? '';
 
         if (departure.note) {
-            // If any annotated departure exists for a given minute, it replaces the plain duplicate.
+            // An annotated departure replaces a plain duplicate for the same minute.
             timeGroup.delete('');
             if (!timeGroup.has(noteKey)) {
                 timeGroup.set(noteKey, departure);

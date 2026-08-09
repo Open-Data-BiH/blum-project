@@ -1,18 +1,16 @@
-// Lines UI — ported from js/features/lines/lines-ui.js
-// Rendering removed: cards are server-rendered by LinesSection.astro.
-// This file only wires up interactivity: search, filters, details expand/collapse.
+// Cards are server-rendered; this module manages their UI state.
 
 import { debounce, normalizeForSearch } from '../../core/utils';
 import { getCurrentLanguage } from '../../core/i18n';
 
 export const scrollToTimetable = (lineId: string): void => {
-    // Store pending selection so the timetable module picks it up after lazy init
+    // Preserve the selection until the lazy timetable module initializes.
     sessionStorage.setItem('selectedLine', lineId);
 
     const lineSelect = document.getElementById('line-select') as HTMLSelectElement | null;
     if (lineSelect) {
         lineSelect.value = lineId;
-        // Only dispatch if the option exists in the dropdown (module already initialized)
+        // Dispatch only after the timetable options are available.
         if (lineSelect.value === lineId) {
             lineSelect.dispatchEvent(new Event('change'));
         }
@@ -165,7 +163,7 @@ export const initializeLinesEventListeners = (): void => {
         }
     });
 
-    // Re-apply filters when language changes (cards already in HTML; just refresh count)
+    // Re-render the localized result count.
     document.addEventListener('languageChanged', () => {
         applyFilters();
     });

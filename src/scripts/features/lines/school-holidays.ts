@@ -8,19 +8,15 @@ interface DateRange {
     to: MonthDay;
 }
 
-// Year-agnostic recurring ranges (month/day only).
-// Winter break spans Dec-Jan so it is split into two entries.
-// Spring break (Easter) shifts each year — adjust the April range annually.
+// Recurring school breaks. Update the movable Easter range annually.
 const REDUCED_PERIODS: DateRange[] = [
-    // Summer break
     { from: { month: 6, day: 15 }, to: { month: 8, day: 31 } },
-    // Winter break — December portion
+    // Winter break crosses the year boundary.
     { from: { month: 12, day: 27 }, to: { month: 12, day: 31 } },
-    // Winter break — January portion
     { from: { month: 1, day: 1 }, to: { month: 1, day: 14 } },
-    // Autumn break (approximate — typically late Oct / early Nov)
+    // Approximate autumn break.
     { from: { month: 10, day: 28 }, to: { month: 11, day: 3 } },
-    // Spring / Easter break (approximate — adjust each year)
+    // Update annually for Easter.
     { from: { month: 4, day: 14 }, to: { month: 4, day: 22 } },
 ];
 

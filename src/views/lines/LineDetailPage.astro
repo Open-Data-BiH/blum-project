@@ -46,8 +46,7 @@ interface StationTimetable {
   weekday: HourlyDepartures;
   saturday: HourlyDepartures;
   sunday: HourlyDepartures;
-  // Reduced (school-holiday) schedules. null = no reduced data for this day at this
-  // station, so the regular schedule for that day is used as the fallback.
+  // Null falls back to the day's regular schedule.
   weekdayReduced: HourlyDepartures | null;
   saturdayReduced: HourlyDepartures | null;
   sundayReduced: HourlyDepartures | null;
@@ -108,8 +107,7 @@ const sortDirectionKeys = (a: string, b: string): number => {
 const formatRouteLabel = (label: string | null | undefined): string =>
   (label ?? '').replace(/\s*-\s*/g, ' \u2192 ').trim();
 
-// Split a route label into its main origin\u2192destination text and any parenthetical
-// street/location segments, so the parenthetical can be rendered as secondary text.
+// Render parenthetical route details as secondary text.
 type RoutePart = { text: string; secondary: boolean };
 
 const splitRouteParts = (route: string): RoutePart[] =>
@@ -172,8 +170,7 @@ const buildStationTimetables = (directionIndex: number): StationTimetable[] =>
     const saturdayDepartures = getUniqueSortedDepartures(station.times.saturday?.[directionIndex] ?? []);
     const sundayDepartures = getUniqueSortedDepartures(station.times.sunday?.[directionIndex] ?? []);
 
-    // Group reduced departures only when the day's reduced schedule is defined for this
-    // station; otherwise return null so the regular schedule is used as the fallback.
+    // Undefined reduced data falls back to the regular schedule.
     const reducedGroup = (key: ReducedDayKey): HourlyDepartures | null =>
       station.times[key]
         ? groupByHour(getUniqueSortedDepartures(station.times[key]?.[directionIndex] ?? []))
@@ -199,8 +196,7 @@ const dirBTables = buildStationTimetables(1);
 const hasDirA = dirATables.some((station) => station.hasWeekday || station.hasSaturday || station.hasSunday);
 const hasDirB = dirBTables.some((station) => station.hasWeekday || station.hasSaturday || station.hasSunday);
 
-// Whether this line has any reduced (school-holiday) schedule data. When true, each day
-// panel also renders a hidden reduced variant that the client swaps in on holiday dates.
+// Render a hidden holiday variant when any station has reduced departures.
 const hasReducedSchedule = (entry?.stations ?? []).some(
   (station) => station.times.weekdayReduced ?? station.times.saturdayReduced ?? station.times.sundayReduced,
 );
@@ -282,8 +278,6 @@ const mergeStationDepartures = (
 const mergeDayDepartures = (tables: StationTimetable[], day: DayKey): HourlyDepartures =>
   mergeStationDepartures(tables, (station) => station[day]);
 
-// Reduced variant: use a station's reduced schedule for the day when defined, otherwise
-// fall back to its regular schedule — matching the /linije/#timetable behaviour.
 const mergeReducedDayDepartures = (tables: StationTimetable[], day: DayKey): HourlyDepartures =>
   mergeStationDepartures(tables, (station) => station[`${day}Reduced` as ReducedDayKey] ?? station[day]);
 
@@ -377,7 +371,7 @@ const allStopsForSchema = Array.from(new Set([...directionAStops, ...directionBS
 
 const transitIndex = createTransitIndex(transitNetwork as TransitNetwork);
 const transitRoutes = getLineRoutes(transitIndex, originalLineId);
-// Covered lines get the route map and its stop lists; the rest keep the listing tables.
+// Lines without route data retain their timetable stop lists.
 const hasTransitRoutes = transitRoutes.length > 0;
 
 const canonicalPath = getLineDetailPath(locale, originalLineId);

@@ -1,6 +1,3 @@
-// Airport map — ported from js/features/map/airport-map.js
-// Uses Leaflet to show two shuttle stop markers on a CARTO basemap.
-
 import type { Map, LatLngBoundsExpression, FitBoundsOptions, PointExpression, PopupOptions } from 'leaflet';
 import { langText } from '../../core/i18n';
 
@@ -13,7 +10,6 @@ export async function initAirportMap(): Promise<void> {
     try {
         const L = (await import('leaflet')).default;
 
-        // Leaflet CSS is loaded via <link> in AirportMap.astro
         const bounds: LatLngBoundsExpression = [
             [44.72, 17.1],
             [44.97, 17.38],

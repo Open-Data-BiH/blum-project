@@ -1,5 +1,3 @@
-// Geolocation helper for Leaflet interactions
-
 import type { CircleMarker, Marker } from 'leaflet';
 
 export interface GeoPoint {

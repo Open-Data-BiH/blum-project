@@ -1,5 +1,3 @@
-// Shared types for homepage map data
-
 import type { BilingualString } from '../../../types/lines';
 
 export type LegendLabel = BilingualString;

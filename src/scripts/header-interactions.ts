@@ -3,14 +3,12 @@ import { darkModeManager } from './core/dark-mode';
 
 export function initHeaderInteractions(): void {
     document.addEventListener('DOMContentLoaded', () => {
-        // Restore scroll position after language reload
         const savedScrollPosition = sessionStorage.getItem('scrollPosition');
         if (savedScrollPosition) {
             window.scrollTo(0, parseInt(savedScrollPosition, 10));
             sessionStorage.removeItem('scrollPosition');
         }
 
-        // Wire up dark mode button
         const toggleBtn = document.getElementById('theme-toggle');
         if (toggleBtn && !(toggleBtn as HTMLElement & { _darkModeWired?: boolean })._darkModeWired) {
             (toggleBtn as HTMLElement & { _darkModeWired?: boolean })._darkModeWired = true;
@@ -18,7 +16,6 @@ export function initHeaderInteractions(): void {
             darkModeManager.updateButtonUI();
         }
 
-        // Apply language from localStorage
         applyTranslation(getCurrentLanguage());
         setupLanguageSwitcher();
 

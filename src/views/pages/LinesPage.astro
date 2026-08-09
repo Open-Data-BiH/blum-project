@@ -36,7 +36,7 @@ const computeScheduleStats = (lineId: string): ScheduleStats => {
     return { firstBus: null, lastBus: null, avgFrequency: null };
   }
 
-  // Use first station, direction A (index 0), weekday schedule
+  // Schedule summaries use the first station's weekday direction A departures.
   const times = entry.stations[0].times.weekday[0];
   if (!times || times.length === 0) {
     return { firstBus: null, lastBus: null, avgFrequency: null };
@@ -46,7 +46,6 @@ const computeScheduleStats = (lineId: string): ScheduleStats => {
   const firstBus = timeStrings[0];
   const lastBus = timeStrings[timeStrings.length - 1];
 
-  // Average frequency: mean gap between consecutive departures
   let avgFrequency: number | null = null;
   if (timeStrings.length >= 2) {
     const toMinutes = (hhmm: string) => {
@@ -99,7 +98,6 @@ processedLines.sort(sortLinesByID);
   alternatePaths={alternatePaths}
   switchLanguagePath={getPagePath('lines', getSwitchLocale(locale))}
 >
-  <!-- Urban Lines Map Section -->
   <section class="section section--wide" id="urban-lines">
     <div class="container">
       <h2 class="section__title" id="urban-lines-title">{translations.sections?.urban_lines?.title ?? (locale === 'en' ? 'Urban lines map' : 'Mapa gradskih linija')}</h2>
@@ -174,7 +172,6 @@ processedLines.sort(sortLinesByID);
     </div>
   </section>
 
-  <!-- Lines Section -->
   <section class="section section--wide" id="lines">
     <div class="container">
       <h2 class="section__title" id="lines-title">{translations.sections?.lines?.title ?? (locale === 'en' ? 'Lines' : 'Linije')}</h2>

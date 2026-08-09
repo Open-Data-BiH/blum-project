@@ -1,11 +1,4 @@
-/* ==========================================================================
-   TIMETABLES STYLES - REDESIGNED FOR HIGH URGENCY, TASK-ORIENTED USE
-   Focus: Speed, Clarity, Accessibility, Outdoor Readability
-   ========================================================================== */
 
-/* ==========================================================================
-   TIMETABLE LINE SELECTOR
-   ========================================================================== */
 
 /* Selector, controls and table share one column so their edges line up. */
 .line-selector-wrapper {
@@ -54,9 +47,6 @@
     color: var(--color-primary);
 }
 
-/* ==========================================================================
-   TIMETABLE CONTROLS - COMPACT LAYOUT
-   ========================================================================== */
 
 .timetable-controls {
     display: flex;
@@ -66,16 +56,13 @@
     max-width: 800px;
 }
 
-/* Control row - stacked vertically on all screen sizes to prevent shifting */
+/* Keep controls vertically ordered to avoid layout shifts. */
 .timetable-control-row {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
 }
 
-/* ==========================================================================
-   SEGMENTED CONTROLS - DIRECTION & DAY TOGGLES
-   ========================================================================== */
 
 .direction-toggle,
 .day-toggle {
@@ -95,7 +82,6 @@
     letter-spacing: 0.5px;
 }
 
-/* Segmented control container */
 .direction-buttons {
     display: inline-flex;
     background-color: var(--surface-2);
@@ -117,7 +103,6 @@
     position: relative;
 }
 
-/* Individual toggle buttons */
 .direction-btn,
 .day-btn {
     padding: 10px 16px;
@@ -144,7 +129,6 @@
     background-color: var(--surface-3);
 }
 
-/* Active state */
 .direction-btn.active,
 .day-btn.active {
     background-color: #fff;
@@ -176,7 +160,6 @@
     color: #92400e;
 }
 
-/* Responsive day labels: full on desktop, short on mobile */
 .day-label-short {
     display: none;
 }
@@ -191,14 +174,12 @@
     }
 }
 
-/* Focus states for accessibility */
 .direction-btn:focus-visible,
 .day-btn:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 }
 
-/* Swap direction button */
 .direction-swap-btn {
     display: flex;
     align-items: center;
@@ -233,16 +214,12 @@
     font-size: 16px;
 }
 
-/* Direction buttons wrapper with swap */
 .direction-buttons-wrapper {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-/* ==========================================================================
-   TIMETABLE NOTES / WARNINGS
-   ========================================================================== */
 
 .timetable-notes {
     display: flex;
@@ -284,9 +261,6 @@
     font-weight: 500;
 }
 
-/* ==========================================================================
-   REDUCED SCHEDULE NOTICE
-   ========================================================================== */
 
 .timetable-reduced-notice {
     display: flex;
@@ -314,9 +288,6 @@
     color: var(--accent);
 }
 
-/* ==========================================================================
-   TIMETABLE TABLE - IMPROVED READABILITY
-   ========================================================================== */
 
 .timetable-container {
     max-width: 800px;
@@ -335,7 +306,6 @@
     border: 1px solid var(--border-subtle);
 }
 
-/* Table header */
 .hours-minutes-table thead th {
     background-color: var(--accent);
     color: var(--color-white);
@@ -352,7 +322,6 @@
     text-align: center;
 }
 
-/* Table rows */
 .hours-minutes-table tbody tr {
     transition: background-color var(--transition-fast);
 }
@@ -361,12 +330,10 @@
     border-bottom: 1px solid var(--border-subtle);
 }
 
-/* Subtle row separators */
 .hours-minutes-table tbody tr:nth-child(even) {
     background-color: var(--surface-1);
 }
 
-/* Current hour row highlight */
 .hours-minutes-table tbody tr.current-hour {
     background-color: var(--accent-soft);
 }
@@ -376,7 +343,6 @@
     border-bottom: 1px solid var(--accent);
 }
 
-/* Hour cell - strong visual anchor */
 .hour-cell {
     width: 80px;
     padding: 16px 12px;
@@ -390,7 +356,6 @@
     position: relative;
 }
 
-/* Accent bar on hour cell */
 .hour-cell::before {
     content: '';
     position: absolute;
@@ -401,7 +366,6 @@
     background-color: var(--accent-strong);
 }
 
-/* Minutes cell */
 .minutes-cell {
     padding: 12px 16px;
     vertical-align: middle;
@@ -414,7 +378,6 @@
     align-items: center;
 }
 
-/* Minute pills - improved design */
 .minute-box {
     display: inline-flex;
     align-items: center;
@@ -432,7 +395,6 @@
     transition: all var(--transition-fast);
 }
 
-/* Past departures - faded */
 .minute-box.past {
     background-color: var(--surface-2);
     color: var(--text-light);
@@ -440,7 +402,6 @@
     opacity: 0.6;
 }
 
-/* Next departure - strong highlight */
 .minute-box.next {
     background-color: #2f8a57;
     color: #ecfff4;
@@ -464,16 +425,12 @@
     }
 }
 
-/* Upcoming departures */
 .minute-box.upcoming {
     background-color: var(--accent-soft);
     color: var(--text-primary);
     border-color: var(--accent);
 }
 
-/* ==========================================================================
-   TIME NOTE ANNOTATIONS
-   ========================================================================== */
 
 .time-note {
     font-size: 0.6em;
@@ -555,9 +512,6 @@
     color: var(--accent);
 }
 
-/* ==========================================================================
-   NO SERVICE MESSAGE
-   ========================================================================== */
 
 .no-service-message {
     display: flex;
@@ -587,12 +541,9 @@
     margin: 0;
 }
 
-/* ==========================================================================
-   RESPONSIVE STYLES - MOBILE FIRST
-   ========================================================================== */
 
 @media (max-width: 767px) {
-    /* Prevent iOS zoom on focus */
+    /* 16px prevents iOS input zoom. */
     #line-select {
         font-size: 16px;
         padding: 16px 48px 16px 16px;
@@ -603,13 +554,11 @@
         margin-bottom: var(--space-6);
     }
 
-    /* Stack toggles vertically on mobile */
     .direction-toggle,
     .day-toggle {
         width: 100%;
     }
 
-    /* Full-width segmented controls on mobile */
     .direction-buttons {
         width: 100%;
         display: grid;
@@ -636,7 +585,6 @@
         min-height: 44px;
     }
 
-    /* Direction buttons wrapper on mobile */
     .direction-buttons-wrapper {
         flex-direction: column;
         gap: 8px;
@@ -653,7 +601,6 @@
         transform: none;
     }
 
-    /* Table adjustments for mobile */
     .hours-minutes-table {
         margin: 0;
         width: 100%;
@@ -699,7 +646,6 @@
         border-width: 2px;
     }
 
-    /* Notes on mobile */
     .timetable-notes {
         padding: var(--space-3);
         font-size: 14px;
@@ -710,7 +656,6 @@
     }
 }
 
-/* Extra small devices */
 @media (max-width: 480px) {
     .direction-btn {
         padding: 8px 6px;
@@ -748,7 +693,6 @@
     }
 }
 
-/* Desktop enhancements */
 @media (min-width: 768px) {
     .timetable-controls {
         max-width: 800px;
@@ -781,9 +725,6 @@
     }
 }
 
-/* ==========================================================================
-   DARK MODE SUPPORT
-   ========================================================================== */
 
 [data-theme='dark'] #line-select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232f78b6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
@@ -913,9 +854,6 @@
     color: #fbbf24;
 }
 
-/* ==========================================================================
-   ACCESSIBILITY - VISUALLY HIDDEN
-   ========================================================================== */
 
 .visually-hidden {
     position: absolute;
@@ -928,15 +866,11 @@
     border: 0;
 }
 
-/* ==========================================================================
-   SCROLL BEHAVIOR
-   ========================================================================== */
 
 .timetable-view {
     scroll-margin-top: 100px;
 }
 
-/* Smooth scroll to current hour */
 .hours-minutes-table tbody tr.current-hour {
     scroll-margin-top: 120px;
 }

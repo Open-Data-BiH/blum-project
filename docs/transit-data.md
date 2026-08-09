@@ -130,6 +130,14 @@ merge is printed by the generator so the heuristics can be audited after each ru
 - `rename` — give a stop a clearer display name, e.g. to tell two "Prodavnica" apart.
   Renames run before pole collapsing, so renaming can also unify a duplicate.
 - `mergeInto` — force one stop to be drawn as another, combining their lines.
+- `addStops` — add stops the export leaves off a route. Each is projected onto the route
+  geometry and slotted in where that position implies, so the order stays right without
+  hand-numbering. A stop further than 60 m from the line is reported.
+
+Line 19 towards Centar is corrected this way: the export omits Čajevac and Bulevar,
+though its geometry passes within 20 m of both. Note that Gimnazija (`st-194`) and Bulevar
+(`st-167`) are consecutive stops 312 m apart on the same carriageway, not duplicates —
+line 19 calls only at Bulevar.
 
 Unknown ids in either map are reported as warnings, so the file cannot silently rot.
 

@@ -1,5 +1,3 @@
-// Popup template helpers for map overlays
-
 import { getCurrentLanguage, langText } from '../../core/i18n';
 import { escapeHtml, withBase } from '../../core/utils';
 import { addHashToPath, getPagePath } from '../../../lib/site-config';

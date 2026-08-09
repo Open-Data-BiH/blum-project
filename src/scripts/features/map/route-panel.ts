@@ -1,5 +1,3 @@
-// On-map panel for the active route: direction switching and a way back to the plain map.
-
 import type { Map as LeafletMap } from 'leaflet';
 import { formatRelation, getLineColor, getLineRoutes, type TransitIndex } from '../../../lib/transit';
 import { getLineDetailPath } from '../../../lib/site-config';
@@ -41,7 +39,7 @@ export const createRoutePanel = (
         const color = getLineColor(index, route.lineId);
         const stopCount = route.stops.length;
         const stopsLabel = langText(`${stopCount} stajališta`, `${stopCount} stops`);
-        // Without this note a missing line reads as a bug.
+        // Explain why stops are shown without a road path.
         const pathNote = route.hasShape
             ? ''
             : `<p class="map-route-panel__note">${escapeHtml(

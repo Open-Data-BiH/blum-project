@@ -1,6 +1,3 @@
-// FAQ accordion toggle — ported from js/features/faq/faq.js
-// Static HTML is rendered at build time; this script only handles open/close interactions.
-
 function toggleQuestion(questionButton: HTMLButtonElement): void {
     const faqItem = questionButton.closest<HTMLElement>('.faq-item');
     if (!faqItem) {

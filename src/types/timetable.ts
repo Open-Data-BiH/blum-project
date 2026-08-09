@@ -1,5 +1,3 @@
-// Type definitions for timetable data
-
 import type { BilingualString } from './lines';
 
 export type DayType = 'weekday' | 'saturday' | 'sunday';

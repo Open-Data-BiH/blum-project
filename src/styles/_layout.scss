@@ -1,11 +1,3 @@
-/**
- * Layout Components
- * Page structure, header, navigation, footer, and grid system
- */
-
-/* ==========================================================================
-   PAGE CONTAINER & LAYOUT
-   ========================================================================== */
 
 .page-container {
     min-height: 100vh;
@@ -17,7 +9,7 @@
     flex: 1 0 auto;
 }
 
-/* Reserve space for async layout components to avoid CLS. */
+/* Reserve space for asynchronously rendered header and footer. */
 #header {
     min-height: calc(5rem + 1px);
 }
@@ -36,9 +28,6 @@
     }
 }
 
-/* ==========================================================================
-   CONTAINER & GRID SYSTEM
-   ========================================================================== */
 
 .container {
     width: 100%;
@@ -52,9 +41,6 @@
         color var(--transition-normal);
 }
 
-/* ==========================================================================
-   HEADER COMPONENT - Glassmorphism Design
-   ========================================================================== */
 
 header {
     background-color: rgba(255, 255, 255, 0.94);
@@ -97,9 +83,6 @@ header.header--scrolled {
     position: relative;
 }
 
-/* ==========================================================================
-   HEADER BRAND & LOGO
-   ========================================================================== */
 
 .header__brand {
     display: flex;
@@ -159,9 +142,6 @@ header.header--scrolled {
     }
 }
 
-/* ==========================================================================
-   HEADER CONTROLS (Language, Theme, Search)
-   ========================================================================== */
 
 .header__controls {
     display: flex;
@@ -176,7 +156,6 @@ header.header--scrolled {
     }
 }
 
-/* Language Selector */
 .language-selector {
     display: flex;
     gap: 2px;
@@ -246,7 +225,6 @@ header.header--scrolled {
     box-shadow: none;
 }
 
-/* Theme Toggle Button */
 .theme-toggle {
     background: transparent;
     color: var(--color-primary);
@@ -281,9 +259,6 @@ header.header--scrolled {
     background: rgba(255, 255, 255, 0.1);
 }
 
-/* ==========================================================================
-   MOBILE MENU TOGGLE
-   ========================================================================== */
 
 .menu-toggle {
     display: flex;
@@ -337,7 +312,6 @@ header.header--scrolled {
     bottom: 6px;
 }
 
-/* Active State (X icon) */
 .menu-toggle.active span:first-child {
     top: 50%;
     transform: translateY(-50%) rotate(45deg);
@@ -352,9 +326,6 @@ header.header--scrolled {
     transform: translateY(50%) rotate(-45deg);
 }
 
-/* ==========================================================================
-   NAVIGATION - Desktop & Mobile
-   ========================================================================== */
 
 .nav {
     display: none;
@@ -433,7 +404,6 @@ header.header--scrolled {
     border-radius: 0;
 }
 
-/* Desktop Navigation */
 @media (min-width: 769px) {
     .menu-toggle {
         display: none;
@@ -454,7 +424,6 @@ header.header--scrolled {
     }
 }
 
-/* Mobile Navigation */
 @media (max-width: 768px) {
     .nav {
         position: absolute;
@@ -486,9 +455,6 @@ header.header--scrolled {
     }
 }
 
-/* ==========================================================================
-   FOOTER COMPONENT
-   ========================================================================== */
 
 footer {
     background-color: var(--bg-secondary);
@@ -586,9 +552,6 @@ footer {
     border-top-color: rgba(255, 255, 255, 0.05);
 }
 
-/* ==========================================================================
-   RESPONSIVE LAYOUT ADJUSTMENTS
-   ========================================================================== */
 
 @media (max-width: 768px) {
     .header__content {
@@ -634,7 +597,6 @@ footer {
     }
 }
 
-/* Tablet: footer in 2 rows */
 @media (min-width: 769px) and (max-width: 960px) {
     .footer__main {
         grid-template-columns: 1fr auto;

@@ -1,5 +1,3 @@
-// Type definitions for line/route data
-
 export interface BilingualString {
     en: string;
     bhs: string;
@@ -38,7 +36,6 @@ export interface ScheduleStats {
     avgFrequency: number | null;
 }
 
-// Processed line card data (flat, with computed fields for SSR and client)
 export interface ProcessedLine extends Line {
     companyName: string;
     lineType: string;

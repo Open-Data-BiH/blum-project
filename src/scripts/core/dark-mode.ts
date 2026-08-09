@@ -44,7 +44,7 @@ class DarkModeManager {
         try {
             localStorage.setItem('theme', mode);
         } catch {
-            // Ignore storage write failures and continue with in-memory mode.
+            // Storage may be unavailable; retain the in-memory theme.
         }
         this.applyTheme();
     }

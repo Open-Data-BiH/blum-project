@@ -29,7 +29,6 @@ const severityLabel = (severity: Update['severity']): string => {
 ---
 
 <div class="updates-container" id="updates-section">
-  <!-- Filter buttons — rendered server-side, activated/toggled via TS -->
   <div class="updates-filters" id="updates-filters" role="group" aria-label="Filter updates">
     <button class="updates-filter-btn active" data-filter="all">
       <i class="fas fa-list" aria-hidden="true"></i>
@@ -43,7 +42,6 @@ const severityLabel = (severity: Update['severity']): string => {
     ))}
   </div>
 
-  <!-- Update cards — rendered server-side, hidden/shown via TS filter -->
   <div id="updates-content">
     {(() => {
       const now = new Date();

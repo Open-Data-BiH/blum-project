@@ -196,9 +196,7 @@ const makeRouteId = (lineId, origin, destination, direction, taken) => {
     return `${base}-${suffix}`;
 };
 
-// ---------------------------------------------------------------------------
 // Load inputs
-// ---------------------------------------------------------------------------
 
 const source = readJson(SOURCE_CONFIG);
 const resolveSource = (key) => {
@@ -227,9 +225,7 @@ console.log(
     `  routes=${sourceRoutes.length} stops=${sourceStops.length} route-stop groups=${sourceRouteStops.length} shapes=${shapeCollection.features.length} flat rows=${flatRows.length}`,
 );
 
-// ---------------------------------------------------------------------------
 // Validate the export
-// ---------------------------------------------------------------------------
 
 console.log('\nValidating export…');
 
@@ -300,9 +296,7 @@ for (const group of sourceRouteStops) {
     }
 }
 
-// ---------------------------------------------------------------------------
 // Build routes
-// ---------------------------------------------------------------------------
 
 const routes = [];
 const coveredLineIds = new Set();
@@ -409,9 +403,7 @@ for (const group of sourceRouteStops) {
     coveredLineIds.add(lineId);
 }
 
-// ---------------------------------------------------------------------------
 // Build the line table (every public line, whether or not the export covers it)
-// ---------------------------------------------------------------------------
 
 const compareLineIds = (a, b) => {
     const numA = Number.parseInt(a.replace(/\D/g, ''), 10);
@@ -446,9 +438,7 @@ for (const line of lines.filter((entry) => entry.routes.length > 1)) {
     console.log(`  line ${line.id} has ${line.routes.length} route variants: ${line.routes.join(', ')}`);
 }
 
-// ---------------------------------------------------------------------------
 // Build the stop table: registry stops + derived stops with no registry counterpart
-// ---------------------------------------------------------------------------
 
 const linesByStopId = new Map();
 for (const route of routes) {
@@ -794,13 +784,9 @@ if (orphans.length > 0) {
     warn(`stops not served by any line: ${orphans.map((stop) => `${stop.id}:${stop.name}`).join(', ')}`);
 }
 
-// ---------------------------------------------------------------------------
 // Write output
-// ---------------------------------------------------------------------------
 
-// ---------------------------------------------------------------------------
 // Write one geometry file per route
-// ---------------------------------------------------------------------------
 
 const round = (value) => Number(value.toFixed(COORDINATE_DECIMALS));
 

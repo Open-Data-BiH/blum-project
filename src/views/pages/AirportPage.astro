@@ -9,7 +9,6 @@ import {
   getSwitchLocale,
   type Locale,
 } from '../../lib/site-config';
-// FontAwesome brands icons (fa-google-play, fa-apple) only used on this page
 import '@fortawesome/fontawesome-free/css/brands.min.css';
 
 interface Props {
@@ -132,7 +131,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
 >
   <script is:inline type="application/ld+json" set:html={JSON.stringify(airportFaqSchema)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(airportShuttleSchema)} />
-  <!-- Airport Overview -->
   <section class="section" id="airport-overview">
     <div class="container">
       <h1 class="section__title" id="airport-title">{t('Prevoz do Aerodroma Banja Luka', 'Getting to Banja Luka Airport')}</h1>
@@ -148,7 +146,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
           i taksi usluge. Ispod su sve informacije potrebne za planiranje vašeg dolaska ili odlaska.`}
       </p>
 
-      <!-- Fast Answer Block -->
       <div class="airport-fast-answer">
         <div class="airport-fast-answer__header">
           <i class="fa-solid fa-bolt" aria-hidden="true"></i>
@@ -188,7 +185,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
     </div>
   </section>
 
-  <!-- Quick Facts -->
   <section class="section airport-quickfacts" id="airport-quickfacts">
     <div class="container">
       <h2 class="section__title airport-section-title">{t('Osnovne informacije', 'Quick Facts')}</h2>
@@ -232,7 +228,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
     </div>
   </section>
 
-  <!-- FROM AIRPORT TO CITY -->
   <section class="section" id="airport-to-city">
     <div class="container">
       <div class="direction-heading">
@@ -245,7 +240,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
       </div>
 
       <div class="transport-options-grid">
-        <!-- Shuttle Bus — arrival -->
         <div class="transport-option-card">
           <div class="transport-option-card__header">
             <div class="transport-option-card__icon" aria-hidden="true">
@@ -277,7 +271,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
           </ul>
         </div>
 
-        <!-- Taxi — arrival -->
         <div class="transport-option-card">
           <div class="transport-option-card__header">
             <div class="transport-option-card__icon" aria-hidden="true">
@@ -305,7 +298,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
           </ul>
         </div>
 
-        <!-- Rent-a-Car — arrival -->
         <div class="transport-option-card">
           <div class="transport-option-card__header">
             <div class="transport-option-card__icon" aria-hidden="true">
@@ -328,7 +320,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
     </div>
   </section>
 
-  <!-- FROM CITY TO AIRPORT -->
   <section class="section" id="city-to-airport">
     <div class="container">
       <div class="direction-heading">
@@ -341,7 +332,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
       </div>
 
       <div class="transport-options-grid">
-        <!-- Shuttle Bus — departure -->
         <div class="transport-option-card">
           <div class="transport-option-card__header">
             <div class="transport-option-card__icon" aria-hidden="true">
@@ -373,7 +363,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
           </ul>
         </div>
 
-        <!-- Taxi — departure -->
         <div class="transport-option-card">
           <div class="transport-option-card__header">
             <div class="transport-option-card__icon" aria-hidden="true">
@@ -401,7 +390,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
           </ul>
         </div>
 
-        <!-- Own car — departure -->
         <div class="transport-option-card">
           <div class="transport-option-card__header">
             <div class="transport-option-card__icon" aria-hidden="true">
@@ -443,7 +431,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
     </div>
   </section>
 
-  <!-- Shuttle Bus + Map -->
   <section class="section section--wide" id="airport">
     <div class="container">
       <h2 class="section__title airport-section-title" id="airport-shuttle-title">{t('Aerodromski shuttle autobus', 'Airport Shuttle Bus')}</h2>
@@ -451,7 +438,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
     </div>
   </section>
 
-  <!-- Airport Parking -->
   <section class="section" id="airport-parking">
     <div class="container">
       <h2 class="section__title airport-section-title">{t('Parking na aerodromu', 'Airport Parking')}</h2>
@@ -546,7 +532,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
     </div>
   </section>
 
-  <!-- Continue your journey - Internal links -->
   <section class="section" id="airport-continue">
     <div class="container">
       <h2 class="section__title airport-section-title">{t('Nastavite putovanje javnim prevozom', 'Continue your journey by public transport')}</h2>
@@ -579,7 +564,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
     </div>
   </section>
 
-  <!-- Useful Links -->
   <section class="section" id="airport-links">
     <div class="container">
       <h2 class="section__title airport-section-title">{t('Korisni linkovi', 'Useful Links')}</h2>
@@ -614,7 +598,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
     </div>
   </section>
 
-  <!-- Last Updated -->
   <div class="container">
     <p class="airport-last-updated">
       <i class="fa-solid fa-circle-check" aria-hidden="true"></i>

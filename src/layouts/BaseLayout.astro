@@ -10,7 +10,6 @@ import {
   withSiteUrl,
 } from '../lib/site-config';
 import '../styles/global.scss';
-// Self-hosted fonts — eliminates cross-origin request chains for Google Fonts and Font Awesome CDN
 import '@fontsource-variable/noto-sans';
 import '@fortawesome/fontawesome-free/css/fontawesome.min.css';
 import '@fortawesome/fontawesome-free/css/solid.min.css';
@@ -23,7 +22,7 @@ interface Props {
   canonicalPath: string;
   alternatePaths: Record<'bhs' | 'en' | 'default', string>;
   switchLanguagePath?: string;
-  pageStyles?: string; // optional page-specific stylesheet href
+  pageStyles?: string;
 }
 
 const { pageKey, locale, title, description, canonicalPath, alternatePaths, switchLanguagePath, pageStyles } = Astro.props;
@@ -48,7 +47,6 @@ const ogImage = new URL(
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Content Security Policy -->
     <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self' 'unsafe-inline' https://storage.ko-fi.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.tile.openstreetmap.org https://basemaps.cartocdn.com https://*.basemaps.cartocdn.com https://server.arcgisonline.com https://www.googletagmanager.com https://storage.ko-fi.com; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests;"
@@ -68,9 +66,6 @@ const ogImage = new URL(
     <meta property="og:site_name" content="BL Prevoz" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- Fonts and icons are self-hosted via @fontsource-variable and @fortawesome/fontawesome-free -->
-
-    <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href={withBase('assets/images/favicon/apple-touch-icon.png')} />
     <link rel="icon" type="image/png" sizes="32x32" href={withBase('assets/images/favicon/favicon-32x32.png')} />
     <link rel="icon" type="image/png" sizes="16x16" href={withBase('assets/images/favicon/favicon-16x16.png')} />
@@ -78,12 +73,11 @@ const ogImage = new URL(
 
     {pageStyles && <link rel="stylesheet" href={pageStyles} />}
 
-    <!-- Google tag (gtag.js) -->
     <script is:inline src="/scripts/analytics-consent-default.js"></script>
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-TH1G57KP0X"></script>
     <script is:inline src="/scripts/analytics-init.js"></script>
 
-    <!-- Theme init runs before body render to prevent flash -->
+    <!-- Load the saved theme before first paint. -->
     <script is:inline src="/scripts/theme-init.js"></script>
 
   </head>
@@ -102,7 +96,6 @@ const ogImage = new URL(
 
     <CookieConsent locale={locale} />
 
-    <!-- Global error handlers (replaces page-init.js) -->
     <script>
       window.addEventListener('error', (event) => {
         console.error('[Global Error]', {

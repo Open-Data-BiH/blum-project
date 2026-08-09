@@ -1,5 +1,4 @@
-// One file per route, fetched on demand: showing a route costs a few kB instead of
-// shipping all 21k points to every visitor.
+// Load route geometry on demand instead of sending all 21k points initially.
 
 import { withBase } from '../../core/utils';
 import type { RouteShape } from '../../../types/transit';
@@ -20,7 +19,6 @@ const fetchShape = async (routeId: string): Promise<RouteShape | null> => {
     }
 };
 
-/** Cached per route. */
 export const loadRouteShape = (routeId: string): Promise<RouteShape | null> => {
     const cached = cache.get(routeId);
     if (cached) {

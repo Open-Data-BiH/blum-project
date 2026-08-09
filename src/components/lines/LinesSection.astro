@@ -1,9 +1,5 @@
 ---
-/**
- * LinesSection — server-renders all line cards at build time.
- * Cards carry data-search-text, data-group and data-company so the
- * client-side lines-ui.ts can filter without any extra fetch.
- */
+// Server-rendered cards expose filter data for lines-ui.ts.
 
 import '../../styles/pages/_line-styles.scss';
 import { getLineDetailPath, type Locale } from '../../lib/site-config';
@@ -16,12 +12,9 @@ interface Props {
 
 const { lines, locale } = Astro.props;
 
-// Derive the sorted set of groups for the filter buttons
 const groups = [...new Set(lines.map((l) => l.group).filter(Boolean))].sort();
 const totalLines = lines.length;
 
-// Labels are rendered in BHS (default lang). Client-side i18n updates count
-// text via applyFilters(), but the initial label is baked in.
 const lang = locale;
 const isEnglish = lang === 'en';
 ---
@@ -84,7 +77,7 @@ const isEnglish = lang === 'en';
         const safeCompanyName = line.companyName ?? 'N/A';
         const nameBhs = typeof line.lineName === 'object' ? line.lineName.bhs : String(line.lineName);
         const nameEn = typeof line.lineName === 'object' ? line.lineName.en : String(line.lineName);
-        const hasTimetable = true; // urban always has timetable (LINE_CONFIG.urban.timetableFile)
+        const hasTimetable = true;
 
         return (
           <div

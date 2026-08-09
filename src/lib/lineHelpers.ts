@@ -1,4 +1,4 @@
-// Build-time helpers for operator display — shared between lines.astro and [lineId].astro
+// Build-time operator display helpers.
 
 const COMPANY_CLASS_MAP: Record<string, string> = {
     AUTOPREVOZ: 'autoprevoz-line',

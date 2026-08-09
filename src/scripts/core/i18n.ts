@@ -20,7 +20,6 @@ const getInitialLanguage = (): Language => {
 };
 let currentLang: Language = getInitialLanguage();
 
-// Helper for safe nested property access
 export const safeGet = <T = string>(obj: UnknownRecord | null | undefined, ...keys: string[]): T | null => {
     let cursor: unknown = obj;
 
@@ -80,7 +79,7 @@ export const applyTranslation = (lang: Language): void => {
     try {
         localStorage.setItem('selectedLanguage', lang);
     } catch {
-        // Ignore storage failures in private / restricted contexts.
+        // Storage may be unavailable in private browsing contexts.
     }
 
     safelyUpdateText('site-title', 'BL Prevoz');

@@ -11,7 +11,7 @@ export const initCookieConsent = (): void => {
         try {
             localStorage.setItem('analytics-consent', value);
         } catch {
-            // Ignore storage write failures.
+            // Storage may be unavailable.
         }
     };
 

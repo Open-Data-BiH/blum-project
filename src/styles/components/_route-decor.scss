@@ -1,0 +1,213 @@
+// Decorative transit-route graphics.
+// Geometry lives in src/lib/route-decor.ts, this file owns placement, palette
+// and motion. Every rule here is purely cosmetic: the graphics never take part
+// in layout and never receive pointer events.
+
+.route-decor {
+    position: absolute;
+    pointer-events: none;
+    line-height: 0;
+    opacity: var(--route-decor-opacity);
+}
+
+.route-decor__scene {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--route-decor-fill-x, 100%);
+    height: var(--route-decor-fill-y, 100%);
+    max-width: none;
+    // Routes are drawn past the viewBox so they keep bleeding off the section
+    // edges whatever the container aspect ratio is.
+    overflow: visible;
+    transform: translate(-50%, -50%);
+}
+
+.route-decor--dual .route-decor__scene--narrow {
+    display: none;
+}
+
+.route-decor__line {
+    fill: none;
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+}
+
+.route-decor__arrow {
+    fill: currentcolor;
+    stroke: currentcolor;
+    stroke-linejoin: round;
+    opacity: 0;
+    transform: scale(0.4);
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+}
+
+.route-decor__ring {
+    fill: currentcolor;
+    opacity: 0;
+    transform: scale(0.2);
+}
+
+.route-decor__pulse {
+    fill: none;
+    stroke: var(--route-decor-color-4);
+    stroke-linecap: round;
+    stroke-dasharray: 4 96;
+    stroke-dashoffset: 100;
+    opacity: 0;
+}
+
+@keyframes route-decor-draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes route-decor-pop {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes route-decor-glow {
+    to {
+        opacity: 0.8;
+    }
+}
+
+@keyframes route-decor-travel {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.route-decor.is-visible .route-decor__line {
+    animation: route-decor-draw var(--rd-duration, 2.2s) cubic-bezier(0.32, 0.06, 0.2, 1) var(--rd-delay, 0s) forwards;
+}
+
+.route-decor.is-visible .route-decor__arrow {
+    animation: route-decor-pop 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) var(--rd-arrow-delay, 0s) forwards;
+}
+
+.route-decor.is-visible .route-decor__ring {
+    animation: route-decor-pop 0.8s cubic-bezier(0.34, 1.4, 0.64, 1) var(--rd-delay, 0s) forwards;
+}
+
+.route-decor.is-visible .route-decor__pulse {
+    animation:
+        route-decor-glow 1.4s ease-out var(--rd-delay, 0s) forwards,
+        route-decor-travel 18s linear var(--rd-delay, 0s) infinite;
+}
+
+// Home hero: full-bleed graphic between the photo and the copy.
+.route-decor--hero {
+    inset: 0;
+    z-index: 3;
+    opacity: var(--route-decor-hero-opacity);
+    --route-decor-color-1: var(--route-decor-hero-color-1);
+    --route-decor-color-2: var(--route-decor-hero-color-2);
+    --route-decor-color-3: var(--route-decor-hero-color-3);
+    --route-decor-color-4: var(--route-decor-hero-color-4);
+    --route-decor-fill-x: 108%;
+}
+
+// Light sections: a corner accent anchored to the top right of the section.
+.route-decor--soft {
+    top: calc(var(--space-10) * -1);
+    right: -4%;
+    width: clamp(19rem, 40vw, 32rem);
+    aspect-ratio: 640 / 420;
+    z-index: 0;
+}
+
+// Opt-in wrapper for sections that host a decorative graphic.
+.section--decor {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.section--decor > .container {
+    position: relative;
+    z-index: 1;
+}
+
+// The hero grows taller as it narrows while the scene keeps its aspect ratio,
+// so the graphic is scaled up in steps. That pushes the corridor back out into
+// the margins instead of letting it drift across the copy.
+@media (max-width: 1399px) {
+    .route-decor--hero {
+        --route-decor-fill-x: 125%;
+        --route-decor-fill-y: 104%;
+    }
+}
+
+@media (max-width: 1199px) {
+    .route-decor--hero {
+        --route-decor-fill-x: 155%;
+        --route-decor-fill-y: 112%;
+    }
+}
+
+@media (max-width: 768px) {
+    .route-decor--dual .route-decor__scene--wide {
+        display: none;
+    }
+
+    .route-decor--dual .route-decor__scene--narrow {
+        display: block;
+    }
+
+    .route-decor--hero {
+        --route-decor-fill-x: 100%;
+        --route-decor-fill-y: 100%;
+        opacity: var(--route-decor-hero-opacity-mobile);
+    }
+
+    .route-decor--soft {
+        top: calc(var(--space-6) * -1);
+        right: -24%;
+        width: 21rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .route-decor__line,
+    .route-decor__arrow,
+    .route-decor__ring,
+    .route-decor__pulse {
+        animation: none !important;
+    }
+
+    .route-decor__line {
+        stroke-dashoffset: 0;
+    }
+
+    .route-decor__arrow,
+    .route-decor__ring {
+        opacity: 1;
+        transform: none;
+    }
+
+    .route-decor__pulse {
+        display: none;
+    }
+}
+
+// Without scripting the reveal never triggers, so show the finished graphic.
+@media (scripting: none) {
+    .route-decor__line {
+        stroke-dashoffset: 0;
+    }
+
+    .route-decor__arrow,
+    .route-decor__ring {
+        opacity: 1;
+        transform: none;
+    }
+}

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AirportMap from '../../components/AirportMap.astro';
+import RouteDecor from '../../components/RouteDecor.astro';
 import {
   addHashToPath,
   getAlternatePaths,
@@ -131,7 +132,8 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
 >
   <script is:inline type="application/ld+json" set:html={JSON.stringify(airportFaqSchema)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(airportShuttleSchema)} />
-  <section class="section" id="airport-overview">
+  <section class="section section--decor" id="airport-overview">
+    <RouteDecor preset="airportBanner" />
     <div class="container">
       <h1 class="section__title" id="airport-title">{t('Prevoz do Aerodroma Banja Luka', 'Getting to Banja Luka Airport')}</h1>
       <p class="airport-intro" id="airport-intro">

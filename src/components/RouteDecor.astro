@@ -1,0 +1,99 @@
+---
+import {
+  ROUTE_DECOR_PRESETS,
+  buildRouteDecorScene,
+  type RouteDecorPresetName,
+  type RouteDecorSceneRender,
+} from '../lib/route-decor';
+import '../styles/components/_route-decor.scss';
+
+interface Props {
+  preset: RouteDecorPresetName;
+  class?: string;
+}
+
+const { preset, class: className } = Astro.props;
+const config = ROUTE_DECOR_PRESETS[preset];
+
+const scenes: { key: 'wide' | 'narrow'; scene: RouteDecorSceneRender }[] = [
+  { key: 'wide', scene: buildRouteDecorScene(config.wide) },
+];
+if (config.narrow) {
+  scenes.push({ key: 'narrow', scene: buildRouteDecorScene(config.narrow) });
+}
+---
+
+<div
+  class:list={[
+    'route-decor',
+    `route-decor--${config.variant}`,
+    scenes.length > 1 && 'route-decor--dual',
+    className,
+  ]}
+  data-route-decor
+  aria-hidden="true"
+>
+  {scenes.map(({ key, scene }) => (
+    <svg
+      class:list={['route-decor__scene', `route-decor__scene--${key}`]}
+      viewBox={scene.viewBox}
+      preserveAspectRatio={scene.align}
+      xmlns="http://www.w3.org/2000/svg"
+      focusable="false"
+    >
+      {/* Already ordered by layer: targets sit under the routes they belong to. */}
+      {scene.items.map((item) =>
+        item.kind === 'band' ? (
+          <g
+            class="route-decor__band"
+            style={`--rd-delay:${item.delay}s;--rd-duration:${item.duration}s;--rd-arrow-delay:${item.arrowDelay}s;color:${item.stroke}`}
+          >
+            <path class="route-decor__line" d={item.d} stroke-width={item.width} pathLength="100" />
+            {item.arrow && <path class="route-decor__arrow" d={item.arrow} stroke-width={item.width * 0.4} />}
+          </g>
+        ) : item.kind === 'node' ? (
+          <g class="route-decor__node" transform={item.transform}>
+            {item.rings.map((ring) => (
+              <circle class="route-decor__ring" r={ring.r} style={`--rd-delay:${ring.delay}s;color:${ring.fill}`} />
+            ))}
+          </g>
+        ) : (
+          <path
+            class="route-decor__pulse"
+            d={item.d}
+            stroke-width={item.width}
+            pathLength="100"
+            style={`--rd-delay:${item.delay}s`}
+          />
+        ),
+      )}
+    </svg>
+  ))}
+</div>
+
+<script>
+  // Reveal each graphic once its section scrolls into view; decorative only, so
+  // reduced-motion visitors get the finished state without any animation.
+  const graphics = document.querySelectorAll<HTMLElement>('[data-route-decor]');
+
+  if (graphics.length > 0) {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+      graphics.forEach((graphic) => graphic.classList.add('is-visible'));
+    } else {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { rootMargin: '0px 0px -8% 0px', threshold: 0.01 },
+      );
+      graphics.forEach((graphic) => observer.observe(graphic));
+    }
+  }
+</script>

@@ -152,6 +152,21 @@
 
     --color-accessible: #0a7c3e;
     --color-not-accessible: #6c757d;
+
+    /* Decorative route graphics. */
+    --route-decor-color-1: var(--color-primary);
+    --route-decor-color-2: var(--color-accent-light);
+    --route-decor-color-3: var(--color-warning);
+    --route-decor-color-4: var(--color-primary-dark);
+    --route-decor-opacity: 0.24;
+
+    /* Bolder palette for the graphic layered over the dark hero photo. */
+    --route-decor-hero-color-1: #1e7fac;
+    --route-decor-hero-color-2: #6ec4f2;
+    --route-decor-hero-color-3: #f0a33e;
+    --route-decor-hero-color-4: #eaf5fd;
+    --route-decor-hero-opacity: 0.82;
+    --route-decor-hero-opacity-mobile: 0.68;
 }
 
 
@@ -200,6 +215,16 @@
 
     --color-light: var(--surface-2);
     --color-light-gray: #2a313c;
+
+    /* The themed blues collapse into one another on dark, so the decorative
+       palette is set explicitly to keep the bands readable as separate lines. */
+    --route-decor-color-1: #2f78b6;
+    --route-decor-color-2: #6ba8d8;
+    --route-decor-color-3: #e0a45c;
+    --route-decor-color-4: #9ac6ea;
+    --route-decor-opacity: 0.26;
+    --route-decor-hero-opacity: 0.74;
+    --route-decor-hero-opacity-mobile: 0.6;
 
     --color-alert-info: #64b5f6;
     --color-alert-warning: #ffb74d;

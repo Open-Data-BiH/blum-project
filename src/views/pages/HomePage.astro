@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import HomeMap from '../../components/map/HomeMap.astro';
 import HomeUpdatesPreview from '../../components/HomeUpdatesPreview.astro';
+import RouteDecor from '../../components/RouteDecor.astro';
 import {
   addHashToPath,
   getAlternatePaths,
@@ -36,6 +37,7 @@ const airportPath = withBase(getPagePath('airport', locale));
   switchLanguagePath={getPagePath('home', getSwitchLocale(locale))}
 >
   <section class="hero" style={`--hero-network-url: url("${heroNetworkBackgroundUrl}")`}>
+    <RouteDecor preset="homeHero" />
     <div class="container hero__inner">
       <h1 id="hero-title">BL Prevoz</h1>
       <p class="hero__subtitle" id="hero-subtitle">

@@ -1,10 +1,8 @@
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 
 .skip-link {
     position: absolute;
@@ -39,7 +37,6 @@
     border-width: 0;
 }
 
-
 body {
     font-family: var(--font-family-primary);
     line-height: var(--line-height-normal);
@@ -51,7 +48,6 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
 
 a {
     color: var(--link-color);
@@ -68,7 +64,6 @@ a:focus-visible {
     outline-offset: 2px;
     border-radius: var(--radius-sm);
 }
-
 
 h1,
 h2,
@@ -107,7 +102,6 @@ h6 {
     font-size: var(--font-size-base);
 }
 
-
 p {
     margin-bottom: var(--space-4);
     line-height: var(--line-height-relaxed);
@@ -135,7 +129,6 @@ samp {
     font-size: var(--font-size-sm);
 }
 
-
 ul,
 ol {
     margin-bottom: var(--space-4);
@@ -145,7 +138,6 @@ ol {
 li {
     margin-bottom: var(--space-2);
 }
-
 
 table {
     width: 100%;
@@ -173,7 +165,6 @@ td {
 tr:last-child td {
     border-bottom: none;
 }
-
 
 input,
 select,
@@ -229,7 +220,6 @@ button:disabled {
     cursor: not-allowed;
 }
 
-
 img {
     max-width: 100%;
     height: auto;
@@ -240,7 +230,6 @@ svg {
     max-width: 100%;
     height: auto;
 }
-
 
 .section {
     background-color: var(--bg);
@@ -270,7 +259,6 @@ svg {
     text-align: center;
 }
 
-
 @media (max-width: 768px) {
     h1 {
         font-size: var(--font-size-3xl);
@@ -296,7 +284,6 @@ svg {
         padding: var(--space-10) 0;
     }
 }
-
 
 @media (prefers-reduced-motion: reduce) {
     *,

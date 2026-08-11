@@ -1,5 +1,3 @@
-
-
 :root {
     --company-autoprevoz: #ed1d22;
     --company-pavlovic: #ff9f43;
@@ -7,7 +5,6 @@
     --company-aldemo: #e05e5e;
     --company-rale: #7fd9e0;
 }
-
 
 .lines-info-card {
     margin-bottom: var(--space-5);
@@ -94,7 +91,6 @@
     line-height: var(--line-height-relaxed);
     color: var(--text-light);
 }
-
 
 .map-context-card {
     margin-top: var(--space-4);
@@ -214,7 +210,6 @@
         padding: var(--space-3);
     }
 }
-
 
 /* Sticky controls require overflow-visible ancestors. */
 #lines,
@@ -382,7 +377,6 @@
     white-space: nowrap;
 }
 
-
 .lines-empty-state {
     text-align: center;
     padding: var(--space-10) var(--space-4);
@@ -403,7 +397,6 @@
 .lines-empty-state .btn {
     margin-top: var(--space-2);
 }
-
 
 .line-card {
     background: var(--surface-2);
@@ -471,7 +464,6 @@
     gap: var(--space-2);
     flex-shrink: 0;
 }
-
 
 .badge {
     display: inline-flex;
@@ -546,7 +538,6 @@ a.badge--line-number-link {
     border-radius: var(--radius-full);
 }
 
-
 .line-card__meta {
     display: flex;
     flex-wrap: wrap;
@@ -567,7 +558,6 @@ a.badge--line-number-link {
     width: 14px;
     text-align: center;
 }
-
 
 .line-card__schedule {
     display: flex;
@@ -602,7 +592,6 @@ a.badge--line-number-link {
     color: var(--text-primary);
     font-weight: var(--font-weight-semibold);
 }
-
 
 .line-card__actions {
     display: flex;
@@ -692,7 +681,6 @@ a.badge--line-number-link {
     outline-offset: 2px;
 }
 
-
 .line-card__details {
     margin-top: var(--space-4);
     padding-top: var(--space-4);
@@ -732,7 +720,6 @@ a.badge--line-number-link {
 .detail-item__value--not-accessible {
     color: var(--text-secondary);
 }
-
 
 @media (max-width: 767px) {
     .lines-controls {
@@ -823,7 +810,6 @@ a.badge--line-number-link {
     }
 }
 
-
 [data-theme='dark'] .lines-search__input:focus {
     box-shadow: 0 0 0 3px rgba(43, 110, 168, 0.2);
 }
@@ -843,7 +829,6 @@ a.badge--line-number-link {
 [data-theme='dark'] .badge--accessible {
     background: #0a9c4e;
 }
-
 
 /* Suburban lines have no timetable. */
 #suburban-lines .timetable-btn {

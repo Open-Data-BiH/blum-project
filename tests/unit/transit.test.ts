@@ -133,13 +133,14 @@ describe('transit lookups', () => {
         expect(pickRouteForStop(index, '19', first.stops[0].stopId)).toBe(first.id);
     });
 
-    it('offers no route for a stop that no variant of the line lists', () => {
-        // The sources disagree: "Bulevar" carries line 19, but no variant calls there.
+    it('honors stops added to a route by transit overrides', () => {
         const bulevar = index.stopById.get('st-167');
         expect(bulevar?.name).toBe('Bulevar');
         expect(bulevar?.lines).toContain('19');
-        expect(pickRouteForStop(index, '19', 'st-167')).toBeNull();
+        expect(pickRouteForStop(index, '19', 'st-167')).toBe('19-sargovac-centar');
+    });
 
+    it('offers no route for a stop that no variant of the line lists', () => {
         expect(pickRouteForStop(index, '19', 'st-does-not-exist')).toBeNull();
         expect(pickRouteForStop(index, '17', 'st-605')).toBeNull();
     });

@@ -25,6 +25,10 @@ export interface RouteDecorBand {
     arrow?: number;
     /** Shortens the band at its end, used to stagger arrowheads of parallel lanes. */
     trimEnd?: number;
+    /** Slow travelling highlight running along this band once it has been drawn. */
+    pulse?: boolean;
+    /** Extra seconds before the highlight starts, used to stagger parallel lanes. */
+    pulseDelay?: number;
 }
 
 export interface RouteDecorShape {
@@ -36,8 +40,6 @@ export interface RouteDecorShape {
     bands: readonly RouteDecorBand[];
     /** Paint order across the whole scene; higher paints later. */
     layer?: number;
-    /** Slow travelling highlight along the last band once the route is drawn. */
-    pulse?: boolean;
     /** Reveal timing in seconds. */
     delay?: number;
     duration?: number;
@@ -343,21 +345,19 @@ export const buildRouteDecorScene = (scene: RouteDecorScene): RouteDecorSceneRen
                     arrowDelay: round(delay + duration * 0.82),
                 },
             });
-        }
 
-        const core = shape.bands[shape.bands.length - 1];
-        if (shape.pulse && core) {
-            const geometry = buildBandGeometry(shape.points, shape.radius, core.offset ?? 0, core.trimEnd ?? 0);
-            ordered.push({
-                // Highlights ride on top of their own route.
-                layer: layer + 0.5,
-                item: {
-                    kind: 'pulse',
-                    d: geometry.d,
-                    width: round(core.width * PULSE_WIDTH_RATIO),
-                    delay: round(delay + duration),
-                },
-            });
+            if (band.pulse) {
+                ordered.push({
+                    // Highlights ride on top of their own route.
+                    layer: layer + 0.5,
+                    item: {
+                        kind: 'pulse',
+                        d: geometry.d,
+                        width: round(band.width * PULSE_WIDTH_RATIO),
+                        delay: round(delay + duration + (band.pulseDelay ?? 0)),
+                    },
+                });
+            }
         }
     }
 
@@ -397,9 +397,8 @@ export const ROUTE_DECOR_PRESETS: Record<RouteDecorPresetName, RouteDecorPreset>
                     bands: [
                         { color: 1, width: 30, offset: 0 },
                         { color: 2, width: 30, offset: -34 },
-                        { color: 3, width: 18, offset: -34 },
+                        { color: 3, width: 18, offset: -34, pulse: true },
                     ],
-                    pulse: true,
                     delay: 0.1,
                     duration: 2.8,
                 },
@@ -462,9 +461,8 @@ export const ROUTE_DECOR_PRESETS: Record<RouteDecorPresetName, RouteDecorPreset>
                     bands: [
                         { color: 1, width: 24, offset: 0 },
                         { color: 2, width: 24, offset: -28 },
-                        { color: 3, width: 14, offset: -28 },
+                        { color: 3, width: 14, offset: -28, pulse: true },
                     ],
-                    pulse: true,
                     delay: 0.1,
                     duration: 2.6,
                 },
@@ -521,11 +519,10 @@ export const ROUTE_DECOR_PRESETS: Record<RouteDecorPresetName, RouteDecorPreset>
                     radius: 58,
                     layer: 1,
                     bands: [
-                        { color: 1, width: 26, offset: 0, trimEnd: 78 },
-                        { color: 2, width: 26, offset: -30 },
-                        { color: 3, width: 15, offset: -30, arrow: 34 },
+                        { color: 1, width: 26, offset: 0, trimEnd: 78, pulse: true, pulseDelay: 3.4 },
+                        { color: 2, width: 26, offset: -40 },
+                        { color: 3, width: 15, offset: -40, arrow: 34, pulse: true },
                     ],
-                    pulse: true,
                     delay: 0.1,
                     duration: 2.4,
                 },
@@ -540,6 +537,19 @@ export const ROUTE_DECOR_PRESETS: Record<RouteDecorPresetName, RouteDecorPreset>
                         { color: 4, r: 12 },
                     ],
                     delay: 0.3,
+                },
+                {
+                    // Terminus of the inner lane, capping its trimmed end at
+                    // 300 + 78. Drawn over the routes, and kept inside the lane
+                    // channel so it never reaches the lane running alongside.
+                    at: [378, 286],
+                    layer: 2,
+                    rings: [
+                        { color: 1, r: 24 },
+                        { color: 4, r: 14 },
+                        { color: 1, r: 6 },
+                    ],
+                    delay: 2.4,
                 },
             ],
         },

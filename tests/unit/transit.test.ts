@@ -7,6 +7,7 @@ import {
     getLineColor,
     getLineRoutes,
     getRouteStops,
+    getTerminusStopIds,
     hasRouteData,
     pickRouteForStop,
 } from '../../src/lib/transit';
@@ -87,6 +88,40 @@ describe('transit lookups', () => {
 
         const stops = getRouteStops(index, route!);
         expect(stops.map((stop) => stop.position)).toEqual(stops.map((_stop, i) => i + 1));
+    });
+
+    it('identifies termini from route endpoints, not every turnaround role', () => {
+        const terminusStopIds = getTerminusStopIds(index);
+
+        transit.routes.forEach((route) => {
+            const stops = getRouteStops(index, route);
+            if (stops.length === 0) {
+                return;
+            }
+
+            expect(terminusStopIds).toContain(stops[0].stop.id);
+            expect(terminusStopIds).toContain(stops[stops.length - 1].stop.id);
+        });
+
+        const referenceRoute = transit.routes.find((route) => getRouteStops(index, route).length >= 3)!;
+        const [first, turnaround, last] = getRouteStops(index, referenceRoute);
+        const endpointOnlyIndex = createTransitIndex({
+            ...transit,
+            routes: [
+                {
+                    ...referenceRoute,
+                    stops: [
+                        { ...referenceRoute.stops[0], stopId: first.stop.id, role: 'start' },
+                        // This source role looks like an endpoint, but its position is not one.
+                        { ...referenceRoute.stops[1], stopId: turnaround.stop.id, role: 'end' },
+                        { ...referenceRoute.stops[2], stopId: last.stop.id, role: 'end' },
+                    ],
+                },
+            ],
+        });
+
+        expect(getTerminusStopIds(endpointOnlyIndex)).toEqual(new Set([first.stop.id, last.stop.id]));
+        expect(getTerminusStopIds(endpointOnlyIndex)).not.toContain(turnaround.stop.id);
     });
 
     it('picks the direction variant that actually calls at the stop', () => {

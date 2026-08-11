@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TransportMap from '../../components/map/TransportMap.astro';
+import { getAlternatePaths, getLocalizedMeta, getPagePath, getSwitchLocale, type Locale } from '../../lib/site-config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const meta = getLocalizedMeta('map', locale);
+---
+
+<BaseLayout
+  pageKey="map"
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonicalPath={getPagePath('map', locale)}
+  alternatePaths={getAlternatePaths('map')}
+  switchLanguagePath={getPagePath('map', getSwitchLocale(locale))}
+  layout="app"
+>
+  <h1 class="sr-only">
+    {locale === 'en'
+      ? 'Interactive public transport map of Banja Luka'
+      : 'Interaktivna mapa javnog prevoza u Banjoj Luci'}
+  </h1>
+
+  <TransportMap locale={locale} />
+</BaseLayout>

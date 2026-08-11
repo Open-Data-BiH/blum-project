@@ -8,6 +8,26 @@
     flex: 1 0 auto;
 }
 
+/* Application pages own the viewport: the header stays, and the content below it fills
+   exactly what is left, so a full-screen map never scrolls the page under itself. */
+body[data-layout='app'] {
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
+.page-container--app {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.page-container--app .content-wrap {
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
 /* Reserve space for asynchronously rendered header and footer. */
 #header {
     min-height: calc(5rem + 1px);

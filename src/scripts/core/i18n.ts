@@ -90,6 +90,7 @@ export const applyTranslation = (lang: Language): void => {
             : 'Overview of public transport lines in Banja Luka',
     );
 
+    safelyUpdateText('nav-home-desktop', t.header.nav.home);
     safelyUpdateText('nav-map-desktop', t.header.nav.map);
     safelyUpdateText('nav-lines-desktop', t.header.nav.lines);
     safelyUpdateText('nav-prices-desktop', t.header.nav.prices ?? (lang === 'bhs' ? 'Karte' : 'Tickets'));

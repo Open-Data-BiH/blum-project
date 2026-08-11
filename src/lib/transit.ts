@@ -73,6 +73,26 @@ export const getRouteStops = (index: TransitIndex, route: TransitRoute): Resolve
     return resolved;
 };
 
+/**
+ * Stop ids used as an endpoint by at least one published route. `role` is deliberately
+ * not used here: the source also puts start/end roles on turnaround points mid-route.
+ */
+export const getTerminusStopIds = (index: TransitIndex): Set<string> => {
+    const terminusStopIds = new Set<string>();
+
+    index.network.routes.forEach((route) => {
+        const stops = getRouteStops(index, route);
+        if (stops.length === 0) {
+            return;
+        }
+
+        terminusStopIds.add(stops[0].stop.id);
+        terminusStopIds.add(stops[stops.length - 1].stop.id);
+    });
+
+    return terminusStopIds;
+};
+
 /** "Šargovac → Centar (Vidovdanska)". */
 export const formatRelation = (route: TransitRoute): string => {
     if (route.origin && route.destination) {

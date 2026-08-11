@@ -19,7 +19,8 @@ const bhsHref = locale === 'bhs' ? currentPath : switcherHref;
 const enHref = locale === 'en' ? currentPath : switcherHref;
 
 const navLinks: { key: PageKey; href: string; id: string }[] = [
-  { key: 'home',    href: localizedPath('home'),    id: 'nav-map-desktop' },
+  { key: 'home',    href: localizedPath('home'),    id: 'nav-home-desktop' },
+  { key: 'map',     href: localizedPath('map'),     id: 'nav-map-desktop' },
   { key: 'lines',   href: localizedPath('lines'),   id: 'nav-lines-desktop' },
   { key: 'pricing', href: localizedPath('pricing'), id: 'nav-prices-desktop' },
   { key: 'updates', href: localizedPath('updates'), id: 'nav-updates-desktop' },
@@ -30,7 +31,8 @@ const navLinks: { key: PageKey; href: string; id: string }[] = [
 
 const navLabels: Record<PageKey, string> = locale === 'en'
   ? {
-      home: 'Map',
+      home: 'Home',
+      map: 'Map',
       lines: 'Lines',
       pricing: 'Tickets',
       updates: 'Updates',
@@ -41,7 +43,8 @@ const navLabels: Record<PageKey, string> = locale === 'en'
       about: 'About',
     }
   : {
-      home: 'Mapa',
+      home: 'Početna',
+      map: 'Mapa',
       lines: 'Linije',
       pricing: 'Karte',
       updates: 'Obavještenja',

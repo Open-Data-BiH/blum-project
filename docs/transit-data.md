@@ -1,7 +1,8 @@
 # Transit network data
 
 `public/data/transport/routes/transit_network.json` is the single dataset behind the
-stop markers on the homepage map, the route view, and the route map on line pages.
+stop markers on the homepage map, the full-screen map page (`/mapa/`), the route view,
+and the route map on line pages.
 
 Route geometry lives beside it in `public/data/transport/routes/shapes/<route id>.json`,
 one file per direction, fetched only when that route is shown.

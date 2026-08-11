@@ -120,6 +120,20 @@ describe('route overlay', () => {
         expect(icon.html).toContain(`--route-color:${color}`);
     });
 
+    it('uses the terminus marker treatment for route endpoints only', () => {
+        const fake = createFakeLeaflet();
+        overlayFor(fake).show(ROUTE_ID);
+
+        const route = index.routeById.get(ROUTE_ID)!;
+        const firstIcon = fake.markers[0].options.icon as { html: string };
+        const middleIcon = fake.markers[1].options.icon as { html: string };
+        const lastIcon = fake.markers[route.stops.length - 1].options.icon as { html: string };
+
+        expect(firstIcon.html).toContain('route-stop-marker__pin--terminus');
+        expect(middleIcon.html).not.toContain('route-stop-marker__pin--terminus');
+        expect(lastIcon.html).toContain('route-stop-marker__pin--terminus');
+    });
+
     it('marks the map while a route is shown and cleans up on clear', async () => {
         const fake = createFakeLeaflet();
         const overlay = overlayFor(fake);

@@ -7,6 +7,7 @@ export default defineConfig({
     output: 'static',
     trailingSlash: 'always',
     redirects: {
+        '/map': '/mapa',
         '/lines': '/linije',
         '/pricing': '/cjenovnik',
         '/airport': '/aerodrom',

@@ -1,0 +1,420 @@
+// The one overlay of the map page. It browses lines, searches stops, and shows whatever is
+// selected — a docked panel on desktop, a bottom sheet on phones. It renders and emits;
+// transport-map.ts decides what the map does with the selection.
+
+import { getCurrentLanguage, langText } from '../../core/i18n';
+import { debounce, escapeHtml, normalizeForSearch, withBase } from '../../core/utils';
+import { getLineDetailPath } from '../../../lib/site-config';
+import {
+    compareLineIds,
+    formatRelation,
+    getLineColor,
+    getLineRoutes,
+    getRouteStops,
+    pickRouteForStop,
+    type TransitIndex,
+} from '../../../lib/transit';
+import type { TransitStop } from '../../../types/transit';
+import { lineAccentStyle, type FocusOffset } from './map-core';
+
+const DESKTOP_QUERY = '(min-width: 900px)';
+const MAX_STOP_RESULTS = 8;
+/** Keeps the fitted route clear of the panel and the floating controls. */
+const FIT_MARGIN = 28;
+
+export interface MapPanelOptions {
+    root: HTMLElement;
+    index: TransitIndex;
+    onRouteSelect: (routeId: string) => void;
+    onRouteClear: () => void;
+    onStopFocus: (stop: TransitStop) => void;
+}
+
+export interface MapPanel {
+    showStop: (stop: TransitStop) => void;
+    showBrowse: () => void;
+    reset: () => void;
+    getFitPadding: () => { topLeft: [number, number]; bottomRight: [number, number] };
+    /** How far to move a focused marker so the panel does not cover it. */
+    getFocusOffset: () => FocusOffset;
+}
+
+export const createMapPanel = ({
+    root,
+    index,
+    onRouteSelect,
+    onRouteClear,
+    onStopFocus,
+}: MapPanelOptions): MapPanel => {
+    const panel = root.querySelector<HTMLElement>('[data-map-panel]');
+    const trigger = root.querySelector<HTMLButtonElement>('[data-panel-open]');
+    const body = root.querySelector<HTMLElement>('[data-panel-body]');
+    const browseView = root.querySelector<HTMLElement>('[data-view="browse"]');
+    const detailView = root.querySelector<HTMLElement>('[data-view="detail"]');
+    const searchInput = root.querySelector<HTMLInputElement>('[data-map-search]');
+    const lineGroup = root.querySelector<HTMLElement>('[data-line-group]');
+    const stopGroup = root.querySelector<HTMLElement>('[data-stop-group]');
+    const stopList = root.querySelector<HTMLElement>('[data-stop-list]');
+    const emptyMessage = root.querySelector<HTMLElement>('[data-search-empty]');
+
+    if (!panel || !body || !browseView || !detailView) {
+        throw new Error('The map panel markup is incomplete');
+    }
+
+    const lineButtons = Array.from(lineGroup?.querySelectorAll<HTMLElement>('[data-search]') ?? []);
+    // Normalised once: the same 392 stops are searched on every keystroke.
+    const searchableStops = index.network.stops.map((stop) => ({
+        stop,
+        text: normalizeForSearch(`${stop.name} ${stop.street ?? ''}`),
+    }));
+
+    const desktopQuery = window.matchMedia(DESKTOP_QUERY);
+    let isOpen = desktopQuery.matches;
+
+    const lineDetailHref = (lineId: string): string =>
+        withBase(getLineDetailPath(getCurrentLanguage() === 'en' ? 'en' : 'bhs', lineId));
+
+    // Both classes, because the resting state differs per breakpoint: the sheet is closed
+    // until asked for, the docked panel is open until dismissed.
+    const setOpen = (next: boolean): void => {
+        isOpen = next;
+        root.classList.toggle('is-panel-open', next);
+        root.classList.toggle('is-panel-closed', !next);
+        trigger?.setAttribute('aria-expanded', String(next));
+    };
+
+    // The floating map controls sit above the sheet, whose height follows its content.
+    const trackSheetHeight = (): void =>
+        root.style.setProperty('--map-sheet-height', `${Math.round(panel.getBoundingClientRect().height)}px`);
+
+    const focusDetailTitle = (): void => {
+        detailView.querySelector<HTMLElement>('[data-detail-title]')?.focus({ preventScroll: true });
+    };
+
+    const setView = (view: 'browse' | 'detail'): void => {
+        browseView.hidden = view !== 'browse';
+        detailView.hidden = view !== 'detail';
+        body.scrollTop = 0;
+    };
+
+    const showBrowse = (): void => {
+        detailView.replaceChildren();
+        setView('browse');
+    };
+
+    const renderStopResults = (stops: TransitStop[]): void => {
+        if (!stopList) {
+            return;
+        }
+
+        stopList.replaceChildren(
+            ...stops.map((stop) => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'map-stop';
+                button.dataset.stopId = stop.id;
+
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-bus-simple map-stop__icon';
+                icon.setAttribute('aria-hidden', 'true');
+
+                const text = document.createElement('span');
+                text.className = 'map-stop__text';
+
+                const name = document.createElement('span');
+                name.className = 'map-stop__name';
+                name.textContent = stop.name;
+                text.appendChild(name);
+
+                const details = [stop.street, [...stop.lines].sort(compareLineIds).join(', ')].filter(Boolean);
+                if (details.length > 0) {
+                    const meta = document.createElement('span');
+                    meta.className = 'map-stop__meta';
+                    meta.textContent = details.join(' · ');
+                    text.appendChild(meta);
+                }
+
+                button.append(icon, text);
+                return button;
+            }),
+        );
+    };
+
+    const applySearch = (rawQuery: string): void => {
+        const query = normalizeForSearch(rawQuery);
+
+        let visibleLines = 0;
+        lineButtons.forEach((button) => {
+            const matches = query === '' || (button.dataset.search ?? '').includes(query);
+            button.hidden = !matches;
+            if (matches) {
+                visibleLines += 1;
+            }
+        });
+        if (lineGroup) {
+            lineGroup.hidden = visibleLines === 0;
+        }
+
+        const matchedStops =
+            query === ''
+                ? []
+                : searchableStops
+                      .filter((entry) => entry.text.includes(query))
+                      .slice(0, MAX_STOP_RESULTS)
+                      .map((entry) => entry.stop);
+
+        renderStopResults(matchedStops);
+        if (stopGroup) {
+            stopGroup.hidden = matchedStops.length === 0;
+        }
+        if (emptyMessage) {
+            emptyMessage.hidden = visibleLines > 0 || matchedStops.length > 0;
+        }
+    };
+
+    const renderLineBadges = (lineIds: string[], stopId: string | null): string =>
+        lineIds
+            .map((lineId) => {
+                const style = lineAccentStyle(getLineColor(index, lineId));
+                const routeId = stopId ? pickRouteForStop(index, lineId, stopId) : null;
+                const label = escapeHtml(lineId);
+
+                // Without a variant that calls here, the line page is the honest destination.
+                if (!routeId) {
+                    const title = escapeHtml(
+                        langText(`Otvori stranicu linije ${lineId}`, `Open the page for line ${lineId}`),
+                    );
+                    return `<a class="map-badge" href="${escapeHtml(lineDetailHref(lineId))}" style="${style}" title="${title}" aria-label="${title}">${label}</a>`;
+                }
+
+                const title = escapeHtml(
+                    langText(`Prikaži trasu linije ${lineId}`, `Show the route of line ${lineId}`),
+                );
+                return `<button type="button" class="map-badge" data-route-id="${escapeHtml(routeId)}" style="${style}" title="${title}" aria-label="${title}">${label}</button>`;
+            })
+            .join('');
+
+    const backButton = (): string =>
+        `<button type="button" class="map-panel__back" data-panel-back>
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+            ${escapeHtml(langText('Sve linije', 'All lines'))}
+        </button>`;
+
+    const showStop = (stop: TransitStop): void => {
+        // A selected network stop belongs to the base stop layer. Drop any route overlay
+        // first so its dimming rule cannot hide the selected marker state.
+        onRouteClear();
+        const lineIds = [...stop.lines].sort(compareLineIds);
+
+        detailView.innerHTML = `
+            ${backButton()}
+            <p class="map-detail__eyebrow">${escapeHtml(langText('Autobusko stajalište', 'Bus stop'))}</p>
+            <h2 class="map-detail__title" tabindex="-1" data-detail-title>${escapeHtml(stop.name)}</h2>
+            ${stop.street ? `<p class="map-detail__meta">${escapeHtml(stop.street)}</p>` : ''}
+            ${
+                lineIds.length > 0
+                    ? `<p class="map-detail__label">${escapeHtml(langText('Linije na ovom stajalištu', 'Lines at this stop'))}</p>
+                       <div class="map-detail__badges">${renderLineBadges(lineIds, stop.id)}</div>
+                       <p class="map-detail__hint">${escapeHtml(langText('Izaberite liniju za prikaz trase.', 'Pick a line to draw its route.'))}</p>`
+                    : ''
+            }
+        `;
+
+        setOpen(true);
+        setView('detail');
+        focusDetailTitle();
+    };
+
+    const showRoute = (routeId: string): void => {
+        const route = index.routeById.get(routeId);
+        if (!route) {
+            return;
+        }
+
+        const variants = getLineRoutes(index, route.lineId);
+        const stops = getRouteStops(index, route);
+        const color = getLineColor(index, route.lineId);
+
+        const directions =
+            variants.length > 1
+                ? `<div class="map-detail__directions" role="group" aria-label="${escapeHtml(langText('Smjerovi linije', 'Line directions'))}">
+                    ${variants
+                        .map((variant, position) => {
+                            const isActive = variant.id === route.id;
+                            // Line 14 runs the same relation both ways.
+                            const ambiguous = variants.some(
+                                (other) => other.id !== variant.id && formatRelation(other) === formatRelation(variant),
+                            );
+                            const label = ambiguous
+                                ? `${langText('Smjer', 'Direction')} ${position + 1}: ${formatRelation(variant)}`
+                                : formatRelation(variant);
+                            return `<button type="button" class="map-direction${isActive ? ' is-active' : ''}" data-route-id="${escapeHtml(variant.id)}" aria-pressed="${isActive}">${escapeHtml(label)}</button>`;
+                        })
+                        .join('')}
+                   </div>`
+                : '';
+
+        // Explain why stops are listed without a road path.
+        const pathNote = route.hasShape
+            ? ''
+            : `<p class="map-detail__note">${escapeHtml(
+                  langText(
+                      'Trasa puta nije dostupna — prikazana su stajališta u redoslijedu vožnje.',
+                      'The road path is unavailable — stops are shown in travel order.',
+                  ),
+              )}</p>`;
+
+        detailView.innerHTML = `
+            ${backButton()}
+            <div class="map-detail__head" style="${lineAccentStyle(color)}">
+                <span class="map-badge map-badge--static">${escapeHtml(route.lineId)}</span>
+                <h2 class="map-detail__title" tabindex="-1" data-detail-title>${escapeHtml(formatRelation(route))}</h2>
+            </div>
+            <p class="map-detail__meta">${escapeHtml(langText(`${stops.length} stajališta`, `${stops.length} stops`))}</p>
+            ${pathNote}
+            ${directions}
+            <ol class="map-route-stops" style="${lineAccentStyle(color)}">
+                ${stops
+                    .map(
+                        ({ stop }) =>
+                            `<li><button type="button" class="map-route-stops__item" data-stop-id="${escapeHtml(stop.id)}">${escapeHtml(stop.name)}</button></li>`,
+                    )
+                    .join('')}
+            </ol>
+            <a class="map-detail__link" href="${escapeHtml(lineDetailHref(route.lineId))}">
+                <i class="fas fa-clock" aria-hidden="true"></i>
+                ${escapeHtml(langText(`Red vožnje linije ${route.lineId}`, `Timetable for line ${route.lineId}`))}
+            </a>
+        `;
+
+        setOpen(true);
+        setView('detail');
+        focusDetailTitle();
+        onRouteSelect(route.id);
+    };
+
+    const reset = (): void => {
+        if (searchInput) {
+            searchInput.value = '';
+        }
+        applySearch('');
+        showBrowse();
+        onRouteClear();
+        if (!desktopQuery.matches) {
+            setOpen(false);
+        }
+    };
+
+    root.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target : null;
+        if (!target) {
+            return;
+        }
+
+        if (target.closest('[data-panel-open]')) {
+            setOpen(true);
+            searchInput?.focus();
+            return;
+        }
+
+        if (target.closest('[data-panel-close]')) {
+            setOpen(false);
+            trigger?.focus();
+            return;
+        }
+
+        if (target.closest('[data-panel-back]')) {
+            showBrowse();
+            searchInput?.focus();
+            return;
+        }
+
+        const routeTarget = target.closest<HTMLElement>('[data-route-id]');
+        if (routeTarget?.dataset.routeId) {
+            event.preventDefault();
+            showRoute(routeTarget.dataset.routeId);
+            return;
+        }
+
+        const stopTarget = target.closest<HTMLElement>('[data-stop-id]');
+        if (stopTarget?.dataset.stopId) {
+            const stop = index.stopById.get(stopTarget.dataset.stopId);
+            if (stop) {
+                showStop(stop);
+                onStopFocus(stop);
+            }
+        }
+    });
+
+    const search = debounce(() => applySearch(searchInput?.value ?? ''), 120);
+    const resumeSearch = (): void => {
+        // The input stays visible while a stop detail is open. Returning to the browse view
+        // here makes a new query useful immediately instead of filtering a hidden list.
+        if (!detailView.hidden) {
+            showBrowse();
+        }
+        search();
+    };
+
+    searchInput?.addEventListener('input', resumeSearch);
+    // Browser-provided clear controls on search inputs can emit `search` without `input`.
+    searchInput?.addEventListener('search', resumeSearch);
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') {
+            return;
+        }
+        if (!detailView.hidden) {
+            showBrowse();
+            searchInput?.focus();
+        } else if (isOpen && !desktopQuery.matches) {
+            setOpen(false);
+            trigger?.focus();
+        }
+    });
+
+    // The panel is part of the layout on desktop and an overlay on phones, so the default
+    // state follows the breakpoint rather than whatever the reader last did.
+    desktopQuery.addEventListener('change', (event) => setOpen(event.matches));
+
+    if (typeof ResizeObserver !== 'undefined') {
+        new ResizeObserver(trackSheetHeight).observe(panel);
+    }
+
+    setOpen(isOpen);
+    trackSheetHeight();
+
+    return {
+        showStop,
+        showBrowse,
+        reset,
+        getFitPadding: () => {
+            if (!isOpen) {
+                return { topLeft: [FIT_MARGIN, FIT_MARGIN], bottomRight: [FIT_MARGIN, FIT_MARGIN] };
+            }
+
+            const rect = panel.getBoundingClientRect();
+            return desktopQuery.matches
+                ? {
+                      topLeft: [Math.round(rect.width) + FIT_MARGIN, FIT_MARGIN],
+                      bottomRight: [FIT_MARGIN, FIT_MARGIN],
+                  }
+                : {
+                      topLeft: [FIT_MARGIN, FIT_MARGIN],
+                      bottomRight: [FIT_MARGIN, Math.round(rect.height) + FIT_MARGIN],
+                  };
+        },
+        getFocusOffset: () => {
+            if (!isOpen) {
+                return { x: 0, y: 0 };
+            }
+
+            const rect = panel.getBoundingClientRect();
+            // Docked on the left: move the centre left, so the marker clears the panel.
+            // A bottom sheet: move it down, so the marker rises above the sheet.
+            return desktopQuery.matches
+                ? { x: -Math.round((rect.right - root.getBoundingClientRect().left) / 2), y: 0 }
+                : { x: 0, y: Math.round(rect.height / 2) };
+        },
+    };
+};

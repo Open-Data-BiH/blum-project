@@ -1,7 +1,7 @@
 // Draws one route variant — its road geometry and ordered stops. Shared by the homepage
 // map and the line detail maps.
 
-import type { LatLngTuple, Layer, Map as LeafletMap } from 'leaflet';
+import type { FitBoundsOptions, LatLngTuple, Layer, Map as LeafletMap } from 'leaflet';
 import { getLineColor, getRouteStops, type TransitIndex } from '../../../lib/transit';
 import { langText } from '../../core/i18n';
 import { escapeHtml } from '../../core/utils';
@@ -27,6 +27,8 @@ export interface RouteOverlay {
 export interface RouteOverlayOptions {
     fitPadding?: [number, number];
     maxZoom?: number;
+    /** Read on every fit, so a docked panel can keep the route out from under itself. */
+    getFitPadding?: () => { topLeft: [number, number]; bottomRight: [number, number] };
 }
 
 // The colour rides in the markup: getElement() is null until the map has a view, so
@@ -59,7 +61,14 @@ export const createRouteOverlay = (
     index: TransitIndex,
     options: RouteOverlayOptions = {},
 ): RouteOverlay => {
-    const { fitPadding = [40, 40], maxZoom = 16 } = options;
+    const { fitPadding = [40, 40], maxZoom = 16, getFitPadding } = options;
+
+    const fitOptions = (): FitBoundsOptions => {
+        const padding = getFitPadding?.();
+        return padding
+            ? { paddingTopLeft: padding.topLeft, paddingBottomRight: padding.bottomRight, maxZoom }
+            : { padding: fitPadding, maxZoom };
+    };
 
     [LINE_PANE, STOP_PANE].forEach((name) => {
         if (!map.getPane(name)) {
@@ -123,7 +132,7 @@ export const createRouteOverlay = (
         const stopPoints = drawStops(routeId, color);
 
         if (stopPoints.length > 0) {
-            map.fitBounds(L.latLngBounds(stopPoints), { padding: fitPadding, maxZoom });
+            map.fitBounds(L.latLngBounds(stopPoints), fitOptions());
         }
 
         if (!route.hasShape) {
@@ -158,7 +167,7 @@ export const createRouteOverlay = (
             layers.push(casing, line);
 
             // Stops were already framed; refit silently so the late geometry does not jerk the view.
-            map.fitBounds(L.latLngBounds(shape), { padding: fitPadding, maxZoom, animate: false });
+            map.fitBounds(L.latLngBounds(shape), { ...fitOptions(), animate: false });
         });
     };
 

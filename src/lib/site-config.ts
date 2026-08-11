@@ -1,6 +1,16 @@
 export type Locale = 'bhs' | 'en';
 export type HtmlLang = 'bs' | 'en';
-export type PageKey = 'home' | 'lines' | 'pricing' | 'airport' | 'faq' | 'updates' | 'contact' | 'privacy' | 'about';
+export type PageKey =
+    | 'home'
+    | 'map'
+    | 'lines'
+    | 'pricing'
+    | 'airport'
+    | 'faq'
+    | 'updates'
+    | 'contact'
+    | 'privacy'
+    | 'about';
 
 type LocalizedText = Record<Locale, string>;
 
@@ -15,6 +25,10 @@ export const PAGE_PATHS: Record<PageKey, Record<Locale, string>> = {
     home: {
         bhs: '/',
         en: '/en/',
+    },
+    map: {
+        bhs: '/mapa/',
+        en: '/en/map/',
     },
     lines: {
         bhs: '/linije/',
@@ -59,6 +73,16 @@ export const PAGE_META: Record<PageKey, { title: LocalizedText; description: Loc
         description: {
             bhs: 'Red vožnje, linije i mapa javnog prevoza u Banjoj Luci. Polasci, stajališta i informacije o prevozu do aerodroma.',
             en: 'Bus schedules, routes, and map for public transport in Banja Luka. Departures, stops, and airport shuttle information.',
+        },
+    },
+    map: {
+        title: {
+            bhs: 'Mapa javnog prevoza | BL Prevoz',
+            en: 'Public Transport Map | BL Prevoz',
+        },
+        description: {
+            bhs: 'Interaktivna mapa javnog prevoza u Banjoj Luci preko cijelog ekrana. Autobuska stajališta, trase linija, željezničke stanice i Nextbike stanice.',
+            en: 'Full-screen interactive map of public transport in Banja Luka. Bus stops, line routes, railway stations, and Nextbike stations.',
         },
     },
     lines: {
@@ -149,6 +173,7 @@ export const LINE_DETAIL_PATH_PREFIX: Record<Locale, string> = {
 };
 
 export const LEGACY_REDIRECTS = {
+    '/map': PAGE_PATHS.map.bhs,
     '/lines': PAGE_PATHS.lines.bhs,
     '/lines/[lineId]': '/linija/[lineId]',
     '/pricing': PAGE_PATHS.pricing.bhs,

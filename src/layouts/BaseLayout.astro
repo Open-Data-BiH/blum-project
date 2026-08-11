@@ -23,9 +23,12 @@ interface Props {
   alternatePaths: Record<'bhs' | 'en' | 'default', string>;
   switchLanguagePath?: string;
   pageStyles?: string;
+  /** `app` locks the page to the viewport and drops the footer, for the full-screen map. */
+  layout?: 'default' | 'app';
 }
 
-const { pageKey, locale, title, description, canonicalPath, alternatePaths, switchLanguagePath, pageStyles } = Astro.props;
+const { pageKey, locale, title, description, canonicalPath, alternatePaths, switchLanguagePath, pageStyles, layout = 'default' } = Astro.props;
+const isAppLayout = layout === 'app';
 const baseUrl = import.meta.env.BASE_URL;
 const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
 const htmlLang = HTML_LANG_BY_LOCALE[locale];
@@ -81,17 +84,17 @@ const ogImage = new URL(
     <script is:inline src="/scripts/theme-init.js"></script>
 
   </head>
-  <body data-page={pageKey} data-locale={locale}>
+  <body data-page={pageKey} data-locale={locale} data-layout={layout}>
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <div class="page-container">
+    <div class:list={['page-container', isAppLayout && 'page-container--app']}>
       <Header currentPage={pageKey} locale={locale} switchLanguagePath={resolvedSwitchLanguagePath} />
 
       <main id="main-content" class="content-wrap">
         <slot />
       </main>
 
-      <Footer locale={locale} />
+      {!isAppLayout && <Footer locale={locale} />}
     </div>
 
     <CookieConsent locale={locale} />

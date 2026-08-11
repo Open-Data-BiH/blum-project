@@ -4,7 +4,8 @@
             "title": "BL prevoz",
             "subtitle": "Urban mobility in Banja Luka",
             "nav": {
-                "map": "Home",
+                "home": "Home",
+                "map": "Map",
                 "lines": "Lines",
                 "timetable": "Timetable",
                 "airport": "Airport",
@@ -137,7 +138,8 @@
             "title": "BL prevoz",
             "subtitle": "Urbana mobilnost u Banjoj Luci",
             "nav": {
-                "map": "Početna",
+                "home": "Početna",
+                "map": "Mapa",
                 "lines": "Linije",
                 "timetable": "Red vožnje",
                 "airport": "Aerodrom",

@@ -1,0 +1,166 @@
+---
+// Full-screen map: the map itself plus one panel that browses lines, searches stops, and
+// shows whatever is currently selected. The line list is rendered here at build time so
+// the panel is usable before Leaflet and the network data arrive.
+import 'leaflet/dist/leaflet.css';
+import '../../styles/pages/_map-legend.scss';
+import '../../styles/pages/_route-map.scss';
+import '../../styles/pages/_map-page.scss';
+import MapContainer from './MapContainer.astro';
+import networkData from '../../../public/data/transport/routes/transit_network.json';
+import ownershipData from '../../../public/data/transport/routes/urban_company_ownership.json';
+import { compareLineIds } from '../../lib/transit';
+import { getLineDetailPath, getPagePath, type Locale } from '../../lib/site-config';
+import { normalizeForSearch } from '../../scripts/core/utils';
+import type { CompanyOwnership } from '../../types/lines';
+import type { TransitNetwork } from '../../types/transit';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isEnglish = locale === 'en';
+const baseUrl = import.meta.env.BASE_URL;
+const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
+
+const network = networkData as TransitNetwork;
+const ownership = ownershipData as CompanyOwnership;
+
+const lineNames = new Map<string, { bhs: string; en: string }>();
+ownership.urban.forEach((company) => {
+  company.lines.forEach((line) => {
+    const name = line.lineName;
+    lineNames.set(line.lineId, typeof name === 'object' ? name : { bhs: String(name), en: String(name) });
+  });
+});
+
+const lines = [...network.lines].sort((a, b) => compareLineIds(a.id, b.id)).map((line) => {
+  const name = lineNames.get(line.id);
+  return {
+    id: line.id,
+    color: line.color,
+    label: (isEnglish ? name?.en : name?.bhs) ?? '',
+    // The first variant is the outbound direction; the panel offers the other one.
+    routeId: line.routes[0] ?? null,
+    href: withBase(getLineDetailPath(locale, line.id)),
+    search: normalizeForSearch(`${line.id} ${name?.bhs ?? ''} ${name?.en ?? ''}`),
+  };
+});
+
+const t = {
+  mapLabel: isEnglish ? 'Interactive public transport map' : 'Interaktivna mapa javnog prevoza',
+  panelLabel: isEnglish ? 'Lines and stops' : 'Linije i stajališta',
+  searchPlaceholder: isEnglish ? 'Search line or stop' : 'Pretraži liniju ili stajalište',
+  openPanel: isEnglish ? 'Lines and stops' : 'Linije i stajališta',
+  closePanel: isEnglish ? 'Close the panel' : 'Zatvori panel',
+  lines: isEnglish ? 'Lines' : 'Linije',
+  stops: isEnglish ? 'Stops' : 'Stajališta',
+  empty: isEnglish ? 'Nothing matches this search.' : 'Nema rezultata za ovu pretragu.',
+  noRoute: isEnglish
+    ? 'No route on the map for this line — opens the line page.'
+    : 'Trasa ove linije nije dostupna na mapi — otvara stranicu linije.',
+  noscript: isEnglish
+    ? 'The interactive map needs JavaScript. Bus lines and timetables are also available as pages.'
+    : 'Interaktivna mapa zahtijeva JavaScript. Linije i red vožnje dostupni su i kao stranice.',
+  noscriptLink: isEnglish ? 'Open the list of lines' : 'Otvori spisak linija',
+};
+---
+
+<div class="map-app" data-transport-map>
+  <MapContainer mapId="transport-map" className="map-container--full" label={t.mapLabel} role="application">
+    <noscript class="map-app__noscript">
+      <p>{t.noscript}</p>
+      <a class="btn btn--primary btn--sm" href={withBase(getPagePath('lines', locale))}>{t.noscriptLink}</a>
+    </noscript>
+  </MapContainer>
+
+  <button
+    type="button"
+    class="map-app__trigger"
+    data-panel-open
+    aria-controls="map-panel"
+    aria-expanded="false"
+  >
+    <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+    <span>{t.openPanel}</span>
+  </button>
+
+  <aside class="map-panel" id="map-panel" data-map-panel aria-label={t.panelLabel}>
+    <span class="map-panel__grip" aria-hidden="true"></span>
+
+    <div class="map-panel__head">
+      <div class="map-panel__search">
+        <i class="fas fa-magnifying-glass map-panel__search-icon" aria-hidden="true"></i>
+        <input
+          type="search"
+          class="map-panel__input"
+          id="map-panel-search"
+          data-map-search
+          placeholder={t.searchPlaceholder}
+          aria-label={t.searchPlaceholder}
+          autocomplete="off"
+        />
+      </div>
+      <button type="button" class="map-panel__close" data-panel-close aria-label={t.closePanel}>
+        <i class="fas fa-xmark" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="map-panel__body" data-panel-body>
+      <section class="map-panel__view" data-view="browse">
+        <p class="map-panel__empty" data-search-empty hidden>{t.empty}</p>
+
+        <div class="map-panel__group" data-stop-group hidden>
+          <h2 class="map-panel__group-title">{t.stops}</h2>
+          <div class="map-panel__list" data-stop-list></div>
+        </div>
+
+        <div class="map-panel__group" data-line-group>
+          <h2 class="map-panel__group-title">{t.lines}</h2>
+          <div class="map-panel__list">
+            {
+              lines.map((line) =>
+                line.routeId ? (
+                  <button
+                    type="button"
+                    class="map-line"
+                    data-line-id={line.id}
+                    data-route-id={line.routeId}
+                    data-search={line.search}
+                    style={`--line-accent:${line.color}`}
+                  >
+                    <span class="map-line__badge">{line.id}</span>
+                    <span class="map-line__name">{line.label}</span>
+                    <i class="fas fa-chevron-right map-line__icon" aria-hidden="true" />
+                  </button>
+                ) : (
+                  <a
+                    class="map-line"
+                    href={line.href}
+                    data-line-id={line.id}
+                    data-search={line.search}
+                    title={t.noRoute}
+                    style={`--line-accent:${line.color}`}
+                  >
+                    <span class="map-line__badge">{line.id}</span>
+                    <span class="map-line__name">{line.label}</span>
+                    <i class="fas fa-arrow-up-right-from-square map-line__icon" aria-hidden="true" />
+                  </a>
+                ),
+              )
+            }
+          </div>
+        </div>
+      </section>
+
+      <section class="map-panel__view" data-view="detail" hidden></section>
+    </div>
+  </aside>
+</div>
+
+<script>
+  import { initTransportMap } from '../../scripts/features/map/transport-map';
+
+  initTransportMap();
+</script>

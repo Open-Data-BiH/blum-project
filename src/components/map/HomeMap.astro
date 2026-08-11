@@ -3,7 +3,7 @@
 import 'leaflet/dist/leaflet.css';
 import '../../styles/pages/_map-legend.scss';
 import '../../styles/pages/_route-map.scss';
-import type { Locale } from '../../lib/site-config';
+import { getPagePath, type Locale } from '../../lib/site-config';
 import MapContainer from './MapContainer.astro';
 import MapNote from './MapNote.astro';
 
@@ -12,6 +12,8 @@ interface Props {
 }
 
 const { locale } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL;
+const mapPagePath = `${baseUrl}${getPagePath('map', locale).replace(/^\/+/, '')}`;
 ---
 
 <section class="section section--wide" id="map">
@@ -35,6 +37,15 @@ const { locale } = Astro.props;
         </div>
       </noscript>
     </MapContainer>
+
+    <div class="map-section__actions">
+      <a href={mapPagePath} class="btn btn--secondary btn--sm" id="home-map-full-link">
+        <i class="fas fa-up-right-and-down-left-from-center" aria-hidden="true"></i>
+        <span class="btn__label">
+          {locale === 'en' ? 'Open the full-screen map' : 'Otvori mapu preko cijelog ekrana'}
+        </span>
+      </a>
+    </div>
 
     <MapNote id="bus-stops-note" className="map-note--info" showIcon={false}>
       <h3 class="map-note__title" id="map-note-title">{locale === 'en' ? 'About the interactive map' : 'O interaktivnoj mapi'}</h3>

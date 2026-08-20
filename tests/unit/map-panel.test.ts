@@ -102,6 +102,21 @@ describe('map panel', () => {
             index.routeById.get(firstLine.routes[0])!.stops.length,
         );
 
+        // The heading names the direction on screen, so only the other ones get a button.
+        const directions = Array.from(detail.querySelectorAll<HTMLButtonElement>('.map-direction'));
+        expect(directions).toHaveLength(firstLine.routes.length - 1);
+        expect(directions.map((direction) => direction.dataset.routeId)).not.toContain(firstLine.routes[0]);
+        directions.forEach((direction) => {
+            const variant = index.routeById.get(direction.dataset.routeId!)!;
+            expect(direction.querySelector('.route-relation__endpoint--origin')?.textContent).toContain(variant.origin);
+            expect(direction.querySelector('.route-relation__endpoint--destination')?.textContent).toBe(
+                variant.destination,
+            );
+            expect(direction.querySelector('.route-relation__arrow-icon')?.getAttribute('aria-hidden')).toBe('true');
+            expect(direction.getAttribute('aria-label')).toContain(variant.origin);
+            expect(direction.getAttribute('aria-label')).toContain(variant.destination);
+        });
+
         detail.querySelector<HTMLButtonElement>('[data-panel-back]')!.click();
         expect(browse.hidden).toBe(false);
         expect(detail.hidden).toBe(true);

@@ -3,7 +3,9 @@
 // transport-map.ts decides what the map does with the selection.
 
 import { getCurrentLanguage, langText } from '../../core/i18n';
+import { renderRouteRelation } from '../../core/route-relation';
 import { debounce, escapeHtml, normalizeForSearch, withBase } from '../../core/utils';
+import { formatSpokenRouteRelation } from '../../../lib/route-relation';
 import { getLineDetailPath } from '../../../lib/site-config';
 import {
     compareLineIds,
@@ -14,7 +16,7 @@ import {
     pickRouteForStop,
     type TransitIndex,
 } from '../../../lib/transit';
-import type { TransitStop } from '../../../types/transit';
+import type { TransitRoute, TransitStop } from '../../../types/transit';
 import { lineAccentStyle, type FocusOffset } from './map-core';
 
 const DESKTOP_QUERY = '(min-width: 900px)';
@@ -62,6 +64,12 @@ export const createMapPanel = ({
     }
 
     const lineButtons = Array.from(lineGroup?.querySelectorAll<HTMLElement>('[data-search]') ?? []);
+    const lineFactsById = new Map(
+        lineButtons.map((button) => [
+            button.dataset.lineId ?? '',
+            { operator: button.dataset.operator ?? '', accessible: button.dataset.accessible === 'true' },
+        ]),
+    );
     // Normalised once: the same 392 stops are searched on every keystroke.
     const searchableStops = index.network.stops.map((stop) => ({
         stop,
@@ -194,11 +202,45 @@ export const createMapPanel = ({
             })
             .join('');
 
+    const renderLineFacts = (lineId: string, stopCount: number): string => {
+        const facts = lineFactsById.get(lineId);
+        const stopsLabel = langText(`${stopCount} stajališta`, `${stopCount} stops`);
+        // Short enough for the panel; the full wording stays in the tooltip.
+        const accessLabel = facts?.accessible
+            ? langText('Pristupačno', 'Accessible')
+            : langText('Nije pristupačno', 'Not accessible');
+        const accessTitle = facts?.accessible
+            ? langText('Pristupačno za invalidska kolica', 'Wheelchair accessible')
+            : langText('Nije pristupačno za invalidska kolica', 'Not wheelchair accessible');
+
+        return `<ul class="map-detail__facts">
+            ${
+                facts?.operator
+                    ? `<li class="map-fact">
+                        <i class="fas fa-building" aria-hidden="true"></i>
+                        <span class="map-fact__label">${escapeHtml(langText('Prevoznik', 'Operator'))}:</span>
+                        ${escapeHtml(facts.operator)}
+                       </li>`
+                    : ''
+            }
+            <li class="map-fact">
+                <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                ${escapeHtml(stopsLabel)}
+            </li>
+            <li class="map-fact map-fact--${facts?.accessible ? 'accessible' : 'not-accessible'}" title="${escapeHtml(accessTitle)}">
+                <i class="fas fa-wheelchair" aria-hidden="true"></i>
+                ${escapeHtml(accessLabel)}
+            </li>
+        </ul>`;
+    };
+
     const backButton = (): string =>
-        `<button type="button" class="map-panel__back" data-panel-back>
-            <i class="fas fa-arrow-left" aria-hidden="true"></i>
-            ${escapeHtml(langText('Sve linije', 'All lines'))}
-        </button>`;
+        `<div class="map-detail__topbar">
+            <button type="button" class="map-panel__back" data-panel-back>
+                <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                ${escapeHtml(langText('Sve linije', 'All lines'))}
+            </button>
+        </div>`;
 
     const showStop = (stop: TransitStop): void => {
         // A selected network stop belongs to the base stop layer. Drop any route overlay
@@ -234,21 +276,48 @@ export const createMapPanel = ({
         const variants = getLineRoutes(index, route.lineId);
         const stops = getRouteStops(index, route);
         const color = getLineColor(index, route.lineId);
+        const relationLabels = {
+            toLabel: langText('prema', 'to'),
+            viaLabel: langText('preko', 'via'),
+        };
 
+        // Line 14 runs the same relation both ways, so the relation alone cannot say which
+        // direction is on screen — number them instead.
+        const directionPrefix = (candidate: TransitRoute, position: number): string =>
+            variants.some((other) => other.id !== candidate.id && formatRelation(other) === formatRelation(candidate))
+                ? `${langText('Smjer', 'Direction')} ${position + 1}: `
+                : '';
+
+        // The title already names the direction on screen, so only the others are offered.
+        const otherVariants = variants
+            .map((variant, position) => ({ variant, position }))
+            .filter(({ variant }) => variant.id !== route.id);
+
+        const titlePrefix = directionPrefix(
+            route,
+            variants.findIndex((variant) => variant.id === route.id),
+        );
+        const switchLabel = langText('Prikaži suprotan smjer', 'Show the opposite direction');
         const directions =
-            variants.length > 1
-                ? `<div class="map-detail__directions" role="group" aria-label="${escapeHtml(langText('Smjerovi linije', 'Line directions'))}">
-                    ${variants
-                        .map((variant, position) => {
-                            const isActive = variant.id === route.id;
-                            // Line 14 runs the same relation both ways.
-                            const ambiguous = variants.some(
-                                (other) => other.id !== variant.id && formatRelation(other) === formatRelation(variant),
-                            );
-                            const label = ambiguous
-                                ? `${langText('Smjer', 'Direction')} ${position + 1}: ${formatRelation(variant)}`
-                                : formatRelation(variant);
-                            return `<button type="button" class="map-direction${isActive ? ' is-active' : ''}" data-route-id="${escapeHtml(variant.id)}" aria-pressed="${isActive}">${escapeHtml(label)}</button>`;
+            otherVariants.length > 0
+                ? `<div class="map-detail__directions" style="${lineAccentStyle(color)}">
+                    ${otherVariants
+                        .map(({ variant, position }) => {
+                            const prefix = directionPrefix(variant, position);
+                            const label = `${prefix}${formatRelation(variant)}`;
+                            const parts = {
+                                origin: `${prefix}${variant.origin}`,
+                                destination: variant.destination,
+                                via: [],
+                            };
+                            const spokenLabel = formatSpokenRouteRelation(label, relationLabels, parts);
+                            return `<button type="button" class="map-direction map-direction--switch" data-route-id="${escapeHtml(variant.id)}" title="${escapeHtml(switchLabel)}" aria-label="${escapeHtml(`${switchLabel}: ${spokenLabel}`)}">
+                                <i class="fas fa-right-left map-direction__icon" aria-hidden="true"></i>
+                                <span>${renderRouteRelation(label, {
+                                    ...relationLabels,
+                                    parts,
+                                })}</span>
+                            </button>`;
                         })
                         .join('')}
                    </div>`
@@ -268,9 +337,15 @@ export const createMapPanel = ({
             ${backButton()}
             <div class="map-detail__head" style="${lineAccentStyle(color)}">
                 <span class="map-badge map-badge--static">${escapeHtml(route.lineId)}</span>
-                <h2 class="map-detail__title" tabindex="-1" data-detail-title>${escapeHtml(formatRelation(route))}</h2>
+                <h2 class="map-detail__title" tabindex="-1" data-detail-title>${renderRouteRelation(
+                    `${titlePrefix}${formatRelation(route)}`,
+                    {
+                        ...relationLabels,
+                        parts: { origin: `${titlePrefix}${route.origin}`, destination: route.destination, via: [] },
+                    },
+                )}</h2>
             </div>
-            <p class="map-detail__meta">${escapeHtml(langText(`${stops.length} stajališta`, `${stops.length} stops`))}</p>
+            ${renderLineFacts(route.lineId, stops.length)}
             ${pathNote}
             ${directions}
             <ol class="map-route-stops" style="${lineAccentStyle(color)}">

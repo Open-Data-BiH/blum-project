@@ -1,5 +1,7 @@
 import { debounce, escapeHtml, sortLinesByID, withBase } from '../../core/utils';
 import { safeGet, getTranslations, getCurrentLanguage } from '../../core/i18n';
+import { renderRouteRelation } from '../../core/route-relation';
+import { formatSpokenRouteRelation } from '../../../lib/route-relation';
 import { LINE_CONFIG, getLineTypeTitle } from './line-config';
 import { isReducedScheduleDay } from './school-holidays';
 import { getUniqueSortedDepartures } from '../../../lib/timetable-departures';
@@ -271,6 +273,12 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
     const swapDirectionLabel = lang === 'bhs' ? 'Zamijeni smjer' : 'Swap direction';
 
     const directions = timetable.directions;
+    const directionA = directions[lang][0] ?? directions.bhs[0] ?? '';
+    const directionB = directions[lang][1] ?? directions.bhs[1] ?? '';
+    const relationLabels = {
+        toLabel: lang === 'bhs' ? 'prema' : 'to',
+        viaLabel: lang === 'bhs' ? 'preko' : 'via',
+    };
     const directionAId = timetable.lineId + 'a';
     const directionBId = timetable.lineId + 'b';
     const dayTypes: ('weekday' | 'saturday' | 'sunday')[] = ['weekday', 'saturday', 'sunday'];
@@ -333,8 +341,8 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
           <p id="direction-label" class="timetable-control-label">${relationLabelText}</p>
           <div class="direction-buttons-wrapper">
             <div class="direction-buttons" role="group" aria-labelledby="direction-label">
-              <button class="direction-btn active" data-direction="${escapeHTML(directionAId)}" aria-pressed="true" aria-label="${escapeHTML(directions[lang][0] ?? directions.bhs[0] ?? '')}">${escapeHTML(directions[lang][0] ?? directions.bhs[0] ?? '')}</button>
-              <button class="direction-btn" data-direction="${escapeHTML(directionBId)}" aria-pressed="false" aria-label="${escapeHTML(directions[lang][1] ?? directions.bhs[1] ?? '')}">${escapeHTML(directions[lang][1] ?? directions.bhs[1] ?? '')}</button>
+              <button class="direction-btn active" data-direction="${escapeHTML(directionAId)}" aria-pressed="true" aria-label="${escapeHTML(formatSpokenRouteRelation(directionA, relationLabels))}">${renderRouteRelation(directionA, relationLabels)}</button>
+              <button class="direction-btn" data-direction="${escapeHTML(directionBId)}" aria-pressed="false" aria-label="${escapeHTML(formatSpokenRouteRelation(directionB, relationLabels))}">${renderRouteRelation(directionB, relationLabels)}</button>
             </div>
             <button class="direction-swap-btn" aria-label="${swapDirectionLabel}" title="${swapDirectionLabel}">
               <i class="fas fa-exchange-alt"></i>

@@ -1,0 +1,34 @@
+---
+import type { Locale } from '../lib/site-config';
+import { parseRouteRelation, type RouteRelationParts } from '../lib/route-relation';
+
+interface Props {
+  relation: string;
+  locale: Locale;
+  className?: string;
+  parts?: RouteRelationParts;
+}
+
+const { relation, locale, className, parts: suppliedParts } = Astro.props;
+const parts = suppliedParts ?? parseRouteRelation(relation);
+const toLabel = locale === 'en' ? 'to' : 'prema';
+const viaLabel = locale === 'en' ? 'via' : 'preko';
+---
+
+{
+  parts ? (
+    <span class:list={['route-relation', className]} data-route-relation>
+      <span class="route-relation__endpoint route-relation__endpoint--origin">{parts.origin}</span>
+      <span class="route-relation__arrow">
+        <i class="fas fa-arrow-right-long route-relation__arrow-icon" aria-hidden="true"></i>
+        <span class="sr-only">{toLabel}</span>
+      </span>
+      <span class="route-relation__endpoint route-relation__endpoint--destination">{parts.destination}</span>
+      {parts.via.length > 0 && (
+        <span class="route-relation__via">{viaLabel}: {parts.via.join(' · ')}</span>
+      )}
+    </span>
+  ) : (
+    <span class:list={['route-relation', 'route-relation--plain', className]}>{relation}</span>
+  )
+}

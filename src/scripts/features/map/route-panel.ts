@@ -1,7 +1,9 @@
 import type { Map as LeafletMap } from 'leaflet';
+import { formatSpokenRouteRelation } from '../../../lib/route-relation';
 import { formatRelation, getLineColor, getLineRoutes, type TransitIndex } from '../../../lib/transit';
 import { getLineDetailPath } from '../../../lib/site-config';
 import { getCurrentLanguage, langText } from '../../core/i18n';
+import { renderRouteRelation } from '../../core/route-relation';
 import { escapeHtml, withBase } from '../../core/utils';
 import type { RouteOverlay } from './route-overlay';
 
@@ -39,6 +41,10 @@ export const createRoutePanel = (
         const color = getLineColor(index, route.lineId);
         const stopCount = route.stops.length;
         const stopsLabel = langText(`${stopCount} stajališta`, `${stopCount} stops`);
+        const relationLabels = {
+            toLabel: langText('prema', 'to'),
+            viaLabel: langText('preko', 'via'),
+        };
         // Explain why stops are shown without a road path.
         const pathNote = route.hasShape
             ? ''
@@ -58,16 +64,24 @@ export const createRoutePanel = (
                         .map((variant, variantIndex) => {
                             const isActive = variant.id === route.id;
                             // Line 14 runs the same relation both ways.
-                            const label = variants.some(
+                            const ambiguous = variants.some(
                                 (other) => other.id !== variant.id && formatRelation(other) === formatRelation(variant),
-                            )
-                                ? `${langText('Smjer', 'Direction')} ${variantIndex + 1}: ${formatRelation(variant)}`
-                                : formatRelation(variant);
+                            );
+                            const prefix = ambiguous ? `${langText('Smjer', 'Direction')} ${variantIndex + 1}: ` : '';
+                            const label = `${prefix}${formatRelation(variant)}`;
+                            const parts = {
+                                origin: `${prefix}${variant.origin}`,
+                                destination: variant.destination,
+                                via: [],
+                            };
                             return [
                                 `<button type="button" class="map-route-panel__variant${isActive ? ' is-active' : ''}"`,
                                 ` data-route-target="${escapeHtml(variant.id)}"`,
-                                ` aria-pressed="${isActive}">`,
-                                escapeHtml(label),
+                                ` aria-pressed="${isActive}" aria-label="${escapeHtml(formatSpokenRouteRelation(label, relationLabels, parts))}">`,
+                                renderRouteRelation(label, {
+                                    ...relationLabels,
+                                    parts,
+                                }),
                                 '</button>',
                             ].join('');
                         })
@@ -82,7 +96,11 @@ export const createRoutePanel = (
             <div class="map-route-panel" style="--line-accent:${escapeHtml(color)}">
                 <div class="map-route-panel__head">
                     <span class="map-route-panel__line">${escapeHtml(route.lineId)}</span>
-                    <span class="map-route-panel__relation">${escapeHtml(formatRelation(route))}</span>
+                    ${renderRouteRelation(formatRelation(route), {
+                        ...relationLabels,
+                        className: 'map-route-panel__relation',
+                        parts: { origin: route.origin, destination: route.destination, via: [] },
+                    })}
                     <button type="button" class="map-route-panel__close" data-route-close
                             title="${escapeHtml(closeLabel)}" aria-label="${escapeHtml(closeLabel)}">
                         <i class="fas fa-xmark" aria-hidden="true"></i>

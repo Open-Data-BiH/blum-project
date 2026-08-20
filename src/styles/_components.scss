@@ -1369,6 +1369,60 @@
     border: none !important;
 }
 
+/* Route endpoints share one fixed middle column so every direction arrow truly aligns. */
+.route-relation {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 1.5rem minmax(0, 1fr);
+    align-items: center;
+    column-gap: 0.35rem;
+    min-width: 0;
+    width: 100%;
+}
+
+.route-relation__endpoint {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.route-relation__endpoint--origin {
+    text-align: right;
+}
+
+.route-relation__endpoint--destination {
+    text-align: left;
+}
+
+.route-relation__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    min-width: 1.25rem;
+    line-height: 1;
+}
+
+.route-relation__arrow-icon {
+    --fa-width: 1.25rem;
+    font-size: 1rem;
+    line-height: 1;
+    text-align: center;
+}
+
+.route-relation__via {
+    grid-column: 1 / -1;
+    margin-top: 0.15rem;
+    color: var(--text-light);
+    font-size: 0.85em;
+    font-weight: var(--font-weight-normal);
+    line-height: 1.3;
+    text-align: center;
+}
+
+.route-relation--plain {
+    display: inline;
+    width: auto;
+}
+
 .fa-icon-marker {
     // Font Awesome loads later and reads these variables for its width and display mode.
     --fa-display: flex;

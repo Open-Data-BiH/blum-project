@@ -67,6 +67,7 @@
 .ldp-overview-card__title-wrap {
     display: flex;
     flex-direction: column;
+    flex: 1;
     gap: var(--space-1);
     min-width: 0;
 }
@@ -204,18 +205,9 @@
 }
 
 .ldp-direction-tab__route {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0 0.35em;
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-tight);
-}
-
-.ldp-direction-tab__route-part.is-secondary {
-    font-weight: var(--font-weight-normal);
-    color: var(--text-light);
 }
 
 .ldp-direction-panel {

@@ -27,6 +27,7 @@ import {
   type TimetableDeparture,
 } from '../../lib/timetable-departures';
 import type { NoteDescription, TimetableFile } from '../../types/timetable';
+import RouteRelation from '../../components/RouteRelation.astro';
 
 type DayKey = 'weekday' | 'saturday' | 'sunday';
 type ReducedDayKey = 'weekdayReduced' | 'saturdayReduced' | 'sundayReduced';
@@ -105,17 +106,7 @@ const sortDirectionKeys = (a: string, b: string): number => {
 };
 
 const formatRouteLabel = (label: string | null | undefined): string =>
-  (label ?? '').replace(/\s*-\s*/g, ' \u2192 ').trim();
-
-// Render parenthetical route details as secondary text.
-type RoutePart = { text: string; secondary: boolean };
-
-const splitRouteParts = (route: string): RoutePart[] =>
-  route
-    .split(/(\([^)]*\))/)
-    .map((segment) => segment.trim())
-    .filter((segment) => segment.length > 0)
-    .map((segment) => ({ text: segment, secondary: segment.startsWith('(') }));
+  (label ?? '').replace(/\s+-\s+/g, ' \u2192 ').trim();
 
 const timetables = (timetableData as TimetableFile).urban;
 const entry = timetables.find((t) => t.lineId === originalLineId);
@@ -449,7 +440,9 @@ const breadcrumbSchema = {
               <span class="badge badge--line-number">{originalLineId}</span>
               <div class="ldp-overview-card__title-wrap">
                 <h1 class="ldp-overview-card__title">{localizedName}</h1>
-                <p class="ldp-overview-card__route">{localizedRouteSummary}</p>
+                <p class="ldp-overview-card__route">
+                  <RouteRelation relation={localizedRouteSummary} locale={locale} />
+                </p>
               </div>
             </div>
 
@@ -560,13 +553,11 @@ const breadcrumbSchema = {
                     <span class="ldp-direction-tab__label">
                       {t(`Smjer ${direction.order}`, `Direction ${direction.order}`)}
                     </span>
-                    <span class="ldp-direction-tab__route">
-                      {splitRouteParts(isEnglish ? direction.routeEn : direction.routeBhs).map((part) => (
-                        <span
-                          class:list={['ldp-direction-tab__route-part', part.secondary && 'is-secondary']}
-                        >{part.text}</span>
-                      ))}
-                    </span>
+                    <RouteRelation
+                      relation={isEnglish ? direction.routeEn : direction.routeBhs}
+                      locale={locale}
+                      className="ldp-direction-tab__route"
+                    />
                   </button>
                 ))}
               </div>
@@ -727,7 +718,9 @@ const breadcrumbSchema = {
           {directionPanels.map((direction) => (
             <article class="ldp-stops-card card">
               <h3>{t(`Smjer ${direction.order}`, `Direction ${direction.order}`)}</h3>
-              <p class="ldp-stops-card__route">{isEnglish ? direction.routeEn : direction.routeBhs}</p>
+              <p class="ldp-stops-card__route">
+                <RouteRelation relation={isEnglish ? direction.routeEn : direction.routeBhs} locale={locale} />
+              </p>
 
               {direction.stops.length > 0 ? (
                 <div class="ldp-stop-table-wrap">

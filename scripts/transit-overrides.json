@@ -5,7 +5,11 @@
     "rename": {},
 
     "//mergeInto": "stop id -> stop id it should be drawn as; lines are combined onto the target.",
-    "mergeInto": {},
+    "mergeInto": {
+        "st-crkva": "st-1377",
+        "st-tadici": "st-1521",
+        "st-drakulic-vrtace": "st-1397"
+    },
 
     "//addStops": "route id -> stop ids the export omits. Each is slotted in at the position its geometry implies.",
     "addStops": {

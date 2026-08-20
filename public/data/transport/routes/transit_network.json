@@ -1,7 +1,7 @@
 {
   "meta": {
     "generator": "scripts/build-transit-network.mjs",
-    "generated": "2026-08-09",
+    "generated": "2026-08-20",
     "mergeRadiusMeters": 30,
     "nameMergeRadiusMeters": 150,
     "extracted": "2026-08-09T18:58:54.460Z",
@@ -10,7 +10,7 @@
       "linesWithRoutes": 19,
       "routes": 37,
       "routesWithShape": 37,
-      "stops": 392,
+      "stops": 389,
       "registryStops": 433,
       "derivedStops": 55
     },
@@ -41,7 +41,7 @@
       "urban_bus_routes.json line 14B: 19 stops but 18 coordinates",
       "urban_bus_routes.json line 17A: 16 stops but 15 coordinates",
       "18 stop name(s) shared by markers within 45 m — rename them in scripts/transit-overrides.json if riders cannot tell them apart: Bolnica (st-242, st-723); Ćosići (st-1562, st-398); Kamenolom (st-204, st-8667, st-1410, st-8668); Kasarna (st-9770, st-9771); Klašnik (st-207, st-1413); Matijevići (st-393, st-1557); Naselje Sunca (st-240, st-1446); Njegoševa raskrsnica (st-247, st-1453); Obala (st-248, st-1454); OŠ Branko Radičević (st-1465, st-259); Peti km (st-264, st-1470); Priječani zadruga (st-356, st-1554); Pritočka ul. (st-397, st-1561); Prodavnica pogrebne opreme (st-280, st-1486); Rakovačkih rudara - raskrsnica (st-1490, st-284); Topići (st-319, st-1525); Vitaminka (st-333, st-1539); Vrtić (st-341, st-611)",
-      "71 stop/line pairs where the line listings claim a stop the route export does not include — those lines link to the timetable instead of a route"
+      "68 stop/line pairs where the line listings claim a stop the route export does not include — those lines link to the timetable instead of a route"
     ]
   },
   "lines": [
@@ -6321,18 +6321,8 @@
         "39A"
       ],
       "mergedIds": [
+        "st-crkva",
         "st-171"
-      ]
-    },
-    {
-      "id": "st-crkva",
-      "name": "Crkva",
-      "street": "Mlađe Ćusića",
-      "lat": 44.80732136400238,
-      "lon": 17.179121796932098,
-      "source": "derived",
-      "lines": [
-        "39"
       ]
     },
     {
@@ -6671,17 +6661,6 @@
       ]
     },
     {
-      "id": "st-drakulic-vrtace",
-      "name": "Drakulić Vrtače",
-      "street": "Mlađe Ćusića",
-      "lat": 44.81159148292468,
-      "lon": 17.17842442261988,
-      "source": "derived",
-      "lines": [
-        "39"
-      ]
-    },
-    {
       "id": "st-1397",
       "name": "Drakulić Vrtače",
       "street": "Vrtače",
@@ -6692,6 +6671,7 @@
         "39"
       ],
       "mergedIds": [
+        "st-drakulic-vrtace",
         "st-191"
       ]
     },
@@ -9937,18 +9917,8 @@
         "39"
       ],
       "mergedIds": [
+        "st-tadici",
         "st-315"
-      ]
-    },
-    {
-      "id": "st-tadici",
-      "name": "Tadići",
-      "street": "Mlađe Ćusića",
-      "lat": 44.809692474344324,
-      "lon": 17.178022071534762,
-      "source": "derived",
-      "lines": [
-        "39"
       ]
     },
     {

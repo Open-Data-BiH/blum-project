@@ -678,7 +678,7 @@
     },
     "9": {
         "route": "Česma - Centar - Desna Novoselija",
-        "color": "#ff844d",
+        "color": "#ff9f43",
         "directions": {
             "1": {
                 "route": "Česma - Centar - Desna Novoselija",
@@ -1017,7 +1017,7 @@
     },
     "14": {
         "route": "Starčevica - Centar - Starčevica",
-        "color": "#158a9f",
+        "color": "#ff9f43",
         "directions": {
             "1": {
                 "route": "Starčevica - Centar - Starčevica",

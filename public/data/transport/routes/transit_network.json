@@ -91,7 +91,7 @@
     },
     {
       "id": "9",
-      "color": "#ff844d",
+      "color": "#ff9f43",
       "routes": [
         "9-desna-novoselija-kumsale",
         "9-kumsale-desna-novoselija"
@@ -168,7 +168,7 @@
     },
     {
       "id": "14",
-      "color": "#158a9f",
+      "color": "#ff9f43",
       "routes": [
         "14-starcevica-starcevica",
         "14-starcevica-starcevica-b"

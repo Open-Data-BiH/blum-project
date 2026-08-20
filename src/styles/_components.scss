@@ -1370,6 +1370,9 @@
 }
 
 .fa-icon-marker {
+    // Font Awesome loads later and reads these variables for its width and display mode.
+    --fa-display: flex;
+    --fa-width: 30px;
     font-size: 1.2rem;
     width: 30px;
     height: 30px;

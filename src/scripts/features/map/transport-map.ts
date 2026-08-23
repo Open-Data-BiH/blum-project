@@ -94,6 +94,7 @@ export const initTransportMap = async (): Promise<void> => {
             onRouteSelect: (routeId) => routeOverlay.show(routeId),
             onRouteClear: () => routeOverlay.clear(),
             onStopFocus: (stop) => busStops?.selectStop(stop),
+            timetables: data.timetables,
         });
         const activePanel = panel;
         setFocusOffsetProvider(() => activePanel.getFocusOffset());

@@ -725,6 +725,18 @@
         padding-bottom: var(--map-sheet-height, 0);
     }
 
+    /* In a selected-stop detail, the in-body back control replaces search. Keeping only
+       close in the header exposes more arrivals without increasing the sheet height. */
+    .map-panel[data-detail-type='stop'] .map-panel__search {
+        display: none;
+    }
+
+    .map-panel[data-detail-type='stop'] .map-panel__head {
+        justify-content: flex-end;
+        padding-top: 0.35rem;
+        padding-bottom: 0.15rem;
+    }
+
     .map-app__trigger {
         font-size: var(--font-size-xs);
         padding: 0.45rem 0.75rem;
@@ -773,7 +785,8 @@
     .map-app .leaflet-bottom,
     .map-line,
     .map-stop,
-    .map-direction {
+    .map-direction,
+    .stop-arrival {
         transition-duration: 0.01ms;
     }
 }

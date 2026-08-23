@@ -12,26 +12,21 @@ import type {
 } from 'leaflet';
 import { getCurrentLanguage, langText } from '../../core/i18n';
 import { debounce, escapeHtml, withBase } from '../../core/utils';
-import { addHashToPath, getPagePath } from '../../../lib/site-config';
-import {
-    compareLineIds,
-    getLineColor,
-    getTerminusStopIds,
-    pickRouteForStop,
-    type TransitIndex,
-} from '../../../lib/transit';
+import { getLineDetailPath } from '../../../lib/site-config';
+import { getTerminusStopIds, type TransitIndex } from '../../../lib/transit';
+import type { TimetableEntry } from '../../../types/timetable';
 import type { TransitStop } from '../../../types/transit';
 import {
     clearMapHighlights,
     createFontAwesomeIcon,
     focusMapOnMarker,
-    lineAccentStyle,
     MAP_NOTIFICATION_MESSAGES,
     MAP_VIEW,
     showMapNotification,
     showWalkingRadius,
     trackGeolocationLayers,
 } from './map-core';
+import { renderStopArrivals } from './stop-arrivals-view';
 import { GeolocationService } from './geolocation';
 import {
     createBikeStationPopup,
@@ -73,62 +68,36 @@ export interface BusStopsLayerOptions {
     onRouteSelect?: (routeId: string) => void;
     /** Replaces the built-in popup: the map page shows the stop in its own panel. */
     onStopSelect?: (stop: TransitStop) => void;
+    /** Static schedules used to calculate stop-level estimates in the built-in popup. */
+    timetables?: TimetableEntry[];
+    now?: () => Date;
 }
 
-const createStopPopupContent = (index: TransitIndex, stop: TransitStop, canSelectRoute: boolean): string => {
-    const sortedLines = [...stop.lines].sort(compareLineIds);
-    const timetableHref = withBase(addHashToPath(getPagePath('lines', getCurrentLanguage()), 'timetable'));
-
-    const linesMarkup = sortedLines
-        .map((lineId) => {
-            const badgeStyle = lineAccentStyle(getLineColor(index, lineId));
-            const lineIdLabel = escapeHtml(lineId);
-            const routeId = canSelectRoute ? pickRouteForStop(index, lineId, stop.id) : null;
-
-            // Without route data the timetable link is all we can offer.
-            if (routeId) {
-                const label = escapeHtml(
-                    langText(`Prikaži trasu linije ${lineId}`, `Show the route of line ${lineId}`),
-                );
-                return [
-                    `<button type="button"`,
-                    ` class="line-number-link"`,
-                    ` style="${badgeStyle}"`,
-                    ` data-route-id="${escapeHtml(routeId)}"`,
-                    ` title="${label}"`,
-                    ` aria-label="${label}">`,
-                    `${lineIdLabel}</button>`,
-                ].join('');
-            }
-
-            const timetableLabel = escapeHtml(
-                langText(`Kliknite za red vožnje linije ${lineId}`, `Click to view the timetable for line ${lineId}`),
-            );
-            return [
-                `<a href="${timetableHref}"`,
-                ` class="line-number-link"`,
-                ` style="${badgeStyle}"`,
-                ` data-line-id="${lineIdLabel}"`,
-                ` title="${timetableLabel}"`,
-                ` aria-label="${timetableLabel}">`,
-                `${lineIdLabel}</a>`,
-            ].join('');
-        })
-        .join('');
-
+export const createStopPopupContent = (
+    index: TransitIndex,
+    stop: TransitStop,
+    timetables: TimetableEntry[],
+    canSelectRoute: boolean,
+    now: Date = new Date(),
+): string => {
+    const language = getCurrentLanguage();
     const stopTypeLabel = escapeHtml(langText('Autobusko stajalište', 'Bus stop'));
-    const linesLabel = escapeHtml(langText('Linije na ovom stajalištu', 'Lines at this stop'));
-    const helperHint = escapeHtml(langText('Kliknite na liniju za prikaz trase', 'Click a line to show its route'));
+    const lineDetailHref = (lineId: string): string => withBase(getLineDetailPath(language, lineId));
 
     return `
         <div class="hub-popup hub-popup--bus-stop">
             <span class="hub-popup__type-label">${stopTypeLabel}</span>
             <h3>${escapeHtml(stop.name)}</h3>
             ${stop.street ? `<p class="hub-popup__street">${escapeHtml(stop.street)}</p>` : ''}
-            <div class="hub-popup__lines" aria-label="${linesLabel}">
-                ${linesMarkup}
-            </div>
-            ${canSelectRoute ? `<p class="hub-popup__hint">${helperHint}</p>` : ''}
+            ${renderStopArrivals({
+                index,
+                timetables,
+                stop,
+                language,
+                getLineHref: lineDetailHref,
+                now,
+                canSelectRoute,
+            })}
         </div>
     `;
 };
@@ -143,7 +112,7 @@ export const buildBusStopsLayer = (
     index: TransitIndex,
     options: BusStopsLayerOptions = {},
 ): BusStopsLayer => {
-    const { onRouteSelect, onStopSelect } = options;
+    const { onRouteSelect, onStopSelect, timetables = [], now = () => new Date() } = options;
     const layer = L.layerGroup();
     const stops = index.network.stops;
     const terminusStopIds = getTerminusStopIds(index);
@@ -180,20 +149,12 @@ export const buildBusStopsLayer = (
         return layers;
     };
 
-    const bindPopupLineLinks = (e: { popup: { getElement: () => HTMLElement | null } }): void => {
+    const bindPopupRouteLinks = (e: { popup: { getElement: () => HTMLElement | null } }): void => {
         const container = e.popup.getElement();
         if (!container) {
             return;
         }
-        container.querySelectorAll<HTMLAnchorElement>('.line-number-link[data-line-id]').forEach((link) => {
-            link.addEventListener('click', () => {
-                const lineId = link.dataset.lineId;
-                if (lineId) {
-                    sessionStorage.setItem('selectedLine', lineId);
-                }
-            });
-        });
-        container.querySelectorAll<HTMLButtonElement>('.line-number-link[data-route-id]').forEach((button) => {
+        container.querySelectorAll<HTMLButtonElement>('.stop-arrival[data-route-id]').forEach((button) => {
             button.addEventListener('click', () => {
                 const routeId = button.dataset.routeId;
                 if (routeId && onRouteSelect) {
@@ -208,8 +169,8 @@ export const buildBusStopsLayer = (
         (instance as T & { stopName?: string }).stopName = stop.name;
 
         if (!onStopSelect) {
-            instance.bindPopup(() => createStopPopupContent(index, stop, Boolean(onRouteSelect)));
-            instance.on('popupopen', bindPopupLineLinks);
+            instance.bindPopup(() => createStopPopupContent(index, stop, timetables, Boolean(onRouteSelect), now()));
+            instance.on('popupopen', bindPopupRouteLinks);
         }
 
         instance.on('click', () => {

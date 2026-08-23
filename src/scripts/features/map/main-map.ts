@@ -61,6 +61,7 @@ export const initMainMap = async (): Promise<void> => {
 
         const busStops = buildBusStopsLayer(L, map, transitIndex, {
             onRouteSelect: (routeId) => routePanel.open(routeId),
+            timetables: data.timetables,
         });
         overlayGroups.busStops = busStops.layer;
         overlayGroups.busStops.addTo(map);

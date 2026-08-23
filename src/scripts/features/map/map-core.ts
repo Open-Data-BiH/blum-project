@@ -11,6 +11,7 @@ import type {
 } from 'leaflet';
 import { escapeHtml, withBase } from '../../core/utils';
 import type { TransitNetwork } from '../../../types/transit';
+import type { TimetableEntry, TimetableFile } from '../../../types/timetable';
 import type { BikeStation, Landmark, LandmarksFile, LegendConfig, TransportHub, TransportHubsFile } from './types';
 
 type LeafletNS = typeof import('leaflet');
@@ -45,16 +46,23 @@ export interface MapData {
     hubs: TransportHub[];
     bikeStations: BikeStation[];
     landmarks: Landmark[];
+    timetables: TimetableEntry[];
 }
 
 /** One parallel load, so a map never renders with half of its layers missing. */
 export const loadMapData = async (): Promise<MapData> => {
-    const [legendConfig, network, hubsFile, bikeStations, landmarksFile] = await Promise.all([
+    const [legendConfig, network, hubsFile, bikeStations, landmarksFile, timetableFile] = await Promise.all([
         fetchJson<LegendConfig>(withBase('data/legend-config.json')),
         fetchJson<TransitNetwork>(withBase('data/transport/routes/transit_network.json')),
         fetchJson<TransportHubsFile>(withBase('data/transport/transport_hubs.json')),
         fetchJson<BikeStation[]>(withBase('data/transport/bike_stations.json')),
         fetchJson<LandmarksFile>(withBase('data/transport/landmarks.json')),
+        // Arrivals are an enhancement, not a map layer: a timetable failure must not take
+        // the map down with it. Stop rows will render their explicit unavailable fallback.
+        fetchJson<TimetableFile>(withBase('data/transport/timetables/urban_timetables.json')).catch((error) => {
+            console.warn('Failed to load timetable estimates:', error);
+            return { urban: [] };
+        }),
     ]);
 
     return {
@@ -63,6 +71,7 @@ export const loadMapData = async (): Promise<MapData> => {
         hubs: hubsFile.hubs,
         bikeStations,
         landmarks: landmarksFile.landmarks,
+        timetables: timetableFile.urban,
     };
 };
 

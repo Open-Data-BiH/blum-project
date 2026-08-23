@@ -13,11 +13,12 @@ import {
     getLineColor,
     getLineRoutes,
     getRouteStops,
-    pickRouteForStop,
     type TransitIndex,
 } from '../../../lib/transit';
+import type { TimetableEntry } from '../../../types/timetable';
 import type { TransitRoute, TransitStop } from '../../../types/transit';
 import { lineAccentStyle, type FocusOffset } from './map-core';
+import { renderStopArrivals } from './stop-arrivals-view';
 
 const DESKTOP_QUERY = '(min-width: 900px)';
 const MAX_STOP_RESULTS = 8;
@@ -30,6 +31,8 @@ export interface MapPanelOptions {
     onRouteSelect: (routeId: string) => void;
     onRouteClear: () => void;
     onStopFocus: (stop: TransitStop) => void;
+    timetables: TimetableEntry[];
+    now?: () => Date;
 }
 
 export interface MapPanel {
@@ -47,6 +50,8 @@ export const createMapPanel = ({
     onRouteSelect,
     onRouteClear,
     onStopFocus,
+    timetables,
+    now = () => new Date(),
 }: MapPanelOptions): MapPanel => {
     const panel = root.querySelector<HTMLElement>('[data-map-panel]');
     const trigger = root.querySelector<HTMLButtonElement>('[data-panel-open]');
@@ -107,6 +112,7 @@ export const createMapPanel = ({
 
     const showBrowse = (): void => {
         detailView.replaceChildren();
+        delete panel.dataset.detailType;
         setView('browse');
     };
 
@@ -180,28 +186,6 @@ export const createMapPanel = ({
         }
     };
 
-    const renderLineBadges = (lineIds: string[], stopId: string | null): string =>
-        lineIds
-            .map((lineId) => {
-                const style = lineAccentStyle(getLineColor(index, lineId));
-                const routeId = stopId ? pickRouteForStop(index, lineId, stopId) : null;
-                const label = escapeHtml(lineId);
-
-                // Without a variant that calls here, the line page is the honest destination.
-                if (!routeId) {
-                    const title = escapeHtml(
-                        langText(`Otvori stranicu linije ${lineId}`, `Open the page for line ${lineId}`),
-                    );
-                    return `<a class="map-badge" href="${escapeHtml(lineDetailHref(lineId))}" style="${style}" title="${title}" aria-label="${title}">${label}</a>`;
-                }
-
-                const title = escapeHtml(
-                    langText(`Prikaži trasu linije ${lineId}`, `Show the route of line ${lineId}`),
-                );
-                return `<button type="button" class="map-badge" data-route-id="${escapeHtml(routeId)}" style="${style}" title="${title}" aria-label="${title}">${label}</button>`;
-            })
-            .join('');
-
     const renderLineFacts = (lineId: string, stopCount: number): string => {
         const facts = lineFactsById.get(lineId);
         const stopsLabel = langText(`${stopCount} stajališta`, `${stopCount} stops`);
@@ -246,22 +230,23 @@ export const createMapPanel = ({
         // A selected network stop belongs to the base stop layer. Drop any route overlay
         // first so its dimming rule cannot hide the selected marker state.
         onRouteClear();
-        const lineIds = [...stop.lines].sort(compareLineIds);
 
         detailView.innerHTML = `
             ${backButton()}
             <p class="map-detail__eyebrow">${escapeHtml(langText('Autobusko stajalište', 'Bus stop'))}</p>
             <h2 class="map-detail__title" tabindex="-1" data-detail-title>${escapeHtml(stop.name)}</h2>
             ${stop.street ? `<p class="map-detail__meta">${escapeHtml(stop.street)}</p>` : ''}
-            ${
-                lineIds.length > 0
-                    ? `<p class="map-detail__label">${escapeHtml(langText('Linije na ovom stajalištu', 'Lines at this stop'))}</p>
-                       <div class="map-detail__badges">${renderLineBadges(lineIds, stop.id)}</div>
-                       <p class="map-detail__hint">${escapeHtml(langText('Izaberite liniju za prikaz trase.', 'Pick a line to draw its route.'))}</p>`
-                    : ''
-            }
+            ${renderStopArrivals({
+                index,
+                timetables,
+                stop,
+                language: getCurrentLanguage(),
+                getLineHref: lineDetailHref,
+                now: now(),
+            })}
         `;
 
+        panel.dataset.detailType = 'stop';
         setOpen(true);
         setView('detail');
         focusDetailTitle();
@@ -362,6 +347,7 @@ export const createMapPanel = ({
             </a>
         `;
 
+        panel.dataset.detailType = 'route';
         setOpen(true);
         setView('detail');
         focusDetailTitle();

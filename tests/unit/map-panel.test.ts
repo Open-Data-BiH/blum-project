@@ -1,11 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import network from '../../public/data/transport/routes/transit_network.json';
-import { createTransitIndex, getLineColor } from '../../src/lib/transit';
+import timetableFile from '../../public/data/transport/timetables/urban_timetables.json';
+import { createTransitIndex, getLineColor, getRoutesForStop } from '../../src/lib/transit';
 import { createMapPanel } from '../../src/scripts/features/map/map-panel';
+import type { TimetableFile } from '../../src/types/timetable';
 import type { TransitNetwork } from '../../src/types/transit';
 
 const transit = network as TransitNetwork;
 const index = createTransitIndex(transit);
+const timetables = (timetableFile as TimetableFile).urban;
+const fixedNow = (): Date => new Date(2026, 1, 2, 12, 0);
 const linesWithRoutes = transit.lines.filter((line) => line.routes.length > 0);
 const [firstLine] = linesWithRoutes;
 const sampleStop = transit.stops.find((stop) => stop.name.length > 4)!;
@@ -64,7 +68,7 @@ describe('map panel', () => {
         onRouteSelect = vi.fn();
         onRouteClear = vi.fn();
         onStopFocus = vi.fn();
-        createMapPanel({ root, index, onRouteSelect, onRouteClear, onStopFocus });
+        createMapPanel({ root, index, onRouteSelect, onRouteClear, onStopFocus, timetables, now: fixedNow });
     });
 
     it('filters the line list and finds stops by name', async () => {
@@ -122,20 +126,82 @@ describe('map panel', () => {
         expect(detail.hidden).toBe(true);
     });
 
-    it('opens a stop with a badge for every line calling there', () => {
+    it('automatically opens a compact arrival row for every serving direction', () => {
         const stop = transit.stops.find((entry) => entry.lines.length > 1)!;
         const detail = root.querySelector<HTMLElement>('[data-view="detail"]')!;
 
-        createMapPanel({ root, index, onRouteSelect, onRouteClear, onStopFocus }).showStop(stop);
+        createMapPanel({
+            root,
+            index,
+            onRouteSelect,
+            onRouteClear,
+            onStopFocus,
+            timetables,
+            now: fixedNow,
+        }).showStop(stop);
 
         expect(onRouteClear).toHaveBeenCalled();
         expect(detail.querySelector('[data-detail-title]')?.textContent).toContain(stop.name);
-        const badges = Array.from(detail.querySelectorAll<HTMLElement>('.map-badge'));
-        expect(badges.length).toBe(stop.lines.length);
+        expect(detail.querySelector('.stop-arrivals__heading')?.textContent).toContain('Sljedeći dolasci');
+        expect(detail.querySelectorAll('.stop-arrivals__disclaimer')).toHaveLength(1);
+
+        const expectedRows = stop.lines.reduce(
+            (total, lineId) => total + Math.max(1, getRoutesForStop(index, lineId, stop.id).length),
+            0,
+        );
+        const rows = Array.from(detail.querySelectorAll<HTMLElement>('.stop-arrival'));
+        expect(rows).toHaveLength(expectedRows);
+        const badges = Array.from(detail.querySelectorAll<HTMLElement>('.stop-arrival__badge'));
         badges.forEach((badge) => {
             const lineId = badge.textContent?.trim() ?? '';
-            expect(badge.style.getPropertyValue('--line-accent')).toBe(getLineColor(index, lineId));
+            expect(badge.closest<HTMLElement>('.stop-arrival')?.style.getPropertyValue('--line-accent')).toBe(
+                getLineColor(index, lineId),
+            );
         });
+    });
+
+    it('shows estimated clock times immediately and keeps route selection on the row', () => {
+        const route = index.routeById.get('10-autobuska-stanica-obilicevo')!;
+        const stop = index.stopById.get(route.stops[0].stopId)!;
+        const panel = createMapPanel({
+            root,
+            index,
+            onRouteSelect,
+            onRouteClear,
+            onStopFocus,
+            timetables,
+            now: fixedNow,
+        });
+
+        panel.showStop(stop);
+        const row = root.querySelector<HTMLButtonElement>(`.stop-arrival[data-route-id="${route.id}"]`)!;
+        expect(row).not.toBeNull();
+        expect(row.textContent).toMatch(/~\d{2}:\d{2}/);
+
+        row.click();
+        expect(onRouteSelect).toHaveBeenCalledWith(route.id);
+    });
+
+    it('uses a meaningful fallback for a line without route data', () => {
+        const stop = transit.stops.find((entry) =>
+            entry.lines.some((lineId) => getRoutesForStop(index, lineId, entry.id).length === 0),
+        )!;
+        const panel = createMapPanel({
+            root,
+            index,
+            onRouteSelect,
+            onRouteClear,
+            onStopFocus,
+            timetables,
+            now: fixedNow,
+        });
+
+        panel.showStop(stop);
+        const fallback = Array.from(root.querySelectorAll<HTMLElement>('.stop-arrival')).find(
+            (row) => !row.dataset.routeId,
+        );
+        expect(fallback?.textContent).toContain('Procjena trenutno nije dostupna');
+        expect(fallback?.textContent).not.toMatch(/undefined|NaN|--:--/);
     });
 
     it('returns to search results when the query changes from a selected stop', async () => {
@@ -158,7 +224,15 @@ describe('map panel', () => {
     });
 
     it('clears the selection on reset', () => {
-        const panel = createMapPanel({ root, index, onRouteSelect, onRouteClear, onStopFocus });
+        const panel = createMapPanel({
+            root,
+            index,
+            onRouteSelect,
+            onRouteClear,
+            onStopFocus,
+            timetables,
+            now: fixedNow,
+        });
         panel.showStop(sampleStop);
         panel.reset();
 

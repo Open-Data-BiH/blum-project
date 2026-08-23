@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import network from '../../public/data/transport/routes/transit_network.json';
+import timetableFile from '../../public/data/transport/timetables/urban_timetables.json';
 import { createTransitIndex, getTerminusStopIds } from '../../src/lib/transit';
 import { MAP_VIEW } from '../../src/scripts/features/map/map-core';
-import { buildBusStopsLayer } from '../../src/scripts/features/map/map-layers';
+import { buildBusStopsLayer, createStopPopupContent } from '../../src/scripts/features/map/map-layers';
+import type { TimetableFile } from '../../src/types/timetable';
 import type { TransitNetwork } from '../../src/types/transit';
 
 interface FakeLayerRecord {
@@ -12,6 +14,7 @@ interface FakeLayerRecord {
 
 const transit = network as TransitNetwork;
 const index = createTransitIndex(transit);
+const timetables = (timetableFile as TimetableFile).urban;
 
 const createFakeMap = (zoom: number) => {
     const activeLayers = new Set<unknown>();
@@ -140,5 +143,34 @@ describe('selected stop marker', () => {
         const circle = layerAt(fake.circles, regularStop.id).options;
         expect(circle.fillColor).toBe('#16803c');
         expect(circle.fillOpacity).toBe(0.92);
+    });
+});
+
+describe('bus stop popup', () => {
+    it('renders automatic estimated arrivals with one stop-wide disclaimer', () => {
+        const route = index.routeById.get('10-autobuska-stanica-obilicevo')!;
+        const stop = index.stopById.get(route.stops[0].stopId)!;
+        document.body.innerHTML = createStopPopupContent(index, stop, timetables, true, new Date(2026, 1, 2, 12, 0));
+
+        expect(document.querySelector('.stop-arrivals__heading')?.textContent).toContain('Sljedeći dolasci');
+        expect(document.querySelectorAll('.stop-arrivals__disclaimer')).toHaveLength(1);
+        const routeRow = document.querySelector<HTMLElement>(`.stop-arrival[data-route-id="${route.id}"]`);
+        expect(routeRow?.textContent).toMatch(/~\d{2}:\d{2}/);
+        expect(routeRow?.textContent).toContain('Obilićevo');
+        expect(routeRow?.textContent).not.toContain('→');
+        const times = routeRow?.querySelectorAll('.stop-arrival__time') ?? [];
+        expect(times).toHaveLength(2);
+        expect(times[0].querySelector('.stop-arrival__time-label')?.textContent).toBe('Sljedeći');
+        expect(times[1].classList.contains('stop-arrival__time--secondary')).toBe(true);
+        expect(times[1].querySelector('.stop-arrival__time-label')?.textContent).toBe('Nakon toga');
+    });
+
+    it('links rows to line pages when route selection is unavailable', () => {
+        const stop = transit.stops.find((entry) => entry.lines.includes('17'))!;
+        document.body.innerHTML = createStopPopupContent(index, stop, timetables, false, new Date(2026, 1, 2, 12, 0));
+
+        expect(document.querySelector('.stop-arrival[data-route-id]')).toBeNull();
+        expect(document.querySelector<HTMLAnchorElement>('.stop-arrival')?.href).toContain('/linija/');
+        expect(document.body.textContent).not.toMatch(/undefined|NaN|--:--/);
     });
 });

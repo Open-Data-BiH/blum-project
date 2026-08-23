@@ -151,7 +151,7 @@ describe('transit lookups', () => {
 
     it('honors stops added to a route by transit overrides', () => {
         const bulevar = index.stopById.get('st-167');
-        expect(bulevar?.name).toBe('Bulevar');
+        expect(bulevar?.name).toBe('Bulevar - neboderi');
         expect(bulevar?.lines).toContain('19');
         expect(pickRouteForStop(index, '19', 'st-167')).toBe('19-sargovac-centar');
     });

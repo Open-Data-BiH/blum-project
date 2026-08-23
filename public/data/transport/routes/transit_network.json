@@ -10,7 +10,7 @@
       "linesWithRoutes": 23,
       "routes": 45,
       "routesWithShape": 45,
-      "stops": 388,
+      "stops": 390,
       "registryStops": 433,
       "derivedStops": 52
     },
@@ -43,7 +43,8 @@
       "line 9C direction 2: \"Skupština\" repeats the previous stop and was dropped",
       "line 9C has no geometry for 9c-centar-cesma — add scripts/shape-overrides/9c-centar-cesma.json",
       "lines without route data: 9C",
-      "20 stop name(s) shared by markers within 45 m — rename them in scripts/transit-overrides.json if riders cannot tell them apart: Ada (st-1599, st-4969, st-4968); Bolnica (st-242, st-723); Ćosići (st-1562, st-398); Eko toplane (st-4970, st-4971); Kamenolom (st-204, st-8667, st-1410, st-8668); Kasarna (st-9770, st-9771); Klašnik (st-207, st-1413); Matijevići (st-393, st-1557); Naselje Sunca (st-240, st-1446); Njegoševa raskrsnica (st-247, st-1453); Obala (st-248, st-1454); OŠ Branko Radičević (st-1465, st-259); Peti km (st-264, st-1470); Priječani zadruga (st-356, st-1554); Pritočka ul. (st-397, st-1561); Prodavnica pogrebne opreme (st-280, st-1486); Rakovačkih rudara - raskrsnica (st-1490, st-284); Topići (st-319, st-1525); Vitaminka (st-333, st-1539); Vrtić (st-341, st-611)",
+      "override: \"st-kasarna-zapad\" is 67 m from route 19-sargovac-centar — check it belongs there",
+      "20 stop name(s) shared by markers within 45 m — rename them in scripts/transit-overrides.json if riders cannot tell them apart: Ada (st-1599, st-4969, st-4968); Bolnica (st-242, st-723); Ćosići (st-1562, st-398); Eko toplane (st-4970, st-4971); Kamenolom (st-204, st-8667, st-1410, st-8668); Kasarna (st-9770, st-9771); Klašnik (st-207, st-1413); Matijevići (st-393, st-1557); Naselje Sunca (st-240, st-1446); Njegoševa raskrsnica (st-247, st-1453); Obala (st-248, st-1454); OŠ Branko Radičević (st-1465, st-259); Peti km (st-264, st-1470); Priječani zadruga (st-356, st-1554); Pritočka ul. (st-397, st-1561); Prodavnica pogrebne opreme (st-280, st-1486); Rakovačkih rudara - raskrsnica (st-284, st-1490); Topići (st-319, st-1525); Vitaminka (st-333, st-1539); Vrtić (st-341, st-611)",
       "67 stop/line pairs where the line listings claim a stop the route export does not include — those lines link to the timetable instead of a route"
     ]
   },
@@ -2014,6 +2015,13 @@
           "distance": 579
         },
         {
+          "stopId": "st-vuksani",
+          "seq": null,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
           "stopId": "st-935",
           "seq": 6,
           "role": null,
@@ -2307,6 +2315,13 @@
           "role": null,
           "time": 58,
           "distance": 593
+        },
+        {
+          "stopId": "st-vuksani",
+          "seq": null,
+          "role": null,
+          "time": null,
+          "distance": null
         },
         {
           "stopId": "st-1598",
@@ -4076,6 +4091,13 @@
           "distance": 468
         },
         {
+          "stopId": "st-kasarna-zapad",
+          "seq": null,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
           "stopId": "st-314",
           "seq": 18,
           "role": null,
@@ -5832,6 +5854,13 @@
           "distance": 468
         },
         {
+          "stopId": "st-kasarna-zapad",
+          "seq": null,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
           "stopId": "st-314",
           "seq": 9,
           "role": null,
@@ -5969,6 +5998,13 @@
           "role": null,
           "time": 87,
           "distance": 483
+        },
+        {
+          "stopId": "st-kasarna-zapad",
+          "seq": null,
+          "role": null,
+          "time": null,
+          "distance": null
         },
         {
           "stopId": "st-189",
@@ -6855,7 +6891,7 @@
     },
     {
       "id": "st-1447",
-      "name": "Autobuska stanica",
+      "name": "Autobuska stanica",
       "street": null,
       "lat": 44.789175691651,
       "lon": 17.211383879185,
@@ -6899,6 +6935,17 @@
       ]
     },
     {
+      "id": "st-1367",
+      "name": "Autoservis Derviši",
+      "street": "Put srpskih branilaca",
+      "lat": 44.819140218362,
+      "lon": 17.215376232052,
+      "source": "registry",
+      "lines": [
+        "13A"
+      ]
+    },
+    {
       "id": "st-160",
       "name": "Autoservis Derviši",
       "street": null,
@@ -6910,6 +6957,17 @@
       ]
     },
     {
+      "id": "st-161",
+      "name": "Autoservis Derviši",
+      "street": "Put srpskih branilaca",
+      "lat": 44.818232484675,
+      "lon": 17.214993765811,
+      "source": "registry",
+      "lines": [
+        "13A"
+      ]
+    },
+    {
       "id": "st-1366",
       "name": "Autoservis Derviši",
       "street": "M4",
@@ -6918,28 +6976,6 @@
       "source": "registry",
       "lines": [
         "13C"
-      ]
-    },
-    {
-      "id": "st-1367",
-      "name": "Autoservis Derviši",
-      "street": "Put srpskih branilaca",
-      "lat": 44.819140218362,
-      "lon": 17.215376232052,
-      "source": "registry",
-      "lines": [
-        "13A"
-      ]
-    },
-    {
-      "id": "st-161",
-      "name": "Autoservis Derviši",
-      "street": "Put srpskih branilaca",
-      "lat": 44.818232484675,
-      "lon": 17.214993765811,
-      "source": "registry",
-      "lines": [
-        "13A"
       ]
     },
     {
@@ -6977,7 +7013,7 @@
     },
     {
       "id": "st-1368",
-      "name": "Bijela Stijena",
+      "name": "Bijela Stijena",
       "street": null,
       "lat": 44.709680119359,
       "lon": 17.167653143406,
@@ -7078,7 +7114,7 @@
     },
     {
       "id": "st-166",
-      "name": "BS 5",
+      "name": "BS 5",
       "street": "Rajka Bosnića",
       "lat": 44.759569644087,
       "lon": 17.21147866177,
@@ -7089,7 +7125,7 @@
     },
     {
       "id": "st-1372",
-      "name": "BS 5",
+      "name": "BS 5",
       "street": "Rajka Bosnića",
       "lat": 44.758921666196,
       "lon": 17.211227851203,
@@ -7111,8 +7147,22 @@
       ]
     },
     {
+      "id": "st-194",
+      "name": "Bulevar - hirurgija",
+      "street": "Bulevar cara Dušana",
+      "lat": 44.770872855903,
+      "lon": 17.182873699931,
+      "source": "registry",
+      "lines": [
+        "1",
+        "6",
+        "13A",
+        "17"
+      ]
+    },
+    {
       "id": "st-167",
-      "name": "Bulevar",
+      "name": "Bulevar - neboderi",
       "street": "Bulevar cara Dušana",
       "lat": 44.769265380378,
       "lon": 17.186108365422,
@@ -7246,7 +7296,7 @@
     },
     {
       "id": "st-176",
-      "name": "Četvrti km",
+      "name": "Četvrti km",
       "street": "R405",
       "lat": 44.792116233391,
       "lon": 17.155160372495,
@@ -7257,7 +7307,7 @@
     },
     {
       "id": "st-1382",
-      "name": "Četvrti km",
+      "name": "Četvrti km",
       "street": "R405",
       "lat": 44.791457221332,
       "lon": 17.156009715982,
@@ -7353,20 +7403,8 @@
       ]
     },
     {
-      "id": "st-3120",
-      "name": "Crvene zgrade",
-      "street": null,
-      "lat": 44.785559739492,
-      "lon": 17.200164198875,
-      "source": "registry",
-      "lines": [
-        "39",
-        "39A"
-      ]
-    },
-    {
       "id": "st-1378",
-      "name": "Crvene zgrade",
+      "name": "Crvene zgrade",
       "street": "Trive Amelice",
       "lat": 44.784900105996,
       "lon": 17.199364900589,
@@ -7379,13 +7417,25 @@
     },
     {
       "id": "st-172",
-      "name": "Crvene zgrade",
+      "name": "Crvene zgrade",
       "street": "Trive Amelice",
       "lat": 44.785724408727,
       "lon": 17.198705077171,
       "source": "registry",
       "lines": [
         "12",
+        "39",
+        "39A"
+      ]
+    },
+    {
+      "id": "st-3120",
+      "name": "Crvene zgrade",
+      "street": null,
+      "lat": 44.785559739492,
+      "lon": 17.200164198875,
+      "source": "registry",
+      "lines": [
         "39",
         "39A"
       ]
@@ -7472,7 +7522,7 @@
     },
     {
       "id": "st-185",
-      "name": "Desna Novoselija (Trafo stanica)",
+      "name": "Desna Novoselija (Trafo stanica)",
       "street": "Sime i Ilije Partala",
       "lat": 44.723640829616,
       "lon": 17.1599303931,
@@ -7483,7 +7533,7 @@
     },
     {
       "id": "st-1391",
-      "name": "Desna Novoselija (Trafo stanica)",
+      "name": "Desna Novoselija (Trafo stanica)",
       "street": "Sime i Ilije Partala",
       "lat": 44.728972351616,
       "lon": 17.157123461366,
@@ -7494,7 +7544,7 @@
     },
     {
       "id": "st-186",
-      "name": "DI Vrbas",
+      "name": "DI Vrbas",
       "street": "Braće Pišteljića",
       "lat": 44.78393301065,
       "lon": 17.215281128883,
@@ -7505,7 +7555,7 @@
     },
     {
       "id": "st-1392",
-      "name": "DI Vrbas",
+      "name": "DI Vrbas",
       "street": "Braće Pišteljića",
       "lat": 44.783519896086,
       "lon": 17.216313779354,
@@ -7513,6 +7563,18 @@
       "lines": [
         "9",
         "9C"
+      ]
+    },
+    {
+      "id": "st-187",
+      "name": "Dom penzionera",
+      "street": null,
+      "lat": 44.75987185058,
+      "lon": 17.184913965175,
+      "source": "registry",
+      "lines": [
+        "9",
+        "13"
       ]
     },
     {
@@ -7530,20 +7592,8 @@
       ]
     },
     {
-      "id": "st-187",
-      "name": "Dom penzionera",
-      "street": null,
-      "lat": 44.75987185058,
-      "lon": 17.184913965175,
-      "source": "registry",
-      "lines": [
-        "9",
-        "13"
-      ]
-    },
-    {
       "id": "st-1393",
-      "name": "Dom penzionera",
+      "name": "Dom penzionera",
       "street": null,
       "lat": 44.760157839652,
       "lon": 17.185414013802,
@@ -7569,7 +7619,7 @@
     },
     {
       "id": "st-1394",
-      "name": "Dom Staraca",
+      "name": "Dom Staraca",
       "street": "Krajiških brigada",
       "lat": 44.780172031296,
       "lon": 17.188006415963,
@@ -7652,7 +7702,7 @@
     },
     {
       "id": "st-1396",
-      "name": "Drakulić avion",
+      "name": "Drakulić avion",
       "street": "Mlađe Ćusića",
       "lat": 44.804650625397,
       "lon": 17.180476784706,
@@ -7667,7 +7717,7 @@
     },
     {
       "id": "st-1397",
-      "name": "Drakulić Vrtače",
+      "name": "Drakulić Vrtače",
       "street": "Vrtače",
       "lat": 44.818240228915,
       "lon": 17.167343348265,
@@ -7749,20 +7799,6 @@
       ]
     },
     {
-      "id": "st-194",
-      "name": "Gimnazija",
-      "street": "Bulevar cara Dušana",
-      "lat": 44.770872855903,
-      "lon": 17.182873699931,
-      "source": "registry",
-      "lines": [
-        "1",
-        "6",
-        "13A",
-        "17"
-      ]
-    },
-    {
       "id": "st-1400",
       "name": "Gimnazija",
       "street": "Bulevar cara Dušana",
@@ -7778,7 +7814,7 @@
     },
     {
       "id": "st-1401",
-      "name": "Goluba Babića",
+      "name": "Goluba Babića",
       "street": "Mlađe Ćusića",
       "lat": 44.799114823526,
       "lon": 17.193197831512,
@@ -7819,7 +7855,7 @@
     },
     {
       "id": "st-1403",
-      "name": "Ⅰ Krajiškog proleterskog bataljona okretnica",
+      "name": "I Krajiškog proleterskog bataljona okretnica",
       "street": "Ⅰ Krajiškog proleterskog bataljona",
       "lat": 44.783783566322,
       "lon": 17.236475944519,
@@ -7833,7 +7869,7 @@
     },
     {
       "id": "st-1404",
-      "name": "Ⅰ Krajiškog proleterskog bataljona skladište",
+      "name": "I Krajiškog proleterskog bataljona skladište",
       "street": "Ⅰ Krajiškog proleterskog bataljona",
       "lat": 44.785181379209,
       "lon": 17.233597263694,
@@ -7861,7 +7897,7 @@
     },
     {
       "id": "st-1406",
-      "name": "Incel kapija",
+      "name": "Incel kapija",
       "street": "Vladislava Skarića",
       "lat": 44.776268968672,
       "lon": 17.228578850627,
@@ -7987,7 +8023,7 @@
     },
     {
       "id": "st-205",
-      "name": "Kamenolom 'Zeleni vir'",
+      "name": "Kamenolom 'Zeleni vir'",
       "street": "Rade Radića",
       "lat": 44.746523692806,
       "lon": 17.275319695473,
@@ -8164,6 +8200,18 @@
       ]
     },
     {
+      "id": "st-kasarna-zapad",
+      "name": "Kasarna Zapad",
+      "street": null,
+      "lat": 44.8045961,
+      "lon": 17.1982981,
+      "source": "osm",
+      "lines": [
+        "13B",
+        "19"
+      ]
+    },
+    {
       "id": "st-207",
       "name": "Klašnik",
       "street": null,
@@ -8198,7 +8246,7 @@
     },
     {
       "id": "st-209",
-      "name": "Kočićev vijenac",
+      "name": "Kočićev vijenac",
       "street": "Kozarska",
       "lat": 44.75623018049,
       "lon": 17.176609039307,
@@ -8209,7 +8257,7 @@
     },
     {
       "id": "st-1415",
-      "name": "Kočićev vijenac",
+      "name": "Kočićev vijenac",
       "street": "Kozarska",
       "lat": 44.756609206642,
       "lon": 17.177222594619,
@@ -8282,7 +8330,7 @@
     },
     {
       "id": "st-1418",
-      "name": "Kralja Aleksandra Ⅰ br.195",
+      "name": "Kralja Aleksandra I br.195",
       "street": "Kralja A. Ⅰ Karađorđevića",
       "lat": 44.799429334108,
       "lon": 17.163601666689,
@@ -8371,7 +8419,7 @@
     },
     {
       "id": "st-1421",
-      "name": "Lazarevo (okretnica)",
+      "name": "Lazarevo (okretnica)",
       "street": "Zmaj - Ognjenog Vuka",
       "lat": 44.816164966009,
       "lon": 17.216369089438,
@@ -8385,7 +8433,7 @@
     },
     {
       "id": "st-214",
-      "name": "Lazarevo 3",
+      "name": "Lazarevo 3",
       "street": null,
       "lat": 44.797217464013,
       "lon": 17.198627544567,
@@ -8397,7 +8445,7 @@
     },
     {
       "id": "st-1420",
-      "name": "Lazarevo 3",
+      "name": "Lazarevo 3",
       "street": null,
       "lat": 44.796091088248,
       "lon": 17.198856768664,
@@ -8409,7 +8457,7 @@
     },
     {
       "id": "st-216",
-      "name": "Lazarevo raskrsnica",
+      "name": "Lazarevo raskrsnica",
       "street": "Knjaza Miloša",
       "lat": 44.795444036213,
       "lon": 17.20706576365,
@@ -8426,7 +8474,7 @@
     },
     {
       "id": "st-1699",
-      "name": "Lazarevo raskrsnica",
+      "name": "Lazarevo raskrsnica",
       "street": "Knjaza Miloša",
       "lat": 44.797843359259,
       "lon": 17.207562852418,
@@ -8439,7 +8487,7 @@
     },
     {
       "id": "st-1422",
-      "name": "Lazarevo raskrsnica",
+      "name": "Lazarevo raskrsnica",
       "street": "Bulevar Milutina Milankovića",
       "lat": 44.796258262748,
       "lon": 17.206476735882,
@@ -8452,7 +8500,7 @@
     },
     {
       "id": "st-1700",
-      "name": "Lazarevo raskrsnica",
+      "name": "Lazarevo raskrsnica",
       "street": "Bulevar Milutina Milankovića",
       "lat": 44.796358188035,
       "lon": 17.210123660043,
@@ -8507,7 +8555,7 @@
     },
     {
       "id": "st-218",
-      "name": "Lijeva Novoselija",
+      "name": "Lijeva Novoselija",
       "street": "M16",
       "lat": 44.7378515726,
       "lon": 17.15453311801,
@@ -8518,7 +8566,7 @@
     },
     {
       "id": "st-1424",
-      "name": "Lijeva Novoselija",
+      "name": "Lijeva Novoselija",
       "street": "M16",
       "lat": 44.736239695137,
       "lon": 17.154981717467,
@@ -8579,7 +8627,7 @@
     },
     {
       "id": "st-1426",
-      "name": "M. Dimić - crkva",
+      "name": "M. Dimić - crkva",
       "street": null,
       "lat": 44.79079180339,
       "lon": 17.195908874273,
@@ -8590,7 +8638,7 @@
     },
     {
       "id": "st-220",
-      "name": "M. Dimić - crkva",
+      "name": "M. Dimić - crkva",
       "street": null,
       "lat": 44.790827018513,
       "lon": 17.195179313421,
@@ -8613,7 +8661,7 @@
     },
     {
       "id": "st-223",
-      "name": "Majevička 22",
+      "name": "Majevička 22",
       "street": "Majevička",
       "lat": 44.790768961137,
       "lon": 17.188324928284,
@@ -8624,7 +8672,7 @@
     },
     {
       "id": "st-1429",
-      "name": "Majevička 22",
+      "name": "Majevička 22",
       "street": "Majevička",
       "lat": 44.791370470796,
       "lon": 17.189636528492,
@@ -8693,7 +8741,7 @@
     },
     {
       "id": "st-1430",
-      "name": "Medeno polje",
+      "name": "Medeno polje",
       "street": "Bulevar vojvode Stepe Stepanovića",
       "lat": 44.768571537072,
       "lon": 17.222854346037,
@@ -8709,7 +8757,7 @@
     },
     {
       "id": "st-225",
-      "name": "Medicinska elektronika",
+      "name": "Medicinska elektronika",
       "street": "Vuka Karadžića",
       "lat": 44.775870391743,
       "lon": 17.189660406439,
@@ -8724,7 +8772,7 @@
     },
     {
       "id": "st-1431",
-      "name": "Medicinska elektronika",
+      "name": "Medicinska elektronika",
       "street": "Vuka Karadžića",
       "lat": 44.775745411017,
       "lon": 17.190225964878,
@@ -8851,7 +8899,7 @@
     },
     {
       "id": "st-230",
-      "name": "Most na rijeci Vrbanja",
+      "name": "Most na rijeci Vrbanja",
       "street": "Vladislava Skarića",
       "lat": 44.776205184649,
       "lon": 17.225465476513,
@@ -8862,7 +8910,7 @@
     },
     {
       "id": "st-1436",
-      "name": "Most na rijeci Vrbanja",
+      "name": "Most na rijeci Vrbanja",
       "street": "Vladislava Skarića",
       "lat": 44.776169008604,
       "lon": 17.224620580673,
@@ -8911,8 +8959,22 @@
       ]
     },
     {
+      "id": "st-4972",
+      "name": "MZ Paprikovac",
+      "street": null,
+      "lat": 44.781168703911,
+      "lon": 17.185267210007,
+      "source": "registry",
+      "lines": [
+        "20"
+      ],
+      "mergedIds": [
+        "st-4973"
+      ]
+    },
+    {
       "id": "st-231",
-      "name": "MZ Srpske Toplice",
+      "name": "MZ Srpske Toplice",
       "street": "Od Zmijanja Rajka",
       "lat": 44.749121074929,
       "lon": 17.159217596054,
@@ -8923,7 +8985,7 @@
     },
     {
       "id": "st-1437",
-      "name": "MZ Srpske Toplice",
+      "name": "MZ Srpske Toplice",
       "street": "Od Zmijanja Rajka",
       "lat": 44.748443880937,
       "lon": 17.15797573328,
@@ -8948,7 +9010,7 @@
     },
     {
       "id": "st-1439",
-      "name": "N. Kostića 111",
+      "name": "N. Kostića 111",
       "street": null,
       "lat": 44.83545096164,
       "lon": 17.199239486363,
@@ -8962,7 +9024,7 @@
     },
     {
       "id": "st-1438",
-      "name": "N. Kostića 124",
+      "name": "N. Kostića 124",
       "street": null,
       "lat": 44.835501618486,
       "lon": 17.20943487715,
@@ -8976,7 +9038,7 @@
     },
     {
       "id": "st-1440",
-      "name": "N. Kostića 218",
+      "name": "N. Kostića 218",
       "street": null,
       "lat": 44.83545474716,
       "lon": 17.206572755822,
@@ -8990,7 +9052,7 @@
     },
     {
       "id": "st-1441",
-      "name": "N. Kostića 318",
+      "name": "N. Kostića 318",
       "street": null,
       "lat": 44.835521471083,
       "lon": 17.203325182199,
@@ -9004,7 +9066,7 @@
     },
     {
       "id": "st-1442",
-      "name": "N. Kostića 450",
+      "name": "N. Kostića 450",
       "street": null,
       "lat": 44.836063439894,
       "lon": 17.192036937922,
@@ -9018,7 +9080,7 @@
     },
     {
       "id": "st-1443",
-      "name": "N. Kostića 470",
+      "name": "N. Kostića 470",
       "street": null,
       "lat": 44.835098257101,
       "lon": 17.186059907544,
@@ -9032,7 +9094,7 @@
     },
     {
       "id": "st-1444",
-      "name": "N. Kostića most",
+      "name": "N. Kostića most",
       "street": null,
       "lat": 44.835695270178,
       "lon": 17.213931071456,
@@ -9046,7 +9108,7 @@
     },
     {
       "id": "st-196",
-      "name": "Naselje Krajina",
+      "name": "Naselje Krajina",
       "street": "Gundulićeva",
       "lat": 44.773969843312,
       "lon": 17.199010848999,
@@ -9058,20 +9120,8 @@
       ]
     },
     {
-      "id": "st-239",
-      "name": "Naselje Sime Matavulja",
-      "street": "Krajiških brigada",
-      "lat": 44.772677467379,
-      "lon": 17.181322759716,
-      "source": "registry",
-      "lines": [
-        "17A",
-        "19"
-      ]
-    },
-    {
       "id": "st-240",
-      "name": "Naselje Sunca",
+      "name": "Naselje Sunca",
       "street": "Dr. Jovana Raškovića",
       "lat": 44.774987979192,
       "lon": 17.17836469179,
@@ -9083,7 +9133,7 @@
     },
     {
       "id": "st-1446",
-      "name": "Naselje Sunca",
+      "name": "Naselje Sunca",
       "street": "Dr. Jovana Raškovića",
       "lat": 44.774701732558,
       "lon": 17.178307872964,
@@ -9162,6 +9212,18 @@
       ]
     },
     {
+      "id": "st-239",
+      "name": "Nezavisne",
+      "street": "Krajiških brigada",
+      "lat": 44.772677467379,
+      "lon": 17.181322759716,
+      "source": "registry",
+      "lines": [
+        "17A",
+        "19"
+      ]
+    },
+    {
       "id": "st-247",
       "name": "Njegoševa raskrsnica",
       "street": "Krajiških brigada",
@@ -9201,7 +9263,7 @@
     },
     {
       "id": "st-1449",
-      "name": "Nova pijaca",
+      "name": "Nova pijaca",
       "street": "Braće Podgornika",
       "lat": 44.788353341805,
       "lon": 17.208135724068,
@@ -9212,7 +9274,7 @@
     },
     {
       "id": "st-243",
-      "name": "Nova pijaca",
+      "name": "Nova pijaca",
       "street": "Braće Podgornika",
       "lat": 44.788886347671,
       "lon": 17.208672165871,
@@ -9239,7 +9301,7 @@
     },
     {
       "id": "st-1450",
-      "name": "Novakovića put",
+      "name": "Novakovića put",
       "street": null,
       "lat": 44.82450821765,
       "lon": 17.216543674003,
@@ -9253,7 +9315,7 @@
     },
     {
       "id": "st-1451",
-      "name": "Nove zgrade",
+      "name": "Nove zgrade",
       "street": "Bulevar vojvode Stepe Stepanovića",
       "lat": 44.766667252233,
       "lon": 17.231331467628,
@@ -9266,7 +9328,7 @@
     },
     {
       "id": "st-245",
-      "name": "Nove zgrade",
+      "name": "Nove zgrade",
       "street": "Bulevar vojvode Stepe Stepanovića",
       "lat": 44.766815788708,
       "lon": 17.230239808559,
@@ -9351,7 +9413,7 @@
     },
     {
       "id": "st-250",
-      "name": "Obilićevo (TO Bema)",
+      "name": "Obilićevo (TO Bema)",
       "street": "Vojvode Pere Krece",
       "lat": 44.755638360079,
       "lon": 17.18091444578,
@@ -9364,7 +9426,7 @@
     },
     {
       "id": "st-1456",
-      "name": "Obilićevo (TO Bema)",
+      "name": "Obilićevo (TO Bema)",
       "street": "Braće Jugovića",
       "lat": 44.755835810306,
       "lon": 17.181792596821,
@@ -9406,7 +9468,7 @@
     },
     {
       "id": "st-253",
-      "name": "Okretnica Tunjice",
+      "name": "Okretnica Tunjice",
       "street": null,
       "lat": 44.836433494414,
       "lon": 17.168862819672,
@@ -9464,7 +9526,7 @@
     },
     {
       "id": "st-1463",
-      "name": "OŠ Borislav Stanković",
+      "name": "OŠ Borislav Stanković",
       "street": "Milana Mirića",
       "lat": 44.805354609678,
       "lon": 17.212038804428,
@@ -9478,7 +9540,7 @@
     },
     {
       "id": "st-258",
-      "name": "OŠ Branislav Nušić",
+      "name": "OŠ Branislav Nušić",
       "street": "Manjačkih Ustanika",
       "lat": 44.747445695862,
       "lon": 17.155690491199,
@@ -9489,7 +9551,7 @@
     },
     {
       "id": "st-1464",
-      "name": "OŠ Branislav Nušić",
+      "name": "OŠ Branislav Nušić",
       "street": "Manjačkih Ustanika",
       "lat": 44.748239102007,
       "lon": 17.156391888857,
@@ -9500,7 +9562,7 @@
     },
     {
       "id": "st-1465",
-      "name": "OŠ Branko Radičević",
+      "name": "OŠ Branko Radičević",
       "street": "Bulevar vojvode Stepe Stepanovića",
       "lat": 44.765369446145,
       "lon": 17.20381334424,
@@ -9512,7 +9574,7 @@
     },
     {
       "id": "st-259",
-      "name": "OŠ Branko Radičević",
+      "name": "OŠ Branko Radičević",
       "street": "Bulevar vojvode Stepe Stepanovića",
       "lat": 44.765311363166,
       "lon": 17.203427106142,
@@ -9523,7 +9585,7 @@
     },
     {
       "id": "st-260",
-      "name": "OŠ Milan Rakić",
+      "name": "OŠ Milan Rakić",
       "street": "Sime i Ilije Partala",
       "lat": 44.736225405243,
       "lon": 17.157365530729,
@@ -9534,7 +9596,7 @@
     },
     {
       "id": "st-1466",
-      "name": "OŠ Milan Rakić",
+      "name": "OŠ Milan Rakić",
       "street": "Sime i Ilije Partala",
       "lat": 44.735796706758,
       "lon": 17.157311886549,
@@ -9601,7 +9663,7 @@
     },
     {
       "id": "st-1471",
-      "name": "P. Velikog br. 35",
+      "name": "P. Velikog br. 35",
       "street": null,
       "lat": 44.780877415947,
       "lon": 17.226004600525,
@@ -9615,7 +9677,7 @@
     },
     {
       "id": "st-1472",
-      "name": "P. Velikog salon igara",
+      "name": "P. Velikog salon igara",
       "street": "Petra Velikog",
       "lat": 44.785138069887,
       "lon": 17.230780273676,
@@ -9716,7 +9778,7 @@
     },
     {
       "id": "st-264",
-      "name": "Peti km",
+      "name": "Peti km",
       "street": null,
       "lat": 44.796066686753,
       "lon": 17.141866323072,
@@ -9727,7 +9789,7 @@
     },
     {
       "id": "st-1470",
-      "name": "Peti km",
+      "name": "Peti km",
       "street": null,
       "lat": 44.795869236493,
       "lon": 17.142333394149,
@@ -9750,7 +9812,7 @@
     },
     {
       "id": "st-268",
-      "name": "Petrićevac - Majevička br. 29",
+      "name": "Petrićevac - Majevička br. 29",
       "street": "Majevička",
       "lat": 44.792471636002,
       "lon": 17.19281360507,
@@ -9762,7 +9824,7 @@
     },
     {
       "id": "st-1474",
-      "name": "Petrićevac - Majevička br. 29",
+      "name": "Petrićevac - Majevička br. 29",
       "street": "Majevička",
       "lat": 44.792366945313,
       "lon": 17.192066609859,
@@ -9773,7 +9835,7 @@
     },
     {
       "id": "st-267",
-      "name": "Petrićevac (Marije Dimić)",
+      "name": "Petrićevac (Marije Dimić)",
       "street": "Marije Dimić",
       "lat": 44.79110969048,
       "lon": 17.193618267775,
@@ -10109,7 +10171,7 @@
     },
     {
       "id": "st-280",
-      "name": "Prodavnica pogrebne opreme",
+      "name": "Prodavnica pogrebne opreme",
       "street": "Franca Šuberta",
       "lat": 44.769548725101,
       "lon": 17.17552608432,
@@ -10120,7 +10182,7 @@
     },
     {
       "id": "st-1486",
-      "name": "Prodavnica pogrebne opreme",
+      "name": "Prodavnica pogrebne opreme",
       "street": "Franca Šuberta",
       "lat": 44.769724065675,
       "lon": 17.175861795258,
@@ -10156,7 +10218,7 @@
     },
     {
       "id": "st-281",
-      "name": "Put za Dobrnju",
+      "name": "Put za Dobrnju",
       "street": "Manjačkih Ustanika",
       "lat": 44.743087006402,
       "lon": 17.152630090714,
@@ -10167,7 +10229,7 @@
     },
     {
       "id": "st-1487",
-      "name": "Put za Dobrnju",
+      "name": "Put za Dobrnju",
       "street": "Manjačkih Ustanika",
       "lat": 44.74252166716,
       "lon": 17.152780964971,
@@ -10178,7 +10240,7 @@
     },
     {
       "id": "st-282",
-      "name": "Put za Drakulić",
+      "name": "Put za Drakulić",
       "street": "Šargovačka",
       "lat": 44.82010618863,
       "lon": 17.189062535763,
@@ -10189,7 +10251,7 @@
     },
     {
       "id": "st-1488",
-      "name": "Put za Drakulić",
+      "name": "Put za Drakulić",
       "street": "Šargovačka",
       "lat": 44.820351617532,
       "lon": 17.18762755394,
@@ -10200,7 +10262,7 @@
     },
     {
       "id": "st-1489",
-      "name": "Put za novo naselje",
+      "name": "Put za novo naselje",
       "street": null,
       "lat": 44.82604755762,
       "lon": 17.182118296623,
@@ -10225,7 +10287,7 @@
     },
     {
       "id": "st-1491",
-      "name": "Rakovac most",
+      "name": "Rakovac most",
       "street": "Kralja A. Ⅰ Karađorđevića",
       "lat": 44.796913201454,
       "lon": 17.169621884823,
@@ -10239,7 +10301,7 @@
     },
     {
       "id": "st-1492",
-      "name": "Rakovac zadruga",
+      "name": "Rakovac zadruga",
       "street": "Kralja A. Ⅰ Karađorđevića",
       "lat": 44.803013015915,
       "lon": 17.160161733627,
@@ -10253,7 +10315,7 @@
     },
     {
       "id": "st-1494",
-      "name": "Rakovačke bare",
+      "name": "Rakovačke bare",
       "street": "Kralja A. Ⅰ Karađorđevića",
       "lat": 44.793909686152,
       "lon": 17.186415195465,
@@ -10264,7 +10326,7 @@
     },
     {
       "id": "st-288",
-      "name": "Rakovačke bare",
+      "name": "Rakovačke bare",
       "street": "Kralja A. Ⅰ Karađorđevića",
       "lat": 44.794027697942,
       "lon": 17.18580365181,
@@ -10276,10 +10338,21 @@
     },
     {
       "id": "st-1493",
-      "name": "Rakovačke bare",
+      "name": "Rakovačke bare",
       "street": "Bitoljska",
       "lat": 44.799157170739,
       "lon": 17.181752175093,
+      "source": "registry",
+      "lines": [
+        "39A"
+      ]
+    },
+    {
+      "id": "st-284",
+      "name": "Rakovačkih rudara - raskrsnica",
+      "street": "Bitoljska",
+      "lat": 44.796661011156,
+      "lon": 17.190934717655,
       "source": "registry",
       "lines": [
         "39A"
@@ -10294,31 +10367,6 @@
       "source": "registry",
       "lines": [
         "39A"
-      ]
-    },
-    {
-      "id": "st-284",
-      "name": "Rakovačkih rudara - raskrsnica",
-      "street": "Bitoljska",
-      "lat": 44.796661011156,
-      "lon": 17.190934717655,
-      "source": "registry",
-      "lines": [
-        "39A"
-      ]
-    },
-    {
-      "id": "st-4972",
-      "name": "Ranka Šipke",
-      "street": null,
-      "lat": 44.781168703911,
-      "lon": 17.185267210007,
-      "source": "registry",
-      "lines": [
-        "20"
-      ],
-      "mergedIds": [
-        "st-4973"
       ]
     },
     {
@@ -10359,7 +10407,7 @@
     },
     {
       "id": "st-1496",
-      "name": "Raskrsnica D. Štrbca",
+      "name": "Raskrsnica D. Štrbca",
       "street": "Ranka Šipke",
       "lat": 44.784929119052,
       "lon": 17.186414703028,
@@ -10372,19 +10420,8 @@
       ]
     },
     {
-      "id": "st-291",
-      "name": "Raskrsnica I. Milutinovića",
-      "street": "Ivana Milutinovića",
-      "lat": 44.779729384368,
-      "lon": 17.225296497345,
-      "source": "registry",
-      "lines": [
-        "9B"
-      ]
-    },
-    {
       "id": "st-1497",
-      "name": "Raskrsnica I. Milutinovića",
+      "name": "Raskrsnica I. Milutinovića",
       "street": "Ivana Milutinovića",
       "lat": 44.778396649095,
       "lon": 17.224813699722,
@@ -10394,8 +10431,19 @@
       ]
     },
     {
+      "id": "st-291",
+      "name": "Raskrsnica I. Milutinovića",
+      "street": "Ivana Milutinovića",
+      "lat": 44.779729384368,
+      "lon": 17.225296497345,
+      "source": "registry",
+      "lines": [
+        "9B"
+      ]
+    },
+    {
       "id": "st-294",
-      "name": "Raskrsnica IKG",
+      "name": "Raskrsnica IGK",
       "street": "E661",
       "lat": 44.789929502051,
       "lon": 17.198785543442,
@@ -10406,7 +10454,7 @@
     },
     {
       "id": "st-1500",
-      "name": "Raskrsnica IKG",
+      "name": "Raskrsnica IGK",
       "street": "E661",
       "lat": 44.791707389607,
       "lon": 17.199354171753,
@@ -10431,7 +10479,7 @@
     },
     {
       "id": "st-1498",
-      "name": "Raskrsnica Ljevčanska",
+      "name": "Raskrsnica Ljevčanska",
       "street": "Ljevčanska",
       "lat": 44.790220744341,
       "lon": 17.173492312431,
@@ -10526,7 +10574,7 @@
     },
     {
       "id": "st-296",
-      "name": "RMC Srpske Toplice",
+      "name": "RMC Srpske Toplice",
       "street": "Od Zmijanja Rajka",
       "lat": 44.7505059167,
       "lon": 17.163041755557,
@@ -10537,7 +10585,7 @@
     },
     {
       "id": "st-1502",
-      "name": "RMC Srpske Toplice",
+      "name": "RMC Srpske Toplice",
       "street": "Od Zmijanja Rajka",
       "lat": 44.750625922059,
       "lon": 17.164058983326,
@@ -10548,7 +10596,7 @@
     },
     {
       "id": "st-1503",
-      "name": "S. Pandurevića 50",
+      "name": "S. Pandurevića 50",
       "street": null,
       "lat": 44.769811711588,
       "lon": 17.179171358293,
@@ -10627,7 +10675,7 @@
     },
     {
       "id": "st-1520",
-      "name": "Široka rijeka",
+      "name": "Široka rijeka",
       "street": "M16",
       "lat": 44.807620123622,
       "lon": 17.19801960513,
@@ -10743,7 +10791,7 @@
     },
     {
       "id": "st-1507",
-      "name": "Srpske Toplice",
+      "name": "Srpske Toplice",
       "street": "Manjačkih Ustanika",
       "lat": 44.751511668191,
       "lon": 17.160298526287,
@@ -10757,7 +10805,7 @@
     },
     {
       "id": "st-1511",
-      "name": "Srpskih branilaca br.79",
+      "name": "Srpskih branilaca br.79",
       "street": null,
       "lat": 44.827782555967,
       "lon": 17.217390434816,
@@ -10768,7 +10816,7 @@
     },
     {
       "id": "st-305",
-      "name": "Srpskih branilaca br.79",
+      "name": "Srpskih branilaca br.79",
       "street": null,
       "lat": 44.828247354434,
       "lon": 17.217612701934,
@@ -10779,7 +10827,7 @@
     },
     {
       "id": "st-306",
-      "name": "Stanica policije",
+      "name": "Stanica policije",
       "street": "Majke Jugovića",
       "lat": 44.76264022331,
       "lon": 17.200928630839,
@@ -10790,7 +10838,7 @@
     },
     {
       "id": "st-1512",
-      "name": "Stanica policije",
+      "name": "Stanica policije",
       "street": "Majke Jugovića",
       "lat": 44.763516580927,
       "lon": 17.200617193635,
@@ -10982,7 +11030,7 @@
     },
     {
       "id": "st-1524",
-      "name": "TOP Tunjice",
+      "name": "TOP Tunjice",
       "street": null,
       "lat": 44.827209277069,
       "lon": 17.189909715671,
@@ -10993,7 +11041,7 @@
     },
     {
       "id": "st-318",
-      "name": "TOP Tunjice",
+      "name": "TOP Tunjice",
       "street": "M4",
       "lat": 44.827723079326,
       "lon": 17.189445274416,
@@ -11026,7 +11074,7 @@
     },
     {
       "id": "st-1527",
-      "name": "Trgovačka škola",
+      "name": "Trgovačka škola",
       "street": "Bulevar vojvode Stepe Stepanovića",
       "lat": 44.763867839547,
       "lon": 17.197738140821,
@@ -11040,7 +11088,7 @@
     },
     {
       "id": "st-321",
-      "name": "Trgovačka škola",
+      "name": "Trgovačka škola",
       "street": "Bulevar vojvode Stepe Stepanovića",
       "lat": 44.763705964597,
       "lon": 17.196980416775,
@@ -11052,7 +11100,7 @@
     },
     {
       "id": "st-322",
-      "name": "TT inženjering",
+      "name": "TT inženjering",
       "street": "Poljskog partizanskog bataljona",
       "lat": 44.799697645256,
       "lon": 17.221422716975,
@@ -11063,7 +11111,7 @@
     },
     {
       "id": "st-1528",
-      "name": "TT inženjering",
+      "name": "TT inženjering",
       "street": null,
       "lat": 44.800064067716,
       "lon": 17.222256213427,
@@ -11140,7 +11188,7 @@
     },
     {
       "id": "st-326",
-      "name": "Tvornica kože",
+      "name": "Tvornica kože",
       "street": "Karađorđeva",
       "lat": 44.78592659341,
       "lon": 17.160529133398,
@@ -11152,7 +11200,7 @@
     },
     {
       "id": "st-1532",
-      "name": "Tvornica kože",
+      "name": "Tvornica kože",
       "street": "Karađorđeva",
       "lat": 44.785212827528,
       "lon": 17.16134307906,
@@ -11198,7 +11246,7 @@
     },
     {
       "id": "st-328",
-      "name": "V. Skarića br.100",
+      "name": "V. Skarića br.100",
       "street": "Vladislava Skarića",
       "lat": 44.774994226829,
       "lon": 17.233895659447,
@@ -11209,7 +11257,7 @@
     },
     {
       "id": "st-1534",
-      "name": "V. Skarića br.100",
+      "name": "V. Skarića br.100",
       "street": "Vladislava Skarića",
       "lat": 44.774249741728,
       "lon": 17.23579198122,
@@ -11220,7 +11268,7 @@
     },
     {
       "id": "st-329",
-      "name": "V. Skarića br.14",
+      "name": "V. Skarića br.14",
       "street": "Vladislava Skarića",
       "lat": 44.768442047692,
       "lon": 17.243068814278,
@@ -11231,7 +11279,7 @@
     },
     {
       "id": "st-1535",
-      "name": "V. Skarića br.14",
+      "name": "V. Skarića br.14",
       "street": "Vladislava Skarića",
       "lat": 44.76672819032,
       "lon": 17.244104146957,
@@ -11242,7 +11290,7 @@
     },
     {
       "id": "st-1536",
-      "name": "V. Skarića br.90",
+      "name": "V. Skarića br.90",
       "street": "Vladislava Skarića",
       "lat": 44.771820102098,
       "lon": 17.239844799042,
@@ -11256,7 +11304,7 @@
     },
     {
       "id": "st-331",
-      "name": "Vatrogasni dom",
+      "name": "Vatrogasni dom",
       "street": "Rade Radića",
       "lat": 44.764178257301,
       "lon": 17.247368395329,
@@ -11389,7 +11437,7 @@
     },
     {
       "id": "st-338",
-      "name": "Vrbanja crkva",
+      "name": "Vrbanja crkva",
       "street": "Rade Radića",
       "lat": 44.75575829898,
       "lon": 17.253432869911,
@@ -11400,7 +11448,7 @@
     },
     {
       "id": "st-339",
-      "name": "Vrbanja cvjećar",
+      "name": "Vrbanja cvjećar",
       "street": "Rade Radića",
       "lat": 44.751628814244,
       "lon": 17.259514778852,
@@ -11471,6 +11519,17 @@
       ]
     },
     {
+      "id": "st-vuksani",
+      "name": "Vuksani",
+      "street": null,
+      "lat": 44.707065,
+      "lon": 17.1765681,
+      "source": "osm",
+      "lines": [
+        "9"
+      ]
+    },
+    {
       "id": "st-1548",
       "name": "Zalužani",
       "street": "Put srskih branilaca",
@@ -11538,7 +11597,7 @@
     },
     {
       "id": "st-1549",
-      "name": "Zeleni most",
+      "name": "Zeleni most",
       "street": "Skendera Kulenovića",
       "lat": 44.762019105402,
       "lon": 17.181842029095,
@@ -11565,7 +11624,7 @@
     },
     {
       "id": "st-344",
-      "name": "Zeleni vir okretnica",
+      "name": "Zeleni vir okretnica",
       "street": "Rade radića",
       "lat": 44.738929943074,
       "lon": 17.282194197178,
@@ -11576,7 +11635,7 @@
     },
     {
       "id": "st-1551",
-      "name": "Zoološki vrt",
+      "name": "Zoološki vrt",
       "street": "Slatinska",
       "lat": 44.799639165479,
       "lon": 17.228535935283,

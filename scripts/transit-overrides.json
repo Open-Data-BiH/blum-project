@@ -3,7 +3,18 @@
 
     "//rename": "stop id -> display name, e.g. \"Prodavnica\" -> \"Prodavnica (Kuljani)\".",
     "rename": {
-        "st-4970": "Eko toplane"
+        "st-4970": "Eko toplane",
+
+        "st-294": "Raskrsnica IGK",
+        "st-1500": "Raskrsnica IGK",
+
+        "st-4972": "MZ Paprikovac",
+        "st-4973": "MZ Paprikovac",
+
+        "st-239": "Nezavisne",
+
+        "st-194": "Bulevar - hirurgija",
+        "st-167": "Bulevar - neboderi"
     },
 
     "//move": "stop id -> [lat, lon] replacing the export's coordinate: surveyed corrections, operator route changes, and OSM positions for legacy stops the export never carried.",
@@ -40,9 +51,29 @@
         "st-drakulic-vrtace": "st-1397"
     },
 
+    "//newStops": "stops neither source lists, taken from OpenStreetMap where the node sits on a route the site already draws and OSM puts it on that line. Each must also appear in addStops.",
+    "newStops": {
+        "st-vuksani": {
+            "name": "Vuksani",
+            "lat": 44.707065,
+            "lon": 17.1765681,
+            "//osm": "node 13530032392, on OSM lines 9 and BL-LJUB"
+        },
+        "st-kasarna-zapad": {
+            "name": "Kasarna Zapad",
+            "lat": 44.8045961,
+            "lon": 17.1982981,
+            "//osm": "midpoint of nodes 13451821528 (OSM lines 13B, 19) and 13451821529 (line 19), 30 m apart"
+        }
+    },
+
     "//addStops": "route id -> stop ids the export omits. Each is slotted in at the position its geometry implies.",
     "addStops": {
-        "19-sargovac-centar": ["st-cajevac", "st-167"]
+        "19-sargovac-centar": ["st-cajevac", "st-167", "st-kasarna-zapad"],
+        "19-centar-sargovac": ["st-kasarna-zapad"],
+        "13b-novo-groblje-lazarevo": ["st-kasarna-zapad"],
+        "9-desna-novoselija-kumsale": ["st-vuksani"],
+        "9-kumsale-desna-novoselija": ["st-vuksani"]
     },
 
     "//moveLines": "reassigns line badges the automatic name+distance matching attached to the wrong pole of a same-named pair. Only needed for a line whose stop list has no route to speak for it.",

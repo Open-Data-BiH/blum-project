@@ -17,7 +17,7 @@ const OVERRIDES = path.join(ROOT, 'scripts/transit-overrides.json');
 const LINE_COLORS = path.join(ROOT, 'public/data/transport/routes/urban_bus_routes.json');
 const OUTPUT = path.join(ROOT, 'public/data/transport/routes/transit_network.json');
 const SHAPES_DIR = path.join(ROOT, 'public/data/transport/routes/shapes');
-/** Hand-corrected geometry, already in Leaflet [lat, lon]; wins over the export. */
+/** Hand-corrected geometry, written as Leaflet [lat, lon]; wins over the export. */
 const SHAPE_OVERRIDES_DIR = path.join(ROOT, 'scripts/shape-overrides');
 
 /** 5 decimals is about one metre. */
@@ -41,6 +41,21 @@ const POLE_MERGE_RADIUS_M = 30;
 const DEFAULT_LINE_COLOR = '#72aaff';
 
 const readJson = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
+
+/**
+ * A hand-corrected route geometry, returned as GeoJSON [lon, lat] so it is
+ * interchangeable with the export's. Resolved before anything projects a stop onto a
+ * route, so overrides and stop placement always agree on what is drawn.
+ */
+const usedShapeOverrides = new Set();
+const readShapeOverride = (routeKey) => {
+    const file = path.join(SHAPE_OVERRIDES_DIR, `${routeKey}.json`);
+    if (!fs.existsSync(file)) {
+        return null;
+    }
+    usedShapeOverrides.add(`${routeKey}.json`);
+    return readJson(file).map(([lat, lon]) => [lon, lat]);
+};
 
 const warnings = [];
 const warn = (message) => {
@@ -109,6 +124,38 @@ const transliterate = (value) => {
 
 /** Some relations use an en dash and doubled spaces. */
 const cleanRelation = (value) => (value ?? '').replace(/–/g, '-').replace(/\s+/g, ' ').trim();
+
+/**
+ * The export types some stop names with a non-breaking space (125 of them) and a few with
+ * the Unicode Roman numeral Ⅰ instead of the letter I. Both look right and behave wrong:
+ * a rider typing an ordinary space or "I" would not match the stop.
+ */
+const ROMAN_NUMERALS = {
+    Ⅰ: 'I',
+    Ⅱ: 'II',
+    Ⅲ: 'III',
+    Ⅳ: 'IV',
+    Ⅴ: 'V',
+    Ⅵ: 'VI',
+    Ⅶ: 'VII',
+    Ⅷ: 'VIII',
+    Ⅸ: 'IX',
+    Ⅹ: 'X',
+    ⅰ: 'i',
+    ⅱ: 'ii',
+    ⅲ: 'iii',
+    ⅳ: 'iv',
+    ⅴ: 'v',
+    ⅹ: 'x',
+};
+
+/** `\s` covers U+00A0 and the other Unicode spaces. */
+const cleanStopName = (value) =>
+    [...(value ?? '')]
+        .map((char) => ROMAN_NUMERALS[char] ?? char)
+        .join('')
+        .replace(/\s+/g, ' ')
+        .trim();
 
 const splitRelation = (relation) => {
     const parts = relation
@@ -376,8 +423,8 @@ for (const group of sourceRouteStops) {
     const direction = group.direction ?? meta?.direction ?? null;
 
     // Written per route and fetched on demand, keeping the map payload small.
-    const geometry = shapeByKey.get(group.route_id) ?? null;
     const routeKey = makeRouteId(lineId, endpoints.origin, endpoints.destination, direction, takenRouteIds);
+    const geometry = readShapeOverride(routeKey) ?? shapeByKey.get(group.route_id) ?? null;
     if (geometry) {
         shapesToWrite.set(routeKey, geometry);
     }
@@ -471,7 +518,7 @@ for (const [lineId, line] of Object.entries(lineColorData)) {
                 return;
             }
             derivedStops.set(key, {
-                name,
+                name: cleanStopName(name),
                 street: direction.streets?.[index] ?? direction.ulice?.[index] ?? null,
                 lat: coordinate[0],
                 lon: coordinate[1],
@@ -483,7 +530,7 @@ for (const [lineId, line] of Object.entries(lineColorData)) {
 
 const registryStops = sourceStops.map((stop) => ({
     id: stopId(stop.stop_id),
-    name: transliterate(stop.name ?? '').text,
+    name: cleanStopName(transliterate(stop.name ?? '').text),
     street: stop.street || null,
     lat: stop.lat,
     lon: stop.lon,
@@ -563,7 +610,36 @@ for (const derived of derivedStops.values()) {
 
 // Corrections the matching cannot settle. Renames run first so they can enable a merge.
 const overrides = fs.existsSync(OVERRIDES) ? readJson(OVERRIDES) : { rename: {}, mergeInto: {} };
-const byId = new Map([...registryStops, ...derivedOnly].map((stop) => [stop.id, stop]));
+
+/**
+ * Stops neither source lists, but which sit on a route the site already draws — riders can
+ * board there and the map did not show it. Sourced from OpenStreetMap, and only worth
+ * adding where OSM puts the stop on that same line. Each must also appear in `addStops`,
+ * or it becomes a marker no route calls at.
+ */
+const extraStops = [];
+for (const [id, entry] of Object.entries(overrides.newStops ?? {})) {
+    if (!entry || typeof entry.name !== 'string' || typeof entry.lat !== 'number' || typeof entry.lon !== 'number') {
+        warn(`override: newStops "${id}" needs a name, lat and lon`);
+        continue;
+    }
+    if (registryStops.some((stop) => stop.id === id) || derivedOnly.some((stop) => stop.id === id)) {
+        warn(`override: newStops "${id}" collides with an existing stop id`);
+        continue;
+    }
+    extraStops.push({
+        id,
+        name: cleanStopName(entry.name),
+        street: entry.street ?? null,
+        lat: entry.lat,
+        lon: entry.lon,
+        source: 'osm',
+        lines: [],
+    });
+    console.log(`  added stop ${id} ("${entry.name}") from OpenStreetMap`);
+}
+
+const byId = new Map([...registryStops, ...derivedOnly, ...extraStops].map((stop) => [stop.id, stop]));
 
 for (const [id, name] of Object.entries(overrides.rename ?? {})) {
     const stop = byId.get(id);
@@ -625,7 +701,7 @@ for (const [id, targetId] of Object.entries(overrides.mergeInto ?? {})) {
 const clustered = [];
 const absorbedPoles = [];
 const assigned = new Set();
-const candidates = [...registryStops, ...derivedOnly].filter((stop) => !forcedMerges.has(stop.id));
+const candidates = [...registryStops, ...derivedOnly, ...extraStops].filter((stop) => !forcedMerges.has(stop.id));
 
 candidates.forEach((stop) => {
     if (assigned.has(stop.id)) {
@@ -721,13 +797,13 @@ for (const lineId of uncoveredLineIds) {
         const routeKey = makeRouteId(lineId, endpoints.origin, endpoints.destination, directionCode, takenRouteIds);
         // Routes are drawn from published geometry only. Without one the line keeps its
         // timetable link rather than opening a route view with no line on the map.
-        if (!fs.existsSync(path.join(SHAPE_OVERRIDES_DIR, `${routeKey}.json`))) {
+        const geometry = readShapeOverride(routeKey);
+        if (!geometry) {
             warn(`line ${lineId} has no geometry for ${routeKey} — add scripts/shape-overrides/${routeKey}.json`);
             takenRouteIds.delete(routeKey);
             return;
         }
-        // The write step replaces this with the override; nothing else reads it.
-        shapesToWrite.set(routeKey, []);
+        shapesToWrite.set(routeKey, geometry);
 
         routes.push({
             id: routeKey,
@@ -918,23 +994,9 @@ fs.mkdirSync(SHAPES_DIR, { recursive: true });
 const expectedShapeFiles = new Set();
 let shapePoints = 0;
 
-const shapeOverrideFiles = fs.existsSync(SHAPE_OVERRIDES_DIR)
-    ? fs.readdirSync(SHAPE_OVERRIDES_DIR).filter((file) => file.endsWith('.json'))
-    : [];
-const usedShapeOverrides = new Set();
-
 for (const [routeKey, coordinates] of shapesToWrite) {
-    const overrideFile = `${routeKey}.json`;
-    let points;
-    if (shapeOverrideFiles.includes(overrideFile)) {
-        // Already Leaflet [lat, lon] — hand-corrected, so it is taken verbatim.
-        points = readJson(path.join(SHAPE_OVERRIDES_DIR, overrideFile)).map(([lat, lon]) => [round(lat), round(lon)]);
-        usedShapeOverrides.add(overrideFile);
-        console.log(`  geometry override for ${routeKey} (${points.length} points)`);
-    } else {
-        // GeoJSON [lon, lat] -> Leaflet [lat, lon].
-        points = coordinates.map(([lon, lat]) => [round(lat), round(lon)]);
-    }
+    // GeoJSON [lon, lat] -> Leaflet [lat, lon].
+    const points = coordinates.map(([lon, lat]) => [round(lat), round(lon)]);
     if (points.length < 2) {
         warn(`route ${routeKey} has geometry with only ${points.length} point(s) and was not written`);
         continue;
@@ -950,11 +1012,15 @@ for (const [routeKey, coordinates] of shapesToWrite) {
     fs.writeFileSync(path.join(SHAPES_DIR, file), JSON.stringify(points), 'utf8');
 }
 
+const shapeOverrideFiles = fs.existsSync(SHAPE_OVERRIDES_DIR)
+    ? fs.readdirSync(SHAPE_OVERRIDES_DIR).filter((file) => file.endsWith('.json'))
+    : [];
 for (const file of shapeOverrideFiles) {
     if (!usedShapeOverrides.has(file)) {
         warn(`shape override ${file} does not match any route and was ignored`);
     }
 }
+console.log(`  ${usedShapeOverrides.size} route(s) drawn from a geometry override`);
 
 // Drop geometry for routes that no longer exist.
 for (const file of fs.readdirSync(SHAPES_DIR)) {

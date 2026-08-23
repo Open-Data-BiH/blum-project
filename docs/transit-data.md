@@ -109,6 +109,20 @@ sit a median of 45 m from the surveyed position against 5 m for registry stops, 
 them are more than 60 m out. Where OSM confirms the stop by name *and* by route membership,
 the position is corrected through `move`.
 
+### Stop name normalisation
+
+Names are rewritten to plain Latin before anything else sees them, because the site
+searches, sorts and links on that text:
+
+- **Cyrillic is transliterated.** The export carries one Cyrillic stop name and one
+  Cyrillic relation; both come out in Latin.
+- **Non-breaking spaces become ordinary spaces.** 125 exported stop names contain U+00A0,
+  which looks like a space and does not match one, so `Autoservis Derviši` was unreachable
+  by typing its name.
+- **Unicode Roman numerals become letters.** Three names used `Ⅰ` (U+2160) instead of `I`.
+
+Anything left that is not plain Latin is a bug in this step, not in the data.
+
 ### Merging the two sources
 
 The two datasets describe the same city at different vintages, so the generator folds a
@@ -116,13 +130,13 @@ derived stop into a registry stop when one of these holds, in order of confidenc
 
 | Rule                            | Radius | Why                                                                                                                                              |
 | ------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| same name **and** a shared line | 600 m  | Some legacy coordinates are badly off — "Gimnazija" is 246 m from its counterpart, "Široka rijeka" 273 m. A shared line makes the identity safe. |
+| same name **and** a shared line | 600 m  | Some legacy coordinates are badly off — `st-1400` is 246 m from its counterpart, "Široka rijeka" 273 m. A shared line makes the identity safe. |
 | same name                       | 150 m  | Ordinary coordinate drift ("Poljoprivredna škola" is 97 m out).                                                                                  |
 | any name                        | 30 m   | Close enough to be the same kerb, whatever the two sources call it.                                                                              |
 
 A name match outranks a merely closer stop: the legacy coordinate for "Poljoprivredna
 škola" sits 3 m from a _differently named_ registry stop while its real counterpart is
-97 m away. `Bulevar` / `Gimnazija` are 67 m apart with different names, so they stay
+97 m away. `st-167` / `st-1400` are 58 m apart with different names, so they stay
 separate — the 30 m rule is deliberately tight for that reason.
 
 When a derived stop is absorbed, any line it carries that the registry does not know
@@ -182,10 +196,10 @@ Two cases use this today:
   vojvode Živojina Mišića junction and rejoined to the new path.
 - **Lines 3B, 14B, 17 and 17A**, which the export does not cover at all — see below.
 
-Line 19 towards Centar is corrected this way: the export omits Čajevac and Bulevar,
-though its geometry passes within 20 m of both. Note that Gimnazija (`st-194`) and Bulevar
-(`st-167`) are consecutive stops 312 m apart on the same carriageway, not duplicates —
-line 19 calls only at Bulevar.
+Line 19 towards Centar is corrected this way: the export omits Čajevac and
+"Bulevar - neboderi", though its geometry passes within 20 m of both. Note that
+"Bulevar - hirurgija" (`st-194`) and "Bulevar - neboderi" (`st-167`) are consecutive stops
+312 m apart on the same carriageway, not duplicates — line 19 calls only at the latter.
 
 Unknown ids in either map are reported as warnings, so the file cannot silently rot.
 
@@ -234,7 +248,7 @@ Recorded in `meta.warnings` on every build:
   different places, so they are **not** merged — stop identity is the id, never the name.
   Use `rename` in the overrides file where riders cannot tell them apart.
 - **The two sources disagree about some stop lists.** The legacy data says line 19 serves
-  "Bulevar", but no route-19 variant in the export calls there. Rather than showing a
+  "Bulevar - neboderi" (`st-167`), but no route-19 variant in the export calls there. Rather than showing a
   route that omits the stop the user clicked, such a line links to the timetable instead
   of opening the route view (`pickRouteForStop` returns null).
 - **One Cyrillic relation.** Line 1's relation is transliterated to Latin to match the rest

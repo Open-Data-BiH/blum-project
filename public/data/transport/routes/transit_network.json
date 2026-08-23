@@ -43,6 +43,10 @@
             "line 9C direction 2: \"Skupština\" repeats the previous stop and was dropped",
             "line 9C has no geometry for 9c-centar-cesma — add scripts/shape-overrides/9c-centar-cesma.json",
             "lines without route data: 9C",
+            "route 14b-autobuska-stanica-starcevica geometry timing uses a stop up to 140 m from its shape",
+            "route 14b-starcevica-autobuska-stanica geometry timing uses a stop up to 140 m from its shape",
+            "route 17a-nova-bolnica-starcevica geometry timing uses a stop up to 123 m from its shape",
+            "route 17a-starcevica-nova-bolnica geometry timing uses a stop up to 140 m from its shape",
             "20 stop name(s) shared by markers within 45 m — rename them in scripts/transit-overrides.json if riders cannot tell them apart: Ada (st-1599, st-4969, st-4968); Bolnica (st-242, st-723); Ćosići (st-1562, st-398); Eko toplane (st-4970, st-4971); Kamenolom (st-204, st-8667, st-1410, st-8668); Kasarna (st-9770, st-9771); Klašnik (st-207, st-1413); Matijevići (st-393, st-1557); Naselje Sunca (st-240, st-1446); Njegoševa raskrsnica (st-247, st-1453); Obala (st-248, st-1454); OŠ Branko Radičević (st-1465, st-259); Peti km (st-264, st-1470); Priječani zadruga (st-356, st-1554); Pritočka ul. (st-397, st-1561); Prodavnica pogrebne opreme (st-280, st-1486); Rakovačkih rudara - raskrsnica (st-284, st-1490); Topići (st-319, st-1525); Vitaminka (st-333, st-1539); Vrtić (st-341, st-611)",
             "66 stop/line pairs where the line listings claim a stop the route export does not include — those lines link to the timetable instead of a route"
         ]
@@ -749,134 +753,134 @@
             "via": [],
             "destination": "ETF (Vodovod)",
             "direction": "b",
-            "timing": null,
+            "timing": "geometry",
             "hasShape": true,
             "stops": [
                 {
                     "stopId": "st-debeljaci-okretiste",
                     "seq": 1,
                     "role": "start",
-                    "time": null,
-                    "distance": null
+                    "time": 0,
+                    "distance": 0
                 },
                 {
                     "stopId": "st-debeljaci-pruga",
                     "seq": 2,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 110,
+                    "distance": 613
                 },
                 {
                     "stopId": "st-debeljaci-raskrsnica",
                     "seq": 3,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 106,
+                    "distance": 588
                 },
                 {
                     "stopId": "st-debeljaci",
                     "seq": 4,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 93,
+                    "distance": 517
                 },
                 {
                     "stopId": "st-debeljaci-i-pr",
                     "seq": 5,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 82,
+                    "distance": 455
                 },
                 {
                     "stopId": "st-medas",
                     "seq": 6,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 34,
+                    "distance": 189
                 },
                 {
                     "stopId": "st-tesana-podrugovica-br-40",
                     "seq": 7,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 39,
+                    "distance": 213
                 },
                 {
                     "stopId": "st-presnace-pr",
                     "seq": 8,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 117,
+                    "distance": 653
                 },
                 {
                     "stopId": "st-vrbanja-zeljeznicka-stanica",
                     "seq": 9,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 111,
+                    "distance": 615
                 },
                 {
                     "stopId": "st-1546",
                     "seq": 10,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 71,
+                    "distance": 396
                 },
                 {
                     "stopId": "st-204",
                     "seq": 11,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 94,
+                    "distance": 521
                 },
                 {
                     "stopId": "st-1451",
                     "seq": 12,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 44,
+                    "distance": 243
                 },
                 {
                     "stopId": "st-1430",
                     "seq": 13,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 131,
+                    "distance": 732
                 },
                 {
                     "stopId": "st-1501",
                     "seq": 14,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 168,
+                    "distance": 931
                 },
                 {
                     "stopId": "st-osnovna-skola-branko-radicevic",
                     "seq": 15,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 133,
+                    "distance": 738
                 },
                 {
                     "stopId": "st-1527",
                     "seq": 16,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 98,
+                    "distance": 546
                 },
                 {
                     "stopId": "st-610",
                     "seq": 17,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 122,
+                    "distance": 678
                 },
                 {
                     "stopId": "st-613",
                     "seq": 18,
                     "role": "end",
-                    "time": null,
-                    "distance": null
+                    "time": 84,
+                    "distance": 468
                 }
             ]
         },
@@ -888,134 +892,134 @@
             "via": [],
             "destination": "Debeljaci",
             "direction": "a",
-            "timing": null,
+            "timing": "geometry",
             "hasShape": true,
             "stops": [
                 {
                     "stopId": "st-613",
                     "seq": 1,
                     "role": "start",
-                    "time": null,
-                    "distance": null
+                    "time": 0,
+                    "distance": 0
                 },
                 {
                     "stopId": "st-610",
                     "seq": 2,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 80,
+                    "distance": 444
                 },
                 {
                     "stopId": "st-1527",
                     "seq": 3,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 125,
+                    "distance": 696
                 },
                 {
                     "stopId": "st-osnovna-skola-branko-radicevic",
                     "seq": 4,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 98,
+                    "distance": 546
                 },
                 {
                     "stopId": "st-1501",
                     "seq": 5,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 132,
+                    "distance": 729
                 },
                 {
                     "stopId": "st-1430",
                     "seq": 6,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 167,
+                    "distance": 931
                 },
                 {
                     "stopId": "st-1451",
                     "seq": 7,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 132,
+                    "distance": 732
                 },
                 {
                     "stopId": "st-204",
                     "seq": 8,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 44,
+                    "distance": 243
                 },
                 {
                     "stopId": "st-1546",
                     "seq": 9,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 94,
+                    "distance": 521
                 },
                 {
                     "stopId": "st-vrbanja-zeljeznicka-stanica",
                     "seq": 10,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 71,
+                    "distance": 396
                 },
                 {
                     "stopId": "st-presnace-pr",
                     "seq": 11,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 111,
+                    "distance": 615
                 },
                 {
                     "stopId": "st-tesana-podrugovica-br-40",
                     "seq": 12,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 117,
+                    "distance": 653
                 },
                 {
                     "stopId": "st-medas",
                     "seq": 13,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 38,
+                    "distance": 213
                 },
                 {
                     "stopId": "st-debeljaci-i-pr",
                     "seq": 14,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 34,
+                    "distance": 189
                 },
                 {
                     "stopId": "st-debeljaci",
                     "seq": 15,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 82,
+                    "distance": 455
                 },
                 {
                     "stopId": "st-debeljaci-raskrsnica",
                     "seq": 16,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 93,
+                    "distance": 517
                 },
                 {
                     "stopId": "st-debeljaci-pruga",
                     "seq": 17,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 106,
+                    "distance": 588
                 },
                 {
                     "stopId": "st-debeljaci-okretiste",
                     "seq": 18,
                     "role": "end",
-                    "time": null,
-                    "distance": null
+                    "time": 121,
+                    "distance": 672
                 }
             ]
         },
@@ -4977,141 +4981,141 @@
             "via": ["Borik"],
             "destination": "Starčevica",
             "direction": "a",
-            "timing": null,
+            "timing": "geometry",
             "hasShape": true,
             "stops": [
                 {
                     "stopId": "st-nova-autobuska-stanica",
                     "seq": 1,
                     "role": "start",
-                    "time": null,
-                    "distance": null
+                    "time": 0,
+                    "distance": 0
                 },
                 {
                     "stopId": "st-719",
                     "seq": 2,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 105,
+                    "distance": 586
                 },
                 {
                     "stopId": "st-217",
                     "seq": 3,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 84,
+                    "distance": 462
                 },
                 {
                     "stopId": "st-tc-delta",
                     "seq": 4,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 99,
+                    "distance": 550
                 },
                 {
                     "stopId": "st-dvorana-borik",
                     "seq": 5,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 165,
+                    "distance": 921
                 },
                 {
                     "stopId": "st-1355",
                     "seq": 6,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 79,
+                    "distance": 437
                 },
                 {
                     "stopId": "st-1371",
                     "seq": 7,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 126,
+                    "distance": 702
                 },
                 {
                     "stopId": "st-autoservis",
                     "seq": 8,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 88,
+                    "distance": 485
                 },
                 {
                     "stopId": "st-gik-kozara",
                     "seq": 9,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 129,
+                    "distance": 716
                 },
                 {
                     "stopId": "st-skola-desanka-maksimovic",
                     "seq": 10,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 39,
+                    "distance": 220
                 },
                 {
                     "stopId": "st-pumpa-desanka-maksimovic",
                     "seq": 11,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 48,
+                    "distance": 267
                 },
                 {
                     "stopId": "st-starcevica-integral-inzenjering",
                     "seq": 12,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 68,
+                    "distance": 374
                 },
                 {
                     "stopId": "st-1478",
                     "seq": 13,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 102,
+                    "distance": 567
                 },
                 {
                     "stopId": "st-starcevica-rajka-bosnica",
                     "seq": 14,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 57,
+                    "distance": 316
                 },
                 {
                     "stopId": "st-tuzlanska-br-1",
                     "seq": 15,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 86,
+                    "distance": 480
                 },
                 {
                     "stopId": "st-raskrsnica",
                     "seq": 16,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 80,
+                    "distance": 444
                 },
                 {
                     "stopId": "st-kocic",
                     "seq": 17,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 77,
+                    "distance": 427
                 },
                 {
                     "stopId": "st-stojkovac",
                     "seq": 18,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 76,
+                    "distance": 421
                 },
                 {
                     "stopId": "st-okretnica-cajic",
                     "seq": 19,
                     "role": "end",
-                    "time": null,
-                    "distance": null
+                    "time": 68,
+                    "distance": 381
                 }
             ]
         },
@@ -5123,141 +5127,141 @@
             "via": ["Borik"],
             "destination": "Autobuska stanica",
             "direction": "b",
-            "timing": null,
+            "timing": "geometry",
             "hasShape": true,
             "stops": [
                 {
                     "stopId": "st-okretnica-cajic",
                     "seq": 1,
                     "role": "start",
-                    "time": null,
-                    "distance": null
+                    "time": 0,
+                    "distance": 0
                 },
                 {
                     "stopId": "st-stojkovac",
                     "seq": 2,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 65,
+                    "distance": 361
                 },
                 {
                     "stopId": "st-kocic",
                     "seq": 3,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 76,
+                    "distance": 421
                 },
                 {
                     "stopId": "st-raskrsnica",
                     "seq": 4,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 77,
+                    "distance": 427
                 },
                 {
                     "stopId": "st-tuzlanska-br-1",
                     "seq": 5,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 80,
+                    "distance": 444
                 },
                 {
                     "stopId": "st-starcevica-rajka-bosnica",
                     "seq": 6,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 86,
+                    "distance": 480
                 },
                 {
                     "stopId": "st-1478",
                     "seq": 7,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 57,
+                    "distance": 316
                 },
                 {
                     "stopId": "st-starcevica-integral-inzenjering",
                     "seq": 8,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 100,
+                    "distance": 558
                 },
                 {
                     "stopId": "st-pumpa-desanka-maksimovic",
                     "seq": 9,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 60,
+                    "distance": 333
                 },
                 {
                     "stopId": "st-skola-desanka-maksimovic",
                     "seq": 10,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 49,
+                    "distance": 269
                 },
                 {
                     "stopId": "st-gik-kozara",
                     "seq": 11,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 40,
+                    "distance": 226
                 },
                 {
                     "stopId": "st-autoservis",
                     "seq": 12,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 130,
+                    "distance": 723
                 },
                 {
                     "stopId": "st-1371",
                     "seq": 13,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 89,
+                    "distance": 494
                 },
                 {
                     "stopId": "st-1355",
                     "seq": 14,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 127,
+                    "distance": 702
                 },
                 {
                     "stopId": "st-dvorana-borik",
                     "seq": 15,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 71,
+                    "distance": 398
                 },
                 {
                     "stopId": "st-tc-delta",
                     "seq": 16,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 234,
+                    "distance": 1300
                 },
                 {
                     "stopId": "st-217",
                     "seq": 17,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 127,
+                    "distance": 706
                 },
                 {
                     "stopId": "st-719",
                     "seq": 18,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 83,
+                    "distance": 456
                 },
                 {
                     "stopId": "st-nova-autobuska-stanica",
                     "seq": 19,
                     "role": "end",
-                    "time": null,
-                    "distance": null
+                    "time": 95,
+                    "distance": 529
                 }
             ]
         },
@@ -5269,78 +5273,78 @@
             "via": [],
             "destination": "Obilićevo",
             "direction": "b",
-            "timing": null,
+            "timing": "geometry",
             "hasShape": true,
             "stops": [
                 {
                     "stopId": "st-332",
                     "seq": 1,
                     "role": "start",
-                    "time": null,
-                    "distance": null
+                    "time": 0,
+                    "distance": 0
                 },
                 {
                     "stopId": "st-242",
                     "seq": 2,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 47,
+                    "distance": 259
                 },
                 {
                     "stopId": "st-320",
                     "seq": 3,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 88,
+                    "distance": 491
                 },
                 {
                     "stopId": "st-1446",
                     "seq": 4,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 107,
+                    "distance": 597
                 },
                 {
                     "stopId": "st-194",
                     "seq": 5,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 123,
+                    "distance": 679
                 },
                 {
                     "stopId": "st-167",
                     "seq": 6,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 56,
+                    "distance": 313
                 },
                 {
                     "stopId": "st-613",
                     "seq": 7,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 78,
+                    "distance": 435
                 },
                 {
                     "stopId": "st-610",
                     "seq": 8,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 86,
+                    "distance": 476
                 },
                 {
                     "stopId": "st-611",
                     "seq": 9,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 62,
+                    "distance": 347
                 },
                 {
                     "stopId": "st-orlovacki-put",
                     "seq": 10,
                     "role": "end",
-                    "time": null,
-                    "distance": null
+                    "time": 135,
+                    "distance": 746
                 }
             ]
         },
@@ -5352,78 +5356,78 @@
             "via": [],
             "destination": "Nova bolnica",
             "direction": "a",
-            "timing": null,
+            "timing": "geometry",
             "hasShape": true,
             "stops": [
                 {
                     "stopId": "st-orlovacki-put",
                     "seq": 1,
                     "role": "start",
-                    "time": null,
-                    "distance": null
+                    "time": 0,
+                    "distance": 0
                 },
                 {
                     "stopId": "st-611",
                     "seq": 2,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 136,
+                    "distance": 753
                 },
                 {
                     "stopId": "st-610",
                     "seq": 3,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 63,
+                    "distance": 352
                 },
                 {
                     "stopId": "st-613",
                     "seq": 4,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 82,
+                    "distance": 455
                 },
                 {
                     "stopId": "st-167",
                     "seq": 5,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 114,
+                    "distance": 632
                 },
                 {
                     "stopId": "st-194",
                     "seq": 6,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 56,
+                    "distance": 312
                 },
                 {
                     "stopId": "st-1446",
                     "seq": 7,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 117,
+                    "distance": 653
                 },
                 {
                     "stopId": "st-320",
                     "seq": 8,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 108,
+                    "distance": 600
                 },
                 {
                     "stopId": "st-242",
                     "seq": 9,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 88,
+                    "distance": 490
                 },
                 {
                     "stopId": "st-332",
                     "seq": 10,
                     "role": "end",
-                    "time": null,
-                    "distance": null
+                    "time": 51,
+                    "distance": 279
                 }
             ]
         },
@@ -5435,120 +5439,120 @@
             "via": [],
             "destination": "Starčevica",
             "direction": "b",
-            "timing": null,
+            "timing": "geometry",
             "hasShape": true,
             "stops": [
                 {
                     "stopId": "st-332",
                     "seq": 1,
                     "role": "start",
-                    "time": null,
-                    "distance": null
+                    "time": 0,
+                    "distance": 0
                 },
                 {
                     "stopId": "st-242",
                     "seq": 2,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 47,
+                    "distance": 259
                 },
                 {
                     "stopId": "st-320",
                     "seq": 3,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 88,
+                    "distance": 491
                 },
                 {
                     "stopId": "st-1446",
                     "seq": 4,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 107,
+                    "distance": 597
                 },
                 {
                     "stopId": "st-239",
                     "seq": 5,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 136,
+                    "distance": 751
                 },
                 {
                     "stopId": "st-1379",
                     "seq": 6,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 159,
+                    "distance": 886
                 },
                 {
                     "stopId": "st-225",
                     "seq": 7,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 44,
+                    "distance": 245
                 },
                 {
                     "stopId": "st-1355",
                     "seq": 8,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 159,
+                    "distance": 880
                 },
                 {
                     "stopId": "st-1371",
                     "seq": 9,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 126,
+                    "distance": 702
                 },
                 {
                     "stopId": "st-autoservis",
                     "seq": 10,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 87,
+                    "distance": 486
                 },
                 {
                     "stopId": "st-koste-jarica",
                     "seq": 11,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 169,
+                    "distance": 939
                 },
                 {
                     "stopId": "st-313",
                     "seq": 12,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 56,
+                    "distance": 310
                 },
                 {
                     "stopId": "st-bs5",
                     "seq": 13,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 106,
+                    "distance": 589
                 },
                 {
                     "stopId": "st-starcevica-groblje",
                     "seq": 14,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 56,
+                    "distance": 309
                 },
                 {
                     "stopId": "st-1478",
                     "seq": 15,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 66,
+                    "distance": 367
                 },
                 {
                     "stopId": "st-starcevica-integral-inzenjering",
                     "seq": 16,
                     "role": "end",
-                    "time": null,
-                    "distance": null
+                    "time": 123,
+                    "distance": 682
                 }
             ]
         },
@@ -5560,120 +5564,120 @@
             "via": [],
             "destination": "Nova Bolnica",
             "direction": "a",
-            "timing": null,
+            "timing": "geometry",
             "hasShape": true,
             "stops": [
                 {
                     "stopId": "st-starcevica-integral-inzenjering",
                     "seq": 1,
                     "role": "start",
-                    "time": null,
-                    "distance": null
+                    "time": 0,
+                    "distance": 0
                 },
                 {
                     "stopId": "st-1478",
                     "seq": 2,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 102,
+                    "distance": 568
                 },
                 {
                     "stopId": "st-starcevica-groblje",
                     "seq": 3,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 66,
+                    "distance": 367
                 },
                 {
                     "stopId": "st-bs5",
                     "seq": 4,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 56,
+                    "distance": 309
                 },
                 {
                     "stopId": "st-313",
                     "seq": 5,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 106,
+                    "distance": 589
                 },
                 {
                     "stopId": "st-koste-jarica",
                     "seq": 6,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 56,
+                    "distance": 309
                 },
                 {
                     "stopId": "st-autoservis",
                     "seq": 7,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 160,
+                    "distance": 893
                 },
                 {
                     "stopId": "st-1371",
                     "seq": 8,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 89,
+                    "distance": 494
                 },
                 {
                     "stopId": "st-1355",
                     "seq": 9,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 126,
+                    "distance": 701
                 },
                 {
                     "stopId": "st-225",
                     "seq": 10,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 166,
+                    "distance": 920
                 },
                 {
                     "stopId": "st-1379",
                     "seq": 11,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 44,
+                    "distance": 246
                 },
                 {
                     "stopId": "st-239",
                     "seq": 12,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 164,
+                    "distance": 912
                 },
                 {
                     "stopId": "st-1446",
                     "seq": 13,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 112,
+                    "distance": 622
                 },
                 {
                     "stopId": "st-320",
                     "seq": 14,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 108,
+                    "distance": 600
                 },
                 {
                     "stopId": "st-242",
                     "seq": 15,
                     "role": null,
-                    "time": null,
-                    "distance": null
+                    "time": 89,
+                    "distance": 490
                 },
                 {
                     "stopId": "st-332",
                     "seq": 16,
                     "role": "end",
-                    "time": null,
-                    "distance": null
+                    "time": 50,
+                    "distance": 280
                 }
             ]
         },

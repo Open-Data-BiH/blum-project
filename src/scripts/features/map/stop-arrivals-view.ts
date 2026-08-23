@@ -31,7 +31,7 @@ const getLabels = (language: Language): StopArrivalsLabels =>
         ? {
               heading: 'Sljedeći dolasci',
               towards: 'prema',
-              directionUnavailable: 'Smjer nije dostupan',
+              directionUnavailable: 'Trasa nije povezana s ovom pozicijom stajališta',
               unavailable: 'Procjena trenutno nije dostupna',
               noMoreToday: 'Nema više polazaka danas',
               tomorrow: 'sutra',
@@ -46,7 +46,7 @@ const getLabels = (language: Language): StopArrivalsLabels =>
         : {
               heading: 'Next arrivals',
               towards: 'towards',
-              directionUnavailable: 'Direction unavailable',
+              directionUnavailable: 'Route data is not linked to this stop position',
               unavailable: 'Estimate is currently unavailable',
               noMoreToday: 'No more departures today',
               tomorrow: 'tomorrow',
@@ -67,6 +67,9 @@ const formatLocalDateTime = (date: Date): string => {
 };
 
 const renderTimes = (estimate: StopArrivalEstimate, labels: StopArrivalsLabels): string => {
+    if (estimate.route === null) {
+        return '';
+    }
     if (estimate.status === 'no-more-today') {
         return `<span class="stop-arrival__status">${escapeHtml(labels.noMoreToday)}</span>`;
     }

@@ -68,6 +68,24 @@ describe('transit network data', () => {
         expect(transit.meta.counts.routesWithShape).toBe(transit.routes.length);
     });
 
+    it('adds calibrated geometry timing only to routes without operator timing', () => {
+        const geometryTimed = transit.routes.filter((route) => route.timing === 'geometry');
+
+        expect(geometryTimed).toHaveLength(8);
+        expect(new Set(geometryTimed.map((route) => route.lineId))).toEqual(new Set(['3B', '14B', '17', '17A']));
+        geometryTimed.forEach((route) => {
+            expect(route.stops[0]).toMatchObject({ time: 0, distance: 0 });
+            route.stops.slice(1).forEach((stop) => {
+                expect(stop.time).toBeGreaterThan(0);
+                expect(stop.distance).toBeGreaterThan(0);
+            });
+        });
+
+        const operatorTimed = transit.routes.filter((route) => route.timing === 'a' || route.timing === 'b');
+        expect(operatorTimed.length).toBeGreaterThan(0);
+        expect(operatorTimed.every((route) => route.timing !== 'geometry')).toBe(true);
+    });
+
     it('gives every covered line both directions where the export has them', () => {
         const withOneVariant = transit.lines.filter((line) => line.routes.length === 1).map((line) => line.id);
         expect(withOneVariant).toEqual(['3']);

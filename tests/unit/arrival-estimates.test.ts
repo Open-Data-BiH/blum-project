@@ -298,6 +298,49 @@ describe('stop arrival estimates', () => {
         expect(resolveTimetableDirection(line12, paprikovac)).toBe(1);
     });
 
+    it('uses geometry-derived timing for both 17A directions at Čajavec', () => {
+        const network = productionNetwork as TransitNetwork;
+        const timetableFile = productionTimetables as TimetableFile;
+        const productionIndex = createTransitIndex(network);
+        const cajavec = productionIndex.stopById.get('st-1379')!;
+        const towardsStarcevica = productionIndex.routeById.get('17a-nova-bolnica-starcevica')!;
+        const towardsHospital = productionIndex.routeById.get('17a-starcevica-nova-bolnica')!;
+
+        expect(towardsStarcevica.timing).toBe('geometry');
+        expect(towardsHospital.timing).toBe('geometry');
+        expect(getTravelMinutesToStop(productionIndex, towardsStarcevica, cajavec)).toBe(9);
+        expect(getTravelMinutesToStop(productionIndex, towardsHospital, cajavec)).toBe(16);
+
+        const estimates = getStopArrivalEstimates(
+            productionIndex,
+            timetableFile.urban,
+            cajavec,
+            new Date(2026, 1, 2, 12, 0),
+        ).filter(({ lineId }) => lineId === '17A');
+
+        expect(estimates).toHaveLength(2);
+        expect(estimates.every(({ status, arrivals }) => status === 'estimated' && arrivals.length > 0)).toBe(true);
+    });
+
+    it('uses the unique timed start of composite line 13P at Čajavec', () => {
+        const network = productionNetwork as TransitNetwork;
+        const timetableFile = productionTimetables as TimetableFile;
+        const productionIndex = createTransitIndex(network);
+        const cajavec = productionIndex.stopById.get('st-1379')!;
+        const route = productionIndex.routeById.get('13p-petricevac-obilicevo')!;
+
+        expect(getTravelMinutesToStop(productionIndex, route, cajavec)).toBe(17);
+        const estimate = getStopArrivalEstimates(
+            productionIndex,
+            timetableFile.urban,
+            cajavec,
+            new Date(2026, 1, 2, 12, 0),
+        ).find(({ route: candidate }) => candidate?.id === route.id);
+
+        expect(estimate?.status).toBe('estimated');
+        expect(estimate?.arrivals.length).toBeGreaterThan(0);
+    });
+
     it('resolves a timetable direction for every published network route', () => {
         const network = productionNetwork as TransitNetwork;
         const timetableFile = productionTimetables as TimetableFile;

@@ -200,7 +200,8 @@ describe('map panel', () => {
         const fallback = Array.from(root.querySelectorAll<HTMLElement>('.stop-arrival')).find(
             (row) => !row.dataset.routeId,
         );
-        expect(fallback?.textContent).toContain('Procjena trenutno nije dostupna');
+        expect(fallback?.textContent).toContain('Trasa nije povezana s ovom pozicijom stajališta');
+        expect(fallback?.textContent).not.toContain('Smjer nije dostupan');
         expect(fallback?.textContent).not.toMatch(/undefined|NaN|--:--/);
     });
 

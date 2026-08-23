@@ -126,9 +126,21 @@ const resolveBoundaryIndex = (
         }))
         .sort((a, b) => b.score - a.score);
 
-    return ranked[0] && ranked[0].score >= 0.5 && (!ranked[1] || ranked[0].score - ranked[1].score > 0.05)
-        ? ranked[0].position
-        : null;
+    if (ranked[0] && ranked[0].score >= 0.5 && (!ranked[1] || ranked[0].score - ranked[1].score > 0.05)) {
+        return ranked[0].position;
+    }
+
+    // Composite routes can include an untimed extension before the ordinary service.
+    // When names cannot settle it, a single zero-time start is the explicit timing anchor
+    // (for example the generic Petrićevac endpoint on line 13P).
+    if (role === 'start') {
+        const zeroTimeStarts = candidates.filter(({ routeStop }) => routeStop.time === 0);
+        if (zeroTimeStarts.length === 1) {
+            return zeroTimeStarts[0].position;
+        }
+    }
+
+    return null;
 };
 
 /**
@@ -138,8 +150,29 @@ const resolveBoundaryIndex = (
 export const getTravelMinutesToStop = (index: TransitIndex, route: TransitRoute, stop: TransitStop): number | null => {
     const stopIds = new Set(getStopIds(stop));
     const start = resolveBoundaryIndex(index, route, 'start', route.origin);
-    const end = resolveBoundaryIndex(index, route, 'end', route.destination);
-    if (start === null || end === null || start > end) {
+    if (start === null) {
+        return null;
+    }
+
+    const target = route.stops.findIndex((routeStop, position) => position >= start && stopIds.has(routeStop.stopId));
+    if (target < start) {
+        return null;
+    }
+
+    let end = resolveBoundaryIndex(index, route, 'end', route.destination);
+    if (end === null) {
+        const possibleEnds = route.stops
+            .map((routeStop, position) => ({ routeStop, position }))
+            .filter(({ routeStop }) => routeStop.role === 'end')
+            .map(({ position }) => position);
+
+        // If the selected stop precedes every plausible end marker, ambiguity after the
+        // stop cannot affect its cumulative arrival offset.
+        if (possibleEnds.length > 0 && possibleEnds.every((position) => position >= target)) {
+            end = Math.min(...possibleEnds);
+        }
+    }
+    if (end === null || start > end || target > end) {
         return null;
     }
 
@@ -162,7 +195,7 @@ export const getTravelMinutesToStop = (index: TransitIndex, route: TransitRoute,
             seconds += routeStop.time;
         }
 
-        if (stopIds.has(routeStop.stopId)) {
+        if (position === target) {
             return Math.round(seconds / 60);
         }
     }

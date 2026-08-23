@@ -46,8 +46,8 @@ export interface TransitRoute {
     destination: string;
     /** Usually "a"/"b", occasionally a place name. */
     direction: string | null;
-    /** Which of the export's two timing columns `time`/`distance` came from. */
-    timing: 'a' | 'b' | null;
+    /** Export timing column, or a calibrated geometry estimate when the export has none. */
+    timing: 'a' | 'b' | 'geometry' | null;
     /** Geometry lives in shapes/<id>.json and is fetched on demand; never derived from stops. */
     hasShape: boolean;
     stops: TransitRouteStop[];

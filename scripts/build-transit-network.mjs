@@ -10,6 +10,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+    deriveGeometryTimings,
+    GEOMETRY_TIMING_SPEED_KMH,
+    GEOMETRY_TIMING_WARNING_OFFSET_M,
+} from './route-timing.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SOURCE_CONFIG = path.join(ROOT, 'scripts/transit-source.json');
@@ -916,6 +921,44 @@ for (const [routeKey, stopIds] of Object.entries(overrides.addStops ?? {})) {
         }
         console.log(`  added ${stopId} ("${stop.name}") to ${routeKey} at position ${before + 1}`);
     }
+}
+
+// Lines absent from the operator route export have ordered stops and hand-checked road
+// geometry, but no segment timing. Derive a conservative schedule estimate without ever
+// replacing an operator timing column on covered routes.
+const geometryTimedRoutes = [];
+for (const route of routes.filter((entry) => entry.timing === null)) {
+    const geometry = shapesToWrite.get(route.id);
+    if (!geometry) {
+        warn(`route ${route.id} has no geometry for estimated travel timing`);
+        continue;
+    }
+    if (route.stops.some((stop) => stop.time !== null || stop.distance !== null)) {
+        warn(`route ${route.id} mixes missing and populated timing without an operator timing source`);
+        continue;
+    }
+
+    const derived = deriveGeometryTimings({ routeStops: route.stops, geometry, stopById: stopByAnyId });
+    if (!derived.ok) {
+        warn(`route ${route.id} geometry timing rejected (${derived.reason}): ${derived.detail}`);
+        continue;
+    }
+
+    route.stops = route.stops.map((stop, position) => ({ ...stop, ...derived.timings[position] }));
+    route.timing = 'geometry';
+    geometryTimedRoutes.push(route.id);
+
+    if (derived.maxOffsetMetres > GEOMETRY_TIMING_WARNING_OFFSET_M) {
+        warn(
+            `route ${route.id} geometry timing uses a stop up to ${derived.maxOffsetMetres.toFixed(0)} m from its shape`,
+        );
+    }
+    console.log(
+        `  estimated timing for ${route.id}: ${(derived.totalDistanceMetres / 1000).toFixed(1)} km / ${(derived.totalSeconds / 60).toFixed(1)} min at ${GEOMETRY_TIMING_SPEED_KMH} km/h`,
+    );
+}
+if (geometryTimedRoutes.length > 0) {
+    console.log(`  geometry-estimated travel timing: ${geometryTimedRoutes.length} route(s)`);
 }
 
 // Reassigns line badges the automatic name+distance matching attached to the wrong pole

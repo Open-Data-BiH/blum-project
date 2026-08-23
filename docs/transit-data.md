@@ -69,6 +69,14 @@ Derived views (stop → lines, ordered stops of a route) are built at runtime by
 Stop popups combine the published departure timetable with cumulative route-stop `time`
 values. They are schedule-based estimates, not GPS positions or live predictions.
 
+When an entire route direction is absent from the operator route export but has an ordered
+stop list and reviewed road geometry, the generator projects each stop onto that geometry and
+derives segment times at a calibrated **20 km/h effective service speed**. This speed already
+includes ordinary stopping and junction delay. Such routes use `timing: "geometry"`; operator
+`a`/`b` timing is never replaced. The fallback currently supplies both directions of lines 3B,
+14B, 17 and 17A. The `~` marker and stop-wide notice remain essential: geometry timing is a
+planning estimate, not a published intermediate-stop time or live tracking.
+
 An estimate is shown only when the timetable direction can be matched to the route, the
 selected stop lies inside that route's nominal origin→destination slice, and every source
 sequence and timing segment from the nominal start to the stop is complete. Timetable notes
@@ -239,10 +247,12 @@ Recorded in `meta.warnings` on every build:
 - **Several start/end markers per route.** Seven routes mark more than one `p`/`z` stop, so
   `role` flags turnaround points rather than only termini. First and last stop are taken
   from array position, not from `role`.
-- **Two timing columns.** Each stop carries two travel-time variants and neither is
-  documented. The generator keeps whichever covers more stops on the route and records
-  which in `timing`; the discarded one is often a round 60 s placeholder. Line 1 has times
-  for only 18 of 28 stops, so `time` and `distance` are nullable and are not shown in the UI.
+- **Two timing columns.** Each operator-exported stop carries two travel-time variants and
+  neither is documented. The generator keeps whichever covers more stops on the route and
+  records `timing: "a"` or `"b"`; the discarded one is often a round 60 s placeholder.
+  Routes missing the operator timing source entirely may use the guarded geometry fallback
+  described above and record `timing: "geometry"`. Partial gaps remain nullable rather than
+  overwriting the surrounding operator data.
 - **Duplicate stop names.** After collapsing nearby poles, 23 names are still used by more
   than one marker (`Prodavnica` ×4, `Rebrovac` ×3). They are far enough apart to be
   different places, so they are **not** merged — stop identity is the id, never the name.

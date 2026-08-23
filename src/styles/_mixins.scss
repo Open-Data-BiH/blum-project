@@ -1,0 +1,83 @@
+/* Must not emit CSS because Astro compiles page partials into separate bundles. */
+
+@use 'sass:map';
+
+$breakpoints: (
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+);
+
+@mixin bp-up($name) {
+    @media (min-width: #{map.get($breakpoints, $name) + 1px}) {
+        @content;
+    }
+}
+
+@mixin bp-down($name) {
+    @media (max-width: #{map.get($breakpoints, $name)}) {
+        @content;
+    }
+}
+
+/* Preserve visible focus in keyboard and forced-colors modes. */
+@mixin focus-ring($offset: var(--focus-ring-offset)) {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: $offset;
+}
+
+@mixin focus-ring-input($offset: 1px) {
+    @include focus-ring($offset);
+
+    border-color: var(--color-primary);
+    box-shadow: var(--focus-ring-shadow);
+}
+
+/* Prevent changing transit values from shifting adjacent content. */
+@mixin tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+}
+
+@mixin surface-card($radius: var(--radius-card)) {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: $radius;
+}
+
+@mixin surface-overlay($radius: var(--radius-overlay)) {
+    background-color: var(--color-overlay-surface);
+    border: 1px solid var(--color-border);
+    border-radius: $radius;
+    box-shadow: var(--shadow-overlay);
+}
+
+/* Expand the hit area without changing visual size. */
+@mixin touch-target($size: var(--touch-target)) {
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: $size;
+        min-height: $size;
+        width: 100%;
+        height: 100%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@mixin visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}

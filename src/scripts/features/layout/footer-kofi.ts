@@ -19,7 +19,7 @@ export const initFooterKofi = (): void => {
             const buttonText = lang === 'en' ? 'Support this project' : 'Podržite ovaj projekat';
 
             if (typeof window.kofiwidget2 !== 'undefined') {
-                window.kofiwidget2.init(buttonText, '#1a4d73', 'J3J11VR53R');
+                window.kofiwidget2.init(buttonText, '#0d5e53', 'J3J11VR53R');
                 container.innerHTML = window.kofiwidget2.getHTML();
             }
         };

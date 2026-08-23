@@ -13,7 +13,7 @@
     align-items: center;
     gap: var(--space-2);
     font-size: var(--font-size-sm);
-    color: var(--color-primary);
+    color: var(--color-text-primary);
     text-decoration: none;
 }
 
@@ -37,13 +37,13 @@
     margin: 0;
     font-size: clamp(1.2rem, 2.6vw, 1.45rem);
     font-weight: var(--font-weight-bold);
-    color: var(--text-primary);
+    color: var(--color-text-primary);
 }
 
 .ldp-section-subtitle {
     margin: 0;
     max-width: 68ch;
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
     font-size: var(--font-size-sm);
     line-height: var(--line-height-relaxed);
 }
@@ -76,12 +76,12 @@
     margin: 0;
     font-size: clamp(1.2rem, 3vw, 1.55rem);
     line-height: var(--line-height-tight);
-    color: var(--text-primary);
+    color: var(--color-text-primary);
 }
 
 .ldp-overview-card__route {
     margin: 0;
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
     font-size: var(--font-size-base);
 }
 
@@ -99,9 +99,9 @@
 }
 
 .ldp-overview-metric {
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    background: var(--surface-1);
+    background: var(--color-surface-secondary);
     padding: var(--space-3);
     display: flex;
     flex-direction: column;
@@ -110,7 +110,7 @@
 
 .ldp-overview-metric__label {
     margin: 0;
-    color: var(--text-light);
+    color: var(--color-text-placeholder);
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-semibold);
     text-transform: uppercase;
@@ -121,7 +121,7 @@
     margin: 0;
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-semibold);
-    color: var(--text-primary);
+    color: var(--color-text-primary);
     line-height: var(--line-height-tight);
 }
 
@@ -132,11 +132,11 @@
 }
 
 .ldp-overview-metric__value--status.is-accessible {
-    color: var(--color-accessible);
+    color: var(--color-success);
 }
 
 .ldp-overview-metric__value--status.is-not-accessible {
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
 }
 
 .ldp-overview-actions {
@@ -145,7 +145,7 @@
     gap: var(--space-3);
     flex-wrap: wrap;
     padding-top: var(--space-4);
-    border-top: 1px solid var(--border-subtle);
+    border-top: 1px solid var(--color-border);
 }
 
 .ldp-overview-actions .btn--link {
@@ -153,9 +153,9 @@
 }
 
 .ldp-timetable-shell {
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    background: var(--surface-2);
+    background: var(--color-surface);
     padding: var(--space-4);
     display: flex;
     flex-direction: column;
@@ -169,10 +169,10 @@
 }
 
 .ldp-direction-tab {
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    background: var(--surface-1);
-    color: var(--text-secondary);
+    background: var(--color-surface-secondary);
+    color: var(--color-text-secondary);
     padding: var(--space-3);
     text-align: left;
     display: flex;
@@ -186,14 +186,14 @@
 }
 
 .ldp-direction-tab:hover {
-    border-color: var(--border-strong);
-    color: var(--text-primary);
+    border-color: var(--color-border-strong);
+    color: var(--color-text-primary);
 }
 
 .ldp-direction-tab.is-active {
-    background: var(--accent-soft);
-    border-color: var(--accent-soft);
-    color: var(--text-primary);
+    background: var(--color-surface-secondary);
+    border-color: var(--color-primary-surface);
+    color: var(--color-text-primary);
 }
 
 .ldp-direction-tab__label {
@@ -201,7 +201,7 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
     font-weight: var(--font-weight-semibold);
-    color: var(--text-light);
+    color: var(--color-text-placeholder);
 }
 
 .ldp-direction-tab__route {
@@ -211,9 +211,9 @@
 }
 
 .ldp-direction-panel {
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    background: var(--surface-1);
+    background: var(--color-surface-secondary);
     padding: var(--space-4);
     display: none;
     flex-direction: column;
@@ -231,10 +231,10 @@
 }
 
 .ldp-day-tab {
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-full);
-    background: var(--surface-2);
-    color: var(--text-secondary);
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
     padding: var(--space-2) var(--space-4);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
@@ -247,30 +247,32 @@
 }
 
 .ldp-day-tab:hover {
-    color: var(--text-primary);
-    border-color: var(--border-strong);
+    color: var(--color-text-primary);
+    border-color: var(--color-border-strong);
 }
 
 .ldp-day-tab.is-active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: var(--color-white);
+    background: var(--color-surface);
+    font-weight: var(--font-weight-semibold);
+    box-shadow: inset 0 -2px 0 0 var(--color-primary);
+    border-color: var(--color-border-strong);
+    color: var(--color-text-primary);
 }
 
 .ldp-day-tab.is-unavailable {
     border-style: dashed;
-    color: var(--text-light);
+    color: var(--color-text-placeholder);
 }
 
 .ldp-day-tab.is-unavailable:hover {
-    border-color: var(--border-subtle);
-    color: var(--text-secondary);
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
 }
 
 .ldp-day-tab.is-unavailable.is-active {
-    background: #fff7ed;
-    border-color: #f59e0b;
-    color: #92400e;
+    background: var(--color-warning-surface);
+    border-color: var(--color-warning-border);
+    color: var(--color-warning);
 }
 
 .ldp-day-panels {
@@ -294,9 +296,9 @@
 }
 
 .ldp-station-card {
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    background: var(--surface-2);
+    background: var(--color-surface);
     overflow: hidden;
 }
 
@@ -307,13 +309,13 @@
     align-items: center;
     gap: var(--space-2);
     font-size: var(--font-size-base);
-    color: var(--text-primary);
-    border-bottom: 1px solid var(--border-subtle);
-    background: var(--surface-1);
+    color: var(--color-text-primary);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface-secondary);
 }
 
 .ldp-station-card__title i {
-    color: var(--accent);
+    color: var(--color-text-secondary);
     font-size: var(--font-size-xs);
 }
 
@@ -326,7 +328,7 @@
     font-weight: 700;
     vertical-align: super;
     line-height: 0;
-    color: var(--accent);
+    color: var(--color-text-primary);
     margin-left: 1px;
 }
 
@@ -334,7 +336,7 @@
     max-width: 800px;
     margin: var(--space-3) auto 0;
     padding: var(--space-3) var(--space-4);
-    border-top: 1px solid var(--border-subtle);
+    border-top: 1px solid var(--color-border);
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
@@ -342,8 +344,8 @@
 
 .timetable-note-descriptions p {
     margin: 0;
-    font-size: 13px;
-    color: var(--text-secondary);
+    font-size: var(--font-size-meta);
+    color: var(--color-text-secondary);
     display: flex;
     align-items: baseline;
     gap: var(--space-2);
@@ -356,33 +358,25 @@
     min-width: 16px;
     height: 16px;
     padding: 0 3px;
-    background-color: var(--accent-soft);
-    border: 1px solid var(--accent);
+    background-color: var(--color-surface-secondary);
+    border: 1px solid var(--color-border);
     border-radius: 3px;
-    font-size: 10px;
+    font-size: var(--font-size-micro);
     font-weight: 800;
-    color: var(--accent);
+    color: var(--color-text-primary);
     vertical-align: baseline;
     line-height: 1;
     flex-shrink: 0;
 }
 
-[data-theme='dark'] .time-note {
-    color: var(--accent);
-}
-
 [data-theme='dark'] .timetable-note-descriptions {
-    border-top-color: var(--border-subtle);
-}
-
-[data-theme='dark'] .timetable-note-descriptions p {
-    color: var(--text-secondary);
+    border-top-color: var(--color-border);
 }
 
 [data-theme='dark'] .time-note--legend {
-    background-color: var(--accent-soft);
-    border-color: rgba(43, 110, 168, 0.45);
-    color: var(--accent);
+    background-color: var(--color-surface-secondary);
+    border-color: var(--color-primary-border);
+    color: var(--color-text-primary);
 }
 
 .ldp-stops-tables {
@@ -403,12 +397,12 @@
 .ldp-stops-card h3 {
     margin: 0;
     font-size: var(--font-size-lg);
-    color: var(--text-primary);
+    color: var(--color-text-primary);
 }
 
 .ldp-stops-card__route {
     margin: var(--space-2) 0 var(--space-4);
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
     font-size: var(--font-size-sm);
 }
 
@@ -419,20 +413,20 @@
 .ldp-stop-table {
     width: 100%;
     border-collapse: collapse;
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     overflow: hidden;
 }
 
 .ldp-stop-table thead th {
     padding: var(--space-2) var(--space-3);
-    background: var(--surface-1);
-    color: var(--text-light);
+    background: var(--color-surface-secondary);
+    color: var(--color-text-placeholder);
     text-transform: uppercase;
     letter-spacing: 0.04em;
     font-size: var(--font-size-xs);
     text-align: left;
-    border-bottom: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .ldp-stop-table thead th:first-child {
@@ -441,7 +435,7 @@
 
 .ldp-stop-table tbody td {
     padding: var(--space-2) var(--space-3);
-    border-bottom: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--color-border);
     font-size: var(--font-size-sm);
 }
 
@@ -451,29 +445,29 @@
 
 .ldp-stop-table__index {
     font-family: var(--font-family-mono);
-    color: var(--text-light);
+    color: var(--color-text-placeholder);
 }
 
 .ldp-stop-table__name {
-    color: var(--text-primary);
+    color: var(--color-text-primary);
     font-weight: var(--font-weight-medium);
 }
 
 .ldp-empty {
     margin: 0;
     padding: var(--space-3) var(--space-4);
-    border: 1px dashed var(--border-strong);
+    border: 1px dashed var(--color-border-strong);
     border-radius: var(--radius-md);
-    background: var(--surface-1);
-    color: var(--text-secondary);
+    background: var(--color-surface-secondary);
+    color: var(--color-text-secondary);
     font-size: var(--font-size-sm);
 }
 
 .ldp-no-service-message {
     margin: 0;
-    border: 1px dashed var(--border-strong);
+    border: 1px dashed var(--color-border-strong);
     border-radius: var(--radius-md);
-    background: var(--surface-1);
+    background: var(--color-surface-secondary);
     padding: var(--space-5) var(--space-4);
     display: flex;
     flex-direction: column;
@@ -484,28 +478,18 @@
 
 .ldp-no-service-message i {
     font-size: 1.35rem;
-    color: #92400e;
+    color: var(--color-warning);
 }
 
 .ldp-no-service-message strong {
-    color: var(--text-primary);
+    color: var(--color-text-primary);
     font-size: var(--font-size-sm);
 }
 
 .ldp-no-service-message p {
     margin: 0;
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
     font-size: var(--font-size-sm);
-}
-
-[data-theme='dark'] .ldp-day-tab.is-unavailable.is-active {
-    background: rgba(217, 119, 6, 0.16);
-    border-color: rgba(217, 119, 6, 0.55);
-    color: #fcd6a5;
-}
-
-[data-theme='dark'] .ldp-no-service-message i {
-    color: #fbbf24;
 }
 
 @media (max-width: 767px) {
@@ -553,22 +537,22 @@
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    background-color: var(--accent-soft);
-    border: 1px solid var(--accent);
+    background-color: var(--color-surface-secondary);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     padding: var(--space-2) var(--space-4);
     margin-bottom: var(--space-4);
-    font-size: 13px;
+    font-size: var(--font-size-meta);
     font-weight: 600;
-    color: var(--color-primary);
+    color: var(--color-text-primary);
 }
 
 .timetable-reduced-notice i {
-    font-size: 14px;
+    font-size: var(--font-size-sm);
     flex-shrink: 0;
 }
 
 [data-theme='dark'] .timetable-reduced-notice {
-    border-color: rgba(43, 110, 168, 0.45);
-    color: var(--accent);
+    border-color: var(--color-primary-border);
+    color: var(--color-text-primary);
 }

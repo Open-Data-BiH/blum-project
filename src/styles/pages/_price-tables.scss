@@ -5,13 +5,13 @@
     box-shadow: none;
     border-radius: var(--radius-lg);
     overflow: hidden;
-    border: 1px solid var(--border-subtle);
-    background-color: var(--surface-2);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
 }
 
 .unified-price-table th {
-    background-color: var(--accent);
-    color: var(--color-white);
+    background-color: var(--color-surface-secondary);
+    color: var(--color-text-primary);
     padding: var(--space-4) var(--space-5);
     text-align: left;
     font-weight: var(--font-weight-semibold);
@@ -19,8 +19,8 @@
 
 .unified-price-table td {
     padding: var(--space-4) var(--space-5);
-    border-bottom: 1px solid var(--border-subtle);
-    color: var(--text-primary);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-primary);
 }
 
 .unified-price-table tr:last-child td {
@@ -28,23 +28,23 @@
 }
 
 .unified-price-table tr:hover {
-    background-color: var(--surface-3);
+    background-color: var(--color-surface-tertiary);
 }
 
 .category-header {
-    background-color: var(--surface-3);
+    background-color: var(--color-surface-tertiary);
     font-weight: var(--font-weight-bold);
 }
 
 .description {
     font-size: var(--font-size-sm);
-    color: var(--text-secondary);
+    color: var(--color-text-secondary);
     margin-top: var(--space-1);
 }
 
 .price-table-container {
-    background-color: var(--surface-2);
-    border: 1px solid var(--border-subtle);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-md);
     max-width: 960px;
@@ -55,23 +55,23 @@
 .price-disclaimer {
     margin-top: var(--space-6);
     padding: var(--space-4) var(--space-5);
-    background-color: var(--accent-soft);
-    border: 1px solid var(--border-subtle);
-    border-left: 3px solid var(--accent);
-    color: var(--text-secondary);
+    background-color: var(--color-surface-secondary);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-border-strong);
+    color: var(--color-text-secondary);
     font-size: var(--font-size-sm);
     line-height: var(--line-height-relaxed);
     border-radius: var(--radius-xl);
 }
 
 .price-disclaimer a {
-    color: var(--link-color);
+    color: var(--color-text-link);
     text-decoration: none;
     font-weight: var(--font-weight-medium);
 }
 
 .price-disclaimer a:hover {
-    color: var(--link-hover);
+    color: var(--color-text-link-hover);
     text-decoration: underline;
 }
 
@@ -96,43 +96,17 @@
 }
 
 [data-theme='dark'] .price-table-container {
-    background-color: var(--surface-2);
-    color: var(--text-primary);
-    border-color: var(--border-subtle);
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    border-color: var(--color-border);
 }
 
 [data-theme='dark'] .category-header {
-    background-color: var(--surface-3);
-    color: var(--text-primary);
-}
-
-[data-theme='dark'] .unified-price-table tr:hover {
-    background-color: var(--nav-hover);
-}
-
-[data-theme='dark'] .price-disclaimer {
-    background-color: var(--accent-soft);
-    color: var(--text-secondary);
-}
-
-[data-theme='dark'] .unified-price-table th {
-    background-color: var(--accent);
-    color: var(--color-white);
+    background-color: var(--color-surface-tertiary);
+    color: var(--color-text-primary);
 }
 
 [data-theme='dark'] .unified-price-table td {
-    border-bottom-color: var(--border-subtle);
-    color: var(--text-primary);
-}
-
-[data-theme='dark'] .description {
-    color: var(--text-secondary);
-}
-
-[data-theme='dark'] .price-disclaimer a {
-    color: var(--link-color);
-}
-
-[data-theme='dark'] .price-disclaimer a:hover {
-    color: var(--link-hover);
+    border-bottom-color: var(--color-border);
+    color: var(--color-text-primary);
 }

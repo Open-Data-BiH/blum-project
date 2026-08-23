@@ -105,6 +105,7 @@
 }
 
 // Home hero: full-bleed graphic between the photo and the copy.
+// Wide scenes scale by height; the hero minimum height keeps routes past both edges.
 .route-decor--hero {
     inset: 0;
     z-index: 3;
@@ -166,7 +167,6 @@
     .route-decor--hero {
         --route-decor-fill-x: 100%;
         --route-decor-fill-y: 100%;
-        opacity: var(--route-decor-hero-opacity-mobile);
     }
 
     .route-decor--soft {

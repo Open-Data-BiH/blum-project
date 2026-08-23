@@ -54,6 +54,28 @@ const isEnglish = locale === 'en';
               what they need to move around the city.
             </p>
 
+            <h2>From an initiative to a website</h2>
+            <p>
+              The initiative for better public transport in Banja Luka began in 2023. The BL Prevoz website
+              has been online since 2025 as a practical continuation of that work and a place where useful
+              public transport information can be found more easily.
+            </p>
+            <p>
+              The initiative also addresses concrete problems through written submissions and work with the City's
+              municipal services department and inspection authorities. The aim is to draw attention to problems
+              passengers face and contribute to improving the quality of public transport.
+            </p>
+            <p>
+              Public transport is also part of the broader topic of sustainable urban mobility. The{' '}
+              <a
+                href="https://czzs.org/en/multimedia/publications/publikacije-transport/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >Center for Environment</a>{' '}
+              in Banja Luka has worked on this topic for years through research and publications on transport,
+              as well as by encouraging citizens to take part in decision-making.
+            </p>
+
             <h2>What can you do on BL Prevoz?</h2>
             <div class="about-features">
               <a href={linesPath} class="about-feature">
@@ -66,7 +88,7 @@ const isEnglish = locale === 'en';
               </a>
               <a href={pricingPath} class="about-feature">
                 <i class="fa-solid fa-ticket" aria-hidden="true"></i>
-                <span>See ticket pricing</span>
+                <span>View ticket prices</span>
               </a>
               <a href={airportPath} class="about-feature">
                 <i class="fa-solid fa-plane-departure" aria-hidden="true"></i>
@@ -93,9 +115,9 @@ const isEnglish = locale === 'en';
               All information on the platform is gathered from:
             </p>
             <ul class="about-sources-list">
-              <li>publicly available data and sources</li>
-              <li>official operator announcements</li>
-              <li>information published by transport operators</li>
+              <li>publicly available data and documents</li>
+              <li>official announcements from the City of Banja Luka and transport operators</li>
+              <li>other relevant sources, such as specialist publications, websites, and forums, after additional verification</li>
             </ul>
             <p>
               We present information in a way that is useful for the public. We aim to keep it accurate and up to date,
@@ -113,12 +135,13 @@ const isEnglish = locale === 'en';
 
             <h2>Future plans</h2>
             <p>
-              The platform continues to evolve. Planned improvements include:
+              The platform will continue to develop in line with available data and the needs of its users. Plans include:
             </p>
             <ul class="about-sources-list">
-              <li>updating and improving bus stop locations</li>
+              <li>continuously improving the information and features available on the platform</li>
+              <li>making public transport information easier to use for tourists and first-time visitors to the city</li>
               <li>expanding information about other modes of transport</li>
-              <li>improving the map and adding bus route visualization</li>
+              <li>showing vehicle locations in real time if the City makes GPS tracking data available through a public API</li>
             </ul>
 
             <div class="about-cta">
@@ -137,12 +160,33 @@ const isEnglish = locale === 'en';
           <div>
           <h2>Zašto BL Prevoz postoji?</h2>
           <p>
-            Javni prevoz u Banjoj Luci obavlja više prevoznika, a informacije o linijama, redovima vožnje i cijenama karata često su raspoređene na različitim mjestima ili ih nije lako pronaći.
+            U Banjoj Luci javni prevoz obavlja više prevoznika, a informacije o linijama, redovima vožnje i cijenama karata često su raspoređene na različitim mjestima ili ih nije lako pronaći.
           </p>
           <p>
             BL Prevoz je nastao iz potrebe da se te informacije objedine i učine dostupnim svima:
             jednostavno, pregledno i besplatno. Cilj platforme je da svaki korisnik brzo pronađe
             ono što mu je potrebno za kretanje gradom.
+          </p>
+
+          <h2>Od inicijative do stranice</h2>
+          <p>
+            Inicijativa za bolji gradski prevoz u Banjoj Luci pokrenuta je 2023. godine. Stranica BL Prevoz
+            postoji od 2025. godine kao praktičan nastavak tog rada i mjesto na kojem se lakše mogu pronaći
+            korisne informacije o gradskom prevozu.
+          </p>
+          <p>
+            Inicijativa se konkretnim problemima bavi kroz dopise i rad s gradskom komunalnom službom i
+            inspekcijskim organima. Cilj je ukazati na probleme s kojima se putnici susreću i doprinijeti
+            podizanju kvaliteta gradskog prevoza.
+          </p>
+          <p>
+            Gradski prevoz dio je šire teme održive urbane mobilnosti. Tom temom se u Banjoj Luci godinama
+            bavi i{' '}<a
+              href="https://czzs.org/multimedia/publikacije/publikacije-transport/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >Centar za životnu sredinu</a>, između ostalog kroz istraživanja i publikacije o saobraćaju te
+            podsticanje građana da učestvuju u donošenju odluka.
           </p>
 
           <h2>Šta možete uraditi na BL Prevozu?</h2>
@@ -171,12 +215,12 @@ const isEnglish = locale === 'en';
 
           <h2>Nezavisan projekat</h2>
           <p>
-            BL Prevoz <strong>nije zvanična stranica</strong> grada Banja Luka, prevoznika niti bilo koje institucije.
+            BL Prevoz <strong>nije zvanična stranica</strong> Grada Banje Luke, prevoznika niti bilo koje institucije.
             Riječ je o nezavisnoj, volonterski vođenoj platformi koja nema komercijalnu pozadinu i ne zastupa interese nijednog prevoznika.
           </p>
           <p>
             Stranica je besplatna za korištenje i razvija se kao dio šire, takođe nezavisne inicijative otvorenih podataka u Bosni i Hercegovini,
-            koja nije povezana sa državnim ili lokalnim institucijama, prevoznicima niti drugim organizacijama.
+            koja nije povezana s državnim ili lokalnim institucijama, prevoznicima niti drugim organizacijama.
           </p>
 
           <h2>Odakle dolaze informacije?</h2>
@@ -184,32 +228,33 @@ const isEnglish = locale === 'en';
             Sve informacije na platformi prikupljene su iz:
           </p>
           <ul class="about-sources-list">
-            <li>javno dostupnih podataka i izvora</li>
-            <li>zvaničnih obavještenja prevoznika</li>
-            <li>informacija koje objavljuju prevoznici</li>
+            <li>javno dostupnih podataka i dokumenata</li>
+            <li>zvaničnih obavještenja Grada Banje Luke i prevoznika</li>
+            <li>drugih relevantnih izvora, poput stručnih publikacija, portala i foruma, nakon dodatne provjere</li>
           </ul>
           <p>
-            Informacije prikazujemo na način koji je koristan korisnicima. Nastojimo da podaci budu tačni i ažurni,
+            Podatke prikazujemo tako da budu što pregledniji i korisniji. Nastojimo da budu tačni i ažurni,
             ali za najnovije izmjene uvijek preporučujemo dodatnu provjeru kod prevoznika.
           </p>
 
           <h2>Otvoreni podaci</h2>
           <p>
-            BL Prevoz se zasniva na principima otvorenih podataka. Podaci o javnom prevozu predstavljaju javni interes i trebalo bi da budu slobodno dostupni svima.
+            BL Prevoz se zasniva na principima otvorenih podataka. Podaci o javnom prevozu od javnog su interesa i trebalo bi da budu slobodno dostupni svima.
           </p>
           <p>
-            Izvorni kod ovog projekta je javno dostupan, a podaci prikazani na sajtu mogu se slobodno koristiti u informativne svrhe.
+            Izvorni kod ovog projekta je javno dostupan, a podaci prikazani na stranici mogu se slobodno koristiti u informativne svrhe.
             Nadamo se da ovaj pristup može podstaći i druge inicijative otvorenih podataka u našem gradu i šire.
           </p>
 
           <h2>Budući planovi</h2>
           <p>
-            Platforma se i dalje razvija. Neka od planiranih unapređenja uključuju:
+            Platforma će se nastaviti razvijati u skladu s dostupnim podacima i potrebama korisnika. Planovi uključuju:
           </p>
           <ul class="about-sources-list">
-            <li>ažuriranje i preciziranje lokacija autobuskih stajališta</li>
+            <li>kontinuirano unapređivanje informacija i funkcionalnosti platforme</li>
+            <li>prilagođavanje informacija turistima i osobama koje prvi put koriste gradski prevoz u Banjoj Luci</li>
             <li>proširenje informacija o drugim vidovima prevoza</li>
-            <li>unapređenje mape i dodavanje prikaza ruta autobuskih linija</li>
+            <li>prikaz lokacija vozila u realnom vremenu, ako Grad omogući pristup podacima GPS praćenja putem javno dostupnog API-ja</li>
           </ul>
 
           <div class="about-cta">

@@ -7,6 +7,7 @@ import {
     getLineColor,
     getLineRoutes,
     getRouteStops,
+    getRoutesForStop,
     getTerminusStopIds,
     hasRouteData,
     pickRouteForStop,
@@ -131,6 +132,21 @@ describe('transit lookups', () => {
 
         expect(pickRouteForStop(index, '19', onlyOnSecond!.stopId)).toBe(second.id);
         expect(pickRouteForStop(index, '19', first.stops[0].stopId)).toBe(first.id);
+    });
+
+    it('returns every direction variant that calls at the same displayed stop', () => {
+        const line = transit.lines.find((entry) => entry.routes.length > 1)!;
+        const variants = getLineRoutes(index, line.id);
+        const sharedStop = transit.stops.find((stop) => {
+            const ids = new Set([stop.id, ...(stop.mergedIds ?? [])]);
+            return variants.filter((route) => route.stops.some((entry) => ids.has(entry.stopId))).length > 1;
+        });
+
+        expect(sharedStop).toBeDefined();
+        expect(getRoutesForStop(index, line.id, sharedStop!.id).length).toBeGreaterThan(1);
+        expect(pickRouteForStop(index, line.id, sharedStop!.id)).toBe(
+            getRoutesForStop(index, line.id, sharedStop!.id)[0].id,
+        );
     });
 
     it('honors stops added to a route by transit overrides', () => {

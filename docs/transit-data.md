@@ -64,14 +64,32 @@ Three flat tables, so nothing is stored twice and every relationship is a lookup
 Derived views (stop → lines, ordered stops of a route) are built at runtime by
 `src/lib/transit.ts`, so the file stays the only source of truth.
 
+## Stop arrival estimates
+
+Stop popups combine the published departure timetable with cumulative route-stop `time`
+values. They are schedule-based estimates, not GPS positions or live predictions.
+
+An estimate is shown only when the timetable direction can be matched to the route, the
+selected stop lies inside that route's nominal origin→destination slice, and every source
+sequence and timing segment from the nominal start to the stop is complete. Timetable notes
+describe branches, extensions, short turns, or alternate origins, but the source has no
+machine-readable mapping from those patterns to stops. A direction and service day containing
+an annotated departure is therefore treated as unavailable; skipping that departure could
+incorrectly promote a later regular trip as the next bus. Rows that do not meet these
+conditions say that an estimate is currently unavailable instead of inventing a time.
+
+The browser applies the same weekday/weekend and school-holiday schedule selection as the
+full timetable. It considers a late trip that crosses midnight and, after today's service is
+exhausted, may show the first departure for the following day.
+
 ### IDs
 
-| Kind | Format | Example |
-| --- | --- | --- |
-| Stop (registry) | `st-` + operator stop number | `st-1538` |
-| Stop (derived) | `st-` + slug of the stop name | `st-pivara` |
-| Route | line + direction endpoints | `19-sargovac-centar` |
-| Line | the public line number | `13A` |
+| Kind            | Format                        | Example              |
+| --------------- | ----------------------------- | -------------------- |
+| Stop (registry) | `st-` + operator stop number  | `st-1538`            |
+| Stop (derived)  | `st-` + slug of the stop name | `st-pivara`          |
+| Route           | line + direction endpoints    | `19-sargovac-centar` |
+| Line            | the public line number        | `13A`                |
 
 Route ids describe the direction so they can be read at a glance and used in markup.
 Parenthetical qualifiers are dropped (`ZALUŽANI (NENADA KOSTIĆA)` → `zaluzani`); a numeric
@@ -90,14 +108,14 @@ suffix is appended if two variants of a line would otherwise collide.
 The two datasets describe the same city at different vintages, so the generator folds a
 derived stop into a registry stop when one of these holds, in order of confidence:
 
-| Rule | Radius | Why |
-| --- | --- | --- |
-| same name **and** a shared line | 600 m | Some legacy coordinates are badly off — "Gimnazija" is 246 m from its counterpart, "Široka rijeka" 273 m. A shared line makes the identity safe. |
-| same name | 150 m | Ordinary coordinate drift ("Poljoprivredna škola" is 97 m out). |
-| any name | 30 m | Close enough to be the same kerb, whatever the two sources call it. |
+| Rule                            | Radius | Why                                                                                                                                              |
+| ------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| same name **and** a shared line | 600 m  | Some legacy coordinates are badly off — "Gimnazija" is 246 m from its counterpart, "Široka rijeka" 273 m. A shared line makes the identity safe. |
+| same name                       | 150 m  | Ordinary coordinate drift ("Poljoprivredna škola" is 97 m out).                                                                                  |
+| any name                        | 30 m   | Close enough to be the same kerb, whatever the two sources call it.                                                                              |
 
 A name match outranks a merely closer stop: the legacy coordinate for "Poljoprivredna
-škola" sits 3 m from a *differently named* registry stop while its real counterpart is
+škola" sits 3 m from a _differently named_ registry stop while its real counterpart is
 97 m away. `Bulevar` / `Gimnazija` are 67 m apart with different names, so they stay
 separate — the 30 m rule is deliberately tight for that reason.
 

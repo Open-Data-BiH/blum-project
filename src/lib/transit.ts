@@ -46,17 +46,20 @@ export const getLineRoutes = (index: TransitIndex, lineId: string): TransitRoute
 export const hasRouteData = (index: TransitIndex, lineId: string): boolean =>
     (index.lineById.get(lineId)?.routes.length ?? 0) > 0;
 
+/** Every direction variant of a line that calls at this displayed stop. */
+export const getRoutesForStop = (index: TransitIndex, lineId: string, stopId: string): TransitRoute[] => {
+    const stop = index.stopById.get(stopId);
+    const ids = new Set(stop ? getStopIds(stop) : [stopId]);
+
+    return getLineRoutes(index, lineId).filter((route) => route.stops.some((entry) => ids.has(entry.stopId)));
+};
+
 /**
  * The variant calling at this stop, or null when none does — the sources disagree about
  * some stop lists, and a route omitting the clicked stop would be misleading.
  */
 export const pickRouteForStop = (index: TransitIndex, lineId: string, stopId: string): string | null => {
-    const stop = index.stopById.get(stopId);
-    const ids = new Set(stop ? getStopIds(stop) : [stopId]);
-
-    const serving = getLineRoutes(index, lineId).find((route) => route.stops.some((entry) => ids.has(entry.stopId)));
-
-    return serving?.id ?? null;
+    return getRoutesForStop(index, lineId, stopId)[0]?.id ?? null;
 };
 
 /** Skips stops with no record rather than leaving holes in the numbering. */

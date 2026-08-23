@@ -102,23 +102,21 @@ export const applyTranslation = (lang: Language): void => {
     const heroDefaults =
         lang === 'bhs'
             ? {
-                  title: 'BL Prevoz',
-                  subtitle: 'Informacije za lakše kretanje gradom.',
-                  description:
-                      'Nezavisna platforma za linije, red vožnje i obavještenja o javnom prevozu u Banjoj Luci.',
-                  detail1: 'Linije i red vožnje na jednom mjestu',
-                  detail2: 'Ažurne informacije i korisni alati za kretanje gradom',
-                  timetables: 'Red vožnje',
+                  title: 'Javni prevoz u Banjoj Luci',
+                  subtitle: '',
+                  description: 'Linije, red vožnje, stajališta i mapa na jednom mjestu.',
+                  detail1: '',
+                  detail2: '',
+                  timetables: 'Pronađi liniju',
                   airport: 'Transfer do aerodroma',
               }
             : {
-                  title: 'BL Prevoz',
-                  subtitle: 'Information for easier movement through the city.',
-                  description:
-                      'Independent platform for routes, timetables, and public transport notices in Banja Luka.',
-                  detail1: 'Routes and timetables in one place',
-                  detail2: 'Up-to-date information and practical tools for getting around the city',
-                  timetables: 'Timetables',
+                  title: 'Public transport in Banja Luka',
+                  subtitle: '',
+                  description: 'Routes, timetables, stops, and a map in one place.',
+                  detail1: '',
+                  detail2: '',
+                  timetables: 'Find a line',
                   airport: 'Airport transfer',
               };
 

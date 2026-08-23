@@ -46,7 +46,7 @@ const subjects = [
 
       <div class="contact-form__field contact-form__field--custom" id="custom-subject-field" style="display:none">
         <label for="contact-custom-subject">
-          {isEnglish ? 'Your subject' : 'Vas predmet'}
+          {isEnglish ? 'Your subject' : 'Vaš predmet'}
         </label>
         <input
           type="text"
@@ -72,7 +72,7 @@ const subjects = [
           required
           data-placeholder-bhs="Opišite detaljnije..."
           data-placeholder-en="Describe in detail..."
-          placeholder={locale === 'en' ? 'Describe in detail...' : 'Opisite detaljnije...'}
+          placeholder={locale === 'en' ? 'Describe in detail...' : 'Opišite detaljnije...'}
         ></textarea>
         <span class="contact-form__error" id="message-error" hidden>{isEnglish ? 'Message must be at least 10 characters' : 'Poruka mora imati najmanje 10 karaktera'}</span>
       </div>

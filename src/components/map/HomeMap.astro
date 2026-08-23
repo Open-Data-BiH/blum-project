@@ -32,7 +32,7 @@ const mapPagePath = `${baseUrl}${getPagePath('map', locale).replace(/^\/+/, '')}
           <p>
             {locale === 'en'
               ? 'JavaScript is required to display the interactive map. Enable JavaScript in your browser to view stops and lines.'
-              : 'JavaScript je potreban za prikaz interaktivne mape. Omogucite JavaScript u pregledacu kako biste vidjeli stajalista i linije.'}
+              : 'JavaScript je potreban za prikaz interaktivne mape. Omogućite JavaScript u pregledaču kako biste vidjeli stajališta i linije.'}
           </p>
         </div>
       </noscript>
@@ -42,7 +42,7 @@ const mapPagePath = `${baseUrl}${getPagePath('map', locale).replace(/^\/+/, '')}
       <a href={mapPagePath} class="btn btn--secondary btn--sm" id="home-map-full-link">
         <i class="fas fa-up-right-and-down-left-from-center" aria-hidden="true"></i>
         <span class="btn__label">
-          {locale === 'en' ? 'Open the full-screen map' : 'Otvori mapu preko cijelog ekrana'}
+          {locale === 'en' ? 'Open map' : 'Otvori mapu'}
         </span>
       </a>
     </div>
@@ -52,7 +52,7 @@ const mapPagePath = `${baseUrl}${getPagePath('map', locale).replace(/^\/+/, '')}
       <p class="map-note__description" id="map-note-description">
         {locale === 'en'
           ? 'Map markers show key public transport points and other important city locations, including bus stops, the main bus station, railway stations, Nextbike stations, and the airport shuttle. New locations will be added gradually.'
-          : 'Markeri na mapi prikazuju kljucne tacke javnog prevoza i druge vazne lokacije u gradu, ukljucujuci autobuska stajalista, glavnu autobusku stanicu, zeljeznicke stanice, Nextbike stanice i aerodromski transfer. Novi sadrzaji i lokacije bice postepeno dodavani.'}
+          : 'Markeri na mapi prikazuju ključne tačke javnog prevoza i druge važne lokacije u gradu, uključujući autobuska stajališta, glavnu autobusku stanicu, željezničke stanice, Nextbike stanice i aerodromski transfer. Novi sadržaji i lokacije biće postepeno dodavani.'}
       </p>
       <div class="map-note__tips" aria-labelledby="map-note-tips-title">
         <p class="map-note__tips-title" id="map-note-tips-title">{locale === 'en' ? 'Tips:' : 'Savjeti:'}</p>
@@ -60,12 +60,12 @@ const mapPagePath = `${baseUrl}${getPagePath('map', locale).replace(/^\/+/, '')}
           <li id="map-note-tip-item-1">
             {locale === 'en'
               ? 'Click a marker to see the approximate walking time (radius about 5 minutes).'
-              : 'Kliknite na marker da vidite priblizno vrijeme hodanja (radijus oko 5 min).'}
+              : 'Kliknite na marker da vidite približno vrijeme hodanja (radijus oko 5 min).'}
           </li>
           <li id="map-note-tip-item-2">
             {locale === 'en'
               ? 'Use the layer controls to show or hide specific location types on the map.'
-              : 'Koristenjem kontrola za slojeve mozete ukljuciti ili iskljuciti pojedine vrste lokacija na mapi.'}
+              : 'Korištenjem kontrola za slojeve možete uključiti ili isključiti pojedine vrste lokacija na mapi.'}
           </li>
         </ul>
       </div>

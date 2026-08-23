@@ -39,29 +39,27 @@ const airportPath = withBase(getPagePath('airport', locale));
   <section class="hero" style={`--hero-network-url: url("${heroNetworkBackgroundUrl}")`}>
     <RouteDecor preset="homeHero" />
     <div class="container hero__inner">
-      <h1 id="hero-title">BL Prevoz</h1>
-      <p class="hero__subtitle" id="hero-subtitle">
-        {locale === 'en' ? 'Information for easier movement through the city.' : 'Informacije za lakse kretanje gradom.'}
-      </p>
+      <h1 id="hero-title">{locale === 'en' ? 'Public transport in Banja Luka' : 'Javni prevoz u Banjoj Luci'}</h1>
+      <p class="hero__subtitle" id="hero-subtitle" hidden style="display: none;"></p>
       <p class="hero__description" id="hero-description">
         {locale === 'en'
-          ? 'Independent platform for routes, timetables, and public transport notices in Banja Luka.'
-          : 'Nezavisna platforma za linije, red voznje i obavještenja o javnom prevozu u Banjoj Luci.'}
+          ? 'Routes, timetables, stops, and a map in one place.'
+          : 'Linije, red vožnje, stajališta i mapa na jednom mjestu.'}
       </p>
-      <div class="hero__details" id="hero-details" aria-label={locale === 'en' ? 'Key information' : 'Kljucne informacije'}>
-        <p class="hero__detail" id="hero-detail-1">
-          <i class="fas fa-map-signs" aria-hidden="true"></i>
-          <span>{locale === 'en' ? 'Routes and timetables in one place' : 'Linije i red voznje na jednom mjestu'}</span>
-        </p>
-        <p class="hero__detail" id="hero-detail-2">
-          <i class="fas fa-circle-info" aria-hidden="true"></i>
-          <span>{locale === 'en' ? 'Up-to-date information and practical tools for getting around the city' : 'Azurne informacije i korisni alati za kretanje gradom'}</span>
-        </p>
+      <div
+        class="hero__details"
+        id="hero-details"
+        aria-label={locale === 'en' ? 'Key information' : 'Ključne informacije'}
+        hidden
+        style="display: none;"
+      >
+        <p class="hero__detail" id="hero-detail-1"><span></span></p>
+        <p class="hero__detail" id="hero-detail-2"><span></span></p>
       </div>
       <div class="hero__actions">
         <a href={linesTimetablePath} class="btn btn--primary btn--lg" id="hero-btn-timetables">
           <i class="fas fa-clock" aria-hidden="true"></i>
-          <span class="btn__label">{locale === 'en' ? 'Timetables' : 'Red voznje'}</span>
+          <span class="btn__label">{locale === 'en' ? 'Find a line' : 'Pronađi liniju'}</span>
         </a>
         <a href={airportPath} class="btn btn--secondary btn--lg" id="hero-btn-airport">
           <i class="fas fa-plane-departure" aria-hidden="true"></i>

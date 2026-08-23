@@ -113,11 +113,11 @@
             },
             "home": {
                 "hero": {
-                    "title": "BL prevoz",
-                    "subtitle": "Informacije za lakše kretanje gradom.",
-                    "description": "Independent platform for routes, timetables, and public transport information.",
+                    "title": "Public transport in Banja Luka",
+                    "subtitle": "",
+                    "description": "Routes, timetables, stops, and a map in one place.",
                     "buttons": {
-                        "timetables": "Timetables",
+                        "timetables": "Find a line",
                         "airport": "Airport transfer"
                     }
                 }
@@ -247,11 +247,11 @@
             },
             "home": {
                 "hero": {
-                    "title": "BL prevoz",
-                    "subtitle": "Informacije za lakše kretanje gradom.",
-                    "description": "Nezavisna platforma za pregled linija, redova vožnje i informacija o javnom prevozu.",
+                    "title": "Javni prevoz u Banjoj Luci",
+                    "subtitle": "",
+                    "description": "Linije, red vožnje, stajališta i mapa na jednom mjestu.",
                     "buttons": {
-                        "timetables": "Red vožnje",
+                        "timetables": "Pronađi liniju",
                         "airport": "Aerodromski transfer"
                     }
                 }

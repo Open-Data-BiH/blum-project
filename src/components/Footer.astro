@@ -22,7 +22,7 @@ const localizedPath = (path: 'faq' | 'about' | 'contact' | 'privacy'): string =>
       </p>
     </div>
 
-    <nav class="footer__nav" aria-label={locale === 'en' ? 'Footer links' : 'Linkovi u podnozju'}>
+    <nav class="footer__nav" aria-label={locale === 'en' ? 'Footer links' : 'Linkovi u podnožju'}>
       <span class="footer__nav-heading" id="footer-nav-heading">{locale === 'en' ? 'Information' : 'Informacije'}</span>
       <a href={localizedPath('faq')} id="footer-link-faq">FAQ</a>
       <a href={localizedPath('about')} id="footer-link-about">{locale === 'en' ? 'About' : 'O projektu'}</a>

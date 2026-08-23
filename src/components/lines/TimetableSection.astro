@@ -11,7 +11,7 @@ const { locale } = Astro.props;
 
 <section class="section section--wide" id="timetable">
   <div class="container">
-    <h2 class="section__title" id="lines-timetable-title">{locale === 'en' ? 'Timetable' : 'Red voznje'}</h2>
+    <h2 class="section__title" id="lines-timetable-title">{locale === 'en' ? 'Timetable' : 'Red vožnje'}</h2>
     <div class="line-selector-wrapper">
       <label for="line-select" class="visually-hidden">{locale === 'en' ? 'Select a line' : 'Izaberite liniju'}</label>
       <select id="line-select" aria-label={locale === 'en' ? 'Select a line' : 'Izaberite liniju'}></select>

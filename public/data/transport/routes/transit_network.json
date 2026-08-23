@@ -1,18 +1,18 @@
 {
   "meta": {
     "generator": "scripts/build-transit-network.mjs",
-    "generated": "2026-08-20",
+    "generated": "2026-08-23",
     "mergeRadiusMeters": 30,
     "nameMergeRadiusMeters": 150,
     "extracted": "2026-08-09T18:58:54.460Z",
     "counts": {
       "lines": 24,
-      "linesWithRoutes": 19,
-      "routes": 37,
-      "routesWithShape": 37,
-      "stops": 389,
+      "linesWithRoutes": 23,
+      "routes": 45,
+      "routesWithShape": 45,
+      "stops": 388,
       "registryStops": 433,
-      "derivedStops": 55
+      "derivedStops": 52
     },
     "warnings": [
       "route 61 (line 1) marks 3 start and 1 end stops — roles mark turnaround points, not only termini",
@@ -35,13 +35,16 @@
       "route 111 (line 19) marks 1 start and 2 end stops — roles mark turnaround points, not only termini",
       "route 107 (line 20) has a sequence gap before 4 — a source stop is missing",
       "route 84 (line 39A) has a sequence gap before 8 — a source stop is missing",
-      "lines without route data: 3B, 9C, 14B, 17, 17A",
       "urban_bus_routes.json line 3: 16 stops but 17 coordinates",
       "urban_bus_routes.json line 12: 10 stops but 11 coordinates",
       "urban_bus_routes.json line 14B: 19 stops but 18 coordinates",
       "urban_bus_routes.json line 17A: 16 stops but 15 coordinates",
-      "18 stop name(s) shared by markers within 45 m — rename them in scripts/transit-overrides.json if riders cannot tell them apart: Bolnica (st-242, st-723); Ćosići (st-1562, st-398); Kamenolom (st-204, st-8667, st-1410, st-8668); Kasarna (st-9770, st-9771); Klašnik (st-207, st-1413); Matijevići (st-393, st-1557); Naselje Sunca (st-240, st-1446); Njegoševa raskrsnica (st-247, st-1453); Obala (st-248, st-1454); OŠ Branko Radičević (st-1465, st-259); Peti km (st-264, st-1470); Priječani zadruga (st-356, st-1554); Pritočka ul. (st-397, st-1561); Prodavnica pogrebne opreme (st-280, st-1486); Rakovačkih rudara - raskrsnica (st-1490, st-284); Topići (st-319, st-1525); Vitaminka (st-333, st-1539); Vrtić (st-341, st-611)",
-      "68 stop/line pairs where the line listings claim a stop the route export does not include — those lines link to the timetable instead of a route"
+      "line 9C has no geometry for 9c-cesma-centar — add scripts/shape-overrides/9c-cesma-centar.json",
+      "line 9C direction 2: \"Skupština\" repeats the previous stop and was dropped",
+      "line 9C has no geometry for 9c-centar-cesma — add scripts/shape-overrides/9c-centar-cesma.json",
+      "lines without route data: 9C",
+      "20 stop name(s) shared by markers within 45 m — rename them in scripts/transit-overrides.json if riders cannot tell them apart: Ada (st-1599, st-4969, st-4968); Bolnica (st-242, st-723); Ćosići (st-1562, st-398); Eko toplane (st-4970, st-4971); Kamenolom (st-204, st-8667, st-1410, st-8668); Kasarna (st-9770, st-9771); Klašnik (st-207, st-1413); Matijevići (st-393, st-1557); Naselje Sunca (st-240, st-1446); Njegoševa raskrsnica (st-247, st-1453); Obala (st-248, st-1454); OŠ Branko Radičević (st-1465, st-259); Peti km (st-264, st-1470); Priječani zadruga (st-356, st-1554); Pritočka ul. (st-397, st-1561); Prodavnica pogrebne opreme (st-280, st-1486); Rakovačkih rudara - raskrsnica (st-1490, st-284); Topići (st-319, st-1525); Vitaminka (st-333, st-1539); Vrtić (st-341, st-611)",
+      "67 stop/line pairs where the line listings claim a stop the route export does not include — those lines link to the timetable instead of a route"
     ]
   },
   "lines": [
@@ -63,7 +66,10 @@
     {
       "id": "3B",
       "color": "#e05e5e",
-      "routes": []
+      "routes": [
+        "3b-debeljaci-etf",
+        "3b-etf-debeljaci"
+      ]
     },
     {
       "id": "6",
@@ -177,17 +183,26 @@
     {
       "id": "14B",
       "color": "#ff9f43",
-      "routes": []
+      "routes": [
+        "14b-autobuska-stanica-starcevica",
+        "14b-starcevica-autobuska-stanica"
+      ]
     },
     {
       "id": "17",
       "color": "#ed1d22",
-      "routes": []
+      "routes": [
+        "17-nova-bolnica-obilicevo",
+        "17-obilicevo-nova-bolnica"
+      ]
     },
     {
       "id": "17A",
       "color": "#ff9f43",
-      "routes": []
+      "routes": [
+        "17a-nova-bolnica-starcevica",
+        "17a-starcevica-nova-bolnica"
+      ]
     },
     {
       "id": "19",
@@ -797,6 +812,284 @@
           "role": "end",
           "time": 69,
           "distance": 355
+        }
+      ]
+    },
+    {
+      "id": "3b-debeljaci-etf",
+      "lineId": "3B",
+      "relation": "Debeljaci - ETF (Vodovod)",
+      "origin": "Debeljaci",
+      "via": [],
+      "destination": "ETF (Vodovod)",
+      "direction": "b",
+      "timing": null,
+      "hasShape": true,
+      "stops": [
+        {
+          "stopId": "st-debeljaci-okretiste",
+          "seq": 1,
+          "role": "start",
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-debeljaci-pruga",
+          "seq": 2,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-debeljaci-raskrsnica",
+          "seq": 3,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-debeljaci",
+          "seq": 4,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-debeljaci-i-pr",
+          "seq": 5,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-medas",
+          "seq": 6,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-tesana-podrugovica-br-40",
+          "seq": 7,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-presnace-pr",
+          "seq": 8,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-vrbanja-zeljeznicka-stanica",
+          "seq": 9,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1546",
+          "seq": 10,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-204",
+          "seq": 11,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1451",
+          "seq": 12,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1430",
+          "seq": 13,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1501",
+          "seq": 14,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-osnovna-skola-branko-radicevic",
+          "seq": 15,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1527",
+          "seq": 16,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-610",
+          "seq": 17,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-613",
+          "seq": 18,
+          "role": "end",
+          "time": null,
+          "distance": null
+        }
+      ]
+    },
+    {
+      "id": "3b-etf-debeljaci",
+      "lineId": "3B",
+      "relation": "ETF (Vodovod) - Debeljaci",
+      "origin": "ETF (Vodovod)",
+      "via": [],
+      "destination": "Debeljaci",
+      "direction": "a",
+      "timing": null,
+      "hasShape": true,
+      "stops": [
+        {
+          "stopId": "st-613",
+          "seq": 1,
+          "role": "start",
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-610",
+          "seq": 2,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1527",
+          "seq": 3,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-osnovna-skola-branko-radicevic",
+          "seq": 4,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1501",
+          "seq": 5,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1430",
+          "seq": 6,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1451",
+          "seq": 7,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-204",
+          "seq": 8,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1546",
+          "seq": 9,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-vrbanja-zeljeznicka-stanica",
+          "seq": 10,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-presnace-pr",
+          "seq": 11,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-tesana-podrugovica-br-40",
+          "seq": 12,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-medas",
+          "seq": 13,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-debeljaci-i-pr",
+          "seq": 14,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-debeljaci",
+          "seq": 15,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-debeljaci-raskrsnica",
+          "seq": 16,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-debeljaci-pruga",
+          "seq": 17,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-debeljaci-okretiste",
+          "seq": 18,
+          "role": "end",
+          "time": null,
+          "distance": null
         }
       ]
     },
@@ -4760,6 +5053,718 @@
       ]
     },
     {
+      "id": "14b-autobuska-stanica-starcevica",
+      "lineId": "14B",
+      "relation": "Autobuska stanica - Borik - Starčevica",
+      "origin": "Autobuska stanica",
+      "via": [
+        "Borik"
+      ],
+      "destination": "Starčevica",
+      "direction": "a",
+      "timing": null,
+      "hasShape": true,
+      "stops": [
+        {
+          "stopId": "st-nova-autobuska-stanica",
+          "seq": 1,
+          "role": "start",
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-719",
+          "seq": 2,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-217",
+          "seq": 3,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-tc-delta",
+          "seq": 4,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-dvorana-borik",
+          "seq": 5,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1355",
+          "seq": 6,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1371",
+          "seq": 7,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-autoservis",
+          "seq": 8,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-gik-kozara",
+          "seq": 9,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-skola-desanka-maksimovic",
+          "seq": 10,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-pumpa-desanka-maksimovic",
+          "seq": 11,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-starcevica-integral-inzenjering",
+          "seq": 12,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1478",
+          "seq": 13,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-starcevica-rajka-bosnica",
+          "seq": 14,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-tuzlanska-br-1",
+          "seq": 15,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-raskrsnica",
+          "seq": 16,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-kocic",
+          "seq": 17,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-stojkovac",
+          "seq": 18,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-okretnica-cajic",
+          "seq": 19,
+          "role": "end",
+          "time": null,
+          "distance": null
+        }
+      ]
+    },
+    {
+      "id": "14b-starcevica-autobuska-stanica",
+      "lineId": "14B",
+      "relation": "Starčevica - Borik - Autobuska stanica",
+      "origin": "Starčevica",
+      "via": [
+        "Borik"
+      ],
+      "destination": "Autobuska stanica",
+      "direction": "b",
+      "timing": null,
+      "hasShape": true,
+      "stops": [
+        {
+          "stopId": "st-okretnica-cajic",
+          "seq": 1,
+          "role": "start",
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-stojkovac",
+          "seq": 2,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-kocic",
+          "seq": 3,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-raskrsnica",
+          "seq": 4,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-tuzlanska-br-1",
+          "seq": 5,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-starcevica-rajka-bosnica",
+          "seq": 6,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1478",
+          "seq": 7,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-starcevica-integral-inzenjering",
+          "seq": 8,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-pumpa-desanka-maksimovic",
+          "seq": 9,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-skola-desanka-maksimovic",
+          "seq": 10,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-gik-kozara",
+          "seq": 11,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-autoservis",
+          "seq": 12,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1371",
+          "seq": 13,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1355",
+          "seq": 14,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-dvorana-borik",
+          "seq": 15,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-tc-delta",
+          "seq": 16,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-217",
+          "seq": 17,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-719",
+          "seq": 18,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-nova-autobuska-stanica",
+          "seq": 19,
+          "role": "end",
+          "time": null,
+          "distance": null
+        }
+      ]
+    },
+    {
+      "id": "17-nova-bolnica-obilicevo",
+      "lineId": "17",
+      "relation": "Nova bolnica - Obilićevo",
+      "origin": "Nova bolnica",
+      "via": [],
+      "destination": "Obilićevo",
+      "direction": "b",
+      "timing": null,
+      "hasShape": true,
+      "stops": [
+        {
+          "stopId": "st-332",
+          "seq": 1,
+          "role": "start",
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-242",
+          "seq": 2,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-320",
+          "seq": 3,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1446",
+          "seq": 4,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-194",
+          "seq": 5,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-167",
+          "seq": 6,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-613",
+          "seq": 7,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-610",
+          "seq": 8,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-611",
+          "seq": 9,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-orlovacki-put",
+          "seq": 10,
+          "role": "end",
+          "time": null,
+          "distance": null
+        }
+      ]
+    },
+    {
+      "id": "17-obilicevo-nova-bolnica",
+      "lineId": "17",
+      "relation": "Obilićevo - Nova bolnica",
+      "origin": "Obilićevo",
+      "via": [],
+      "destination": "Nova bolnica",
+      "direction": "a",
+      "timing": null,
+      "hasShape": true,
+      "stops": [
+        {
+          "stopId": "st-orlovacki-put",
+          "seq": 1,
+          "role": "start",
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-611",
+          "seq": 2,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-610",
+          "seq": 3,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-613",
+          "seq": 4,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-167",
+          "seq": 5,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-194",
+          "seq": 6,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1446",
+          "seq": 7,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-320",
+          "seq": 8,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-242",
+          "seq": 9,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-332",
+          "seq": 10,
+          "role": "end",
+          "time": null,
+          "distance": null
+        }
+      ]
+    },
+    {
+      "id": "17a-nova-bolnica-starcevica",
+      "lineId": "17A",
+      "relation": "Nova bolnica - Starčevica",
+      "origin": "Nova bolnica",
+      "via": [],
+      "destination": "Starčevica",
+      "direction": "b",
+      "timing": null,
+      "hasShape": true,
+      "stops": [
+        {
+          "stopId": "st-332",
+          "seq": 1,
+          "role": "start",
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-242",
+          "seq": 2,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-320",
+          "seq": 3,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1446",
+          "seq": 4,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-239",
+          "seq": 5,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1379",
+          "seq": 6,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-225",
+          "seq": 7,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1355",
+          "seq": 8,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1371",
+          "seq": 9,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-autoservis",
+          "seq": 10,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-koste-jarica",
+          "seq": 11,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-313",
+          "seq": 12,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-bs5",
+          "seq": 13,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-starcevica-groblje",
+          "seq": 14,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1478",
+          "seq": 15,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-starcevica-integral-inzenjering",
+          "seq": 16,
+          "role": "end",
+          "time": null,
+          "distance": null
+        }
+      ]
+    },
+    {
+      "id": "17a-starcevica-nova-bolnica",
+      "lineId": "17A",
+      "relation": "Starčevica - Nova Bolnica",
+      "origin": "Starčevica",
+      "via": [],
+      "destination": "Nova Bolnica",
+      "direction": "a",
+      "timing": null,
+      "hasShape": true,
+      "stops": [
+        {
+          "stopId": "st-starcevica-integral-inzenjering",
+          "seq": 1,
+          "role": "start",
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1478",
+          "seq": 2,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-starcevica-groblje",
+          "seq": 3,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-bs5",
+          "seq": 4,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-313",
+          "seq": 5,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-koste-jarica",
+          "seq": 6,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-autoservis",
+          "seq": 7,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1371",
+          "seq": 8,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1355",
+          "seq": 9,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-225",
+          "seq": 10,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1379",
+          "seq": 11,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-239",
+          "seq": 12,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-1446",
+          "seq": 13,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-320",
+          "seq": 14,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-242",
+          "seq": 15,
+          "role": null,
+          "time": null,
+          "distance": null
+        },
+        {
+          "stopId": "st-332",
+          "seq": 16,
+          "role": "end",
+          "time": null,
+          "distance": null
+        }
+      ]
+    },
+    {
       "id": "19-centar-sargovac",
       "lineId": "19",
       "relation": "Centar (Vidovdanska) - Šargovac",
@@ -5759,8 +6764,8 @@
       "id": "st-4969",
       "name": "Ada",
       "street": null,
-      "lat": 44.773466257782,
-      "lon": 17.218387923203,
+      "lat": 44.7725298188614,
+      "lon": 17.218064524846653,
       "source": "registry",
       "lines": [
         "20"
@@ -5770,8 +6775,8 @@
       "id": "st-4968",
       "name": "Ada",
       "street": null,
-      "lat": 44.774206796093,
-      "lon": 17.22000349313,
+      "lat": 44.77280814247157,
+      "lon": 17.21790730419516,
       "source": "registry",
       "lines": [
         "20"
@@ -5882,8 +6887,8 @@
       "id": "st-autoservis",
       "name": "Autoservis",
       "street": "Bulevar vojvode Petra Bojovića",
-      "lat": 44.771737357695194,
-      "lon": 17.209089007351643,
+      "lat": 44.7713647,
+      "lon": 17.2092593,
       "source": "derived",
       "lines": [
         "9B",
@@ -6097,8 +7102,8 @@
       "id": "st-bs5",
       "name": "BS5",
       "street": "Rajka Bosnića",
-      "lat": 44.7577177178559,
-      "lon": 17.21159432372416,
+      "lat": 44.7589205,
+      "lon": 17.2111879,
       "source": "derived",
       "lines": [
         "14",
@@ -6447,8 +7452,8 @@
       "id": "st-debeljaci-pruga",
       "name": "Debeljaci pruga",
       "street": "Stara pruga",
-      "lat": 44.746325157409885,
-      "lon": 17.259166320436467,
+      "lat": 44.746151,
+      "lon": 17.2601571,
       "source": "derived",
       "lines": [
         "3B"
@@ -6679,8 +7684,8 @@
       "id": "st-dvorana-borik",
       "name": "Dvorana Borik",
       "street": "Aleja Svetog Save",
-      "lat": 44.77438115989674,
-      "lon": 17.203536076270026,
+      "lat": 44.7744775,
+      "lon": 17.2042674,
       "source": "derived",
       "lines": [
         "14B",
@@ -6689,7 +7694,7 @@
     },
     {
       "id": "st-4970",
-      "name": "Eko topane",
+      "name": "Eko toplane",
       "street": null,
       "lat": 44.772755119642,
       "lon": 17.213966636918,
@@ -6753,7 +7758,8 @@
       "lines": [
         "1",
         "6",
-        "13A"
+        "13A",
+        "17"
       ]
     },
     {
@@ -6767,7 +7773,6 @@
         "1",
         "6",
         "13A",
-        "17",
         "19"
       ]
     },
@@ -7184,8 +8189,8 @@
       "id": "st-kocic",
       "name": "Kočić",
       "street": "Tuzlanska",
-      "lat": 44.753519398889914,
-      "lon": 17.225384941630026,
+      "lat": 44.7533745,
+      "lon": 17.2248926,
       "source": "derived",
       "lines": [
         "14B"
@@ -7231,8 +8236,8 @@
       "id": "st-koste-jarica",
       "name": "Koste Jarića",
       "street": "Dr. Vojislava Đede Kecmanovića",
-      "lat": 44.76515855483418,
-      "lon": 17.212036888197446,
+      "lat": 44.765504,
+      "lon": 17.2120988,
       "source": "derived",
       "lines": [
         "14",
@@ -7679,8 +8684,8 @@
       "id": "st-medas",
       "name": "Međaš",
       "street": "Tešana Podrugovića",
-      "lat": 44.75138077477638,
-      "lon": 17.241847259786713,
+      "lat": 44.7504005,
+      "lon": 17.243038,
       "source": "derived",
       "lines": [
         "3B"
@@ -8184,8 +9189,8 @@
       "id": "st-nova-autobuska-stanica",
       "name": "Nova Autobuska stanica",
       "street": "Prote Nikole Kostića",
-      "lat": 44.78963746133386,
-      "lon": 17.21116858017388,
+      "lat": 44.789112,
+      "lon": 17.2113804,
       "source": "derived",
       "lines": [
         "6",
@@ -9661,8 +10666,8 @@
       "id": "st-skola-desanka-maksimovic",
       "name": "Škola Desanka Maksimović",
       "street": "Bulevar Desanke Maksimović",
-      "lat": 44.76384412413565,
-      "lon": 17.206349304479712,
+      "lat": 44.7640272,
+      "lon": 17.2065871,
       "source": "derived",
       "lines": [
         "14B"
@@ -9798,25 +10803,21 @@
       "id": "st-starcevica-integral-inzenjering",
       "name": "Starčevica - Integral Inženjering",
       "street": "Jug Bogdana",
-      "lat": 44.76147285426413,
-      "lon": 17.20101170895537,
+      "lat": 44.7606365,
+      "lon": 17.200019,
       "source": "derived",
       "lines": [
         "14",
         "14B",
         "17A"
-      ],
-      "mergedIds": [
-        "st-starcevica-integral-inzenjering-2",
-        "st-starcevica-integral-inzenjering-3"
       ]
     },
     {
       "id": "st-starcevica-groblje",
       "name": "Starčevica groblje",
       "street": "Rajka Bosnića",
-      "lat": 44.75767327685293,
-      "lon": 17.21159838791212,
+      "lat": 44.7565425,
+      "lon": 17.2103286,
       "source": "derived",
       "lines": [
         "14",
@@ -9827,8 +10828,8 @@
       "id": "st-starcevica-rajka-bosnica",
       "name": "Starčevica Rajka Bosnića",
       "street": "Rajka Bosnića",
-      "lat": 44.75513269930077,
-      "lon": 17.21156351881024,
+      "lat": 44.7562452,
+      "lon": 17.2096058,
       "source": "derived",
       "lines": [
         "14B"
@@ -9862,8 +10863,8 @@
       "id": "st-stojkovac",
       "name": "Stojkovac",
       "street": "Djuke Komljenovića",
-      "lat": 44.755349834290655,
-      "lon": 17.22818248584571,
+      "lat": 44.7555538,
+      "lon": 17.2289922,
       "source": "derived",
       "lines": [
         "14B"
@@ -10409,17 +11410,6 @@
       ]
     },
     {
-      "id": "st-vrbanja-cvjecara",
-      "name": "Vrbanja Cvjećara",
-      "street": "Rade Radića",
-      "lat": 44.748377747913985,
-      "lon": 17.27117185035479,
-      "source": "derived",
-      "lines": [
-        "3"
-      ]
-    },
-    {
       "id": "st-4377",
       "name": "Vrbanja Groblje",
       "street": null,
@@ -10434,8 +11424,8 @@
       "id": "st-vrbanja-zeljeznicka-stanica",
       "name": "Vrbanja željeznička stanica",
       "street": "Stanka Božića Kobre",
-      "lat": 44.76104026261571,
-      "lon": 17.24224959108031,
+      "lat": 44.7620316,
+      "lon": 17.2416221,
       "source": "derived",
       "lines": [
         "3B"

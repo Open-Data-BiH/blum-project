@@ -2,7 +2,36 @@
     "comment": "Manual corrections applied by scripts/build-transit-network.mjs after the automatic matching. Renames run first, so a rename can also enable a merge.",
 
     "//rename": "stop id -> display name, e.g. \"Prodavnica\" -> \"Prodavnica (Kuljani)\".",
-    "rename": {},
+    "rename": {
+        "st-4970": "Eko toplane"
+    },
+
+    "//move": "stop id -> [lat, lon] replacing the export's coordinate: surveyed corrections, operator route changes, and OSM positions for legacy stops the export never carried.",
+    "move": {
+        "st-4969": [44.7725298188614, 17.218064524846653],
+        "st-4968": [44.77280814247157, 17.21790730419516],
+
+        "st-medas": [44.7504005, 17.243038],
+        "st-nova-autobuska-stanica": [44.789112, 17.2113804],
+        "st-dvorana-borik": [44.7744775, 17.2042674],
+        "st-autoservis": [44.7713647, 17.2092593],
+        "st-skola-desanka-maksimovic": [44.7640272, 17.2065871],
+        "st-starcevica-integral-inzenjering": [44.7606365, 17.200019],
+        "st-starcevica-rajka-bosnica": [44.7562452, 17.2096058],
+        "st-kocic": [44.7533745, 17.2248926],
+        "st-stojkovac": [44.7555538, 17.2289922],
+        "st-starcevica-groblje": [44.7565425, 17.2103286],
+        "st-koste-jarica": [44.765504, 17.2120988],
+        "st-bs5": [44.7589205, 17.2111879],
+        "st-vrbanja-zeljeznicka-stanica": [44.7620316, 17.2416221],
+        "st-debeljaci-pruga": [44.746151, 17.2601571]
+    },
+
+    "//keepSeparate": "groups of stop ids that share a name but are separate kerbs, closer together than the pole-merge radius. Each keeps its own marker.",
+    "keepSeparate": [
+        ["st-4970", "st-4971"],
+        ["st-4969", "st-4968"]
+    ],
 
     "//mergeInto": "stop id -> stop id it should be drawn as; lines are combined onto the target.",
     "mergeInto": {
@@ -16,6 +45,6 @@
         "19-sargovac-centar": ["st-cajevac", "st-167"]
     },
 
-    "//moveLines": "reassigns line badges the automatic name+distance matching attached to the wrong pole of a same-named pair.",
-    "moveLines": [{ "from": "st-194", "to": "st-1400", "lines": ["17", "19"] }]
+    "//moveLines": "reassigns line badges the automatic name+distance matching attached to the wrong pole of a same-named pair. Only needed for a line whose stop list has no route to speak for it.",
+    "moveLines": [{ "from": "st-194", "to": "st-1400", "lines": ["19"] }]
 }

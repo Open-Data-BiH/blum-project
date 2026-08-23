@@ -79,8 +79,8 @@ describe('transit lookups', () => {
         expect(hasRouteData(index, '19')).toBe(true);
         expect(getLineRoutes(index, '19')).toHaveLength(2);
 
-        expect(hasRouteData(index, '17')).toBe(false);
-        expect(getLineRoutes(index, '17')).toEqual([]);
+        expect(hasRouteData(index, '9C')).toBe(false);
+        expect(getLineRoutes(index, '9C')).toEqual([]);
     });
 
     it('numbers resolved stops contiguously even when source sequences have gaps', () => {

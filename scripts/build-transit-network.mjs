@@ -17,6 +17,8 @@ const OVERRIDES = path.join(ROOT, 'scripts/transit-overrides.json');
 const LINE_COLORS = path.join(ROOT, 'public/data/transport/routes/urban_bus_routes.json');
 const OUTPUT = path.join(ROOT, 'public/data/transport/routes/transit_network.json');
 const SHAPES_DIR = path.join(ROOT, 'public/data/transport/routes/shapes');
+/** Hand-corrected geometry, already in Leaflet [lat, lon]; wins over the export. */
+const SHAPE_OVERRIDES_DIR = path.join(ROOT, 'scripts/shape-overrides');
 
 /** 5 decimals is about one metre. */
 const COORDINATE_DECIMALS = 5;
@@ -430,10 +432,6 @@ for (const line of lines) {
         warn(`line ${line.id} is in the export but not in urban_bus_routes.json — using the default colour`);
     }
 }
-const uncovered = lines.filter((line) => line.routes.length === 0).map((line) => line.id);
-if (uncovered.length > 0) {
-    warn(`lines without route data: ${uncovered.join(', ')}`);
-}
 for (const line of lines.filter((entry) => entry.routes.length > 1)) {
     console.log(`  line ${line.id} has ${line.routes.length} route variants: ${line.routes.join(', ')}`);
 }
@@ -464,12 +462,15 @@ for (const [lineId, line] of Object.entries(lineColorData)) {
             if (!coordinate) {
                 return;
             }
-            const existing = derivedStops.get(name);
+            // Keyed by normalised name: the line listings spell some stops three ways
+            // ("Starčevica - Integral inženjering" / "… Inženjering" / "Starčevica Integral …").
+            const key = normalizeName(name);
+            const existing = derivedStops.get(key);
             if (existing) {
                 existing.lines.add(lineId);
                 return;
             }
-            derivedStops.set(name, {
+            derivedStops.set(key, {
                 name,
                 street: direction.streets?.[index] ?? direction.ulice?.[index] ?? null,
                 lat: coordinate[0],
@@ -494,6 +495,9 @@ const registryStops = sourceStops.map((stop) => ({
 // the registry stop so popups keep listing every line.
 const absorbed = [];
 const derivedOnly = [];
+/** Normalised legacy stop name -> the stop id it ended up as, so the lines the export does
+ *  not cover can turn their `urban_bus_routes.json` stop lists into real routes. */
+const legacyStopIdByName = new Map();
 const takenStopIds = new Set(registryStops.map((stop) => stop.id));
 for (const derived of derivedStops.values()) {
     // A stop of the same name wins over a merely closer one: legacy coordinates are
@@ -540,11 +544,13 @@ for (const derived of derivedStops.values()) {
         absorbed.push(
             `${nearestDistance.toFixed(0)}m by ${nearestReason}  "${derived.name}" -> ${nearest.id} "${nearest.name}"${added.length > 0 ? ` (+lines ${added.join(',')})` : ''}`,
         );
+        legacyStopIdByName.set(normalizeName(derived.name), nearest.id);
         continue;
     }
 
+    const id = derivedStopId(derived.name, takenStopIds);
     derivedOnly.push({
-        id: derivedStopId(derived.name, takenStopIds),
+        id,
         name: derived.name,
         street: derived.street,
         lat: derived.lat,
@@ -552,6 +558,7 @@ for (const derived of derivedStops.values()) {
         source: 'derived',
         lines: [...derived.lines].sort(compareLineIds),
     });
+    legacyStopIdByName.set(normalizeName(derived.name), id);
 }
 
 // Corrections the matching cannot settle. Renames run first so they can enable a merge.
@@ -566,6 +573,37 @@ for (const [id, name] of Object.entries(overrides.rename ?? {})) {
     }
     console.log(`  renamed ${id}: "${stop.name}" -> "${name}"`);
     stop.name = name;
+}
+
+// The export's coordinate is wrong for a few stops; an operator route change can also move
+// one. Written as [lat, lon] so it can be pasted straight from a map.
+for (const [id, coordinate] of Object.entries(overrides.move ?? {})) {
+    const stop = byId.get(id);
+    if (!stop) {
+        warn(`override: cannot move unknown stop "${id}"`);
+        continue;
+    }
+    if (!Array.isArray(coordinate) || coordinate.length !== 2 || coordinate.some((value) => typeof value !== 'number')) {
+        warn(`override: move for "${id}" must be [lat, lon]`);
+        continue;
+    }
+    const [lat, lon] = coordinate;
+    console.log(`  moved ${id} ("${stop.name}") ${distanceMeters(stop, { lat, lon }).toFixed(0)} m`);
+    stop.lat = lat;
+    stop.lon = lon;
+}
+
+// Two stops that share a name but are genuinely separate kerbs, closer together than
+// POLE_MERGE_RADIUS_M. Listing them here keeps each direction its own marker.
+const keepApart = new Map();
+for (const group of overrides.keepSeparate ?? []) {
+    for (const id of group) {
+        if (!byId.has(id)) {
+            warn(`override: keepSeparate lists unknown stop "${id}"`);
+            continue;
+        }
+        keepApart.set(id, new Set(group.filter((other) => other !== id)));
+    }
 }
 
 const forcedMerges = new Set();
@@ -597,6 +635,7 @@ candidates.forEach((stop) => {
     const group = candidates.filter(
         (other) =>
             !assigned.has(other.id) &&
+            !keepApart.get(stop.id)?.has(other.id) &&
             normalizeName(other.name) === normalizeName(stop.name) &&
             distanceMeters(stop, other) <= POLE_MERGE_RADIUS_M,
     );
@@ -638,6 +677,91 @@ const stopByAnyId = new Map();
 for (const stop of stops) {
     stopByAnyId.set(stop.id, stop);
     (stop.mergedIds ?? []).forEach((id) => stopByAnyId.set(id, stop));
+}
+
+// Lines the operator export does not cover at all. Their ordered stop lists live in
+// urban_bus_routes.json, which is the only source that has them; geometry comes from a
+// shape override traced off the OSM road network. No travel times exist for these.
+const uncoveredLineIds = Object.keys(lineColorData).filter((id) => !coveredLineIds.has(id));
+for (const lineId of uncoveredLineIds) {
+    const directions = Object.entries(lineColorData[lineId].directions ?? {});
+    if (directions.length === 0) {
+        continue;
+    }
+
+    directions.forEach(([key, direction], index) => {
+        const relation = transliterate(cleanRelation(direction.route ?? '')).text;
+        if (!relation) {
+            warn(`urban_bus_routes.json line ${lineId} direction ${key} has no relation text`);
+            return;
+        }
+
+        const resolved = [];
+        for (const name of direction.stops ?? []) {
+            const id = legacyStopIdByName.get(normalizeName(name));
+            const stop = id ? stopByAnyId.get(id) : undefined;
+            if (!stop) {
+                warn(`line ${lineId} direction ${key}: stop "${name}" has no coordinate and was dropped`);
+                continue;
+            }
+            if (resolved.at(-1) === stop.id) {
+                warn(`line ${lineId} direction ${key}: "${name}" repeats the previous stop and was dropped`);
+                continue;
+            }
+            resolved.push(stop.id);
+        }
+        if (resolved.length < 2) {
+            warn(`line ${lineId} direction ${key} resolved to ${resolved.length} stop(s) — no route built`);
+            return;
+        }
+
+        const endpoints = splitRelation(relation);
+        // "a"/"b" matches the export's own convention for the two directions.
+        const directionCode = String.fromCharCode('a'.charCodeAt(0) + index);
+        const routeKey = makeRouteId(lineId, endpoints.origin, endpoints.destination, directionCode, takenRouteIds);
+        // Routes are drawn from published geometry only. Without one the line keeps its
+        // timetable link rather than opening a route view with no line on the map.
+        if (!fs.existsSync(path.join(SHAPE_OVERRIDES_DIR, `${routeKey}.json`))) {
+            warn(`line ${lineId} has no geometry for ${routeKey} — add scripts/shape-overrides/${routeKey}.json`);
+            takenRouteIds.delete(routeKey);
+            return;
+        }
+        // The write step replaces this with the override; nothing else reads it.
+        shapesToWrite.set(routeKey, []);
+
+        routes.push({
+            id: routeKey,
+            lineId,
+            relation,
+            ...endpoints,
+            direction: directionCode,
+            timing: null,
+            hasShape: true,
+            stops: resolved.map((stopId, position) => ({
+                stopId,
+                seq: position + 1,
+                role: position === 0 ? 'start' : position === resolved.length - 1 ? 'end' : null,
+                time: null,
+                distance: null,
+            })),
+        });
+        console.log(`  built ${routeKey} from urban_bus_routes.json (${resolved.length} stops)`);
+    });
+
+    coveredLineIds.add(lineId);
+}
+
+// The line table was built before these routes existed.
+routes.sort((a, b) => compareLineIds(a.lineId, b.lineId) || a.id.localeCompare(b.id));
+for (const line of lines) {
+    line.routes = routes
+        .filter((route) => route.lineId === line.id)
+        .map((route) => route.id)
+        .sort();
+}
+const uncovered = lines.filter((line) => line.routes.length === 0).map((line) => line.id);
+if (uncovered.length > 0) {
+    warn(`lines without route data: ${uncovered.join(', ')}`);
 }
 
 const geometryIndex = (geometry, stop) => {
@@ -794,9 +918,23 @@ fs.mkdirSync(SHAPES_DIR, { recursive: true });
 const expectedShapeFiles = new Set();
 let shapePoints = 0;
 
+const shapeOverrideFiles = fs.existsSync(SHAPE_OVERRIDES_DIR)
+    ? fs.readdirSync(SHAPE_OVERRIDES_DIR).filter((file) => file.endsWith('.json'))
+    : [];
+const usedShapeOverrides = new Set();
+
 for (const [routeKey, coordinates] of shapesToWrite) {
-    // GeoJSON [lon, lat] -> Leaflet [lat, lon].
-    const points = coordinates.map(([lon, lat]) => [round(lat), round(lon)]);
+    const overrideFile = `${routeKey}.json`;
+    let points;
+    if (shapeOverrideFiles.includes(overrideFile)) {
+        // Already Leaflet [lat, lon] — hand-corrected, so it is taken verbatim.
+        points = readJson(path.join(SHAPE_OVERRIDES_DIR, overrideFile)).map(([lat, lon]) => [round(lat), round(lon)]);
+        usedShapeOverrides.add(overrideFile);
+        console.log(`  geometry override for ${routeKey} (${points.length} points)`);
+    } else {
+        // GeoJSON [lon, lat] -> Leaflet [lat, lon].
+        points = coordinates.map(([lon, lat]) => [round(lat), round(lon)]);
+    }
     if (points.length < 2) {
         warn(`route ${routeKey} has geometry with only ${points.length} point(s) and was not written`);
         continue;
@@ -810,6 +948,12 @@ for (const [routeKey, coordinates] of shapesToWrite) {
     expectedShapeFiles.add(file);
     shapePoints += points.length;
     fs.writeFileSync(path.join(SHAPES_DIR, file), JSON.stringify(points), 'utf8');
+}
+
+for (const file of shapeOverrideFiles) {
+    if (!usedShapeOverrides.has(file)) {
+        warn(`shape override ${file} does not match any route and was ignored`);
+    }
 }
 
 // Drop geometry for routes that no longer exist.

@@ -57,8 +57,8 @@ Three flat tables, so nothing is stored twice and every relationship is a lookup
   line 3, which the export publishes one way only. They are never merged, because their
   stop lists genuinely differ.
 - **`stops`** hold coordinates once; routes reference them by id.
-- **Geometry** is kept out of this file on purpose. Inlining all 21,231 points would add
-  about 79 kB gzip to every homepage visit; per-route files cost ~2.4 kB for the one route
+- **Geometry** is kept out of this file on purpose. Inlining all 25,399 points would add
+  about 94 kB gzip to every homepage visit; per-route files cost ~2.4 kB for the one route
   a reader actually opens. `hasShape` says whether the file exists.
 
 Derived views (stop → lines, ordered stops of a route) are built at runtime by
@@ -99,9 +99,15 @@ suffix is appended if two variants of a line would otherwise collide.
 
 - `registry` — from the operator's stop export: stable id, surveyed coordinates, and the
   routes that call there.
-- `derived` — read out of `urban_bus_routes.json` for stops the export does not contain
-  (lines 3B, 9C, 14B, 17 and 17A have no route data at all). Keyed by name, so they carry
-  no route data and cannot open a route view.
+- `derived` — read out of `urban_bus_routes.json` for stops the export does not contain.
+  Keyed by **normalised** name, because the line listings spell some stops three ways
+  ("Starčevica - Integral inženjering" / "… Inženjering" / "Starčevica Integral …") and
+  each spelling would otherwise become its own marker.
+
+Derived coordinates are the weakest data in the set. Checked against OpenStreetMap they
+sit a median of 45 m from the surveyed position against 5 m for registry stops, and ten of
+them are more than 60 m out. Where OSM confirms the stop by name *and* by route membership,
+the position is corrected through `move`.
 
 ### Merging the two sources
 
@@ -148,10 +154,33 @@ merge is printed by the generator so the heuristics can be audited after each ru
 
 - `rename` — give a stop a clearer display name, e.g. to tell two "Prodavnica" apart.
   Renames run before pole collapsing, so renaming can also unify a duplicate.
+- `move` — replace a stop's coordinate with `[lat, lon]`. Used for three things: surveyed
+  corrections, operator route changes, and OSM positions for legacy stops the export never
+  carried (those are the worst-placed records in the dataset — see below).
+- `keepSeparate` — groups of stop ids that share a name but are genuinely separate kerbs
+  closer together than the pole-merge radius. Each keeps its own marker. Line 20's two
+  "Eko toplane" poles are 7 m apart and would otherwise collapse into one.
 - `mergeInto` — force one stop to be drawn as another, combining their lines.
 - `addStops` — add stops the export leaves off a route. Each is projected onto the route
   geometry and slotted in where that position implies, so the order stays right without
   hand-numbering. A stop further than 60 m from the line is reported.
+- `moveLines` — reassign a line badge attached to the wrong pole of a same-named pair.
+  Only needed for a line whose stop list has no route to speak for it: once a line has
+  routes, the routes decide which stops carry its badge.
+
+### Geometry overrides
+
+`scripts/shape-overrides/<route id>.json` replaces the export's geometry for one route.
+The file is a plain `[lat, lon][]` — already in the output format, so it is written
+verbatim. A file matching no route is reported after every build.
+
+Two cases use this today:
+
+- **Line 20 towards and from Incel.** The operator changed the route: the bus now runs
+  down the street Ada and loops south of Park Ada instead of turning north. The published
+  geometry still shows the old loop, so both directions are spliced at the Ada/Bulevar
+  vojvode Živojina Mišića junction and rejoined to the new path.
+- **Lines 3B, 14B, 17 and 17A**, which the export does not cover at all — see below.
 
 Line 19 towards Centar is corrected this way: the export omits Čajevac and Bulevar,
 though its geometry passes within 20 m of both. Note that Gimnazija (`st-194`) and Bulevar
@@ -159,6 +188,26 @@ though its geometry passes within 20 m of both. Note that Gimnazija (`st-194`) a
 line 19 calls only at Bulevar.
 
 Unknown ids in either map are reported as warnings, so the file cannot silently rot.
+
+## Lines the export does not cover
+
+The operator export has no routes for 3B, 9C, 14B, 17 and 17A, but `urban_bus_routes.json`
+carries their ordered, per-direction stop lists. The generator turns those into real routes:
+the **order comes from the line listing** — the only source that has it — the stop ids come
+from the same name resolution used for derived stops, and the geometry comes from a shape
+override.
+
+Geometry for these was traced over the OpenStreetMap road network by routing between
+consecutive stops, honouring `oneway` so the two directions differ where the street network
+makes them differ. It is not taken from OSM route relations: their member order is not
+travel order (measured against the drawn routes, 15 of 19 lines score at or below 0.26 on
+Kendall's τ), so only the roads are borrowed, never the sequence.
+
+A route is built **only when its shape override exists** — a route view with no line on the
+map would be worse than the timetable link it replaces. That is why 9C still has no routes:
+nothing has traced its geometry yet, and the generator warns about it on every build.
+
+Travel times do not exist for these lines, so `time` and `distance` are null throughout.
 
 ## Known data issues
 
@@ -171,7 +220,8 @@ Recorded in `meta.warnings` on every build:
   by straight segments, which would imply a path buses do not take.
 - **Sequence gaps.** Route `10` skips sequence 10 and route `20-paprikovac-incel` skips 3,
   so a stop the operator lists is missing from the export. `seq` keeps the source value;
-  display positions are renumbered contiguously.
+  display positions are renumbered contiguously. OpenStreetMap shows a stop at both of
+  those positions, but neither has been confirmed against a current operator timetable.
 - **Several start/end markers per route.** Seven routes mark more than one `p`/`z` stop, so
   `role` flags turnaround points rather than only termini. First and last stop are taken
   from array position, not from `role`.
@@ -197,7 +247,8 @@ Recorded in `meta.warnings` on every build:
 - `time` is seconds and `distance` is metres **from the previous stop** on that route; the
   first stop is 0. This is inferred from the values, not documented by the source.
 - The public line number is the join key between the export and the site's own line data.
-  All 19 covered lines match exactly (`13A`, `9B`, …).
+  All 19 exported lines match exactly (`13A`, `9B`, …); 3B, 14B, 17 and 17A are built from
+  the line listing on top of that, leaving 9C as the only line without routes.
 - Line pages keep their existing per-direction stop tables from `urban_bus_routes.json`,
   because the export covers only one direction for 17 of the 19 lines; replacing them
   would drop the return direction. The route map is additive.

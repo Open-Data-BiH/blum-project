@@ -15,6 +15,7 @@ import LineRouteMap from '../../components/map/LineRouteMap.astro';
 import { createTransitIndex, getLineRoutes } from '../../lib/transit';
 import type { TransitNetwork } from '../../types/transit';
 import '../../styles/pages/_line-styles.scss';
+import '../../styles/pages/_timetables.scss';
 import '../../styles/pages/_line-detail.scss';
 import type { Line } from '../../types/lines';
 import { getCompanyClass, getShortOperatorName } from '../../lib/lineHelpers';
@@ -629,7 +630,7 @@ const breadcrumbSchema = {
                                           </h4>
 
                                           <div class="ldp-station-card__table-wrap">
-                                            <table class="ldp-tt-table">
+                                            <table class="hours-minutes-table">
                                               <thead>
                                                 <tr>
                                                   <th scope="col">{t('Sat', 'Hour')}</th>
@@ -638,10 +639,10 @@ const breadcrumbSchema = {
                                               </thead>
                                               <tbody>
                                                 {getSortedHourEntries(variant.departures).map(([hour, minutes]) => (
-                                                  <tr>
-                                                    <th scope="row" class="ldp-tt-table__hour">{hour.padStart(2, '0')}</th>
-                                                    <td>
-                                                      <div class="ldp-minute-list">
+                                                  <tr data-hour={Number.parseInt(hour, 10)}>
+                                                    <td class="hour-cell">{hour.padStart(2, '0')}</td>
+                                                    <td class="minutes-cell">
+                                                      <div class="minutes-wrapper">
                                                         {[...minutes]
                                                           .sort((a, b) => {
                                                             const minuteDiff = compareNumericStrings(a.minute, b.minute);
@@ -651,7 +652,10 @@ const breadcrumbSchema = {
                                                             return compareDepartureNotes(a.note, b.note);
                                                           })
                                                           .map(({ minute, note }) => (
-                                                            <span class="ldp-minute-pill">
+                                                            <span
+                                                              class="minute-box"
+                                                              data-minute={Number.parseInt(minute, 10)}
+                                                            >
                                                               {minute.padStart(2, '0')}
                                                               {note && <sup class="time-note">{note}</sup>}
                                                             </span>

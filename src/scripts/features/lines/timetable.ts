@@ -4,6 +4,7 @@ import { renderRouteRelation } from '../../core/route-relation';
 import { formatSpokenRouteRelation } from '../../../lib/route-relation';
 import { LINE_CONFIG, getLineTypeTitle } from './line-config';
 import { isReducedScheduleDay } from './school-holidays';
+import { getTimetableDay } from './timetable-day';
 import { getUniqueSortedDepartures } from '../../../lib/timetable-departures';
 import type { TimetableEntry, TimetableTime } from '../../../types/timetable';
 
@@ -235,19 +236,8 @@ export function loadTimetable(lineId: string): void {
         });
 }
 
-function getTodayDayType(): 'weekday' | 'saturday' | 'sunday' {
-    const day = new Date().getDay(); // 0=Sunday, 6=Saturday
-    if (day === 0) {
-        return 'sunday';
-    }
-    if (day === 6) {
-        return 'saturday';
-    }
-    return 'weekday';
-}
-
 function renderTimetable(timetable: TimetableEntry & { lineType?: string }, container: HTMLElement): void {
-    const todayDayType = getTodayDayType();
+    const todayDayType = getTimetableDay();
     const lang = getCurrentLanguage();
     const reducedToday = isReducedScheduleDay();
     const hasReducedData = timetable.stations.some(

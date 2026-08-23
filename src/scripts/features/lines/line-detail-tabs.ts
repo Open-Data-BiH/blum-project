@@ -1,10 +1,60 @@
 import { isReducedScheduleDay } from './school-holidays';
+import { getTimetableDay } from './timetable-day';
+
+let timeHighlightInterval: ReturnType<typeof setInterval> | null = null;
+
+const updateScheduleTimeHighlighting = (schedule: Element, now: Date): void => {
+    const currentHour = now.getHours();
+    const currentTimeInMinutes = currentHour * 60 + now.getMinutes();
+    const departures: { timeInMinutes: number; element: HTMLElement }[] = [];
+
+    schedule.querySelectorAll<HTMLElement>('tbody tr[data-hour]').forEach((row) => {
+        const hour = Number.parseInt(row.dataset.hour ?? '', 10);
+        if (Number.isNaN(hour)) {
+            return;
+        }
+
+        row.classList.toggle('current-hour', hour === currentHour);
+        row.querySelectorAll<HTMLElement>('.minute-box[data-minute]').forEach((minuteBox) => {
+            const minute = Number.parseInt(minuteBox.dataset.minute ?? '', 10);
+            if (!Number.isNaN(minute)) {
+                departures.push({ timeInMinutes: hour * 60 + minute, element: minuteBox });
+            }
+        });
+    });
+
+    departures.sort((a, b) => a.timeInMinutes - b.timeInMinutes);
+    const nextDeparture = departures.find((departure) => departure.timeInMinutes >= currentTimeInMinutes) ?? null;
+
+    departures.forEach((departure) => {
+        departure.element.classList.remove('past', 'next', 'upcoming');
+        if (departure.timeInMinutes < currentTimeInMinutes) {
+            departure.element.classList.add('past');
+        } else if (departure === nextDeparture) {
+            departure.element.classList.add('next');
+        } else {
+            departure.element.classList.add('upcoming');
+        }
+    });
+};
+
+const updateTimeHighlighting = (root: HTMLElement, now: Date = new Date()): void => {
+    root.querySelectorAll<HTMLElement>('.ldp-day-panel.is-active').forEach((dayPanel) => {
+        const schedule = Array.from(dayPanel.querySelectorAll<HTMLElement>('.ldp-schedule')).find(
+            (candidate) => !candidate.hidden,
+        );
+        if (schedule) {
+            updateScheduleTimeHighlighting(schedule, now);
+        }
+    });
+};
 
 export const initLineDetailTabs = (): void => {
     const root = document.getElementById('line-detail');
-    if (!root) {
+    if (!root || root.dataset.lineDetailTabsInitialized === 'true') {
         return;
     }
+    root.dataset.lineDetailTabsInitialized = 'true';
 
     if (isReducedScheduleDay()) {
         root.querySelectorAll<HTMLElement>('.ldp-schedule--regular').forEach((el) => {
@@ -30,6 +80,8 @@ export const initLineDetailTabs = (): void => {
             panel.classList.toggle('is-active', isActive);
             panel.hidden = !isActive;
         });
+
+        updateTimeHighlighting(root);
     };
 
     const activateDay = (panel: Element, dayKey: string): void => {
@@ -44,6 +96,8 @@ export const initLineDetailTabs = (): void => {
             dayPanel.classList.toggle('is-active', isActive);
             dayPanel.hidden = !isActive;
         });
+
+        updateTimeHighlighting(root);
     };
 
     root.querySelectorAll<HTMLElement>('.ldp-direction-tab[data-direction-target]').forEach((tab) => {
@@ -55,14 +109,10 @@ export const initLineDetailTabs = (): void => {
         });
     });
 
+    const todayDayType = getTimetableDay();
     root.querySelectorAll<HTMLElement>('.ldp-direction-panel[data-direction-panel]').forEach((panel) => {
-        const defaultDayTab = panel.querySelector<HTMLElement>('.ldp-day-tab.is-active[data-day-target]');
-        if (defaultDayTab) {
-            const defaultDay = defaultDayTab.getAttribute('data-day-target');
-            if (defaultDay) {
-                activateDay(panel, defaultDay);
-            }
-        }
+        // Use today's column even when the line has no service, matching the timetable on the lines page.
+        activateDay(panel, todayDayType);
 
         panel.querySelectorAll<HTMLElement>('.ldp-day-tab[data-day-target]').forEach((tab) => {
             tab.addEventListener('click', () => {
@@ -73,4 +123,10 @@ export const initLineDetailTabs = (): void => {
             });
         });
     });
+
+    if (timeHighlightInterval) {
+        clearInterval(timeHighlightInterval);
+    }
+    updateTimeHighlighting(root);
+    timeHighlightInterval = setInterval(() => updateTimeHighlighting(root), 60_000);
 };

@@ -321,58 +321,6 @@
     overflow-x: auto;
 }
 
-.ldp-tt-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: var(--font-size-sm);
-}
-
-.ldp-tt-table th,
-.ldp-tt-table td {
-    padding: var(--space-2) var(--space-3);
-    border-bottom: 1px solid var(--border-subtle);
-    vertical-align: top;
-}
-
-.ldp-tt-table thead th {
-    font-size: var(--font-size-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--text-light);
-    background: var(--surface-1);
-}
-
-.ldp-tt-table tbody tr:last-child th,
-.ldp-tt-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.ldp-tt-table__hour {
-    width: 3rem;
-    text-align: left;
-    color: var(--color-primary);
-    font-weight: var(--font-weight-bold);
-}
-
-.ldp-minute-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-}
-
-.ldp-minute-pill {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 2.1rem;
-    padding: var(--space-1) var(--space-2);
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-subtle);
-    background: var(--surface-1);
-    font-weight: var(--font-weight-semibold);
-    font-variant-numeric: tabular-nums;
-}
-
 .time-note {
     font-size: 0.6em;
     font-weight: 700;

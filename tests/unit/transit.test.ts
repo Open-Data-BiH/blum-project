@@ -187,13 +187,22 @@ describe('transit lookups', () => {
 
     it('keeps every route stop within reach of its own drawn line', () => {
         // Guards the merge radius: a distant fold would strand the pin beside the line.
-        const earthRadius = 6371000;
-        const metres = (a: [number, number], b: [number, number]): number => {
-            const rad = (value: number): number => (value * Math.PI) / 180;
-            const dLat = rad(b[0] - a[0]);
-            const dLon = rad(b[1] - a[1]);
-            const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a[0])) * Math.cos(rad(b[0])) * Math.sin(dLon / 2) ** 2;
-            return 2 * earthRadius * Math.asin(Math.sqrt(h));
+        const metresToLine = (stop: { lat: number; lon: number }, shape: [number, number][]): number => {
+            const lonScale = Math.cos((stop.lat * Math.PI) / 180);
+            const degToM = (6371000 * Math.PI) / 180;
+            let nearest = Infinity;
+            for (let i = 1; i < shape.length; i += 1) {
+                const ax = (shape[i - 1][1] - stop.lon) * lonScale;
+                const ay = shape[i - 1][0] - stop.lat;
+                const bx = (shape[i][1] - stop.lon) * lonScale;
+                const by = shape[i][0] - stop.lat;
+                const dx = bx - ax;
+                const dy = by - ay;
+                const lengthSquared = dx * dx + dy * dy;
+                const t = lengthSquared === 0 ? 0 : Math.min(1, Math.max(0, -(ax * dx + ay * dy) / lengthSquared));
+                nearest = Math.min(nearest, Math.hypot(ax + t * dx, ay + t * dy) * degToM);
+            }
+            return nearest;
         };
 
         const route = index.routeById.get('19-sargovac-centar');
@@ -201,8 +210,7 @@ describe('transit lookups', () => {
 
         const shape = readShape('19-sargovac-centar');
         getRouteStops(index, route!).forEach(({ stop }) => {
-            const nearest = Math.min(...shape.map((point) => metres([stop.lat, stop.lon], point)));
-            expect(nearest).toBeLessThan(60);
+            expect(metresToLine(stop, shape)).toBeLessThan(60);
         });
     });
 

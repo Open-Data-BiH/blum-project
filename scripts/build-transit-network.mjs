@@ -840,6 +840,13 @@ if (uncovered.length > 0) {
     warn(`lines without route data: ${uncovered.join(', ')}`);
 }
 
+/**
+ * Where along a route a stop sits, and how far off the line it is.
+ *
+ * `index` is the nearest vertex, which is what ordering needs. `distance` is measured to
+ * the nearest point on the line instead: vertices are up to 180 m apart on some routes, so
+ * a vertex distance would flag a stop sitting right on the carriageway as 67 m out.
+ */
 const geometryIndex = (geometry, stop) => {
     let best = Infinity;
     let index = -1;
@@ -850,7 +857,27 @@ const geometryIndex = (geometry, stop) => {
             index = i;
         }
     });
-    return { index, distance: best };
+
+    let distance = best;
+    const lonScale = Math.cos((stop.lat * Math.PI) / 180);
+    for (let i = 1; i < geometry.length; i += 1) {
+        const [aLon, aLat] = geometry[i - 1];
+        const [bLon, bLat] = geometry[i];
+        const ax = (aLon - stop.lon) * lonScale;
+        const ay = aLat - stop.lat;
+        const bx = (bLon - stop.lon) * lonScale;
+        const by = bLat - stop.lat;
+        const dx = bx - ax;
+        const dy = by - ay;
+        const lengthSquared = dx * dx + dy * dy;
+        const t = lengthSquared === 0 ? 0 : Math.min(1, Math.max(0, -(ax * dx + ay * dy) / lengthSquared));
+        const offset = Math.hypot(ax + t * dx, ay + t * dy) * (EARTH_RADIUS_M * Math.PI) / 180;
+        if (offset < distance) {
+            distance = offset;
+        }
+    }
+
+    return { index, distance };
 };
 
 for (const [routeKey, stopIds] of Object.entries(overrides.addStops ?? {})) {
@@ -912,6 +939,73 @@ for (const { from, to, lines: movedLines } of overrides.moveLines ?? []) {
         }
     }
     console.log(`  moved lines ${movedLines.join(',')} from ${from} ("${fromStop.name}") to ${to} ("${toStop.name}")`);
+}
+
+/**
+ * Rider-facing detail the operator export does not carry: shelter, bench, lighting and a
+ * printed timetable. Taken from OpenStreetMap, which tags them on 140/80/44/24 stops.
+ *
+ * Only positives are stored — a missing flag means "no, or nobody has surveyed it", and
+ * claiming an absence the survey does not support would be worse than saying nothing.
+ * Attached to the drawn marker, matched the same way the two stop sources are matched:
+ * by name within 250 m, otherwise by kerb-range proximity.
+ */
+const OSM_AMENITIES = [
+    ['shelter', 'shelter'],
+    ['bench', 'bench'],
+    ['lit', 'lit'],
+    ['departuresBoard', 'departures_board'],
+];
+
+// Enrichment, not a core input: the export is optional so a checkout without it still builds.
+const osmStopsPath = source.osmStops ? path.join(ROOT, source.osmStops) : null;
+const osmStopNodes =
+    osmStopsPath && fs.existsSync(osmStopsPath)
+        ? readJson(osmStopsPath)
+              .elements.filter((element) => element.type === 'node' && element.tags?.highway === 'bus_stop')
+              .map((node) => ({ name: node.tags.name ?? null, lat: node.lat, lon: node.lon, tags: node.tags }))
+        : [];
+if (osmStopNodes.length === 0) {
+    console.log('\nNo OpenStreetMap stop export configured — stop amenities skipped.');
+}
+
+let amenityMatches = 0;
+for (const stop of stops) {
+    let best = null;
+    for (const node of osmStopNodes) {
+        const distance = distanceMeters(stop, node);
+        if (distance > 250) {
+            continue;
+        }
+        const sameName = node.name !== null && normalizeName(node.name) === normalizeName(stop.name);
+        if (!sameName && distance > 40) {
+            continue;
+        }
+        // A name match outranks a merely closer stop, as everywhere else in this file.
+        const rank = sameName ? 0 : 1;
+        if (best === null || rank < best.rank || (rank === best.rank && distance < best.distance)) {
+            best = { node, distance, rank };
+        }
+    }
+    if (!best) {
+        continue;
+    }
+
+    const amenities = {};
+    for (const [field, tag] of OSM_AMENITIES) {
+        const value = best.node.tags[tag];
+        if (value !== undefined && value !== 'no') {
+            amenities[field] = true;
+        }
+    }
+    if (Object.keys(amenities).length > 0) {
+        stop.amenities = amenities;
+        amenityMatches += 1;
+    }
+}
+if (osmStopNodes.length > 0) {
+    console.log(`
+Stop amenities from OpenStreetMap: ${amenityMatches} of ${stops.length} stop(s) carry at least one`);
 }
 
 const seenIds = new Set();

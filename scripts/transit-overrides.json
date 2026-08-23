@@ -1,11 +1,11 @@
 {
     "comment": "Manual corrections applied by scripts/build-transit-network.mjs after the automatic matching. Renames run first, so a rename can also enable a merge.",
 
-    "//rename": "stop id -> display name, e.g. \"Prodavnica\" -> \"Prodavnica (Kuljani)\".",
+    "//rename": "stop id -> display name, e.g. \"Prodavnica\" -> \"Prodavnica (Kuljani)\". Rename every id carrying the name, or a pole pair stops merging. st-1598/st-934 are OSM's \"Vuksanov Put\"; OSM's \"Vuksani\" is a separate stop 541 m on, added as st-vuksani.",
     "rename": {
         "st-4970": "Eko toplane",
 
-        "st-294": "Raskrsnica IGK",
+        "st-294": "Petrićevac - Centrum",
         "st-1500": "Raskrsnica IGK",
 
         "st-4972": "MZ Paprikovac",
@@ -14,7 +14,10 @@
         "st-239": "Nezavisne",
 
         "st-194": "Bulevar - hirurgija",
-        "st-167": "Bulevar - neboderi"
+        "st-167": "Bulevar - neboderi",
+
+        "st-1598": "Vuksanov Put",
+        "st-934": "Vuksanov Put"
     },
 
     "//move": "stop id -> [lat, lon] replacing the export's coordinate: surveyed corrections, operator route changes, and OSM positions for legacy stops the export never carried.",
@@ -46,6 +49,7 @@
 
     "//mergeInto": "stop id -> stop id it should be drawn as; lines are combined onto the target.",
     "mergeInto": {
+        "st-raskrsce-igk": "st-1500",
         "st-crkva": "st-1377",
         "st-tadici": "st-1521",
         "st-drakulic-vrtace": "st-1397"

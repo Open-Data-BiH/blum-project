@@ -1,7 +1,13 @@
 // Shape of public/data/transport/routes/transit_network.json — see docs/transit-data.md
 
-/** `registry`: from the stop export. `derived`: from the line listings, name-keyed, no routes. */
-export type TransitStopSource = 'registry' | 'derived';
+export type TransitStopSource = 'registry' | 'derived' | 'osm';
+
+export interface TransitStopAmenities {
+    shelter?: true;
+    bench?: true;
+    lit?: true;
+    departuresBoard?: true;
+}
 
 export interface TransitStop {
     id: string;
@@ -14,6 +20,7 @@ export interface TransitStop {
     lines: string[];
     /** Duplicate poles drawn as this marker; routes still reference them by these ids. */
     mergedIds?: string[];
+    amenities?: TransitStopAmenities;
 }
 
 export interface TransitRouteStop {

@@ -73,6 +73,26 @@ export interface BusStopsLayerOptions {
     now?: () => Date;
 }
 
+const renderStopAmenities = (stop: TransitStop): string => {
+    const amenities: [keyof NonNullable<TransitStop['amenities']>, string, string][] = [
+        ['shelter', 'Nadstrešnica', 'Shelter'],
+        ['bench', 'Klupa', 'Bench'],
+        ['lit', 'Osvijetljeno', 'Lit'],
+        ['departuresBoard', 'Red vožnje', 'Timetable'],
+    ];
+
+    const present = amenities.filter(([key]) => stop.amenities?.[key]);
+    if (present.length === 0) {
+        return '';
+    }
+
+    const items = present
+        .map(([, bhs, en]) => `<li class="hub-popup__amenity">${escapeHtml(langText(bhs, en))}</li>`)
+        .join('');
+
+    return `<ul class="hub-popup__amenities">${items}</ul>`;
+};
+
 export const createStopPopupContent = (
     index: TransitIndex,
     stop: TransitStop,
@@ -89,6 +109,7 @@ export const createStopPopupContent = (
             <span class="hub-popup__type-label">${stopTypeLabel}</span>
             <h3>${escapeHtml(stop.name)}</h3>
             ${stop.street ? `<p class="hub-popup__street">${escapeHtml(stop.street)}</p>` : ''}
+            ${renderStopAmenities(stop)}
             ${renderStopArrivals({
                 index,
                 timetables,

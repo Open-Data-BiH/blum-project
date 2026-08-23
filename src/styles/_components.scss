@@ -1523,6 +1523,24 @@
     gap: 0.25rem;
 }
 
+.hub-popup__amenities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin: 0.35rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.hub-popup__amenity {
+    padding: 0.05rem 0.35rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-size: 0.6875rem;
+    line-height: 1.5;
+}
+
 .hub-popup__hint {
     margin-top: 0.4rem;
     color: var(--text-secondary);

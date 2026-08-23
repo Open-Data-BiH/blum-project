@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PricingSection from '../../components/PricingSection.astro';
+import PageIntro from '../../components/PageIntro.astro';
 import { getAlternatePaths, getLocalizedMeta, getPagePath, getSwitchLocale, type Locale } from '../../lib/site-config';
 
 interface Props {
@@ -22,10 +23,18 @@ const isEnglish = locale === 'en';
   alternatePaths={alternatePaths}
   switchLanguagePath={getPagePath('pricing', getSwitchLocale(locale))}
 >
+  <PageIntro
+    title={locale === 'en' ? 'Ticket prices' : 'Cjenovnik karata'}
+    description={isEnglish
+      ? 'Compare single, daily, and monthly public transport ticket prices.'
+      : 'Uporedite cijene pojedinačnih, dnevnih i mjesečnih karata za javni prevoz.'}
+    titleId="price-tables-title"
+    icon="fa-solid fa-ticket"
+  />
+
   <section class="section pricing-hero" id="pricing">
     <div class="container">
       <div class="pricing-main">
-        <h2 class="section__title" id="price-tables-title">{locale === 'en' ? 'Ticket prices' : 'Cjenovnik karata'}</h2>
         <PricingSection locale={locale} />
       </div>
     </div>
@@ -184,76 +193,40 @@ const isEnglish = locale === 'en';
 
 <style>
   .pricing-hero {
-    padding-bottom: var(--space-24);
-  }
-
-  .pricing-hero .container {
-    max-width: 1120px;
-  }
-
-  .pricing-main .section__title {
-    margin-bottom: var(--space-12);
-  }
-
-  .pricing-section {
-    padding-top: var(--space-16);
     padding-bottom: var(--space-16);
   }
 
-  .pricing-section__inner {
-    max-width: 1080px;
+  .pricing-main {
+    width: 100%;
+    max-width: 960px;
     margin: 0 auto;
-    padding: 0 var(--space-4);
+  }
+
+  .pricing-section {
+    padding-top: 0;
+    padding-bottom: var(--space-8);
+  }
+
+  .pricing-section__inner {
+    width: 100%;
+    max-width: calc(960px + var(--layout-gutter) + var(--layout-gutter));
+    margin: 0 auto;
+    padding: 0 var(--layout-gutter);
   }
 
   .pricing-info-block {
     display: flex;
     flex-direction: column;
-    gap: var(--space-8);
+    gap: var(--space-6);
   }
 
-  .pricing-section--info {
-    padding-top: 0;
-  }
-
-  .pricing-section--info::before {
-    content: '';
-    display: block;
-    width: min(60%, 600px);
-    height: 1px;
-    margin: 0 auto var(--space-16);
-    background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
-  }
-
-  .pricing-section--concessions {
-    padding-top: 0;
-  }
-
-  .pricing-section--concessions::before {
-    content: '';
-    display: block;
-    width: min(60%, 600px);
-    height: 1px;
-    margin: 0 auto var(--space-16);
-    background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+  .pricing-section + .pricing-section .pricing-section__inner {
+    padding-top: var(--space-10);
+    border-top: 1px solid var(--border-subtle);
   }
 
   .pricing-section--rules {
-    padding-top: 0;
     padding-bottom: var(--space-20);
-  }
-
-  .pricing-section--rules::before {
-    content: '';
-    display: block;
-    width: min(60%, 600px);
-    height: 1px;
-    margin: 0 auto var(--space-16);
-    background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
-  }
-
-  .pricing-section--rules .pricing-section__inner {
-    padding-top: 0;
   }
 
   .pricing-section__title {
@@ -261,20 +234,6 @@ const isEnglish = locale === 'en';
     font-weight: var(--font-weight-bold);
     color: var(--text-primary);
     margin: 0;
-    padding-bottom: var(--space-5);
-    border-bottom: none;
-    position: relative;
-  }
-
-  .pricing-section__title::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 3rem;
-    height: 3px;
-    border-radius: var(--radius-full);
-    background-color: var(--accent);
   }
 
   .pricing-info-grid {
@@ -287,7 +246,6 @@ const isEnglish = locale === 'en';
   .pricing-info-grid--two {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-8);
-    max-width: 960px;
   }
 
   .pricing-info-card {
@@ -295,17 +253,7 @@ const isEnglish = locale === 'en';
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-xl);
     padding: var(--space-6) var(--space-8);
-    box-shadow: var(--shadow-sm);
-    transition:
-      border-color var(--transition-normal),
-      box-shadow var(--transition-normal),
-      transform var(--transition-normal);
-  }
-
-  .pricing-info-card:hover {
-    border-color: var(--border-strong);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    box-shadow: none;
   }
 
   .pricing-info-card--expanded {
@@ -314,22 +262,9 @@ const isEnglish = locale === 'en';
 
   .pricing-info-card__title {
     font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-semibold);
     color: var(--text-primary);
-    margin: 0 0 var(--space-6);
-    padding-bottom: var(--space-5);
-    position: relative;
-  }
-
-  .pricing-info-card__title::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 2.5rem;
-    height: 3px;
-    border-radius: var(--radius-full);
-    background-color: var(--accent);
+    margin: 0 0 var(--space-4);
   }
 
   .pricing-info-list {
@@ -367,10 +302,10 @@ const isEnglish = locale === 'en';
 
   .pricing-notice {
     margin-top: var(--space-4);
-    background-color: var(--accent-soft);
+    background-color: var(--surface-1);
     border: 1px solid var(--border-subtle);
-    border-left: 3px solid var(--accent);
-    border-radius: var(--radius-xl);
+    border-left: 3px solid var(--border-strong);
+    border-radius: var(--radius-lg);
     padding: var(--space-4) var(--space-6);
     box-shadow: none;
   }
@@ -382,30 +317,36 @@ const isEnglish = locale === 'en';
     line-height: var(--line-height-relaxed);
   }
 
+  .pricing-section--rules .pricing-info-grid {
+    gap: 0;
+  }
+
+  .pricing-section--rules .pricing-info-card {
+    padding: 0 var(--space-8) 0 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .pricing-section--rules .pricing-info-card + .pricing-info-card {
+    padding-right: 0;
+    padding-left: var(--space-8);
+    border-left: 1px solid var(--border-subtle);
+  }
+
+  .pricing-section--rules .pricing-info-list li::before {
+    background-color: var(--text-light);
+  }
+
   @media (max-width: 1024px) {
-    .pricing-hero {
-      padding-bottom: var(--space-20);
-    }
-
-    .pricing-section {
-      padding-top: var(--space-12);
-      padding-bottom: var(--space-12);
-    }
-
     .pricing-info-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   @media (max-width: 760px) {
-    .pricing-main .section__title {
-      margin-bottom: var(--space-8);
-    }
-
-    .pricing-section--info::before,
-    .pricing-section--concessions::before,
-    .pricing-section--rules::before {
-      margin-bottom: var(--space-10);
+    .pricing-section + .pricing-section .pricing-section__inner {
+      padding-top: var(--space-8);
     }
 
     .pricing-section__title {
@@ -425,6 +366,17 @@ const isEnglish = locale === 'en';
     .pricing-info-card--expanded {
       padding: var(--space-6) var(--space-8);
     }
+
+    .pricing-section--rules .pricing-info-card {
+      padding: 0;
+    }
+
+    .pricing-section--rules .pricing-info-card + .pricing-info-card {
+      margin-top: var(--space-6);
+      padding: var(--space-6) 0 0;
+      border-top: 1px solid var(--border-subtle);
+      border-left: 0;
+    }
   }
 
   @media (max-width: 600px) {
@@ -433,31 +385,7 @@ const isEnglish = locale === 'en';
     }
 
     .pricing-section {
-      padding-top: var(--space-10);
-      padding-bottom: var(--space-10);
+      padding-bottom: var(--space-6);
     }
-
-    .pricing-section--info::before,
-    .pricing-section--concessions::before,
-    .pricing-section--rules::before {
-      margin-bottom: var(--space-8);
-    }
-  }
-
-  :global([data-theme='dark']) .pricing-info-card {
-    background-color: var(--surface-2);
-    border-color: var(--border-subtle);
-    box-shadow: var(--shadow-sm);
-  }
-
-  :global([data-theme='dark']) .pricing-info-card:hover {
-    border-color: var(--border-strong);
-    box-shadow: var(--shadow-md);
-  }
-
-  :global([data-theme='dark']) .pricing-notice {
-    background-color: var(--accent-soft);
-    border-color: var(--border-subtle);
-    border-left-color: var(--accent);
   }
 </style>

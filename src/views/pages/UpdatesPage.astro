@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import UpdatesSection from '../../components/UpdatesSection.astro';
+import PageIntro from '../../components/PageIntro.astro';
 import { getAlternatePaths, getLocalizedMeta, getPagePath, getSwitchLocale, type Locale } from '../../lib/site-config';
 
 interface Props {
@@ -21,14 +22,18 @@ const alternatePaths = getAlternatePaths('updates');
   alternatePaths={alternatePaths}
   switchLanguagePath={getPagePath('updates', getSwitchLocale(locale))}
 >
+  <PageIntro
+    title={locale === 'en' ? 'Updates' : 'Obavještenja'}
+    description={locale === 'en'
+      ? 'Notices about transport changes, street closures, and timetable updates.'
+      : 'Obavještenja o promjenama u prevozu, zatvaranjima ulica i izmjenama reda vožnje.'}
+    titleId="updates-title"
+    icon="fa-solid fa-bell"
+    variant="transit"
+  />
+
   <section class="section section--narrow" id="updates">
     <div class="container">
-      <h2 class="section__title" id="updates-title">{locale === 'en' ? 'Updates' : 'Obavještenja'}</h2>
-      <p class="section__subtitle" id="updates-subtitle">
-        {locale === 'en'
-          ? 'Notices about transport changes, street closures, and timetable updates'
-          : 'Obavještenja o promjenama u prevozu, zatvaranjima ulica i izmjenama reda vožnje'}
-      </p>
       <UpdatesSection locale={locale} />
     </div>
   </section>

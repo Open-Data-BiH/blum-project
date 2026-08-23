@@ -16,8 +16,8 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
 >
   <section class="not-found">
     <div class="container">
-      <h1 class="not-found__code">404</h1>
-      <p class="not-found__title">Stranica nije pronađena</p>
+      <p class="not-found__code" aria-hidden="true">404</p>
+      <h1 class="not-found__title">Stranica nije pronađena</h1>
       <p class="not-found__desc">Stranica koju tražite ne postoji ili je premještena.</p>
       <a href={withBase('')} class="btn btn--primary">
         <i class="fas fa-home" aria-hidden="true"></i>
@@ -41,7 +41,8 @@ const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')
     font-weight: 700;
     line-height: 1;
     margin: 0 0 0.5rem;
-    opacity: 0.2;
+    color: var(--color-primary);
+    opacity: 0.32;
   }
 
   .not-found__title {

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageIntro from '../../components/PageIntro.astro';
 import ContactForm from '../../components/contacts/ContactForm.astro';
 import ContactsSection from '../../components/contacts/ContactsSection.astro';
 import { getAlternatePaths, getLocalizedMeta, getPagePath, getSwitchLocale, type Locale } from '../../lib/site-config';
@@ -11,6 +12,7 @@ interface Props {
 const { locale } = Astro.props;
 const meta = getLocalizedMeta('contact', locale);
 const alternatePaths = getAlternatePaths('contact');
+const isEnglish = locale === 'en';
 ---
 
 <BaseLayout
@@ -22,6 +24,15 @@ const alternatePaths = getAlternatePaths('contact');
   alternatePaths={alternatePaths}
   switchLanguagePath={getPagePath('contact', getSwitchLocale(locale))}
 >
+  <PageIntro
+    title={isEnglish ? 'Contact us' : 'Kontaktirajte nas'}
+    description={isEnglish
+      ? 'Have a question, suggestion, or want to report an issue? Send us a message.'
+      : 'Imate pitanje, prijedlog ili želite prijaviti problem? Pošaljite nam poruku.'}
+    titleId="contact-page-title"
+    icon="fa-solid fa-envelope"
+  />
+
   <ContactForm locale={locale} />
   <ContactsSection locale={locale} />
 </BaseLayout>

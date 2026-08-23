@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FAQSection from '../../components/FAQSection.astro';
+import PageIntro from '../../components/PageIntro.astro';
 import { getAlternatePaths, getLocalizedMeta, getPagePath, getSwitchLocale, type Locale } from '../../lib/site-config';
 import faqData from '../../../public/data/transport/faq.json';
 
@@ -36,14 +37,17 @@ const alternatePaths = getAlternatePaths('faq');
   switchLanguagePath={getPagePath('faq', getSwitchLocale(locale))}
 >
   <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <PageIntro
+    title={locale === 'en' ? 'Frequently asked questions' : 'Česta pitanja'}
+    description={locale === 'en'
+      ? 'Answers to common questions about public transport in Banja Luka.'
+      : 'Odgovori na najčešća pitanja o javnom prevozu u Banjoj Luci.'}
+    titleId="faq-title"
+    icon="fa-solid fa-circle-question"
+  />
+
   <section class="section section--narrow" id="faq">
     <div class="container">
-      <h2 class="section__title" id="faq-title">{locale === 'en' ? 'Frequently asked questions' : 'Česta pitanja'}</h2>
-      <p class="section__subtitle" id="faq-subtitle">
-        {locale === 'en'
-          ? 'Answers to common questions about public transport in Banja Luka'
-          : 'Odgovori na najčešća pitanja o javnom prevozu u Banjoj Luci'}
-      </p>
       <FAQSection locale={locale} />
     </div>
   </section>

@@ -1,0 +1,32 @@
+---
+import RouteDecor from './RouteDecor.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  titleId: string;
+  icon: string;
+  variant?: 'quiet' | 'transit' | 'airport';
+}
+
+const { title, description, titleId, icon, variant = 'quiet' } = Astro.props;
+---
+
+<section class:list={['page-intro', `page-intro--${variant}`]} aria-labelledby={titleId}>
+  {variant === 'transit' && <RouteDecor preset="pageIntro" />}
+  {variant === 'airport' && <RouteDecor preset="airportIntro" />}
+  {variant === 'quiet' && (
+    <span class="page-intro__symbol" aria-hidden="true">
+      <i class={icon}></i>
+    </span>
+  )}
+  <div class="container page-intro__inner">
+    <span class="page-intro__icon" aria-hidden="true">
+      <i class={icon}></i>
+    </span>
+    <div class="page-intro__copy">
+      <h1 class="page-intro__title" id={titleId}>{title}</h1>
+      <p class="page-intro__description">{description}</p>
+    </div>
+  </div>
+</section>

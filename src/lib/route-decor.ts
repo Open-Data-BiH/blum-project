@@ -54,17 +54,28 @@ export interface RouteDecorNode {
     delay?: number;
 }
 
+export interface RouteDecorMover {
+    points: readonly RouteDecorPoint[];
+    radius: number;
+    color: RouteDecorColor;
+    size: number;
+    layer?: number;
+    delay?: number;
+    duration?: number;
+}
+
 export interface RouteDecorScene {
     viewBox: string;
-    /** SVG preserveAspectRatio; scenes are never cropped, they bleed past the viewBox instead. */
+    /** SVG preserveAspectRatio alignment; `slice` scenes may crop at viewport edges. */
     align?: string;
     shapes: readonly RouteDecorShape[];
     nodes?: readonly RouteDecorNode[];
+    movers?: readonly RouteDecorMover[];
 }
 
 export interface RouteDecorPreset {
     /** Styling and placement variant, see _route-decor.scss. */
-    variant: 'hero' | 'soft';
+    variant: 'hero' | 'intro' | 'airport';
     wide: RouteDecorScene;
     /** Optional portrait composition used below the 768px breakpoint. */
     narrow?: RouteDecorScene;
@@ -94,7 +105,16 @@ export interface RouteDecorNodeItem {
     rings: { fill: string; r: number; delay: number }[];
 }
 
-export type RouteDecorItem = RouteDecorBandItem | RouteDecorPulseItem | RouteDecorNodeItem;
+export interface RouteDecorMoverItem {
+    kind: 'mover';
+    d: string;
+    color: string;
+    size: number;
+    delay: number;
+    duration: number;
+}
+
+export type RouteDecorItem = RouteDecorBandItem | RouteDecorPulseItem | RouteDecorNodeItem | RouteDecorMoverItem;
 
 export interface RouteDecorSceneRender {
     viewBox: string;
@@ -361,6 +381,21 @@ export const buildRouteDecorScene = (scene: RouteDecorScene): RouteDecorSceneRen
         }
     }
 
+    for (const mover of scene.movers ?? []) {
+        const geometry = buildBandGeometry(mover.points, mover.radius, 0, 0);
+        ordered.push({
+            layer: mover.layer ?? 10,
+            item: {
+                kind: 'mover',
+                d: geometry.d,
+                color: colorToken(mover.color),
+                size: mover.size,
+                delay: mover.delay ?? 0,
+                duration: mover.duration ?? 8,
+            },
+        });
+    }
+
     return {
         viewBox: scene.viewBox,
         align: scene.align ?? DEFAULT_ALIGN,
@@ -371,15 +406,9 @@ export const buildRouteDecorScene = (scene: RouteDecorScene): RouteDecorSceneRen
     };
 };
 
-export type RouteDecorPresetName = 'homeHero' | 'airportBanner';
+export type RouteDecorPresetName = 'homeHero' | 'pageIntro' | 'airportIntro';
 
-// Lane widths are chosen so neighbouring lanes clear each other: two 30 unit
-// lanes sit 34 apart, leaving a deliberate 4 unit channel between them.
 export const ROUTE_DECOR_PRESETS: Record<RouteDecorPresetName, RouteDecorPreset> = {
-    // Home hero: a corridor of two parallel lines framing the copy on the left
-    // and bottom, plus a U-turn hook in the upper right. Both routes run well
-    // past the viewBox so they keep bleeding off the section edges on any
-    // viewport aspect.
     homeHero: {
         variant: 'hero',
         wide: {
@@ -387,169 +416,360 @@ export const ROUTE_DECOR_PRESETS: Record<RouteDecorPresetName, RouteDecorPreset>
             shapes: [
                 {
                     points: [
-                        [-620, 104],
-                        [264, 104],
-                        [264, 452],
+                        [-760, 96],
+                        [900, 96],
+                        [900, 452],
                         [2060, 452],
                     ],
-                    radius: 88,
+                    radius: 96,
                     layer: 1,
                     bands: [
-                        { color: 1, width: 30, offset: 0 },
-                        { color: 2, width: 30, offset: -34 },
-                        { color: 3, width: 18, offset: -34, pulse: true },
+                        { color: 1, width: 34, offset: 0 },
+                        { color: 3, width: 15, offset: 0, pulse: true },
                     ],
                     delay: 0.1,
-                    duration: 2.8,
+                    duration: 2.9,
                 },
                 {
                     points: [
-                        [1010, -360],
-                        [1010, 168],
-                        [1196, 168],
-                        [1196, 316],
-                        [1040, 316],
+                        [1160, -240],
+                        [1160, 300],
+                        [640, 300],
+                        [640, 780],
+                    ],
+                    radius: 76,
+                    layer: 2,
+                    bands: [{ color: 2, width: 27, offset: 0, pulse: true, pulseDelay: 0.8 }],
+                    delay: 0.55,
+                    duration: 2.6,
+                },
+                {
+                    points: [
+                        [2060, 190],
+                        [1250, 190],
+                        [1250, 384],
+                        [1010, 384],
                     ],
                     radius: 62,
-                    layer: 2,
-                    bands: [
-                        { color: 1, width: 30, offset: 0 },
-                        { color: 3, width: 18, offset: 0, arrow: 38 },
+                    layer: 3,
+                    bands: [{ color: 3, width: 20, offset: 0, arrow: 36, pulse: true, pulseDelay: 1.4 }],
+                    delay: 1,
+                    duration: 2.2,
+                },
+                {
+                    points: [
+                        [-760, 524],
+                        [470, 524],
+                        [470, 800],
                     ],
-                    delay: 0.65,
-                    duration: 2.1,
+                    radius: 56,
+                    layer: 0,
+                    bands: [{ color: 2, width: 18, offset: 0, pulse: true, pulseDelay: 2 }],
+                    delay: 0.9,
+                    duration: 2,
                 },
             ],
             nodes: [
                 {
-                    at: [206, 250],
+                    at: [900, 300],
                     layer: -1,
                     rings: [
-                        { color: 2, r: 54 },
-                        { color: 1, r: 34 },
-                        { color: 4, r: 14 },
+                        { color: 2, r: 44 },
+                        { color: 1, r: 29 },
+                        { color: 4, r: 13 },
                     ],
-                    delay: 0.35,
+                    delay: 1.6,
                 },
                 {
-                    // Cyan reads against the amber core that runs over it.
-                    at: [1130, 344],
+                    at: [1250, 190],
                     layer: -1,
                     rings: [
-                        { color: 2, r: 32 },
-                        { color: 4, r: 12 },
+                        { color: 4, r: 20 },
+                        { color: 2, r: 8 },
                     ],
-                    delay: 1.5,
+                    delay: 1.9,
                 },
             ],
         },
-        // Portrait composition: the copy fills the width on phones, so the
-        // corridor hugs the left edge and the second route drops down the right
-        // margin instead of cutting through the paragraphs.
         narrow: {
             viewBox: '0 0 420 680',
+            align: 'xMidYMid slice',
             shapes: [
                 {
                     points: [
-                        [-320, 108],
-                        [48, 108],
-                        [48, 520],
-                        [760, 520],
+                        [-460, 250],
+                        [150, 250],
+                        [150, 600],
+                        [760, 600],
                     ],
                     radius: 56,
                     layer: 1,
                     bands: [
-                        { color: 1, width: 24, offset: 0 },
-                        { color: 2, width: 24, offset: -28 },
-                        { color: 3, width: 14, offset: -28, pulse: true },
+                        { color: 1, width: 22, offset: 0 },
+                        { color: 3, width: 10, offset: 0, pulse: true },
                     ],
                     delay: 0.1,
                     duration: 2.6,
                 },
                 {
                     points: [
-                        [760, 40],
-                        [368, 40],
-                        [368, 596],
+                        [300, -160],
+                        [300, 430],
+                        [-160, 430],
                     ],
                     radius: 52,
-                    // Crosses the corridor near the buttons; drawn over it so the
-                    // casing reads as a deliberate bridge.
-                    layer: 3,
-                    bands: [
-                        { color: 1, width: 26, offset: 0 },
-                        { color: 3, width: 14, offset: 0, arrow: 40 },
-                    ],
+                    layer: 2,
+                    bands: [{ color: 2, width: 19, offset: 0, arrow: 30, pulse: true, pulseDelay: 0.8 }],
                     delay: 0.6,
                     duration: 2.2,
                 },
             ],
             nodes: [
                 {
-                    at: [10, 236],
+                    at: [150, 430],
                     layer: -1,
                     rings: [
-                        { color: 2, r: 40 },
-                        { color: 1, r: 25 },
-                        { color: 4, r: 10 },
+                        { color: 2, r: 30 },
+                        { color: 4, r: 12 },
                     ],
-                    delay: 0.35,
+                    delay: 1.4,
                 },
             ],
         },
     },
-
-    // Airport page: a smaller corner accent anchored to the top right of the
-    // opening section, arriving from the top and turning back into the copy.
-    // The inner lane stops short of the outer one so the single arrowhead never
-    // reaches across its neighbour.
-    airportBanner: {
-        variant: 'soft',
+    pageIntro: {
+        variant: 'intro',
         wide: {
-            viewBox: '0 0 640 420',
+            viewBox: '0 0 1440 260',
+            align: 'xMidYMid slice',
             shapes: [
                 {
                     points: [
-                        [190, -320],
-                        [190, 150],
-                        [470, 150],
-                        [470, 286],
-                        [300, 286],
+                        [650, 66],
+                        [1010, 66],
+                        [1010, 204],
+                        [1540, 204],
                     ],
-                    radius: 58,
+                    radius: 44,
                     layer: 1,
                     bands: [
-                        { color: 1, width: 26, offset: 0, trimEnd: 78, pulse: true, pulseDelay: 3.4 },
-                        { color: 2, width: 26, offset: -40 },
-                        { color: 3, width: 15, offset: -40, arrow: 34, pulse: true },
+                        { color: 1, width: 28, offset: 0 },
+                        { color: 3, width: 12, offset: 0, pulse: true },
                     ],
-                    delay: 0.1,
-                    duration: 2.4,
+                    delay: 0.05,
+                    duration: 2.5,
+                },
+                {
+                    points: [
+                        [1235, -100],
+                        [1235, 132],
+                        [860, 132],
+                        [860, 340],
+                    ],
+                    radius: 38,
+                    layer: 2,
+                    bands: [{ color: 2, width: 21, offset: 0, pulse: true, pulseDelay: 0.8 }],
+                    delay: 0.35,
+                    duration: 2.25,
+                },
+                {
+                    points: [
+                        [1540, 38],
+                        [1350, 38],
+                        [1350, 132],
+                        [1135, 132],
+                    ],
+                    radius: 32,
+                    layer: 3,
+                    bands: [{ color: 4, width: 16, offset: 0, arrow: 34 }],
+                    delay: 0.7,
+                    duration: 1.9,
                 },
             ],
             nodes: [
                 {
-                    at: [132, 92],
+                    at: [1010, 132],
                     layer: -1,
                     rings: [
-                        { color: 2, r: 44 },
-                        { color: 1, r: 28 },
-                        { color: 4, r: 12 },
+                        { color: 2, r: 35 },
+                        { color: 1, r: 23 },
+                        { color: 4, r: 10 },
                     ],
-                    delay: 0.3,
+                    delay: 1.2,
                 },
                 {
-                    // Terminus of the inner lane, capping its trimmed end at
-                    // 300 + 78. Drawn over the routes, and kept inside the lane
-                    // channel so it never reaches the lane running alongside.
-                    at: [378, 286],
-                    layer: 2,
+                    at: [1350, 38],
+                    layer: -1,
                     rings: [
-                        { color: 1, r: 24 },
-                        { color: 4, r: 14 },
-                        { color: 1, r: 6 },
+                        { color: 4, r: 17 },
+                        { color: 2, r: 7 },
                     ],
-                    delay: 2.4,
+                    delay: 1.55,
+                },
+            ],
+        },
+        narrow: {
+            viewBox: '0 0 420 260',
+            align: 'xMidYMid slice',
+            shapes: [
+                {
+                    points: [
+                        [-140, 48],
+                        [300, 48],
+                        [300, 220],
+                        [620, 220],
+                    ],
+                    radius: 38,
+                    layer: 1,
+                    bands: [
+                        { color: 1, width: 22, offset: 0 },
+                        { color: 3, width: 10, offset: 0, pulse: true },
+                    ],
+                    delay: 0.05,
+                    duration: 2.2,
+                },
+                {
+                    points: [
+                        [520, 116],
+                        [220, 116],
+                        [220, 340],
+                    ],
+                    radius: 34,
+                    layer: 2,
+                    bands: [{ color: 2, width: 18, offset: 0, arrow: 28, pulse: true, pulseDelay: 0.8 }],
+                    delay: 0.45,
+                    duration: 1.9,
+                },
+            ],
+            nodes: [
+                {
+                    at: [300, 116],
+                    layer: -1,
+                    rings: [
+                        { color: 2, r: 27 },
+                        { color: 4, r: 11 },
+                    ],
+                    delay: 1.1,
+                },
+            ],
+        },
+    },
+    airportIntro: {
+        variant: 'airport',
+        wide: {
+            viewBox: '0 0 1440 260',
+            align: 'xMidYMid slice',
+            shapes: [
+                {
+                    points: [
+                        [700, 210],
+                        [940, 210],
+                        [940, 80],
+                        [1540, 80],
+                    ],
+                    radius: 48,
+                    layer: 1,
+                    bands: [{ color: 2, width: 24, offset: 0, pulse: true }],
+                    delay: 0.05,
+                    duration: 2.4,
+                },
+                {
+                    points: [
+                        [1540, 224],
+                        [1220, 224],
+                        [1220, 80],
+                        [1080, 80],
+                    ],
+                    radius: 42,
+                    layer: 2,
+                    bands: [{ color: 1, width: 19, offset: 0, arrow: 32, pulse: true, pulseDelay: 0.7 }],
+                    delay: 0.4,
+                    duration: 2.1,
+                },
+            ],
+            nodes: [
+                {
+                    at: [1220, 80],
+                    layer: -1,
+                    rings: [
+                        { color: 2, r: 34 },
+                        { color: 1, r: 22 },
+                        { color: 4, r: 9 },
+                    ],
+                    delay: 1.1,
+                },
+            ],
+            movers: [
+                {
+                    points: [
+                        [700, 210],
+                        [940, 210],
+                        [940, 80],
+                        [1540, 80],
+                    ],
+                    radius: 48,
+                    color: 4,
+                    size: 27,
+                    delay: 2.5,
+                    duration: 8.5,
+                },
+            ],
+        },
+        narrow: {
+            viewBox: '0 0 420 260',
+            align: 'xMidYMid slice',
+            shapes: [
+                {
+                    points: [
+                        [-100, 216],
+                        [270, 216],
+                        [270, 68],
+                        [620, 68],
+                    ],
+                    radius: 40,
+                    layer: 1,
+                    bands: [{ color: 2, width: 21, offset: 0, pulse: true }],
+                    delay: 0.05,
+                    duration: 2.1,
+                },
+                {
+                    points: [
+                        [620, 220],
+                        [340, 220],
+                        [340, 68],
+                        [258, 68],
+                    ],
+                    radius: 36,
+                    layer: 2,
+                    bands: [{ color: 1, width: 17, offset: 0, arrow: 27, pulse: true, pulseDelay: 0.7 }],
+                    delay: 0.4,
+                    duration: 1.9,
+                },
+            ],
+            nodes: [
+                {
+                    at: [340, 68],
+                    layer: -1,
+                    rings: [
+                        { color: 2, r: 27 },
+                        { color: 4, r: 10 },
+                    ],
+                    delay: 1,
+                },
+            ],
+            movers: [
+                {
+                    points: [
+                        [-100, 216],
+                        [270, 216],
+                        [270, 68],
+                        [620, 68],
+                    ],
+                    radius: 40,
+                    color: 4,
+                    size: 23,
+                    delay: 2.2,
+                    duration: 7.5,
                 },
             ],
         },

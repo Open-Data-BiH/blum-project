@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageIntro from '../../components/PageIntro.astro';
 import {
   addHashToPath,
   getAlternatePaths,
@@ -37,10 +38,17 @@ const isEnglish = locale === 'en';
   alternatePaths={alternatePaths}
   switchLanguagePath={getPagePath('about', getSwitchLocale(locale))}
 >
+  <PageIntro
+    title={isEnglish ? 'About' : 'O projektu'}
+    description={isEnglish
+      ? 'An independent, open platform that makes public transport information easier to find and use.'
+      : 'Nezavisna i otvorena platforma koja informacije o javnom prevozu čini lakšim za pronalazak i korištenje.'}
+    titleId="about-title"
+    icon="fa-solid fa-circle-info"
+  />
+
   <section class="section section--narrow" id="about">
     <div class="container">
-      <h1 class="section__title" id="about-title">{isEnglish ? 'About' : 'O projektu'}</h1>
-
       <div class="about-content">
         {isEnglish ? (
           <div>

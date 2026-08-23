@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AirportMap from '../../components/AirportMap.astro';
-import RouteDecor from '../../components/RouteDecor.astro';
+import PageIntro from '../../components/PageIntro.astro';
 import {
   addHashToPath,
   getAlternatePaths,
@@ -132,10 +132,20 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
 >
   <script is:inline type="application/ld+json" set:html={JSON.stringify(airportFaqSchema)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(airportShuttleSchema)} />
-  <section class="section section--decor" id="airport-overview">
-    <RouteDecor preset="airportBanner" />
+
+  <PageIntro
+    title={t('Prevoz do Aerodroma Banja Luka', 'Getting to Banja Luka Airport')}
+    description={t(
+      'Shuttle autobus, taksi, parking i druge informacije za planiranje dolaska ili odlaska.',
+      'Shuttle bus, taxi, parking, and other information for planning your arrival or departure.',
+    )}
+    titleId="airport-title"
+    icon="fa-solid fa-plane-departure"
+    variant="airport"
+  />
+
+  <section class="section" id="airport-overview">
     <div class="container">
-      <h1 class="section__title" id="airport-title">{t('Prevoz do Aerodroma Banja Luka', 'Getting to Banja Luka Airport')}</h1>
       <p class="airport-intro" id="airport-intro">
         {isEnglish
           ? `Banja Luka International Airport (IATA: BNX) is located in Mahovljani, approximately

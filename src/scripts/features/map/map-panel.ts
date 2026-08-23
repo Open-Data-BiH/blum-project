@@ -201,7 +201,7 @@ export const createMapPanel = ({
             ${
                 facts?.operator
                     ? `<li class="map-fact">
-                        <i class="fas fa-building" aria-hidden="true"></i>
+                        <i class="fas fa-bus-simple" aria-hidden="true"></i>
                         <span class="map-fact__label">${escapeHtml(langText('Prevoznik', 'Operator'))}:</span>
                         ${escapeHtml(facts.operator)}
                        </li>`

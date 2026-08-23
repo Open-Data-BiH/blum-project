@@ -61,12 +61,26 @@
     --color-primary-border: var(--vrbas-200);
     --color-on-primary: #ffffff;
 
+    --color-functional: #245f8f;
+    --color-functional-hover: #1b4c6d;
+    --color-functional-surface: #ecf4f8;
+    --color-functional-border: #b7d0df;
+    --color-on-functional: #ffffff;
+    --color-functional-inverse: #d7eaf6;
+    --color-functional-inverse-hover: #bfdaea;
+    --color-on-functional-inverse: #12384f;
+
+    --color-support: #9b5a16;
+    --color-support-surface: #fff7eb;
+    --color-support-border: #e3b87d;
+
     /* Reserve brand tints for accents; page surfaces stay neutral. */
     --color-background: #fafafa;
     --color-surface: #ffffff;
     --color-surface-secondary: #f4f5f5;
     --color-surface-tertiary: #ebecec;
     --color-surface-inverse: var(--vrbas-900);
+    --color-on-surface-inverse: #ffffff;
 
     /* Over-map surfaces stay opaque to preserve content and map legibility. */
     --color-header-bg: var(--color-surface);
@@ -112,16 +126,16 @@
     --route-autoprevoz-ink: #ffffff;
     --route-pavlovic: #ff9f43;
     --route-pavlovic-badge: #ff9f43;
-    --route-pavlovic-ink: #10191b;
+    --route-pavlovic-ink: #ffffff;
     --route-bocac: #00adef;
     --route-bocac-badge: #00adef;
-    --route-bocac-ink: #10191b;
+    --route-bocac-ink: #ffffff;
     --route-aldemo: #e05e5e;
     --route-aldemo-badge: #e05e5e;
-    --route-aldemo-ink: #10191b;
+    --route-aldemo-ink: #ffffff;
     --route-rale: #7fd9e0;
     --route-rale-badge: #7fd9e0;
-    --route-rale-ink: #10191b;
+    --route-rale-ink: #ffffff;
 
     /* Dynamic route colors need JS contrast detection; use white by default. */
     --line-accent-ink: #ffffff;
@@ -212,11 +226,11 @@
     --route-decor-color-4: var(--vrbas-800);
     --route-decor-opacity: 0.22;
 
-    --route-decor-hero-color-1: #a8ded4;
-    --route-decor-hero-color-2: #eaf6f5;
-    --route-decor-hero-color-3: #e0a45c;
-    --route-decor-hero-color-4: #ffffff;
-    --route-decor-hero-opacity: 0.42;
+    --route-decor-hero-color-1: #4fc0b0;
+    --route-decor-hero-color-2: #b8e1db;
+    --route-decor-hero-color-3: #d99a49;
+    --route-decor-hero-color-4: #eef7f5;
+    --route-decor-hero-opacity: 0.76;
 
     /* Remove these aliases after all call sites use canonical tokens. */
     --accent: var(--color-primary);
@@ -300,11 +314,22 @@
     --color-primary-border: rgba(79, 192, 176, 0.38);
     --color-on-primary: #04191a;
 
+    --color-functional: #72a9ce;
+    --color-functional-hover: #8db9d6;
+    --color-functional-surface: rgba(72, 169, 206, 0.16);
+    --color-functional-border: rgba(114, 169, 206, 0.48);
+    --color-on-functional: #0b1c27;
+
+    --color-support: #dda65e;
+    --color-support-surface: rgba(192, 124, 42, 0.14);
+    --color-support-border: rgba(224, 164, 92, 0.4);
+
     --color-background: #101212;
     --color-surface: #171a1a;
     --color-surface-secondary: #1f2323;
     --color-surface-tertiary: #282d2d;
     --color-surface-inverse: #0b0d0d;
+    --color-on-surface-inverse: #ffffff;
 
     --color-overlay-surface-hover: var(--color-surface-tertiary);
 
@@ -338,9 +363,8 @@
     --color-parking-border: rgba(120, 165, 212, 0.72);
     --color-on-parking: #edf4fc;
 
-    /* The lightened Autoprevoz badge needs dark ink in dark mode. */
     --route-autoprevoz-badge: #f2454a;
-    --route-autoprevoz-ink: #10191b;
+    --route-autoprevoz-ink: #ffffff;
 
     --shadow-xs: 0 1px 1px rgba(0, 0, 0, 0.32);
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.36);

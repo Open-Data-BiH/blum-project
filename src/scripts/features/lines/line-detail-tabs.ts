@@ -1,11 +1,68 @@
 import { isReducedScheduleDay } from './school-holidays';
-import { getTimetableDay } from './timetable-day';
+import {
+    findNextServiceDay,
+    formatServiceDate,
+    getUpcomingServiceDays,
+    type TimetableDay,
+    type TimetableServiceDay,
+} from './timetable-day';
 
 let timeHighlightInterval: ReturnType<typeof setInterval> | null = null;
 
-const updateScheduleTimeHighlighting = (schedule: Element, now: Date): void => {
+const getDepartureMinutes = (schedule: Element): number[] => {
+    const departures: number[] = [];
+
+    schedule.querySelectorAll<HTMLElement>('tbody tr[data-hour]').forEach((row) => {
+        const hour = Number.parseInt(row.dataset.hour ?? '', 10);
+        if (Number.isNaN(hour)) {
+            return;
+        }
+
+        row.querySelectorAll<HTMLElement>('.minute-box[data-minute]').forEach((minuteBox) => {
+            const minute = Number.parseInt(minuteBox.dataset.minute ?? '', 10);
+            if (!Number.isNaN(minute)) {
+                departures.push(hour * 60 + minute);
+            }
+        });
+    });
+
+    return departures.sort((a, b) => a - b);
+};
+
+const getScheduleForDate = (dayPanel: Element, date: Date): HTMLElement | null => {
+    const preferredClass = isReducedScheduleDay(date) ? '.ldp-schedule--reduced' : '.ldp-schedule--regular';
+    return (
+        dayPanel.querySelector<HTMLElement>(preferredClass) ??
+        dayPanel.querySelector<HTMLElement>('.ldp-schedule--regular') ??
+        dayPanel.querySelector<HTMLElement>('.ldp-schedule')
+    );
+};
+
+const getDayPanel = (panel: Element, day: TimetableDay): HTMLElement | null =>
+    panel.querySelector<HTMLElement>(`.ldp-day-panel[data-day-panel="${day}"]`);
+
+const findPanelServiceDay = (panel: Element, now: Date): TimetableServiceDay | null => {
+    const departureCache = new Map<Element, number[]>();
+
+    return findNextServiceDay(now, (serviceDay, earliestMinute) => {
+        const dayPanel = getDayPanel(panel, serviceDay.day);
+        const schedule = dayPanel ? getScheduleForDate(dayPanel, serviceDay.date) : null;
+        if (!schedule) {
+            return false;
+        }
+
+        const departures = departureCache.get(schedule) ?? getDepartureMinutes(schedule);
+        departureCache.set(schedule, departures);
+        return departures.some((departure) => departure >= earliestMinute);
+    });
+};
+
+const updateScheduleTimeHighlighting = (schedule: Element, now: Date, serviceDate: string): void => {
     const currentHour = now.getHours();
     const currentTimeInMinutes = currentHour * 60 + now.getMinutes();
+    const today = formatServiceDate(now);
+    const isToday = serviceDate === today;
+    const isFuture = serviceDate > today;
     const departures: { timeInMinutes: number; element: HTMLElement }[] = [];
 
     schedule.querySelectorAll<HTMLElement>('tbody tr[data-hour]').forEach((row) => {
@@ -14,7 +71,7 @@ const updateScheduleTimeHighlighting = (schedule: Element, now: Date): void => {
             return;
         }
 
-        row.classList.toggle('current-hour', hour === currentHour);
+        row.classList.toggle('current-hour', isToday && hour === currentHour);
         row.querySelectorAll<HTMLElement>('.minute-box[data-minute]').forEach((minuteBox) => {
             const minute = Number.parseInt(minuteBox.dataset.minute ?? '', 10);
             if (!Number.isNaN(minute)) {
@@ -24,13 +81,17 @@ const updateScheduleTimeHighlighting = (schedule: Element, now: Date): void => {
     });
 
     departures.sort((a, b) => a.timeInMinutes - b.timeInMinutes);
-    const nextDeparture = departures.find((departure) => departure.timeInMinutes >= currentTimeInMinutes) ?? null;
+    const nextDepartureMinute = isFuture
+        ? (departures[0]?.timeInMinutes ?? null)
+        : isToday
+          ? (departures.find((departure) => departure.timeInMinutes >= currentTimeInMinutes)?.timeInMinutes ?? null)
+          : null;
 
     departures.forEach((departure) => {
         departure.element.classList.remove('past', 'next', 'upcoming');
-        if (departure.timeInMinutes < currentTimeInMinutes) {
+        if (!isFuture && (!isToday || departure.timeInMinutes < currentTimeInMinutes)) {
             departure.element.classList.add('past');
-        } else if (departure === nextDeparture) {
+        } else if (nextDepartureMinute !== null && departure.timeInMinutes === nextDepartureMinute) {
             departure.element.classList.add('next');
         } else {
             departure.element.classList.add('upcoming');
@@ -44,8 +105,21 @@ const updateTimeHighlighting = (root: HTMLElement, now: Date = new Date()): void
             (candidate) => !candidate.hidden,
         );
         if (schedule) {
-            updateScheduleTimeHighlighting(schedule, now);
+            updateScheduleTimeHighlighting(schedule, now, dayPanel.dataset.serviceDate ?? formatServiceDate(now));
         }
+    });
+};
+
+const updateReducedNotice = (root: HTMLElement): void => {
+    const activePanel = root.querySelector<HTMLElement>('.ldp-direction-panel.is-active');
+    const activeDay = activePanel?.querySelector<HTMLElement>('.ldp-day-panel.is-active');
+    const activeSchedule = activeDay
+        ? Array.from(activeDay.querySelectorAll<HTMLElement>('.ldp-schedule')).find((schedule) => !schedule.hidden)
+        : null;
+    const showingReduced = activeSchedule?.classList.contains('ldp-schedule--reduced') ?? false;
+
+    root.querySelectorAll<HTMLElement>('.timetable-reduced-notice').forEach((notice) => {
+        notice.hidden = !showingReduced;
     });
 };
 
@@ -55,18 +129,6 @@ export const initLineDetailTabs = (): void => {
         return;
     }
     root.dataset.lineDetailTabsInitialized = 'true';
-
-    if (isReducedScheduleDay()) {
-        root.querySelectorAll<HTMLElement>('.ldp-schedule--regular').forEach((el) => {
-            el.hidden = true;
-        });
-        root.querySelectorAll<HTMLElement>('.ldp-schedule--reduced').forEach((el) => {
-            el.hidden = false;
-        });
-        root.querySelectorAll<HTMLElement>('.timetable-reduced-notice').forEach((el) => {
-            el.hidden = false;
-        });
-    }
 
     const activateDirection = (targetId: string): void => {
         root.querySelectorAll<HTMLElement>('.ldp-direction-tab[data-direction-target]').forEach((tab) => {
@@ -81,23 +143,41 @@ export const initLineDetailTabs = (): void => {
             panel.hidden = !isActive;
         });
 
+        updateReducedNotice(root);
         updateTimeHighlighting(root);
     };
 
-    const activateDay = (panel: Element, dayKey: string): void => {
+    const activateDay = (panel: HTMLElement, serviceDay: TimetableServiceDay, automatic: boolean): void => {
         panel.querySelectorAll<HTMLElement>('.ldp-day-tab[data-day-target]').forEach((tab) => {
-            const isActive = tab.getAttribute('data-day-target') === dayKey;
+            const isActive = tab.getAttribute('data-day-target') === serviceDay.day;
             tab.classList.toggle('is-active', isActive);
             tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
         });
 
         panel.querySelectorAll<HTMLElement>('.ldp-day-panel[data-day-panel]').forEach((dayPanel) => {
-            const isActive = dayPanel.getAttribute('data-day-panel') === dayKey;
+            const isActive = dayPanel.getAttribute('data-day-panel') === serviceDay.day;
             dayPanel.classList.toggle('is-active', isActive);
             dayPanel.hidden = !isActive;
+
+            if (isActive) {
+                dayPanel.dataset.serviceDate = formatServiceDate(serviceDay.date);
+                const selectedSchedule = getScheduleForDate(dayPanel, serviceDay.date);
+                dayPanel.querySelectorAll<HTMLElement>('.ldp-schedule').forEach((schedule) => {
+                    schedule.hidden = schedule !== selectedSchedule;
+                });
+            }
         });
 
+        panel.dataset.automaticDaySelection = automatic ? 'true' : 'false';
+        updateReducedNotice(root);
         updateTimeHighlighting(root);
+    };
+
+    const selectNextServiceDay = (panel: HTMLElement, now: Date): void => {
+        const serviceDay = findPanelServiceDay(panel, now) ?? getUpcomingServiceDays(now, 0)[0];
+        if (serviceDay) {
+            activateDay(panel, serviceDay, true);
+        }
     };
 
     root.querySelectorAll<HTMLElement>('.ldp-direction-tab[data-direction-target]').forEach((tab) => {
@@ -109,16 +189,18 @@ export const initLineDetailTabs = (): void => {
         });
     });
 
-    const todayDayType = getTimetableDay();
+    const now = new Date();
     root.querySelectorAll<HTMLElement>('.ldp-direction-panel[data-direction-panel]').forEach((panel) => {
-        // Use today's column even when the line has no service, matching the timetable on the lines page.
-        activateDay(panel, todayDayType);
+        selectNextServiceDay(panel, now);
 
         panel.querySelectorAll<HTMLElement>('.ldp-day-tab[data-day-target]').forEach((tab) => {
             tab.addEventListener('click', () => {
-                const targetDay = tab.getAttribute('data-day-target');
-                if (targetDay) {
-                    activateDay(panel, targetDay);
+                const targetDay = tab.getAttribute('data-day-target') as TimetableDay | null;
+                const serviceDay = targetDay
+                    ? getUpcomingServiceDays(new Date()).find((candidate) => candidate.day === targetDay)
+                    : null;
+                if (serviceDay) {
+                    activateDay(panel, serviceDay, false);
                 }
             });
         });
@@ -127,6 +209,15 @@ export const initLineDetailTabs = (): void => {
     if (timeHighlightInterval) {
         clearInterval(timeHighlightInterval);
     }
-    updateTimeHighlighting(root);
-    timeHighlightInterval = setInterval(() => updateTimeHighlighting(root), 60_000);
+    updateReducedNotice(root);
+    updateTimeHighlighting(root, now);
+    timeHighlightInterval = setInterval(() => {
+        const currentTime = new Date();
+        root.querySelectorAll<HTMLElement>('.ldp-direction-panel[data-direction-panel]').forEach((panel) => {
+            if (panel.dataset.automaticDaySelection === 'true') {
+                selectNextServiceDay(panel, currentTime);
+            }
+        });
+        updateTimeHighlighting(root, currentTime);
+    }, 60_000);
 };

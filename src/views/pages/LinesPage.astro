@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import UrbanLinesViewer from '../../components/lines/UrbanLinesViewer.astro';
 import LinesSection from '../../components/lines/LinesSection.astro';
 import TimetableSection from '../../components/lines/TimetableSection.astro';
+import PageIntro from '../../components/PageIntro.astro';
 import translationsData from '../../../public/data/config/bhs_en_translations.json';
 import { getAlternatePaths, getLocalizedMeta, getPagePath, getSwitchLocale, type Locale } from '../../lib/site-config';
 
@@ -98,16 +99,24 @@ processedLines.sort(sortLinesByID);
   alternatePaths={alternatePaths}
   switchLanguagePath={getPagePath('lines', getSwitchLocale(locale))}
 >
+  <PageIntro
+    title={translations.sections?.urban_lines?.title ?? (locale === 'en' ? 'Urban lines map' : 'Mapa gradskih linija')}
+    description={isEnglish
+      ? 'Explore urban routes, stops, and timetables in one place.'
+      : 'Istražite gradske trase, stajališta i redove vožnje na jednom mjestu.'}
+    titleId="urban-lines-title"
+    icon="fa-solid fa-route"
+    variant="transit"
+  />
+
   <section class="section section--wide" id="urban-lines">
     <div class="container">
-      <h2 class="section__title" id="urban-lines-title">{translations.sections?.urban_lines?.title ?? (locale === 'en' ? 'Urban lines map' : 'Mapa gradskih linija')}</h2>
-
       <UrbanLinesViewer />
 
       <article class="map-context-card" aria-labelledby="map-context-title">
         <div class="map-context-card__header">
           <i class="fas fa-map-location-dot map-context-card__icon" aria-hidden="true"></i>
-          <h3 class="map-context-card__title" id="map-context-title">{isEnglish ? 'Map information' : 'Informacije o mapi'}</h3>
+          <h2 class="map-context-card__title" id="map-context-title">{isEnglish ? 'Map information' : 'Informacije o mapi'}</h2>
         </div>
 
         {isEnglish ? (

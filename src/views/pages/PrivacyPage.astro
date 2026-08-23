@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageIntro from '../../components/PageIntro.astro';
 import { getAlternatePaths, getLocalizedMeta, getPagePath, getSwitchLocale, type Locale } from '../../lib/site-config';
 
 interface Props {
@@ -21,10 +22,17 @@ const isEnglish = locale === 'en';
   alternatePaths={alternatePaths}
   switchLanguagePath={getPagePath('privacy', getSwitchLocale(locale))}
 >
+  <PageIntro
+    title={isEnglish ? 'Privacy Policy' : 'Politika privatnosti'}
+    description={isEnglish
+      ? 'How BL Prevoz handles analytics, cookies, and the limited technical data used by the website.'
+      : 'Kako BL Prevoz postupa s analitikom, kolačićima i ograničenim tehničkim podacima koje stranica koristi.'}
+    titleId="privacy-title"
+    icon="fa-solid fa-shield-halved"
+  />
+
   <section class="section section--narrow" id="privacy">
     <div class="container">
-      <h1 class="section__title" id="privacy-title">{isEnglish ? 'Privacy Policy' : 'Politika privatnosti'}</h1>
-
       <div class="privacy-content">
         {isEnglish ? (
           <div>

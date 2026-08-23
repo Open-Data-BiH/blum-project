@@ -17,6 +17,11 @@
     font-weight: var(--font-weight-semibold);
 }
 
+.unified-price-table th:last-child {
+    width: 9rem;
+    text-align: right;
+}
+
 .unified-price-table td {
     padding: var(--space-4) var(--space-5);
     border-bottom: 1px solid var(--color-border);
@@ -31,9 +36,26 @@
     background-color: var(--color-surface-tertiary);
 }
 
-.category-header {
-    background-color: var(--color-surface-tertiary);
+.unified-price-table tr.category-header {
+    background-color: var(--color-support-surface);
     font-weight: var(--font-weight-bold);
+}
+
+.unified-price-table tr.category-header td {
+    border-bottom-color: var(--color-support-border);
+    box-shadow: inset 3px 0 0 var(--color-support);
+}
+
+.unified-price-table tr.category-header:hover {
+    background-color: var(--color-support-surface);
+}
+
+.unified-price-table tbody tr:not(.category-header) td:last-child {
+    text-align: right;
+    font-weight: var(--font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+    white-space: nowrap;
 }
 
 .description {
@@ -43,13 +65,9 @@
 }
 
 .price-table-container {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-md);
+    width: 100%;
     max-width: 960px;
     margin: 0 auto;
-    padding: var(--space-8);
 }
 
 .price-disclaimer {
@@ -76,13 +94,13 @@
 }
 
 @media (max-width: 600px) {
-    .price-table-container {
-        padding: var(--space-4);
-    }
-
     .unified-price-table th,
     .unified-price-table td {
-        padding: 10px;
+        padding: var(--space-3);
+    }
+
+    .unified-price-table th:last-child {
+        width: 6.5rem;
     }
 
     .description {
@@ -93,17 +111,6 @@
         font-size: 0.85em;
         padding: var(--space-3) var(--space-4);
     }
-}
-
-[data-theme='dark'] .price-table-container {
-    background-color: var(--color-surface);
-    color: var(--color-text-primary);
-    border-color: var(--color-border);
-}
-
-[data-theme='dark'] .category-header {
-    background-color: var(--color-surface-tertiary);
-    color: var(--color-text-primary);
 }
 
 [data-theme='dark'] .unified-price-table td {

@@ -56,6 +56,13 @@
     gap: var(--space-5);
 }
 
+.ldp-overview-card:hover {
+    box-shadow: none;
+    border-top-color: var(--color-border);
+    border-right-color: var(--color-border);
+    border-bottom-color: var(--color-border);
+}
+
 .ldp-overview-card__head {
     display: flex;
     align-items: flex-start;
@@ -94,13 +101,17 @@
 
 .ldp-overview-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    gap: var(--space-3);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-border);
 }
 
 .ldp-overview-metric {
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
+    border: 0;
+    border-radius: 0;
     background: var(--color-surface-secondary);
     padding: var(--space-3);
     display: flex;
@@ -191,9 +202,10 @@
 }
 
 .ldp-direction-tab.is-active {
-    background: var(--color-surface-secondary);
-    border-color: var(--color-primary-surface);
-    color: var(--color-text-primary);
+    background: var(--color-primary-surface);
+    border-color: var(--color-primary-border);
+    color: var(--color-primary-hover);
+    box-shadow: inset 0 -2px 0 var(--color-primary);
 }
 
 .ldp-direction-tab__label {
@@ -211,10 +223,10 @@
 }
 
 .ldp-direction-panel {
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    background: var(--color-surface-secondary);
-    padding: var(--space-4);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
     display: none;
     flex-direction: column;
     gap: var(--space-4);
@@ -252,11 +264,11 @@
 }
 
 .ldp-day-tab.is-active {
-    background: var(--color-surface);
+    background: var(--color-primary-surface);
     font-weight: var(--font-weight-semibold);
     box-shadow: inset 0 -2px 0 0 var(--color-primary);
-    border-color: var(--color-border-strong);
-    color: var(--color-text-primary);
+    border-color: var(--color-primary-border);
+    color: var(--color-primary-hover);
 }
 
 .ldp-day-tab.is-unavailable {
@@ -273,6 +285,7 @@
     background: var(--color-warning-surface);
     border-color: var(--color-warning-border);
     color: var(--color-warning);
+    box-shadow: inset 0 -2px 0 var(--color-warning);
 }
 
 .ldp-day-panels {
@@ -296,22 +309,22 @@
 }
 
 .ldp-station-card {
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: var(--color-surface);
-    overflow: hidden;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    overflow: visible;
 }
 
 .ldp-station-card__title {
     margin: 0;
-    padding: var(--space-3) var(--space-4);
+    padding: 0 0 var(--space-3);
     display: flex;
     align-items: center;
     gap: var(--space-2);
     font-size: var(--font-size-base);
     color: var(--color-text-primary);
-    border-bottom: 1px solid var(--color-border);
-    background: var(--color-surface-secondary);
+    border-bottom: 0;
+    background: transparent;
 }
 
 .ldp-station-card__title i {
@@ -493,6 +506,10 @@
 }
 
 @media (max-width: 767px) {
+    .ldp-overview-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .ldp-overview-card {
         padding: var(--space-4);
     }
@@ -526,7 +543,6 @@
         padding: var(--space-2) var(--space-3);
     }
 
-    .ldp-direction-panel,
     .ldp-timetable-shell,
     .ldp-stops-card {
         padding: var(--space-4);

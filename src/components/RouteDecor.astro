@@ -41,7 +41,6 @@ if (config.narrow) {
       xmlns="http://www.w3.org/2000/svg"
       focusable="false"
     >
-      {/* Already ordered by layer: targets sit under the routes they belong to. */}
       {scene.items.map((item) =>
         item.kind === 'band' ? (
           <g
@@ -49,13 +48,31 @@ if (config.narrow) {
             style={`--rd-delay:${item.delay}s;--rd-duration:${item.duration}s;--rd-arrow-delay:${item.arrowDelay}s;color:${item.stroke}`}
           >
             <path class="route-decor__line" d={item.d} stroke-width={item.width} pathLength="100" />
-            {item.arrow && <path class="route-decor__arrow" d={item.arrow} stroke-width={item.width * 0.4} />}
+            {item.arrow && (
+              <>
+                <path class="route-decor__arrow" d={item.arrow} stroke-width={item.width * 0.4} />
+                <path class="route-decor__arrow-signal" d={item.arrow} />
+              </>
+            )}
           </g>
         ) : item.kind === 'node' ? (
           <g class="route-decor__node" transform={item.transform}>
             {item.rings.map((ring) => (
               <circle class="route-decor__ring" r={ring.r} style={`--rd-delay:${ring.delay}s;color:${ring.fill}`} />
             ))}
+          </g>
+        ) : item.kind === 'mover' ? (
+          <g
+            class="route-decor__mover"
+            style={`--rd-motion-path:path("${item.d}");--rd-delay:${item.delay}s;--rd-duration:${item.duration}s;color:${item.color}`}
+          >
+            <circle class="route-decor__mover-halo" r={item.size * 0.72} />
+            <g transform={`scale(${item.size / 28})`}>
+              <path
+                class="route-decor__plane"
+                d="M 14 0 L 3 -4 L 0 -13 L -4 -13 L -3 -4 L -12 -2 L -12 2 L -3 4 L -4 13 L 0 13 L 3 4 Z"
+              />
+            </g>
           </g>
         ) : (
           <path
@@ -72,8 +89,6 @@ if (config.narrow) {
 </div>
 
 <script>
-  // Reveal each graphic once its section scrolls into view; decorative only, so
-  // reduced-motion visitors get the finished state without any animation.
   const graphics = document.querySelectorAll<HTMLElement>('[data-route-decor]');
 
   if (graphics.length > 0) {

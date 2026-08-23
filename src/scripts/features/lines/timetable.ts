@@ -4,8 +4,15 @@ import { renderRouteRelation } from '../../core/route-relation';
 import { formatSpokenRouteRelation } from '../../../lib/route-relation';
 import { LINE_CONFIG, getLineTypeTitle } from './line-config';
 import { isReducedScheduleDay } from './school-holidays';
-import { getTimetableDay } from './timetable-day';
-import { getUniqueSortedDepartures } from '../../../lib/timetable-departures';
+import {
+    findNextServiceDay,
+    formatServiceDate,
+    getTimetableDay,
+    getUpcomingServiceDays,
+    type TimetableDay,
+    type TimetableServiceDay,
+} from './timetable-day';
+import { getUniqueSortedDepartures, parseTimeToMinutes } from '../../../lib/timetable-departures';
 import type { TimetableEntry, TimetableTime } from '../../../types/timetable';
 
 let realTimetableData: (TimetableEntry & { lineType: string })[] | null = null;
@@ -236,14 +243,13 @@ export function loadTimetable(lineId: string): void {
         });
 }
 
-function renderTimetable(timetable: TimetableEntry & { lineType?: string }, container: HTMLElement): void {
-    const todayDayType = getTimetableDay();
+export function renderTimetable(timetable: TimetableEntry & { lineType?: string }, container: HTMLElement): void {
+    const now = new Date();
+    const todayDayType = getTimetableDay(now);
     const lang = getCurrentLanguage();
-    const reducedToday = isReducedScheduleDay();
     const hasReducedData = timetable.stations.some(
         (s) => s.times.weekdayReduced ?? s.times.saturdayReduced ?? s.times.sundayReduced,
     );
-    const showingReduced = reducedToday && hasReducedData;
     const t = safeGet<Record<string, unknown>>(getTranslations(), lang, 'sections', 'timetable');
     const timetableDays = t?.days && typeof t.days === 'object' ? (t.days as Record<string, string>) : null;
 
@@ -271,7 +277,7 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
     };
     const directionAId = timetable.lineId + 'a';
     const directionBId = timetable.lineId + 'b';
-    const dayTypes: ('weekday' | 'saturday' | 'sunday')[] = ['weekday', 'saturday', 'sunday'];
+    const dayTypes: TimetableDay[] = ['weekday', 'saturday', 'sunday'];
     const directionIds = [directionAId, directionBId];
     const dayLabelByType = {
         weekday: weekdayLabel,
@@ -285,24 +291,64 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
     const noServiceHintText = lang === 'bhs' ? 'linija ne saobraća' : 'line does not operate';
 
     type Departure = { timeStr: string; note: string | null };
-    const departuresByView: Record<string, Departure[]> = {};
+    const departureCache = new Map<string, Departure[]>();
 
-    const collectDepartures = (dayType: 'weekday' | 'saturday' | 'sunday', dirIndex: number): Departure[] => {
+    const collectDepartures = (dayType: TimetableDay, dirIndex: number, useReduced: boolean): Departure[] => {
+        const cacheKey = `${dayType}-${dirIndex}-${useReduced ? 'reduced' : 'regular'}`;
+        const cached = departureCache.get(cacheKey);
+        if (cached) {
+            return cached;
+        }
+
         const stationDayTimes: TimetableTime[] = [];
         const reducedKey = `${dayType}Reduced` as keyof (typeof timetable.stations)[0]['times'];
 
         timetable.stations.forEach((station) => {
-            const reduced = showingReduced ? station.times[reducedKey] : undefined;
+            const reduced = useReduced ? station.times[reducedKey] : undefined;
             const stationTimes = (reduced ?? station.times[dayType])[dirIndex] ?? [];
             stationDayTimes.push(...stationTimes);
         });
 
-        return getUniqueSortedDepartures(stationDayTimes).map(({ time, note }) => ({ timeStr: time, note }));
+        const departures = getUniqueSortedDepartures(stationDayTimes).map(({ time, note }) => ({
+            timeStr: time,
+            note,
+        }));
+        departureCache.set(cacheKey, departures);
+        return departures;
     };
+
+    const usesReducedSchedule = (serviceDay: TimetableServiceDay): boolean =>
+        hasReducedData && isReducedScheduleDay(serviceDay.date);
+    const getServiceDepartures = (serviceDay: TimetableServiceDay, dirIndex: number): Departure[] =>
+        collectDepartures(serviceDay.day, dirIndex, usesReducedSchedule(serviceDay));
+    const findDirectionServiceDay = (date: Date, dirIndex: number): TimetableServiceDay | null =>
+        findNextServiceDay(date, (serviceDay, earliestMinute) =>
+            getServiceDepartures(serviceDay, dirIndex).some(
+                ({ timeStr }) => parseTimeToMinutes(timeStr) >= earliestMinute,
+            ),
+        );
+    const nextServiceByDirection = directionIds.map((_, dirIndex) => findDirectionServiceDay(now, dirIndex));
+    const fallbackServiceDay = getUpcomingServiceDays(now, 0)[0] ?? {
+        date: now,
+        day: todayDayType,
+        dayOffset: 0,
+    };
+    const startServiceDay = nextServiceByDirection[0] ?? fallbackServiceDay;
+    const startDayType = startServiceDay.day;
+    const upcomingServiceDays = getUpcomingServiceDays(now);
+    const serviceDayByView: Record<string, TimetableServiceDay> = {};
+    const departuresByView: Record<string, Departure[]> = {};
 
     dayTypes.forEach((dayType) => {
         directionIds.forEach((_, dirIndex) => {
-            departuresByView[`${dayType}-${dirIndex}`] = collectDepartures(dayType, dirIndex);
+            const nextDirectionService = nextServiceByDirection[dirIndex];
+            const serviceDay =
+                nextDirectionService?.day === dayType
+                    ? nextDirectionService
+                    : (upcomingServiceDays.find((candidate) => candidate.day === dayType) ?? fallbackServiceDay);
+            const viewKey = `${dayType}-${dirIndex}`;
+            serviceDayByView[viewKey] = serviceDay;
+            departuresByView[viewKey] = getServiceDepartures(serviceDay, dirIndex);
         });
     });
 
@@ -311,7 +357,7 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
         saturday: directionIds.some((_, dirIndex) => departuresByView[`saturday-${dirIndex}`].length > 0),
         sunday: directionIds.some((_, dirIndex) => departuresByView[`sunday-${dirIndex}`].length > 0),
     };
-    const startDayType = todayDayType;
+    const showingReduced = usesReducedSchedule(serviceDayByView[`${startDayType}-0`]);
     const buildDayButton = (
         dayType: 'weekday' | 'saturday' | 'sunday',
         labelHtml: string,
@@ -369,13 +415,13 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
     `;
     }
 
-    if (showingReduced) {
+    if (hasReducedData) {
         const reducedLabel =
             lang === 'bhs'
                 ? 'Prikazan redukovani red vožnje (školski raspust)'
                 : 'Showing reduced schedule (school holidays)';
         html += `
-      <div class="timetable-reduced-notice">
+      <div class="timetable-reduced-notice"${showingReduced ? '' : ' hidden'}>
         <i class="fas fa-calendar-alt"></i>
         <span>${reducedLabel}</span>
       </div>
@@ -388,11 +434,18 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
         directionIds.forEach((direction, dirIndex) => {
             const isActive = dayType === startDayType && dirIndex === 0 ? '' : 'style="display: none;"';
             const tableId = `timetable-${dayType}-${direction}`;
-            const allDepartures = departuresByView[`${dayType}-${dirIndex}`];
+            const viewKey = `${dayType}-${dirIndex}`;
+            const allDepartures = departuresByView[viewKey];
+            const serviceDay = serviceDayByView[viewKey];
+            const serviceDate = formatServiceDate(serviceDay.date);
+            const today = formatServiceDate(now);
+            const isCurrentServiceDate = serviceDate === today;
+            const isFutureServiceDate = serviceDate > today;
+            const reducedAttribute = usesReducedSchedule(serviceDay) ? 'true' : 'false';
 
             if (allDepartures.length === 0) {
                 html += `
-        <div class="timetable-view" id="${tableId}" ${isActive}>
+        <div class="timetable-view" id="${tableId}" data-service-date="${serviceDate}" data-reduced="${reducedAttribute}" ${isActive}>
           <div class="no-service-message" role="status" aria-live="polite">
             <i class="fas fa-ban" aria-hidden="true"></i>
             <strong>${noServiceTitleText}</strong>
@@ -404,7 +457,7 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
             }
 
             html += `
-        <div class="timetable-view" id="${tableId}" ${isActive}>
+        <div class="timetable-view" id="${tableId}" data-service-date="${serviceDate}" data-reduced="${reducedAttribute}" ${isActive}>
           <table class="hours-minutes-table">
             <thead><tr><th>${hourLabel}</th><th>${minutesLabel}</th></tr></thead>
             <tbody>
@@ -419,38 +472,46 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
                 departuresByHour[hour].push({ timeStr: minute, note });
             });
 
-            const now = new Date();
             const currentHour = now.getHours();
             const currentMinute = now.getMinutes();
 
             let nextDepartureHour: number | null = null;
             let nextDepartureMinute: number | null = null;
 
-            Object.keys(departuresByHour)
-                .sort()
-                .forEach((hour) => {
-                    if (nextDepartureHour !== null) {
-                        return;
-                    }
-                    const hourValue = parseInt(hour, 10);
-                    if (hourValue > currentHour) {
-                        nextDepartureHour = hourValue;
-                        nextDepartureMinute = Math.min(...departuresByHour[hour].map((d) => parseInt(d.timeStr, 10)));
-                        return;
-                    }
-                    if (hourValue === currentHour) {
-                        const sortedMinutes = departuresByHour[hour]
-                            .map((d) => parseInt(d.timeStr, 10))
-                            .sort((a, b) => a - b);
-                        for (const minute of sortedMinutes) {
-                            if (minute >= currentMinute) {
+            if (isFutureServiceDate) {
+                const firstHour = Object.keys(departuresByHour).sort()[0];
+                if (firstHour !== undefined) {
+                    nextDepartureHour = parseInt(firstHour, 10);
+                    nextDepartureMinute = Math.min(
+                        ...departuresByHour[firstHour].map((departure) => parseInt(departure.timeStr, 10)),
+                    );
+                }
+            } else if (isCurrentServiceDate) {
+                Object.keys(departuresByHour)
+                    .sort()
+                    .forEach((hour) => {
+                        if (nextDepartureHour !== null) {
+                            return;
+                        }
+                        const hourValue = parseInt(hour, 10);
+                        if (hourValue > currentHour) {
+                            nextDepartureHour = hourValue;
+                            nextDepartureMinute = Math.min(
+                                ...departuresByHour[hour].map((departure) => parseInt(departure.timeStr, 10)),
+                            );
+                            return;
+                        }
+                        if (hourValue === currentHour) {
+                            const sortedMinutes = departuresByHour[hour]
+                                .map((departure) => parseInt(departure.timeStr, 10))
+                                .sort((a, b) => a - b);
+                            nextDepartureMinute = sortedMinutes.find((minute) => minute >= currentMinute) ?? null;
+                            if (nextDepartureMinute !== null) {
                                 nextDepartureHour = hourValue;
-                                nextDepartureMinute = minute;
-                                break;
                             }
                         }
-                    }
-                });
+                    });
+            }
 
             Object.keys(departuresByHour)
                 .sort()
@@ -459,7 +520,7 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
                         (a, b) => parseInt(a.timeStr, 10) - parseInt(b.timeStr, 10),
                     );
                     const hourValue = parseInt(hour, 10);
-                    const isCurrentHour = hourValue === currentHour;
+                    const isCurrentHour = isCurrentServiceDate && hourValue === currentHour;
                     const rowClass = isCurrentHour ? 'current-hour' : '';
                     const rowId = isCurrentHour ? `current-hour-row-${dayType}-${direction}` : '';
 
@@ -473,7 +534,12 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
                     departures.forEach(({ timeStr: minute, note }) => {
                         const minuteValue = parseInt(minute, 10);
                         let timeClass: string;
-                        if (hourValue < currentHour || (hourValue === currentHour && minuteValue < currentMinute)) {
+                        if (
+                            !isFutureServiceDate &&
+                            (!isCurrentServiceDate ||
+                                hourValue < currentHour ||
+                                (hourValue === currentHour && minuteValue < currentMinute))
+                        ) {
                             timeClass = 'past';
                         } else if (hourValue === nextDepartureHour && minuteValue === nextDepartureMinute) {
                             timeClass = 'next';
@@ -504,12 +570,63 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
     }
 
     container.innerHTML = html;
+    let automaticDaySelection = true;
 
-    const showTimetableView = (day: string, direction: string): void => {
+    const setActiveDayButton = (day: TimetableDay): void => {
+        container.querySelectorAll<HTMLElement>('.day-btn').forEach((button) => {
+            const isActive = button.getAttribute('data-day') === day;
+            button.classList.toggle('active', isActive);
+            button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+    };
+
+    const updateReducedNotice = (): void => {
+        const activeView = Array.from(container.querySelectorAll<HTMLElement>('.timetable-view')).find(
+            (view) => view.style.display !== 'none',
+        );
+        const notice = container.querySelector<HTMLElement>('.timetable-reduced-notice');
+        if (notice) {
+            notice.hidden = activeView?.dataset.reduced !== 'true';
+        }
+    };
+
+    const showTimetableView = (day: TimetableDay, direction: string): void => {
         const targetId = `timetable-${day}-${direction}`;
         container.querySelectorAll<HTMLElement>('.timetable-view').forEach((view) => {
             view.style.display = view.id === targetId ? 'block' : 'none';
         });
+        updateReducedNotice();
+    };
+
+    const refreshAutomaticSelection = (): void => {
+        if (!automaticDaySelection) {
+            return;
+        }
+
+        const direction =
+            container.querySelector<HTMLElement>('.direction-btn.active')?.getAttribute('data-direction') ??
+            directionAId;
+        const directionIndex = directionIds.indexOf(direction);
+        const serviceDay = directionIndex >= 0 ? findDirectionServiceDay(new Date(), directionIndex) : null;
+        if (!serviceDay) {
+            return;
+        }
+
+        const targetView = container.querySelector<HTMLElement>(`#timetable-${serviceDay.day}-${direction}`);
+        const needsReducedSchedule = usesReducedSchedule(serviceDay);
+        if (targetView && targetView.dataset.reduced !== String(needsReducedSchedule)) {
+            renderTimetable(timetable, container);
+            if (direction !== directionAId) {
+                container.querySelector<HTMLElement>(`.direction-btn[data-direction="${direction}"]`)?.click();
+            }
+            return;
+        }
+
+        if (targetView) {
+            targetView.dataset.serviceDate = formatServiceDate(serviceDay.date);
+        }
+        setActiveDayButton(serviceDay.day);
+        showTimetableView(serviceDay.day, direction);
     };
 
     container.querySelectorAll<HTMLElement>('.direction-btn').forEach((button) => {
@@ -521,12 +638,16 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
             this.classList.add('active');
             this.setAttribute('aria-pressed', 'true');
 
-            const activeDay =
-                container.querySelector<HTMLElement>('.day-btn.active')?.getAttribute('data-day') ?? 'weekday';
             const direction = this.getAttribute('data-direction') ?? '';
-
             if (direction) {
-                showTimetableView(activeDay, direction);
+                if (automaticDaySelection) {
+                    refreshAutomaticSelection();
+                } else {
+                    const activeDay = (container
+                        .querySelector<HTMLElement>('.day-btn.active')
+                        ?.getAttribute('data-day') ?? 'weekday') as TimetableDay;
+                    showTimetableView(activeDay, direction);
+                }
             }
 
             updateTimeHighlighting();
@@ -545,19 +666,15 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
 
     container.querySelectorAll<HTMLElement>('.day-btn').forEach((button) => {
         button.addEventListener('click', function (this: HTMLElement) {
-            container.querySelectorAll<HTMLElement>('.day-btn').forEach((btn) => {
-                btn.classList.remove('active');
-                btn.setAttribute('aria-pressed', 'false');
-            });
-            this.classList.add('active');
-            this.setAttribute('aria-pressed', 'true');
+            automaticDaySelection = false;
 
             const activeDirection =
                 container.querySelector<HTMLElement>('.direction-btn.active')?.getAttribute('data-direction') ??
                 directionAId;
-            const day = this.getAttribute('data-day') ?? 'weekday';
+            const day = (this.getAttribute('data-day') ?? 'weekday') as TimetableDay;
 
             if (activeDirection) {
+                setActiveDayButton(day);
                 showTimetableView(day, activeDirection);
             }
 
@@ -566,21 +683,26 @@ function renderTimetable(timetable: TimetableEntry & { lineType?: string }, cont
         });
     });
 
-    setupTimeHighlighting();
+    setupTimeHighlighting(refreshAutomaticSelection);
     setTimeout(scrollToCurrentHour, 100);
 }
 
-const setupTimeHighlighting = (): void => {
+const setupTimeHighlighting = (refreshSelection: () => void): void => {
     if (timeHighlightInterval) {
         clearInterval(timeHighlightInterval);
     }
     updateTimeHighlighting();
-    const debouncedUpdate = debounce(updateTimeHighlighting, 300);
+    const debouncedUpdate = debounce(() => {
+        refreshSelection();
+        updateTimeHighlighting();
+    }, 300);
     timeHighlightInterval = setInterval(debouncedUpdate, 60000);
 };
 
 const scrollToCurrentHour = (): void => {
-    const currentHour = new Date().getHours();
+    const now = new Date();
+    const currentHour = now.getHours();
+    const today = formatServiceDate(now);
 
     let visibleView = document.querySelector<HTMLElement>('.timetable-view:not([style*="display: none"])');
     if (!visibleView) {
@@ -593,9 +715,13 @@ const scrollToCurrentHour = (): void => {
         return;
     }
 
-    let targetRow = visibleView.querySelector<HTMLElement>(`tr[data-hour="${currentHour}"]`);
+    const allRows = visibleView.querySelectorAll<HTMLElement>('tbody tr[data-hour]');
+    let targetRow =
+        (visibleView.dataset.serviceDate ?? today) > today
+            ? (allRows[0] ?? null)
+            : visibleView.querySelector<HTMLElement>(`tr[data-hour="${currentHour}"]`);
+
     if (!targetRow) {
-        const allRows = visibleView.querySelectorAll<HTMLElement>('tbody tr[data-hour]');
         for (const row of allRows) {
             if (parseInt(row.getAttribute('data-hour') ?? '0', 10) >= currentHour) {
                 targetRow = row;
@@ -614,6 +740,7 @@ const updateTimeHighlighting = (): void => {
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
     const currentTimeInMinutes = currentHour * 60 + currentMinute;
+    const today = formatServiceDate(now);
 
     let visibleViews = Array.from(
         document.querySelectorAll<HTMLElement>('.timetable-view:not([style*="display: none"])'),
@@ -625,15 +752,19 @@ const updateTimeHighlighting = (): void => {
     }
 
     visibleViews.forEach((tableView) => {
+        const serviceDate = tableView.dataset.serviceDate ?? today;
+        const isToday = serviceDate === today;
+        const isFuture = serviceDate > today;
+
         tableView.querySelectorAll<HTMLElement>('tbody tr').forEach((row) => {
             const hourAttr = row.getAttribute('data-hour');
             if (hourAttr !== null) {
                 const rowHour = parseInt(hourAttr, 10);
-                row.classList.toggle('current-hour', rowHour === currentHour);
+                row.classList.toggle('current-hour', isToday && rowHour === currentHour);
             }
         });
 
-        const allDepartureTimes: { hour: number; minute: number; timeInMinutes: number; element: HTMLElement }[] = [];
+        const allDepartureTimes: { timeInMinutes: number; element: HTMLElement }[] = [];
         tableView.querySelectorAll<HTMLElement>('tbody tr').forEach((row) => {
             const hourCell = row.querySelector<HTMLElement>('.hour-cell');
             if (!hourCell) {
@@ -650,8 +781,6 @@ const updateTimeHighlighting = (): void => {
                     return;
                 }
                 allDepartureTimes.push({
-                    hour: hourValue,
-                    minute: minuteValue,
                     timeInMinutes: hourValue * 60 + minuteValue,
                     element: minuteBox,
                 });
@@ -659,37 +788,18 @@ const updateTimeHighlighting = (): void => {
         });
 
         allDepartureTimes.sort((a, b) => a.timeInMinutes - b.timeInMinutes);
-
-        let nextDepartureTime: (typeof allDepartureTimes)[0] | null = null;
-        for (const time of allDepartureTimes) {
-            if (time.timeInMinutes >= currentTimeInMinutes) {
-                nextDepartureTime = time;
-                break;
-            }
-        }
-        if (!nextDepartureTime && allDepartureTimes.length > 0) {
-            nextDepartureTime = allDepartureTimes[0];
-        }
-
-        const isNextDepartureTomorrow =
-            nextDepartureTime !== null && allDepartureTimes.every((time) => time.timeInMinutes < currentTimeInMinutes);
+        const nextDepartureMinute = isFuture
+            ? (allDepartureTimes[0]?.timeInMinutes ?? null)
+            : isToday
+              ? (allDepartureTimes.find((time) => time.timeInMinutes >= currentTimeInMinutes)?.timeInMinutes ?? null)
+              : null;
 
         allDepartureTimes.forEach((time) => {
             time.element.classList.remove('past', 'next', 'upcoming');
 
-            if (time.timeInMinutes < currentTimeInMinutes) {
-                if (
-                    isNextDepartureTomorrow &&
-                    nextDepartureTime &&
-                    time.timeInMinutes === nextDepartureTime.timeInMinutes
-                ) {
-                    time.element.classList.add('next');
-                } else if (isNextDepartureTomorrow) {
-                    time.element.classList.add('upcoming');
-                } else {
-                    time.element.classList.add('past');
-                }
-            } else if (nextDepartureTime && time.timeInMinutes === nextDepartureTime.timeInMinutes) {
+            if (!isFuture && (!isToday || time.timeInMinutes < currentTimeInMinutes)) {
+                time.element.classList.add('past');
+            } else if (nextDepartureMinute !== null && time.timeInMinutes === nextDepartureMinute) {
                 time.element.classList.add('next');
             } else {
                 time.element.classList.add('upcoming');

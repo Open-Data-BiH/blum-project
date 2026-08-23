@@ -29,13 +29,18 @@ const severityLabel = (severity: Update['severity']): string => {
 ---
 
 <div class="updates-container" id="updates-section">
-  <div class="updates-filters" id="updates-filters" role="group" aria-label="Filter updates">
-    <button class="updates-filter-btn active" data-filter="all">
+  <div
+    class="updates-filters"
+    id="updates-filters"
+    role="group"
+    aria-label={isEnglish ? 'Filter updates' : 'Filtriraj obavještenja'}
+  >
+    <button class="updates-filter-btn active" data-filter="all" type="button" aria-pressed="true">
       <i class="fas fa-list" aria-hidden="true"></i>
       {isEnglish ? 'All' : 'Sve'}
     </button>
     {categories.map((cat) => (
-      <button class="updates-filter-btn" data-filter={cat.id}>
+      <button class="updates-filter-btn" data-filter={cat.id} type="button" aria-pressed="false">
         <i class={`fas ${cat.icon}`} aria-hidden="true"></i>
         {cat.label[locale]}
       </button>
@@ -48,7 +53,7 @@ const severityLabel = (severity: Update['severity']): string => {
       const activeUpdates = updates.filter((u) => isUpdateVisible(u, now));
       if (activeUpdates.length === 0) {
         return (
-          <div class="updates-empty">
+          <div class="updates-empty" role="status">
             <i class="updates-empty__icon fas fa-check-circle" aria-hidden="true"></i>
             <h3 class="updates-empty__title">{isEnglish ? 'No Active Updates' : 'Nema aktivnih obavještenja'}</h3>
             <p class="updates-empty__text">

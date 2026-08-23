@@ -10,7 +10,7 @@ import MapContainer from './MapContainer.astro';
 import networkData from '../../../public/data/transport/routes/transit_network.json';
 import ownershipData from '../../../public/data/transport/routes/urban_company_ownership.json';
 import { compareLineIds } from '../../lib/transit';
-import { getShortOperatorName } from '../../lib/lineHelpers';
+import { getCompanyClass, getShortOperatorName } from '../../lib/lineHelpers';
 import { getLineDetailPath, getPagePath, type Locale } from '../../lib/site-config';
 import { normalizeForSearch } from '../../scripts/core/utils';
 import type { CompanyOwnership } from '../../types/lines';
@@ -31,6 +31,7 @@ const ownership = ownershipData as CompanyOwnership;
 interface LineInfo {
   name: { bhs: string; en: string };
   operator: string;
+  companyClass: string;
   accessible: boolean;
 }
 
@@ -42,6 +43,7 @@ ownership.urban.forEach((company) => {
     lineInfo.set(line.lineId, {
       name: typeof name === 'object' ? name : { bhs: String(name), en: String(name) },
       operator,
+      companyClass: getCompanyClass(company.companyName),
       accessible: line.wheelchair_accessible,
     });
   });
@@ -55,6 +57,7 @@ const lines = [...network.lines].sort((a, b) => compareLineIds(a.id, b.id)).map(
     color: line.color,
     label: (isEnglish ? name?.en : name?.bhs) ?? '',
     operator: info?.operator ?? '',
+    companyClass: info?.companyClass ?? '',
     accessible: String(info?.accessible ?? false),
     // The first variant is the outbound direction; the panel offers the other one.
     routeId: line.routes[0] ?? null,
@@ -139,7 +142,7 @@ const t = {
                 line.routeId ? (
                   <button
                     type="button"
-                    class="map-line"
+                    class:list={['map-line', line.companyClass]}
                     data-line-id={line.id}
                     data-route-id={line.routeId}
                     data-search={line.search}
@@ -153,7 +156,7 @@ const t = {
                   </button>
                 ) : (
                   <a
-                    class="map-line"
+                    class:list={['map-line', line.companyClass]}
                     href={line.href}
                     data-line-id={line.id}
                     data-search={line.search}

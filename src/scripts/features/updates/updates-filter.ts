@@ -14,7 +14,9 @@ function hideOutOfWindowCards(): void {
 
 function setFilter(filter: string): void {
     document.querySelectorAll<HTMLButtonElement>('.updates-filter-btn').forEach((btn) => {
-        btn.classList.toggle('active', btn.dataset.filter === filter);
+        const isActive = btn.dataset.filter === filter;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-pressed', String(isActive));
     });
 
     const cards = document.querySelectorAll<HTMLElement>('.update-card');
@@ -72,6 +74,7 @@ function toggleEmptyState(empty: boolean): void {
         if (!emptyEl) {
             emptyEl = document.createElement('div');
             emptyEl.className = 'updates-empty';
+            emptyEl.setAttribute('role', 'status');
             const isEnglish = document.documentElement.lang === 'en';
             emptyEl.innerHTML = `
         <i class="updates-empty__icon fas fa-check-circle" aria-hidden="true"></i>

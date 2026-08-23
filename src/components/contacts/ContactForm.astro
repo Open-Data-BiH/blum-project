@@ -21,13 +21,6 @@ const subjects = [
 
 <section class="section section--narrow" id="contact-form">
   <div class="container">
-    <h2 class="section__title" id="contact-form-title">{isEnglish ? 'Contact us' : 'Kontaktirajte nas'}</h2>
-    <p class="contact-form__intro">
-      {isEnglish
-        ? 'Have a question, suggestion, or want to report an issue? Fill out the form below.'
-        : 'Imate pitanje, prijedlog ili želite prijaviti problem? Popunite formu ispod.'}
-    </p>
-
     <form class="contact-form" id="contact-form-el" data-email={maintainerEmail} novalidate>
       <div class="contact-form__field">
         <label for="contact-subject">

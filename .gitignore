@@ -52,3 +52,9 @@ coverage/
 
 .claude
 .gitattributes
+CLAUDE.md
+TODO.md
+satwork/*
+scripts/transit-source.json
+docs/website-redesign/
+.env

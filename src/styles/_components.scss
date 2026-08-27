@@ -2430,23 +2430,14 @@ body[data-page='airport'] #airport-links {
     margin-bottom: var(--space-3);
 }
 
-/* The service icon is this block's anchor, like the transport-mode icons above. */
-.goparking-box__header > i {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+/* The app icon is this block's anchor, so it keeps the icon-slot metrics but not the tint. */
+.goparking-box__logo {
+    display: block;
     width: 2.25rem;
     height: 2.25rem;
-    border-radius: var(--radius-control);
-    background-color: var(--color-primary-surface);
-    color: var(--color-primary-hover);
-    font-size: var(--font-size-base);
     flex-shrink: 0;
-}
-
-#airport-parking .goparking-box__header > i {
-    background-color: var(--color-parking-surface);
-    color: var(--color-parking);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-control);
 }
 
 .goparking-box__header h3 {

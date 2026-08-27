@@ -510,7 +510,15 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
 
         <div class="goparking-box" id="goparking">
           <div class="goparking-box__header">
-            <i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i>
+            <img
+              src={withBase('/assets/images/goparking-aero.webp')}
+              alt=""
+              class="goparking-box__logo"
+              width={144}
+              height={144}
+              loading="lazy"
+              decoding="async"
+            />
             <h3>{t('Platite parking putem GoParking aplikacije', 'Pay for parking via GoParking app')}</h3>
           </div>
           <p>

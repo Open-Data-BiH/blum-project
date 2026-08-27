@@ -8,6 +8,7 @@ import { isReducedScheduleDay } from '../lines/school-holidays';
 const MINUTE_MS = 60_000;
 const DAY_MS = 24 * 60 * MINUTE_MS;
 const MAX_ARRIVALS = 2;
+const EARTH_RADIUS_METRES = 6_371_000;
 
 export type ArrivalEstimateStatus = 'estimated' | 'no-more-today' | 'unavailable';
 
@@ -143,6 +144,88 @@ const resolveBoundaryIndex = (
     return null;
 };
 
+const distanceBetweenRouteStops = (
+    index: TransitIndex,
+    route: TransitRoute,
+    leftPosition: number,
+    rightPosition: number,
+): number | null => {
+    const left = index.stopById.get(route.stops[leftPosition].stopId);
+    const right = index.stopById.get(route.stops[rightPosition].stopId);
+    if (!left || !right) {
+        return null;
+    }
+
+    const toRadians = (degrees: number): number => (degrees * Math.PI) / 180;
+    const latDelta = toRadians(right.lat - left.lat);
+    const lonDelta = toRadians(right.lon - left.lon);
+    const leftLat = toRadians(left.lat);
+    const rightLat = toRadians(right.lat);
+    const haversine =
+        Math.sin(latDelta / 2) ** 2 + Math.cos(leftLat) * Math.cos(rightLat) * Math.sin(lonDelta / 2) ** 2;
+
+    return 2 * EARTH_RADIUS_METRES * Math.asin(Math.sqrt(haversine));
+};
+
+/**
+ * Manual route corrections can insert a stop between two consecutive operator records.
+ * The following source stop still carries the complete segment time, so split that time
+ * by the distances between stop coordinates. This keeps the operator's total segment time
+ * unchanged while providing a conservative offset for the inserted stop.
+ */
+const resolveInsertedSegment = (
+    index: TransitIndex,
+    route: TransitRoute,
+    firstInsertedPosition: number,
+    end: number,
+): { nextSourcePosition: number; segmentSeconds: number[] } | null => {
+    const previousSourcePosition = firstInsertedPosition - 1;
+    const previousSource = route.stops[previousSourcePosition];
+    if (!previousSource || previousSource.seq === null) {
+        return null;
+    }
+
+    let nextSourcePosition = firstInsertedPosition;
+    while (nextSourcePosition <= end && route.stops[nextSourcePosition].seq === null) {
+        const inserted = route.stops[nextSourcePosition];
+        if (inserted.time !== null || inserted.distance !== null) {
+            return null;
+        }
+        nextSourcePosition += 1;
+    }
+
+    const nextSource = route.stops[nextSourcePosition];
+    if (
+        !nextSource ||
+        nextSource.seq !== previousSource.seq + 1 ||
+        nextSource.time === null ||
+        !Number.isFinite(nextSource.time) ||
+        nextSource.time < 0
+    ) {
+        return null;
+    }
+    const sourceSegmentSeconds = nextSource.time;
+
+    const distances: number[] = [];
+    for (let position = previousSourcePosition + 1; position <= nextSourcePosition; position += 1) {
+        const distance = distanceBetweenRouteStops(index, route, position - 1, position);
+        if (distance === null || !Number.isFinite(distance)) {
+            return null;
+        }
+        distances.push(distance);
+    }
+
+    const totalDistance = distances.reduce((total, distance) => total + distance, 0);
+    if (totalDistance <= 0) {
+        return null;
+    }
+
+    return {
+        nextSourcePosition,
+        segmentSeconds: distances.map((distance) => (sourceSegmentSeconds * distance) / totalDistance),
+    };
+};
+
 /**
  * Cumulative timing inside the nominal origin→destination slice. Several source routes
  * include extensions before or after that slice; those belong to annotated departures.
@@ -184,12 +267,33 @@ export const getTravelMinutesToStop = (index: TransitIndex, route: TransitRoute,
             const previous = route.stops[position - 1];
             const hasContiguousSourceSequence =
                 previous.seq !== null && routeStop.seq !== null && routeStop.seq === previous.seq + 1;
-            if (
-                !hasContiguousSourceSequence ||
-                routeStop.time === null ||
-                !Number.isFinite(routeStop.time) ||
-                routeStop.time < 0
-            ) {
+
+            if (!hasContiguousSourceSequence) {
+                if (routeStop.seq !== null) {
+                    return null;
+                }
+
+                const insertedSegment = resolveInsertedSegment(index, route, position, end);
+                if (!insertedSegment) {
+                    return null;
+                }
+
+                for (
+                    let segmentPosition = position;
+                    segmentPosition <= insertedSegment.nextSourcePosition;
+                    segmentPosition += 1
+                ) {
+                    seconds += insertedSegment.segmentSeconds[segmentPosition - position];
+                    if (segmentPosition === target) {
+                        return Math.round(seconds / 60);
+                    }
+                }
+
+                position = insertedSegment.nextSourcePosition;
+                continue;
+            }
+
+            if (routeStop.time === null || !Number.isFinite(routeStop.time) || routeStop.time < 0) {
                 return null;
             }
             seconds += routeStop.time;
@@ -230,15 +334,15 @@ const getDepartureValues = (timetable: TimetableEntry, date: Date, directionInde
 
 /**
  * Notes describe short turns, extensions, or alternate origins. There is no machine-readable
- * mapping from those service patterns to network stops, so their presence makes the selected
- * direction/day unsafe for a "next arrival" claim. Silently skipping one could promote a later
- * plain departure even though the annotated bus also serves the selected stop.
+ * mapping from those service patterns to network stops. Keep them as uncertainty boundaries:
+ * a reliable trip before the next boundary is safe to show, but a later plain departure must
+ * not be promoted while an annotated bus may serve the selected stop first.
  */
 const getServiceDepartures = (timetable: TimetableEntry, date: Date, directionIndex: number) => {
     const departures = getUniqueSortedDepartures(getDepartureValues(timetable, date, directionIndex));
     return {
         departures: departures.filter(({ note }) => note === null).map(({ time }) => time),
-        hasUnmappedPatterns: departures.some(({ note }) => note !== null),
+        unmappedDepartures: departures.filter(({ note }) => note !== null).map(({ time }) => time),
     };
 };
 
@@ -270,14 +374,13 @@ const calendarDayOffset = (from: Date, to: Date): number => {
     return Math.round((toDay - fromDay) / DAY_MS);
 };
 
-const estimatesForServiceDate = (
-    timetable: TimetableEntry,
-    directionIndex: number,
+const estimatesForDepartureTimes = (
+    departureTimes: string[],
     serviceDate: Date,
     travelMinutes: number,
     now: Date,
 ): EstimatedArrivalTime[] =>
-    getServiceDepartures(timetable, serviceDate, directionIndex).departures.flatMap((departureTime) => {
+    departureTimes.flatMap((departureTime) => {
         const clock = parseClock(departureTime);
         if (!clock) {
             return [];
@@ -300,6 +403,67 @@ const estimatesForServiceDate = (
             },
         ];
     });
+
+const estimatesForServiceDate = (
+    timetable: TimetableEntry,
+    directionIndex: number,
+    serviceDate: Date,
+    travelMinutes: number,
+    now: Date,
+): EstimatedArrivalTime[] =>
+    estimatesForDepartureTimes(
+        getServiceDepartures(timetable, serviceDate, directionIndex).departures,
+        serviceDate,
+        travelMinutes,
+        now,
+    );
+
+interface UnmappedDepartureBoundary {
+    at: Date;
+}
+
+const getMaximumRouteMinutes = (route: TransitRoute): number =>
+    Math.ceil(
+        route.stops.reduce(
+            (seconds, stop) =>
+                stop.time !== null && Number.isFinite(stop.time) && stop.time > 0 ? seconds + stop.time : seconds,
+            0,
+        ) / 60,
+    );
+
+const unmappedBoundariesForServiceDate = (
+    timetable: TimetableEntry,
+    directionIndex: number,
+    serviceDate: Date,
+    maximumRouteMinutes: number,
+    now: Date,
+): UnmappedDepartureBoundary[] =>
+    getServiceDepartures(timetable, serviceDate, directionIndex).unmappedDepartures.flatMap((departureTime) => {
+        const clock = parseClock(departureTime);
+        if (!clock) {
+            return [];
+        }
+
+        const departure = startOfDay(serviceDate);
+        departure.setHours(clock[0], clock[1], 0, 0);
+        const mayStillBeRunningUntil = departure.getTime() + maximumRouteMinutes * MINUTE_MS;
+        if (mayStillBeRunningUntil < now.getTime()) {
+            return [];
+        }
+
+        // A special trip can start farther along the route, so its earliest possible arrival
+        // is its published clock time. A trip already underway remains a boundary until the
+        // maximum complete route duration has elapsed.
+        return [{ at: departure.getTime() < now.getTime() ? new Date(now) : departure }];
+    });
+
+const beforeFirstUnmappedDeparture = (
+    reliable: EstimatedArrivalTime[],
+    unmapped: UnmappedDepartureBoundary[],
+): EstimatedArrivalTime[] => {
+    const firstUnmappedTime = unmapped[0]?.at.getTime() ?? Number.POSITIVE_INFINITY;
+    return reliable.filter(({ at }) => at.getTime() < firstUnmappedTime);
+};
 
 const hasAnyReliableDeparture = (timetable: TimetableEntry, directionIndex: number): boolean => {
     const scheduleKeys = [
@@ -338,8 +502,28 @@ const estimateRoute = (
     }
 
     const today = startOfDay(now);
+    const maximumRouteMinutes = Math.max(travelMinutes, getMaximumRouteMinutes(route));
     const currentServiceDates = [-1, 0].map((offset) => addDays(today, offset));
-    if (currentServiceDates.some((date) => getServiceDepartures(timetable, date, directionIndex).hasUnmappedPatterns)) {
+    const remainingCurrentService = currentServiceDates
+        .flatMap((date) => estimatesForServiceDate(timetable, directionIndex, date, travelMinutes, now))
+        .sort((a, b) => a.at.getTime() - b.at.getTime());
+    const unmappedCurrentService = currentServiceDates
+        .flatMap((date) => unmappedBoundariesForServiceDate(timetable, directionIndex, date, maximumRouteMinutes, now))
+        .sort((a, b) => a.at.getTime() - b.at.getTime());
+    const reliableCurrentService = beforeFirstUnmappedDeparture(remainingCurrentService, unmappedCurrentService);
+
+    if (reliableCurrentService.length > 0) {
+        return {
+            lineId: route.lineId,
+            route,
+            timetable,
+            directionIndex,
+            arrivals: reliableCurrentService.slice(0, MAX_ARRIVALS),
+            status: 'estimated',
+        };
+    }
+
+    if (unmappedCurrentService.length > 0) {
         return {
             lineId: route.lineId,
             route,
@@ -347,27 +531,34 @@ const estimateRoute = (
             directionIndex,
             arrivals: [],
             status: 'unavailable',
-        };
-    }
-
-    const remainingCurrentService = currentServiceDates
-        .flatMap((date) => estimatesForServiceDate(timetable, directionIndex, date, travelMinutes, now))
-        .sort((a, b) => a.at.getTime() - b.at.getTime());
-
-    if (remainingCurrentService.length > 0) {
-        return {
-            lineId: route.lineId,
-            route,
-            timetable,
-            directionIndex,
-            arrivals: remainingCurrentService.slice(0, MAX_ARRIVALS),
-            status: 'estimated',
         };
     }
 
     // Once today's useful arrivals are exhausted, show only the first one tomorrow.
     const tomorrow = addDays(today, 1);
-    if (getServiceDepartures(timetable, tomorrow, directionIndex).hasUnmappedPatterns) {
+    const nextDay = estimatesForServiceDate(timetable, directionIndex, tomorrow, travelMinutes, now).sort(
+        (a, b) => a.at.getTime() - b.at.getTime(),
+    );
+    const unmappedNextDay = unmappedBoundariesForServiceDate(
+        timetable,
+        directionIndex,
+        tomorrow,
+        maximumRouteMinutes,
+        now,
+    ).sort((a, b) => a.at.getTime() - b.at.getTime());
+    const reliableNextDay = beforeFirstUnmappedDeparture(nextDay, unmappedNextDay);
+    if (reliableNextDay[0]) {
+        return {
+            lineId: route.lineId,
+            route,
+            timetable,
+            directionIndex,
+            arrivals: [reliableNextDay[0]],
+            status: 'estimated',
+        };
+    }
+
+    if (unmappedNextDay.length > 0) {
         return {
             lineId: route.lineId,
             route,
@@ -375,19 +566,6 @@ const estimateRoute = (
             directionIndex,
             arrivals: [],
             status: 'unavailable',
-        };
-    }
-    const nextDay = estimatesForServiceDate(timetable, directionIndex, tomorrow, travelMinutes, now).sort(
-        (a, b) => a.at.getTime() - b.at.getTime(),
-    );
-    if (nextDay[0]) {
-        return {
-            lineId: route.lineId,
-            route,
-            timetable,
-            directionIndex,
-            arrivals: [nextDay[0]],
-            status: 'estimated',
         };
     }
 

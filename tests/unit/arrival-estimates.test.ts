@@ -188,6 +188,29 @@ describe('stop arrival estimates', () => {
         expect(getTravelMinutesToStop(makeIndex([missingAfter]), missingAfter, displayedStop)).toBe(12);
     });
 
+    it('splits a timed source segment around a manually inserted stop', () => {
+        const withInsertedStop: TransitRoute = {
+            ...outboundRoute,
+            stops: [
+                { ...outboundRoute.stops[0] },
+                { stopId: 'st-extension', seq: null, role: null, time: null, distance: null },
+                { ...outboundRoute.stops[1] },
+                { ...outboundRoute.stops[2] },
+            ],
+        };
+        const index = makeIndex([withInsertedStop]);
+        const insertedTravelMinutes = getTravelMinutesToStop(
+            index,
+            withInsertedStop,
+            index.stopById.get('st-extension')!,
+        );
+
+        expect(insertedTravelMinutes).not.toBeNull();
+        expect(insertedTravelMinutes).toBeGreaterThan(0);
+        expect(insertedTravelMinutes).toBeLessThan(12);
+        expect(getTravelMinutesToStop(index, withInsertedStop, displayedStop)).toBe(12);
+    });
+
     it('formats a current service that crosses midnight and labels its calendar-day offset', () => {
         const route = { ...outboundRoute, stops: outboundRoute.stops.map((stop) => ({ ...stop })) };
         route.stops[1].time = 1_020;
@@ -287,6 +310,30 @@ describe('stop arrival estimates', () => {
         expect(estimate.arrivals).toEqual([]);
     });
 
+    it('shows reliable trips that arrive before the next annotated service pattern', () => {
+        const [estimate] = getStopArrivalEstimates(
+            makeIndex([outboundRoute]),
+            [makeTimetable(['10:10', '10:30', { time: '11:00', note: 'x' }, '11:30'], [])],
+            displayedStop,
+            new Date(2026, 1, 2, 10, 0),
+        );
+
+        expect(estimate.status).toBe('estimated');
+        expect(estimate.arrivals.map(({ at }) => formatEstimatedClock(at))).toEqual(['10:22', '10:42']);
+    });
+
+    it('ignores an annotated pattern after its possible arrival has passed', () => {
+        const [estimate] = getStopArrivalEstimates(
+            makeIndex([outboundRoute]),
+            [makeTimetable([{ time: '09:30', note: 'x' }, '10:10'], [])],
+            displayedStop,
+            new Date(2026, 1, 2, 10, 0),
+        );
+
+        expect(estimate.status).toBe('estimated');
+        expect(estimate.arrivals.map(({ at }) => formatEstimatedClock(at))).toEqual(['10:22']);
+    });
+
     it('maps timetable directions by endpoints even when network route order is reversed', () => {
         const network = productionNetwork as TransitNetwork;
         const timetableFile = productionTimetables as TimetableFile;
@@ -334,6 +381,26 @@ describe('stop arrival estimates', () => {
             productionIndex,
             timetableFile.urban,
             cajavec,
+            new Date(2026, 1, 2, 12, 0),
+        ).find(({ route: candidate }) => candidate?.id === route.id);
+
+        expect(estimate?.status).toBe('estimated');
+        expect(estimate?.arrivals.length).toBeGreaterThan(0);
+    });
+
+    it('keeps line 19 timing through a manually inserted stop', () => {
+        const network = productionNetwork as TransitNetwork;
+        const timetableFile = productionTimetables as TimetableFile;
+        const productionIndex = createTransitIndex(network);
+        const sargovac = productionIndex.stopById.get('st-1509')!;
+        const route = productionIndex.routeById.get('19-centar-sargovac')!;
+
+        expect(getTravelMinutesToStop(productionIndex, route, sargovac)).toBe(27);
+
+        const estimate = getStopArrivalEstimates(
+            productionIndex,
+            timetableFile.urban,
+            sargovac,
             new Date(2026, 1, 2, 12, 0),
         ).find(({ route: candidate }) => candidate?.id === route.id);
 

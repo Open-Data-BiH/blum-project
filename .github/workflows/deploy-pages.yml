@@ -24,6 +24,8 @@ jobs:
 
             - name: Install, build, and upload site
               uses: withastro/action@v5
+              env:
+                  PUBLIC_CARTO_BASEMAP_KEY: ${{ secrets.CARTO_BASEMAP_KEY }}
               with:
                   node-version: 22
 

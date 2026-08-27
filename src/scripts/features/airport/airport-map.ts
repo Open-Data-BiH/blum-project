@@ -1,5 +1,6 @@
 import type { Map, LatLngBoundsExpression, FitBoundsOptions, PointExpression, PopupOptions } from 'leaflet';
 import { langText } from '../../core/i18n';
+import { cartoTileUrl } from '../map/base-layers';
 
 export async function initAirportMap(): Promise<void> {
     const container = document.getElementById('airport-map');
@@ -31,12 +32,12 @@ export async function initAirportMap(): Promise<void> {
         L.control.zoom({ position: 'bottomright' }).addTo(map);
 
         const tileUrls = {
-            light: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-            dark: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+            light: cartoTileUrl('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'),
+            dark: cartoTileUrl('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'),
         };
         const tileAttribution =
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-            '&copy; <a href="https://carto.com/attribution">CARTO</a>';
+            '&copy; <a href="https://carto.com/attributions">CARTO</a>';
 
         const addBaseTile = (isDark: boolean) =>
             L.tileLayer(isDark ? tileUrls.dark : tileUrls.light, {

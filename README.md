@@ -23,4 +23,8 @@ npm install
 npm run dev
 ```
 
+Za lokalni prikaz CARTO mapa kopirajte `.env.example` u `.env` i unesite
+`PUBLIC_CARTO_BASEMAP_KEY`. U produkciji se ista vrijednost postavlja kao
+repository secret `CARTO_BASEMAP_KEY`.
+
 Za provjeru projekta pokrenite `npm run ci`.

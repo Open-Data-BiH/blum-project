@@ -7,6 +7,8 @@ export default defineConfig({
     output: 'static',
     trailingSlash: 'always',
     redirects: {
+        '/guide': '/vodic-za-putnike',
+        '/banja-luka-by-bus': '/banja-luka-autobusom',
         '/map': '/mapa',
         '/lines': '/linije',
         '/pricing': '/cjenovnik',

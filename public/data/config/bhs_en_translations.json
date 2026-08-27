@@ -5,6 +5,8 @@
             "subtitle": "Urban mobility in Banja Luka",
             "nav": {
                 "home": "Home",
+                "guide": "Guide",
+                "explore": "Banja Luka by bus",
                 "map": "Map",
                 "lines": "Lines",
                 "timetable": "Timetable",
@@ -140,6 +142,8 @@
             "subtitle": "Urbana mobilnost u Banjoj Luci",
             "nav": {
                 "home": "Početna",
+                "guide": "Vodič",
+                "explore": "Banja Luka autobusom",
                 "map": "Mapa",
                 "lines": "Linije",
                 "timetable": "Red vožnje",

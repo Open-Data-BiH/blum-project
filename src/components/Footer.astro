@@ -9,7 +9,7 @@ const { locale } = Astro.props;
 const year = new Date().getFullYear();
 const baseUrl = import.meta.env.BASE_URL;
 const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
-const localizedPath = (path: 'faq' | 'about' | 'contact' | 'privacy'): string => withBase(getPagePath(path, locale));
+const localizedPath = (path: 'guide' | 'explore' | 'faq' | 'about' | 'contact' | 'privacy'): string => withBase(getPagePath(path, locale));
 ---
 
 <footer class="footer">
@@ -24,6 +24,8 @@ const localizedPath = (path: 'faq' | 'about' | 'contact' | 'privacy'): string =>
 
     <nav class="footer__nav" aria-label={locale === 'en' ? 'Footer links' : 'Linkovi u podnožju'}>
       <span class="footer__nav-heading" id="footer-nav-heading">{locale === 'en' ? 'Information' : 'Informacije'}</span>
+      <a href={localizedPath('guide')} id="footer-link-guide">{locale === 'en' ? 'Passenger guide' : 'Vodič za putnike'}</a>
+      <a href={localizedPath('explore')} id="footer-link-explore">{locale === 'en' ? 'Banja Luka by bus' : 'Banja Luka autobusom'}</a>
       <a href={localizedPath('faq')} id="footer-link-faq">FAQ</a>
       <a href={localizedPath('about')} id="footer-link-about">{locale === 'en' ? 'About' : 'O projektu'}</a>
       <a href={localizedPath('contact')} id="footer-link-contact">{locale === 'en' ? 'Contact' : 'Kontakt'}</a>

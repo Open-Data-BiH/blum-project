@@ -18,20 +18,23 @@ const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${A
 const bhsHref = locale === 'bhs' ? currentPath : switcherHref;
 const enHref = locale === 'en' ? currentPath : switcherHref;
 
+// FAQ, contact, about and privacy live in the footer; the header carries travel pages only.
 const navLinks: { key: PageKey; href: string; id: string }[] = [
   { key: 'home',    href: localizedPath('home'),    id: 'nav-home-desktop' },
+  { key: 'guide',   href: localizedPath('guide'),   id: 'nav-guide-desktop' },
   { key: 'map',     href: localizedPath('map'),     id: 'nav-map-desktop' },
   { key: 'lines',   href: localizedPath('lines'),   id: 'nav-lines-desktop' },
   { key: 'pricing', href: localizedPath('pricing'), id: 'nav-prices-desktop' },
   { key: 'updates', href: localizedPath('updates'), id: 'nav-updates-desktop' },
   { key: 'airport', href: localizedPath('airport'), id: 'nav-airport-desktop' },
-  { key: 'faq',     href: localizedPath('faq'),     id: 'nav-faq-desktop' },
-  { key: 'contact', href: localizedPath('contact'), id: 'nav-contact-desktop' },
+  { key: 'explore', href: localizedPath('explore'), id: 'nav-explore-desktop' },
 ];
 
 const navLabels: Record<PageKey, string> = locale === 'en'
   ? {
       home: 'Home',
+      guide: 'Guide',
+      explore: 'Banja Luka by bus',
       map: 'Map',
       lines: 'Lines',
       pricing: 'Tickets',
@@ -44,6 +47,8 @@ const navLabels: Record<PageKey, string> = locale === 'en'
     }
   : {
       home: 'Početna',
+      guide: 'Vodič',
+      explore: 'Banja Luka autobusom',
       map: 'Mapa',
       lines: 'Linije',
       pricing: 'Karte',

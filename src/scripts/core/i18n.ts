@@ -91,13 +91,13 @@ export const applyTranslation = (lang: Language): void => {
     );
 
     safelyUpdateText('nav-home-desktop', t.header.nav.home);
+    safelyUpdateText('nav-guide-desktop', t.header.nav.guide);
+    safelyUpdateText('nav-explore-desktop', t.header.nav.explore);
     safelyUpdateText('nav-map-desktop', t.header.nav.map);
     safelyUpdateText('nav-lines-desktop', t.header.nav.lines);
     safelyUpdateText('nav-prices-desktop', t.header.nav.prices ?? (lang === 'bhs' ? 'Karte' : 'Tickets'));
     safelyUpdateText('nav-airport-desktop', t.header.nav.airport);
     safelyUpdateText('nav-updates-desktop', t.header.nav.updates ?? (lang === 'bhs' ? 'Obavještenja' : 'Updates'));
-    safelyUpdateText('nav-faq-desktop', t.header.nav.faq);
-    safelyUpdateText('nav-contact-desktop', lang === 'bhs' ? 'Kontakt' : 'Contact');
 
     const heroDefaults =
         lang === 'bhs'
@@ -222,6 +222,8 @@ export const applyTranslation = (lang: Language): void => {
             : 'BL Prevoz is an independent platform for public transport information in Banja Luka.',
     );
     safelyUpdateText('footer-nav-heading', lang === 'bhs' ? 'Informacije' : 'Information');
+    safelyUpdateText('footer-link-guide', lang === 'bhs' ? 'Vodič za putnike' : 'Passenger guide');
+    safelyUpdateText('footer-link-explore', lang === 'bhs' ? 'Banja Luka autobusom' : 'Banja Luka by bus');
     safelyUpdateText('footer-link-about', lang === 'bhs' ? 'O projektu' : 'About');
     safelyUpdateText('footer-link-faq', 'FAQ');
     safelyUpdateText('footer-link-contact', lang === 'bhs' ? 'Kontakt' : 'Contact');

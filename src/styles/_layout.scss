@@ -337,7 +337,7 @@ header.header--scrolled {
 
 .nav.open,
 .nav.active {
-    max-height: 500px;
+    max-height: 650px;
 }
 
 .nav__list {
@@ -347,6 +347,8 @@ header.header--scrolled {
     margin: 0;
     padding: 0;
     align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .nav__item {

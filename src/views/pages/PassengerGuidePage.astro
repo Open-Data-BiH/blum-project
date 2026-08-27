@@ -1,0 +1,302 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import {
+  addHashToPath,
+  getAlternatePaths,
+  getLocalizedMeta,
+  getPagePath,
+  getSwitchLocale,
+  type Locale,
+} from '../../lib/site-config';
+import '../../styles/pages/_passenger-guide.scss';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isEnglish = locale === 'en';
+const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
+const meta = getLocalizedMeta('guide', locale);
+const alternatePaths = getAlternatePaths('guide');
+const baseUrl = import.meta.env.BASE_URL;
+const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
+
+const linesPath = withBase(getPagePath('lines', locale));
+const timetablePath = withBase(addHashToPath(getPagePath('lines', locale), 'timetable'));
+const mapPath = withBase(getPagePath('map', locale));
+const pricingPath = withBase(getPagePath('pricing', locale));
+const updatesPath = withBase(getPagePath('updates', locale));
+const faqPath = withBase(getPagePath('faq', locale));
+const contactPath = withBase(getPagePath('contact', locale));
+
+const quickSteps = [
+  {
+    title: t('Pronađite liniju', 'Find your line'),
+    text: t('Pretražite broj linije, naselje ili odredište.', 'Search by line number, neighborhood, or destination.'),
+  },
+  {
+    title: t('Provjerite smjer i dan', 'Check direction and day'),
+    text: t('Izaberite pravi smjer i red vožnje za dan putovanja.', 'Choose the correct direction and schedule for your travel day.'),
+  },
+  {
+    title: t('Otvorite stajalište', 'Open your stop'),
+    text: t('Na mapi provjerite lokaciju i sljedeće procijenjene dolaske.', 'Use the map to check its location and next estimated arrivals.'),
+  },
+  {
+    title: t('Pripremite kartu', 'Prepare your ticket'),
+    text: t('Provjerite cijenu i način kupovine prije polaska.', 'Check the price and purchase method before departure.'),
+  },
+];
+
+const jumpLinks = [
+  { href: '#planiranje', label: t('Planiranje', 'Planning') },
+  { href: '#stajaliste', label: t('Na stajalištu', 'At the stop') },
+  { href: '#autobus', label: t('Pravi autobus', 'Correct bus') },
+  { href: '#karte', label: t('Karte', 'Tickets') },
+  { href: '#dodatne-potrebe', label: t('Dodatne potrebe', 'Additional needs') },
+  { href: '#pomoc', label: t('Pomoć', 'Help') },
+];
+---
+
+<BaseLayout
+  pageKey="guide"
+  locale={locale}
+  title={meta.title}
+  description={meta.description}
+  canonicalPath={getPagePath('guide', locale)}
+  alternatePaths={alternatePaths}
+  switchLanguagePath={getPagePath('guide', getSwitchLocale(locale))}
+>
+  <PageIntro
+    title={t('Vodič za putnike', 'Passenger guide')}
+    description={t(
+      'Praktični koraci za jednostavnije planiranje i korištenje gradskog prevoza u Banjoj Luci.',
+      'Practical steps for planning and using public transport in Banja Luka with confidence.',
+    )}
+    titleId="passenger-guide-title"
+    icon="fa-solid fa-bus-simple"
+    variant="transit"
+  />
+
+  <section class="section guide-overview" aria-labelledby="guide-quick-title">
+    <div class="container guide-overview__grid">
+      <div class="guide-quick">
+        <p class="guide-eyebrow">{t('Brzi pregled', 'Quick overview')}</p>
+        <h2 id="guide-quick-title">{t('Vožnja u četiri koraka', 'Your journey in four steps')}</h2>
+        <ol class="guide-quick__list">
+          {quickSteps.map((step, index) => (
+            <li class="guide-quick__item">
+              <span class="guide-quick__number" aria-hidden="true">{index + 1}</span>
+              <div>
+                <strong>{step.title}</strong>
+                <p>{step.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <figure class="guide-photo">
+        <img
+          src={withBase('/assets/images/passenger-guide-bus.jpg')}
+          alt={t('Autobus', 'Bus')}
+          class="guide-photo__image"
+          width={1066}
+          height={800}
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
+        <figcaption class="guide-photo__caption">
+          {t('Fotografija preuzeta sa', 'Photo sourced from')}
+          {' '}
+          <a href="https://www.forum.bhbus.ba/" target="_blank" rel="noopener noreferrer">
+            {t('BHBus foruma', 'the BHBus forum')}
+          </a>.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <nav class="guide-jump" aria-label={t('Sadržaj vodiča', 'Guide contents')}>
+    <div class="container guide-jump__inner">
+      <span class="guide-jump__label">{t('Na ovoj stranici', 'On this page')}</span>
+      <div class="guide-jump__links">
+        {jumpLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+      </div>
+    </div>
+  </nav>
+
+  <section class="section guide-content">
+    <div class="container guide-content__inner">
+      <article class="guide-section" id="planiranje" aria-labelledby="guide-planning-title">
+        <div class="guide-section__icon" aria-hidden="true"><i class="fa-solid fa-route"></i></div>
+        <div class="guide-section__body">
+          <p class="guide-eyebrow">{t('Prije putovanja', 'Before your journey')}</p>
+          <h2 id="guide-planning-title">{t('Pronađite liniju i pravi smjer', 'Find your line and direction')}</h2>
+          <p>
+            {t(
+              'Na stranici Linije možete pretražiti broj linije, naselje, odredište ili prevoznika. Otvorite liniju da vidite oba smjera, redoslijed stajališta i polaske za radni dan, subotu ili nedjelju.',
+              'On the Lines page, search by line number, neighborhood, destination, or operator. Open a line to see both directions, the ordered stops, and departures for weekdays, Saturdays, or Sundays.',
+            )}
+          </p>
+          <p>
+            {t(
+              'Prije polaska provjerite i obavještenja jer radovi, događaji ili druge izmjene mogu privremeno promijeniti trasu ili red vožnje.',
+              'Before leaving, check the service updates because roadworks, events, or other changes may temporarily affect a route or timetable.',
+            )}
+          </p>
+          <div class="guide-actions">
+            <a href={linesPath} class="guide-action-link"><i class="fa-solid fa-list" aria-hidden="true"></i>{t('Pregled linija', 'Browse lines')}</a>
+            <a href={timetablePath} class="guide-action-link"><i class="fa-solid fa-clock" aria-hidden="true"></i>{t('Redovi vožnje', 'Timetables')}</a>
+            <a href={updatesPath} class="guide-action-link"><i class="fa-solid fa-bell" aria-hidden="true"></i>{t('Obavještenja', 'Updates')}</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="guide-section" id="stajaliste" aria-labelledby="guide-stop-title">
+        <div class="guide-section__icon" aria-hidden="true"><i class="fa-solid fa-location-dot"></i></div>
+        <div class="guide-section__body">
+          <p class="guide-eyebrow">{t('Na stajalištu', 'At the stop')}</p>
+          <h2 id="guide-stop-title">{t('Provjerite lokaciju i smjer', 'Confirm the location and direction')}</h2>
+          <p>
+            {t(
+              'Otvorite marker stajališta na mapi da vidite linije koje tu staju. Za istu liniju mogu biti prikazana dva reda - po jedan za svaki smjer  - zato provjerite odredište prije nego što izaberete autobus.',
+              'Open a stop marker on the map to see the lines serving it. The same line may have two rows-one for each direction-so confirm the destination before choosing your bus.',
+            )}
+          </p>
+          <aside class="guide-note" aria-label={t('Važna napomena', 'Important note')}>
+            <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+            <p>
+              {t(
+                'Vrijeme označeno znakom ~ je procjena na osnovu reda vožnje i očekivanog vremena vožnje. Nije GPS praćenje uživo, pa autobus može stići ranije ili kasnije. Preporučujemo da dođete nekoliko minuta ranije.',
+                'A time marked with ~ is estimated from the timetable and expected travel time. It is not live GPS tracking, so the bus may arrive earlier or later. We recommend arriving a few minutes early.',
+              )}
+            </p>
+          </aside>
+          <div class="guide-actions">
+            <a href={mapPath} class="guide-action-link"><i class="fa-solid fa-map" aria-hidden="true"></i>{t('Otvori mapu stajališta', 'Open the stop map')}</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="guide-section" id="autobus" aria-labelledby="guide-bus-title">
+        <div class="guide-section__icon" aria-hidden="true"><i class="fa-solid fa-bus"></i></div>
+        <div class="guide-section__body">
+          <p class="guide-eyebrow">{t('Dolazak autobusa', 'When the bus arrives')}</p>
+          <h2 id="guide-bus-title">{t('Prepoznajte pravi autobus', 'Recognize the correct bus')}</h2>
+          <p>
+            {t(
+              'Provjerite broj linije i odredište istaknuto na vozilu. Broj je najvažniji, ali odredište potvrđuje da autobus ide u željenom smjeru.',
+              'Check the line number and destination displayed on the vehicle. The number is the primary identifier, while the destination confirms that the bus is traveling in the direction you need.',
+            )}
+          </p>
+          <p>
+            {t(
+              'Nemojte se oslanjati samo na boju ili model autobusa. Vozila prikazana na fotografijama mogu se mijenjati između linija i prevoznika.',
+              'Do not rely only on the bus color or model. Vehicles shown in photographs may move between lines and operators.',
+            )}
+          </p>
+          <div class="guide-checks" role="list" aria-label={t('Šta provjeriti', 'What to check')}>
+            <span role="listitem"><i class="fa-solid fa-hashtag" aria-hidden="true"></i>{t('Broj linije', 'Line number')}</span>
+            <span role="listitem"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i>{t('Odredište i smjer', 'Destination and direction')}</span>
+            <span role="listitem"><i class="fa-solid fa-building" aria-hidden="true"></i>{t('Prevoznik', 'Operator')}</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="guide-section" id="karte" aria-labelledby="guide-tickets-title">
+        <div class="guide-section__icon" aria-hidden="true"><i class="fa-solid fa-ticket"></i></div>
+        <div class="guide-section__body">
+          <p class="guide-eyebrow">{t('Prije ulaska', 'Before boarding')}</p>
+          <h2 id="guide-tickets-title">{t('Pripremite odgovarajuću kartu', 'Prepare the correct ticket')}</h2>
+          <p>
+            {t(
+              'Pojedinačna karta može se kupiti u autobusu gotovinom kod vozača ili na prodajnim mjestima prevoznika. Dnevne i mjesečne karte kupuju se na prodajnim mjestima. Cijene i uslovi zavise od vrste karte. Sačuvajte važeću kartu do kraja vožnje.',
+              'A single ticket can be purchased on the bus with cash from the driver or at operator sales points. Day and monthly tickets are purchased at sales points. Prices and conditions depend on the ticket type. Keep a valid ticket for the entire journey.',
+            )}
+          </p>
+          <aside class="guide-note guide-note--payment" aria-label={t('Način plaćanja', 'Payment method')}>
+            <i class="fa-solid fa-credit-card" aria-hidden="true"></i>
+            <p>
+              {t(
+                'Elektronsko i beskontaktno plaćanje trenutno nije dostupno. Za kupovinu karte u autobusu pripremite gotovinu.',
+                'Electronic and contactless payment is not currently available. Have cash ready when purchasing a ticket on the bus.',
+              )}
+            </p>
+          </aside>
+          <div class="guide-ticket-grid">
+            <div>
+              <i class="fa-solid fa-money-bill" aria-hidden="true"></i>
+              <strong>{t('U autobusu', 'On the bus')}</strong>
+              <span>{t('Pripremite gotovinu za pojedinačnu kartu.', 'Have cash ready for a single ticket.')}</span>
+            </div>
+            <div>
+              <i class="fa-solid fa-store" aria-hidden="true"></i>
+              <strong>{t('Prodajna mjesta', 'Sales points')}</strong>
+              <span>{t('Za dnevne, mjesečne i druge vrste karata.', 'For day, monthly, and other ticket types.')}</span>
+            </div>
+            <div>
+              <i class="fa-solid fa-ban" aria-hidden="true"></i>
+              <strong>{t('Samo gotovina', 'Cash only')}</strong>
+              <span>{t('Kartice, telefoni i satovi trenutno nisu podržani.', 'Cards, phones, and watches are not currently supported.')}</span>
+            </div>
+          </div>
+          <div class="guide-actions">
+            <a href={pricingPath} class="guide-action-link"><i class="fa-solid fa-tag" aria-hidden="true"></i>{t('Cijene i vrste karata', 'Ticket types and prices')}</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="guide-section" id="dodatne-potrebe" aria-labelledby="guide-access-title">
+        <div class="guide-section__icon" aria-hidden="true"><i class="fa-solid fa-universal-access"></i></div>
+        <div class="guide-section__body">
+          <p class="guide-eyebrow">{t('Planirajte unaprijed', 'Plan ahead')}</p>
+          <h2 id="guide-access-title">{t('Pristupačnost i dodatne potrebe', 'Accessibility and additional needs')}</h2>
+          <p>
+            {t(
+              'BL Prevoz trenutno nema potpune, provjerene podatke o pristupačnosti svakog vozila. Ako putujete s invalidskim kolicima, dječijim kolicima, većim prtljagom, biciklom ili kućnim ljubimcem, prije polaska provjerite pravila i dostupnost direktno kod prevoznika.',
+              'BL Prevoz does not yet have complete, verified accessibility data for every vehicle. If you are traveling with a wheelchair, pram, large luggage, bicycle, or pet, check the rules and availability directly with the operator before departure.',
+            )}
+          </p>
+          <div class="guide-actions">
+            <a href={contactPath} class="guide-action-link"><i class="fa-solid fa-address-book" aria-hidden="true"></i>{t('Kontakti prevoznika', 'Operator contacts')}</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="guide-section guide-section--last" id="pomoc" aria-labelledby="guide-help-title">
+        <div class="guide-section__icon" aria-hidden="true"><i class="fa-solid fa-circle-question"></i></div>
+        <div class="guide-section__body">
+          <p class="guide-eyebrow">{t('Ako nešto nije jasno', 'If you need more help')}</p>
+          <h2 id="guide-help-title">{t('Pitanja, izmjene i kontakti', 'Questions, changes, and contacts')}</h2>
+          <p>
+            {t(
+              'Provjerite česta pitanja i aktuelna obavještenja. Za izgubljene stvari, pravila prevoza ili informacije koje nisu dostupne na stranici obratite se odgovarajućem prevozniku. Ako primijetite grešku na BL Prevozu, javite nam se putem kontakt stranice.',
+              'Check the frequently asked questions and current service updates. For lost property, travel rules, or information unavailable on the site, contact the relevant operator. If you notice an error on BL Prevoz, let us know through the contact page.',
+            )}
+          </p>
+          <div class="guide-help-grid">
+            <a href={faqPath}>
+              <i class="fa-solid fa-comments" aria-hidden="true"></i>
+              <strong>{t('Česta pitanja', 'Frequently asked questions')}</strong>
+              <span>{t('Brzi odgovori o linijama i kartama.', 'Quick answers about lines and tickets.')}</span>
+            </a>
+            <a href={updatesPath}>
+              <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+              <strong>{t('Obavještenja', 'Service updates')}</strong>
+              <span>{t('Privremene izmjene trasa i reda vožnje.', 'Temporary route and timetable changes.')}</span>
+            </a>
+            <a href={contactPath}>
+              <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+              <strong>{t('Kontakti', 'Contacts')}</strong>
+              <span>{t('Prevoznici, nadležne službe i BL Prevoz.', 'Operators, authorities, and BL Prevoz.')}</span>
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,575 @@
+.explore-lead {
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.explore-lead__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(19rem, 0.75fr);
+    align-items: stretch;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    max-width: 76rem;
+}
+
+.explore-lead__photo {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    margin: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface-secondary);
+    box-shadow: var(--shadow-md);
+}
+
+.explore-lead__photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 26rem;
+    object-fit: cover;
+}
+
+/* Photo credit sits over the image so adding it does not change any media box height. */
+.explore-credit {
+    position: absolute;
+    right: var(--space-2);
+    bottom: var(--space-2);
+    max-width: calc(100% - var(--space-4));
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-sm);
+    background-color: rgb(0 0 0 / 62%);
+    color: #fff;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-snug);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.explore-lead__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    border: 1px solid var(--color-primary-border);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-primary-surface);
+}
+
+.explore-eyebrow {
+    margin: 0 0 var(--space-2);
+    color: var(--color-primary-hover);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.07em;
+    line-height: var(--line-height-snug);
+    text-transform: uppercase;
+}
+
+.explore-lead__content h2,
+.explore-section-heading h2,
+.explore-plan h2 {
+    color: var(--color-text-primary);
+    letter-spacing: var(--tracking-tight);
+}
+
+.explore-lead__content h2 {
+    margin: 0 0 var(--space-4);
+    font-size: clamp(1.5rem, 2.8vw, 2rem);
+    line-height: var(--line-height-tight);
+}
+
+.explore-lead__content > p:not(.explore-eyebrow) {
+    margin: 0;
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+}
+
+.explore-route-pills {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+    margin-top: var(--space-5);
+    padding: 0;
+    list-style: none;
+}
+
+.explore-route-pill {
+    display: flex;
+    min-width: 0;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-primary-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+}
+
+/* An odd final pill would sit alone at half width; the line list needs the full row. */
+.explore-route-pill:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+}
+
+.explore-route-pill > i {
+    display: grid;
+    width: 1.75rem;
+    height: 1.75rem;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    font-size: 0.72rem;
+}
+
+.explore-route-pill__text {
+    display: grid;
+    min-width: 0;
+}
+
+.explore-route-pill strong {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-snug);
+}
+
+.explore-route-pill small {
+    color: var(--color-text-secondary);
+    font-size: 0.7rem;
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-snug);
+}
+
+.explore-primary-link {
+    display: inline-flex;
+    min-height: var(--touch-target);
+    align-items: center;
+    align-self: flex-start;
+    gap: var(--space-2);
+    margin-top: var(--space-5);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-control);
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+}
+
+.explore-primary-link:hover {
+    background-color: var(--color-primary-hover);
+    color: var(--color-on-primary);
+    text-decoration: none;
+}
+
+.explore-primary-link:focus-visible,
+.destination-card__link:focus-visible,
+.destination-card__line-links a:focus-visible,
+.explore-plan__links a:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+}
+
+.explore-destinations {
+    padding-top: clamp(2.5rem, 5vw, 4.5rem);
+    background-color: var(--color-surface-secondary);
+}
+
+.explore-section-heading {
+    max-width: 48rem;
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.explore-section-heading h2 {
+    margin: 0 0 var(--space-3);
+    font-size: clamp(1.65rem, 3vw, 2.25rem);
+}
+
+.explore-section-heading > p:not(.explore-eyebrow) {
+    margin: 0;
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+}
+
+.destination-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.25rem, 3vw, 2rem);
+}
+
+.destination-card {
+    display: flex;
+    min-width: 0;
+    overflow: hidden;
+    flex-direction: column;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.destination-card--wide {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 0.95fr);
+}
+
+.destination-card__media {
+    position: relative;
+    min-height: 14rem;
+    margin: 0;
+    overflow: hidden;
+    background-color: var(--color-surface-tertiary);
+}
+
+.destination-card__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    transition: transform var(--transition-slow) var(--ease-out);
+}
+
+.destination-card:hover .destination-card__media img {
+    transform: scale(1.015);
+}
+
+.destination-card--wide .destination-card__media img {
+    aspect-ratio: auto;
+}
+
+.destination-card__media--pair {
+    display: grid;
+    aspect-ratio: 16 / 9;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2px;
+}
+
+.destination-card__shot {
+    position: relative;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.destination-card__media--pair img {
+    aspect-ratio: auto;
+}
+
+.destination-card__body {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.destination-card__topline {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+}
+
+.destination-card__line,
+.destination-card__service {
+    display: inline-flex;
+    min-height: 2rem;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 3px var(--space-3) 3px 3px;
+    border: 1px solid var(--color-primary-border);
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary-surface);
+    color: var(--color-primary-hover);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+}
+
+.destination-card__line > span,
+.destination-card__service > i {
+    display: grid;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    place-items: center;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    font-size: 0.7rem;
+}
+
+.destination-card__area {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+}
+
+.destination-card h3 {
+    margin: 0 0 var(--space-3);
+    color: var(--color-text-primary);
+    font-size: clamp(1.3rem, 2.3vw, 1.7rem);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--tracking-tight);
+}
+
+.destination-card__body > p {
+    margin: 0 0 var(--space-4);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+}
+
+.destination-card__places {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2) var(--space-4);
+    width: 100%;
+    margin: 0 0 var(--space-5);
+    padding: 0;
+    list-style: none;
+}
+
+.destination-card__places li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
+}
+
+/* These links carry the heading/list colour, so the underline is what marks them as links. */
+.destination-card h3 a,
+.destination-card__places a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--color-primary-border);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+}
+
+.destination-card h3 a:hover,
+.destination-card__places a:hover {
+    color: var(--color-primary-hover);
+    text-decoration-color: currentcolor;
+}
+
+.destination-card h3 a i,
+.destination-card__places a i {
+    margin-top: 0;
+    margin-left: 0.4em;
+    color: var(--color-text-muted);
+    font-size: 0.66em;
+    text-decoration: none;
+}
+
+.destination-card__places i {
+    margin-top: 0.25em;
+    color: var(--color-primary-hover);
+    font-size: 0.72rem;
+}
+
+.destination-card__trip {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    gap: var(--space-3);
+    margin: auto 0 0;
+    padding: var(--space-4) 0 0;
+    border-top: 1px solid var(--color-border);
+}
+
+.destination-card__trip > div {
+    min-width: 0;
+}
+
+.destination-card__trip dt {
+    margin-bottom: 2px;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+}
+
+.destination-card__trip dd {
+    margin: 0;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-normal);
+}
+
+.destination-card__link {
+    display: inline-flex;
+    min-height: var(--touch-target);
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    color: var(--color-primary-hover);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    text-decoration: none;
+}
+
+.destination-card__link:hover {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.destination-card__link i {
+    font-size: 0.8em;
+    transition: transform var(--transition-fast) var(--ease-out);
+}
+
+.destination-card__link:hover i {
+    transform: translateX(3px);
+}
+
+.destination-card__line-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+}
+
+.destination-card__line-links a {
+    display: grid;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    place-items: center;
+    padding-inline: var(--space-2);
+    border: 1px solid var(--color-primary-border);
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary-surface);
+    color: var(--color-primary-hover);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    text-decoration: none;
+}
+
+.destination-card__line-links a:hover {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    text-decoration: none;
+}
+
+.explore-plan {
+    padding-block: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.explore-plan__card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    max-width: 68rem;
+    padding-block: clamp(1.5rem, 3vw, 2.5rem);
+    border-block: 1px solid var(--color-border);
+}
+
+.explore-plan h2 {
+    margin: 0 0 var(--space-3);
+    font-size: clamp(1.45rem, 2.7vw, 2rem);
+}
+
+.explore-plan__card > div > p:not(.explore-eyebrow) {
+    max-width: 62ch;
+    margin: 0;
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+}
+
+.explore-plan__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-2);
+}
+
+.explore-plan__links a {
+    display: inline-flex;
+    min-height: var(--touch-target);
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-border-control);
+    border-radius: var(--radius-control);
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+}
+
+.explore-plan__links a:hover {
+    border-color: var(--color-primary-border);
+    background-color: var(--color-primary-surface);
+    color: var(--color-primary-hover);
+    text-decoration: none;
+}
+
+@media (max-width: 900px) {
+    .explore-lead__grid,
+    .destination-card--wide {
+        grid-template-columns: 1fr;
+    }
+
+    .explore-lead__photo img {
+        height: auto;
+        min-height: 0;
+        aspect-ratio: 16 / 9;
+    }
+
+    .destination-card--wide .destination-card__media img {
+        aspect-ratio: 16 / 9;
+    }
+
+    .explore-plan__card {
+        grid-template-columns: 1fr;
+    }
+
+    .explore-plan__links {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 680px) {
+    .destination-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .destination-card--wide {
+        grid-column: auto;
+    }
+
+    .destination-card__places,
+    .destination-card__trip {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .explore-route-pills {
+        grid-template-columns: 1fr;
+    }
+
+    .explore-primary-link {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .explore-plan__links {
+        flex-direction: column;
+    }
+
+    .explore-plan__links a {
+        width: 100%;
+        justify-content: center;
+    }
+}

@@ -2,6 +2,8 @@ export type Locale = 'bhs' | 'en';
 export type HtmlLang = 'bs' | 'en';
 export type PageKey =
     | 'home'
+    | 'guide'
+    | 'explore'
     | 'map'
     | 'lines'
     | 'pricing'
@@ -25,6 +27,14 @@ export const PAGE_PATHS: Record<PageKey, Record<Locale, string>> = {
     home: {
         bhs: '/',
         en: '/en/',
+    },
+    guide: {
+        bhs: '/vodic-za-putnike/',
+        en: '/en/passenger-guide/',
+    },
+    explore: {
+        bhs: '/banja-luka-autobusom/',
+        en: '/en/banja-luka-by-bus/',
     },
     map: {
         bhs: '/mapa/',
@@ -73,6 +83,26 @@ export const PAGE_META: Record<PageKey, { title: LocalizedText; description: Loc
         description: {
             bhs: 'Red vožnje, linije i mapa javnog prevoza u Banjoj Luci. Polasci, stajališta i informacije o prevozu do aerodroma.',
             en: 'Bus schedules, routes, and map for public transport in Banja Luka. Departures, stops, and airport shuttle information.',
+        },
+    },
+    guide: {
+        title: {
+            bhs: 'Vodič za putnike | BL Prevoz',
+            en: 'Passenger Guide | BL Prevoz',
+        },
+        description: {
+            bhs: 'Kako planirati vožnju autobusom u Banjoj Luci: izbor linije i smjera, stajališta, procijenjeni dolasci, karte i korisni kontakti.',
+            en: 'How to plan a bus journey in Banja Luka: choosing a line and direction, stops, estimated arrivals, tickets, and useful contacts.',
+        },
+    },
+    explore: {
+        title: {
+            bhs: 'Banja Luka autobusom | BL Prevoz',
+            en: 'Banja Luka by Bus | BL Prevoz',
+        },
+        description: {
+            bhs: 'Do Trapista, Banj brda, plaže Vrućica, Univerzitetskog kampusa i Stare Ade stiže se gradskim autobusom. Linije, smjerovi i stajališta na jednom mjestu.',
+            en: 'Trapisti, Banj Hill, Vrućica Beach, the University Campus and Stara Ada are all reachable by city bus. Lines, directions and stops in one place.',
         },
     },
     map: {
@@ -173,6 +203,8 @@ export const LINE_DETAIL_PATH_PREFIX: Record<Locale, string> = {
 };
 
 export const LEGACY_REDIRECTS = {
+    '/guide': PAGE_PATHS.guide.bhs,
+    '/banja-luka-by-bus': PAGE_PATHS.explore.bhs,
     '/map': PAGE_PATHS.map.bhs,
     '/lines': PAGE_PATHS.lines.bhs,
     '/lines/[lineId]': '/linija/[lineId]',

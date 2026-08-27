@@ -253,21 +253,30 @@ header.header--scrolled {
 
 .menu-toggle {
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    align-items: center;
+    justify-content: center;
     width: 2rem;
     height: 2rem;
     background: transparent;
+    color: var(--color-text-secondary);
     border: none;
     cursor: pointer;
     padding: 0;
     position: relative;
-    border-radius: var(--radius-sm);
-    transition: background-color var(--transition-fast) var(--ease-out);
+    border-radius: var(--radius-full);
+    transition:
+        background-color var(--transition-fast) var(--ease-out),
+        color var(--transition-fast) var(--ease-out);
 }
 
 .menu-toggle:hover {
     background: var(--color-surface-tertiary);
+    color: var(--color-text-primary);
+}
+
+.menu-toggle.active {
+    background: var(--color-primary-surface);
+    color: var(--color-primary-hover);
 }
 
 .menu-toggle:focus-visible {
@@ -275,37 +284,36 @@ header.header--scrolled {
 }
 
 .menu-toggle span {
-    width: 100%;
+    width: 1.25rem;
     height: 2px;
-    background-color: var(--color-text-primary);
+    background-color: currentColor;
     border-radius: var(--radius-full);
     transition:
         top var(--transition-normal) var(--ease-out),
-        bottom var(--transition-normal) var(--ease-out),
         opacity var(--transition-fast) var(--ease-out),
         transform var(--transition-normal) var(--ease-out);
     transform-origin: center;
     display: block;
     position: absolute;
-    left: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .menu-toggle span:first-child {
-    top: 6px;
+    top: calc(50% - 6px);
 }
 
 .menu-toggle span:nth-child(2) {
     top: 50%;
-    transform: translateY(-50%);
 }
 
 .menu-toggle span:nth-child(3) {
-    bottom: 6px;
+    top: calc(50% + 6px);
 }
 
 .menu-toggle.active span:first-child {
     top: 50%;
-    transform: translateY(-50%) rotate(45deg);
+    transform: translate(-50%, -50%) rotate(45deg);
 }
 
 .menu-toggle.active span:nth-child(2) {
@@ -313,8 +321,8 @@ header.header--scrolled {
 }
 
 .menu-toggle.active span:nth-child(3) {
-    bottom: 50%;
-    transform: translateY(50%) rotate(-45deg);
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 .nav {

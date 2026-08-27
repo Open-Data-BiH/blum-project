@@ -96,6 +96,7 @@
                 "title": "Useful Contacts",
                 "email": "Email:",
                 "phone": "Phone:",
+                "address": "Address:",
                 "timetableInfo": "Timetable Information:"
             },
             "prices": {
@@ -230,6 +231,7 @@
                 "title": "Korisni kontakti",
                 "email": "Email:",
                 "phone": "Telefon:",
+                "address": "Adresa:",
                 "timetableInfo": "Informacije o redovima vožnje:"
             },
             "prices": {

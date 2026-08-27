@@ -16,6 +16,7 @@
             },
             "phoneDisplay": "+387 51 498-480",
             "email": "javni.prevoz@banjaluka.rs.ba",
+            "address": "Trg srpskih vladara 1, Banja Luka",
             "website": "https://www.banjaluka.rs.ba/gradjani/javni-prevoz/",
             "color": "#1a5276"
         },
@@ -35,6 +36,7 @@
             },
             "phoneDisplay": "+387 51 244-547",
             "email": "inspekcija@banjaluka.rs.ba",
+            "address": "Trg srpskih vladara 1, Banja Luka",
             "website": "https://www.banjaluka.rs.ba/gradska-uprava/odjeljenje-za-inspekcijske-poslove/",
             "color": "#1a5276"
         },
@@ -53,6 +55,7 @@
                 "en": "Transport Company"
             },
             "phoneDisplay": "+387 51 215-555",
+            "address": "Kralja Aleksandra I Karađorđevića bb, Banja Luka",
             "website": "https://www.autoprevoz-gs.com/",
             "color": "#ed1d22"
         },
@@ -71,6 +74,7 @@
                 "en": "Transport Company"
             },
             "phoneDisplay": "+387 51 234-567",
+            "address": "Vidovdanska bb, Banja Luka",
             "website": "https://pavlovic-turs.com/gradski-prigradski-prevoz/",
             "color": "#ff9f43"
         },
@@ -89,6 +93,7 @@
                 "en": "Transport Company"
             },
             "phoneDisplay": "+387 51 215-725",
+            "address": "Bulevar cara Dušana 1, Banja Luka",
             "website": "https://novisajt.bocactours.com/gradski-saobracaj/",
             "color": "#00adef"
         },
@@ -107,6 +112,7 @@
                 "en": "Transport Company"
             },
             "phoneDisplay": "+387 51 456-789",
+            "address": "Vidovdanska bb (Poslovni centar Krajina), Banja Luka",
             "website": null,
             "color": "#e05e5e"
         },
@@ -125,6 +131,7 @@
                 "en": "Transport Company"
             },
             "phoneDisplay": "+387 51 567-890",
+            "address": "Vidovdanska bb, Banja Luka",
             "website": "https://raleturs.com/",
             "color": "#7fd9e0"
         }

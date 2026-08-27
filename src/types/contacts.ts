@@ -10,6 +10,7 @@ export interface Contact {
     type: LocalizedString;
     phoneDisplay?: string | null;
     email?: string | null;
+    address: string;
     website?: string | null;
     color?: string | null;
 }

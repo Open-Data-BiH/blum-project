@@ -6,11 +6,11 @@ import type { ContactsFile, Contact } from '../../types/contacts';
 
 interface Translations {
   bhs: {
-    sections: { contact: { phone?: string; email?: string } };
+    sections: { contact: { phone?: string; email?: string; address?: string } };
     ui: { visit?: string };
   };
   en: {
-    sections: { contact: { phone?: string; email?: string } };
+    sections: { contact: { phone?: string; email?: string; address?: string } };
     ui: { visit?: string };
   };
 }
@@ -28,11 +28,13 @@ const labels = {
   bhs: {
     phone: translations.bhs.sections.contact.phone ?? 'Telefon:',
     email: translations.bhs.sections.contact.email ?? 'Email:',
+    address: translations.bhs.sections.contact.address ?? 'Adresa:',
     visit: translations.bhs.ui.visit ?? 'Posjetite web stranicu',
   },
   en: {
     phone: translations.en.sections.contact.phone ?? 'Phone:',
     email: translations.en.sections.contact.email ?? 'Email:',
+    address: translations.en.sections.contact.address ?? 'Address:',
     visit: translations.en.ui.visit ?? 'Visit website',
   },
 };
@@ -89,6 +91,14 @@ const activeLabels = labels[locale];
                   <span class="contact-detail__value">{contact.email}</span>
                 </a>
               )}
+
+              <address
+                class="contact-detail contact-detail--address"
+                aria-label={`${activeLabels.address} ${contact.address}`}
+              >
+                <i class="fas fa-location-dot" aria-hidden="true"></i>
+                <span class="contact-detail__value">{contact.address}</span>
+              </address>
             </div>
 
             <div class="contact-card__footer">
@@ -143,6 +153,14 @@ const activeLabels = labels[locale];
                   <span class="contact-detail__value">{contact.email}</span>
                 </a>
               )}
+
+              <address
+                class="contact-detail contact-detail--address"
+                aria-label={`${activeLabels.address} ${contact.address}`}
+              >
+                <i class="fas fa-location-dot" aria-hidden="true"></i>
+                <span class="contact-detail__value">{contact.address}</span>
+              </address>
             </div>
 
             <div class="contact-card__footer">

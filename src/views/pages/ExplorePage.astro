@@ -33,15 +33,25 @@ const banjBusUrl = isEnglish
 
 const universityUrl = 'https://www.unibl.org/en/university/about-the-university';
 
+// One pictogram per destination, used by both the pills and the card toplines so the two
+// cannot drift apart.
+const destinationIcons = {
+  trapisti: 'fa-church',
+  vrucica: 'fa-umbrella-beach',
+  ada: 'fa-utensils',
+  banjBrdo: 'fa-monument',
+  kampus: 'fa-graduation-cap',
+} as const;
+
 // The badge names the destination; the line numbers sit under it because Banj brdo has no
 // number at all and Kampus is served by several.
 const destinationPills = [
-  { icon: 'fa-church', label: t('Trapisti', 'Trapisti'), service: t('Linija 1', 'Line 1') },
-  { icon: 'fa-umbrella-beach', label: t('Vrućica', 'Vrućica'), service: t('Linija 9', 'Line 9') },
-  { icon: 'fa-utensils', label: t('Stara Ada', 'Stara Ada'), service: t('Linija 20', 'Line 20') },
-  { icon: 'fa-monument', label: t('Banj brdo', 'Banj Hill'), service: 'Banj Bus' },
+  { icon: destinationIcons.trapisti, label: t('Trapisti', 'Trapisti'), service: t('Linija 1', 'Line 1') },
+  { icon: destinationIcons.vrucica, label: t('Vrućica', 'Vrućica'), service: t('Linija 9', 'Line 9') },
+  { icon: destinationIcons.ada, label: t('Stara Ada', 'Stara Ada'), service: t('Linija 20', 'Line 20') },
+  { icon: destinationIcons.banjBrdo, label: t('Banj brdo', 'Banj Hill'), service: 'Banj Bus' },
   {
-    icon: 'fa-graduation-cap',
+    icon: destinationIcons.kampus,
     label: t('Kampus', 'Campus'),
     service: t('Linije 20, 14B, 14, 9B', 'Lines 20, 14B, 14, 9B'),
   },
@@ -49,20 +59,42 @@ const destinationPills = [
 
 interface TrapistiPlace {
   label: string;
+  note: string;
   href?: string;
 }
 
 const trapistiPlaces: TrapistiPlace[] = [
   {
     label: t('Samostan Marija Zvijezda', 'Marija Zvijezda Monastery'),
+    note: t(
+      'Samostan trapističkog reda i crkva uz njega. Ovdje je nastao trapist sir.',
+      'A Trappist monastery with its church. Trappist cheese was created here.',
+    ),
     href: 'https://www.biskupija-banjaluka.org/vijesti-2018-godina/marija-zvijezda-i-trapisti/',
   },
-  { label: t('Trim staza u Trapistima', 'Trapisti fitness trail') },
+  {
+    label: t('Trim staza u Trapistima', 'Trapisti fitness trail'),
+    note: t(
+      'Uređene staze za šetnju i trčanje, koje se nastavljaju sve do Banje Slatine.',
+      'Maintained walking and running trails that continue all the way to Banja Slatina.',
+    ),
+  },
   {
     label: t('Stara hidrocentrala', 'Old hydroelectric plant'),
+    note: t(
+      'Napuštena hidrocentrala s kraja 19. vijeka, danas tehnički spomenik uz Vrbas.',
+      'A disused late-19th-century power plant, today a technical monument beside the Vrbas.',
+    ),
     href: 'https://sr.wikipedia.org/wiki/Стара_хидроцентрала_у_Делибашином_селу',
   },
-  { label: t('Banjalučka pivara', 'Banja Luka Brewery'), href: 'https://www.banjaluckapivara.com/' },
+  {
+    label: t('Banjalučka pivara', 'Banja Luka Brewery'),
+    note: t(
+      'Osnovali su je trapisti 1873. i od tada radi na istom mjestu.',
+      'Founded by the Trappists in 1873 and still working on the same spot.',
+    ),
+    href: 'https://www.banjaluckapivara.com/',
+  },
 ];
 
 // Every photograph on this page is third-party material and must stay credited next to it.
@@ -104,7 +136,7 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
           decoding="async"
           fetchpriority="high"
         />
-        <figcaption class="explore-credit">{credit('Tomaš Damjanović')}</figcaption>
+        <figcaption class="explore-credit">{credit('Tomas Damjanović')}</figcaption>
       </figure>
 
       <div class="explore-lead__content">
@@ -164,30 +196,46 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
             <h3>{t('Trapisti i samostan Marija Zvijezda', 'Trapisti and the Marija Zvijezda Monastery')}</h3>
             <p>
               {t(
-                'Jednom vožnjom stižete do nekoliko mjesta koja se lako obiđu pješke. Siđite kod Pivare, a put između njih pogledajte na mapi.',
-                'A single ride puts you within walking distance of several places. Get off at Pivara and check the walk between them on the map.',
+                'Trapistički monasi naselili su ovaj kraj krajem 19. vijeka i po njima je dobio ime. Ono što su za sobom ostavili obiđe se u jednoj šetnji uz Vrbas.',
+                'The Trappist monks settled here in the late 19th century and the area still carries their name. What they left behind fits into a single walk along the Vrbas.',
               )}
             </p>
             <ul class="destination-card__places">
               {trapistiPlaces.map((place) => (
                 <li>
                   <i class="fa-solid fa-check" aria-hidden="true"></i>
-                  {place.href ? (
-                    <a href={place.href} target="_blank" rel="noopener noreferrer">
-                      {place.label}
-                      <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
-                    </a>
-                  ) : (
-                    place.label
-                  )}
+                  <span>
+                    <strong>
+                      {place.href ? (
+                        <a href={place.href} target="_blank" rel="noopener noreferrer">
+                          {place.label}
+                          <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                        </a>
+                      ) : (
+                        place.label
+                      )}
+                    </strong>
+                    <small>{place.note}</small>
+                  </span>
                 </li>
               ))}
             </ul>
-            <dl class="destination-card__trip">
-              <div><dt>{t('Smjer', 'Direction')}</dt><dd>{t('Mađir', 'Mađir')}</dd></div>
-              <div><dt>{t('Stajalište', 'Stop')}</dt><dd>{t('Pivara', 'Pivara')}</dd></div>
-            </dl>
-            <a href={linePath('1')} class="destination-card__link">{t('Otvori liniju 1', 'Open line 1')}<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            <div class="destination-card__transit">
+              <p class="destination-card__transit-title">
+                <i class="fa-solid fa-bus" aria-hidden="true"></i>{t('Kako doći', 'Getting there')}
+              </p>
+              <dl class="destination-card__trip">
+                <div><dt>{t('Smjer', 'Direction')}</dt><dd>{t('Mađir', 'Mađir')}</dd></div>
+                <div><dt>{t('Stajalište', 'Stop')}</dt><dd>{t('Pivara', 'Pivara')}</dd></div>
+              </dl>
+              <p class="destination-card__transit-note">
+                {t(
+                  'Siđite kod Pivare, a put između lokacija pogledajte na mapi.',
+                  'Get off at Pivara and check the walk between the locations on the map.',
+                )}
+              </p>
+              <a href={linePath('1')} class="destination-card__link">{t('Otvori liniju 1', 'Open line 1')}<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            </div>
           </div>
         </article>
 
@@ -205,23 +253,34 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
           </figure>
           <div class="destination-card__body">
             <div class="destination-card__topline">
-              <span class="destination-card__service"><i class="fa-solid fa-mountain" aria-hidden="true"></i>Banj Bus</span>
+              <span class="destination-card__service"><i class:list={['fa-solid', destinationIcons.banjBrdo]} aria-hidden="true"></i>Banj Bus</span>
               <span class="destination-card__area">{t('Izletište', 'Day trip')}</span>
             </div>
             <h3>{t('Banj brdo', 'Banj Hill')}</h3>
             <p>
               {t(
-                'Banj Bus je panoramska linija koja saobraća između TO Bema i Banj brda. Vozi sezonski, pa dane i polaske provjerite prije nego krenete.',
-                'Banj Bus is a panoramic service running between TO Bema and Banj Hill. It runs seasonally, so check the days and departures before you set off.',
+                'Šumovito brdo iznad grada. Na vrhu su Spomenik palim borcima Krajine, rad Antuna Augustinčića, vidikovac nad Banjom Lukom i dolinom Vrbasa, te staze za šetnju i planinarenje.',
+                'A wooded hill above the city. At the top are the memorial to the fallen fighters of Krajina by Antun Augustinčić, a viewpoint over Banja Luka and the Vrbas valley, and trails for walking and hiking.',
               )}
             </p>
-            <dl class="destination-card__trip">
-              <div><dt>{t('Polazak', 'Board at')}</dt><dd>TO Bema</dd></div>
-              <div><dt>{t('Vozi', 'Runs')}</dt><dd>{t('sezonski', 'seasonally')}</dd></div>
-            </dl>
-            <a href={banjBusUrl} class="destination-card__link" target="_blank" rel="noopener noreferrer">
-              {t('Provjeri Banj Bus', 'Check Banj Bus')}<i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
-            </a>
+            <div class="destination-card__transit">
+              <p class="destination-card__transit-title">
+                <i class="fa-solid fa-bus" aria-hidden="true"></i>{t('Kako doći', 'Getting there')}
+              </p>
+              <dl class="destination-card__trip">
+                <div><dt>{t('Polazak', 'Board at')}</dt><dd>TO Bema</dd></div>
+                <div><dt>{t('Vozi', 'Runs')}</dt><dd>{t('sezonski', 'seasonally')}</dd></div>
+              </dl>
+              <p class="destination-card__transit-note">
+                {t(
+                  'Do Banj brda ne vozi gradska linija, nego poseban Banj Bus. Dane i polaske provjerite prije nego krenete. Do vrha se može i pješke, stazama iz grada.',
+                  'Banj Hill is served by the separate Banj Bus, not a city line. Check the days and departures before you set off, or walk up on the trails from town.',
+                )}
+              </p>
+              <a href={banjBusUrl} class="destination-card__link" target="_blank" rel="noopener noreferrer">
+                {t('Provjeri Banj Bus', 'Check Banj Bus')}<i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+              </a>
+            </div>
           </div>
         </article>
 
@@ -243,12 +302,22 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
               <span class="destination-card__area">{t('Srpske Toplice', 'Srpske Toplice')}</span>
             </div>
             <h3>{t('Plaža Vrućica', 'Vrućica Beach')}</h3>
-            <p>{t('Gradska plaža na Vrbasu, taman za šetnju uz vodu i predah od grada.', 'The city beach on the Vrbas, good for a walk by the water and a break from town.')}</p>
-            <dl class="destination-card__trip">
-              <div><dt>{t('Smjer', 'Direction')}</dt><dd>{t('Desna Novoselija', 'Desna Novoselija')}</dd></div>
-              <div><dt>{t('Stajalište', 'Stop')}</dt><dd>{t('MZ Srpske Toplice', 'MZ Srpske Toplice')}</dd></div>
-            </dl>
-            <a href={linePath('9')} class="destination-card__link">{t('Otvori liniju 9', 'Open line 9')}<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            <p>
+              {t(
+                'Gradska plaža na Vrbasu, u kraju poznatom po toplim termomineralnim izvorima. Ljeti je predah od vrućine, a zbog tople vode Srpske Toplice su živo mjesto i van sezone.',
+                'The city beach on the Vrbas, in a part of town known for its warm thermal-mineral springs. A break from the summer heat, and thanks to the warm water Srpske Toplice stays busy out of season too.',
+              )}
+            </p>
+            <div class="destination-card__transit">
+              <p class="destination-card__transit-title">
+                <i class="fa-solid fa-bus" aria-hidden="true"></i>{t('Kako doći', 'Getting there')}
+              </p>
+              <dl class="destination-card__trip">
+                <div><dt>{t('Smjer', 'Direction')}</dt><dd>{t('Desna Novoselija', 'Desna Novoselija')}</dd></div>
+                <div><dt>{t('Stajalište', 'Stop')}</dt><dd>{t('MZ Srpske Toplice', 'MZ Srpske Toplice')}</dd></div>
+              </dl>
+              <a href={linePath('9')} class="destination-card__link">{t('Otvori liniju 9', 'Open line 9')}<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            </div>
           </div>
         </article>
 
@@ -280,12 +349,12 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
                 loading="lazy"
                 decoding="async"
               />
-              <figcaption class="explore-credit">{credit('mondo.ba')}</figcaption>
+              <figcaption class="explore-credit">{credit('mondo.ba - Slaven Petković')}</figcaption>
             </figure>
           </div>
           <div class="destination-card__body">
             <div class="destination-card__topline">
-              <span class="destination-card__service"><i class="fa-solid fa-person-walking" aria-hidden="true"></i>{t('Kratka šetnja', 'Short walk')}</span>
+              <span class="destination-card__service"><i class:list={['fa-solid', destinationIcons.kampus]} aria-hidden="true"></i>{t('Kampus', 'Campus')}</span>
               <span class="destination-card__area">Borik</span>
             </div>
             <h3>
@@ -296,18 +365,29 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
             </h3>
             <p>
               {t(
-                'Linija 20 staje na samom Kampusu, u smjeru Incela. Linije 14B, 14 i 9B staju u Boriku, odakle je do bašte i kampusa svega nekoliko minuta hoda.',
-                'Line 20 stops at the campus itself, towards Incel. Lines 14B, 14 and 9B stop in Borik, a few minutes on foot from the garden and the campus.',
+                'Na nešto više od pet hektara raste oko 1500 biljnih vrsta, od trava i žbunja do starih stabala. Tu su ginko, Pančićeva omorika, japanska magnolija, judino drvo i carigradska lijeska, ali i obične korisne biljke poput pelina i šparoge. Bašta se naslanja na Univerzitetski kampus, pa se oboje obiđe u istoj šetnji.',
+                'Around 1,500 plant species grow on a little over five hectares, from grasses and shrubs to mature trees. Among them are ginkgo, Serbian spruce, Japanese magnolia, Judas tree and Turkish hazel, alongside everyday useful plants such as wormwood and asparagus. The garden adjoins the University Campus, so both fit into one walk.',
               )}
             </p>
-            <dl class="destination-card__trip">
-              <div><dt>{t('Stajališta', 'Stops')}</dt><dd>{t('Kampus, Dvorana Borik, Borik ili Autoservis', 'Kampus, Dvorana Borik, Borik, or Autoservis')}</dd></div>
-            </dl>
-            <div class="destination-card__line-links" aria-label={t('Linije u blizini', 'Nearby lines')}>
-              <a href={linePath('20')}>20</a>
-              <a href={linePath('14B')}>14B</a>
-              <a href={linePath('14')}>14</a>
-              <a href={linePath('9B')}>9B</a>
+            <div class="destination-card__transit">
+              <p class="destination-card__transit-title">
+                <i class="fa-solid fa-bus" aria-hidden="true"></i>{t('Kako doći', 'Getting there')}
+              </p>
+              <dl class="destination-card__trip">
+                <div><dt>{t('Stajališta', 'Stops')}</dt><dd>{t('Kampus, Dvorana Borik, Borik ili Autoservis', 'Kampus, Dvorana Borik, Borik, or Autoservis')}</dd></div>
+              </dl>
+              <p class="destination-card__transit-note">
+                {t(
+                  'Linija 20 staje na samom ulazu u Kampus, a linije 14B, 14 i 9B na obližnjim stajalištima, odakle je do bašte i kampusa svega nekoliko minuta hoda.',
+                  'Line 20 stops right at the campus entrance, and lines 14B, 14 and 9B at nearby stops, a few minutes on foot from the garden and the campus.',
+                )}
+              </p>
+              <div class="destination-card__line-links" aria-label={t('Linije u blizini', 'Nearby lines')}>
+                <a href={linePath('20')}>20</a>
+                <a href={linePath('14B')}>14B</a>
+                <a href={linePath('14')}>14</a>
+                <a href={linePath('9B')}>9B</a>
+              </div>
             </div>
           </div>
         </article>
@@ -333,12 +413,22 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
               <span class="destination-card__area">Ada</span>
             </div>
             <h3>{t('Park restoran Stara Ada', 'Stara Ada Park Restaurant')}</h3>
-            <p>{t('Šetnica, zelenilo i predah uz samu rijeku, na nekoliko stanica od centra.', 'A promenade, green space and a break right by the river, a few stops from the centre.')}</p>
-            <dl class="destination-card__trip">
-              <div><dt>{t('Smjer', 'Direction')}</dt><dd>Incel</dd></div>
-              <div><dt>{t('Stajalište', 'Stop')}</dt><dd>Ada</dd></div>
-            </dl>
-            <a href={linePath('20')} class="destination-card__link">{t('Otvori liniju 20', 'Open line 20')}<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            <p>
+              {t(
+                'Zelena ada na samom Vrbasu, sa šetnicom uz vodu i restoranom pod drvenim krovom. Mjesto za predah, kafu i šetnju bez izlaska iz grada.',
+                'A green river island on the Vrbas, with a waterside promenade and a restaurant under a timber roof. A place for a break, a coffee and a walk without leaving the city.',
+              )}
+            </p>
+            <div class="destination-card__transit">
+              <p class="destination-card__transit-title">
+                <i class="fa-solid fa-bus" aria-hidden="true"></i>{t('Kako doći', 'Getting there')}
+              </p>
+              <dl class="destination-card__trip">
+                <div><dt>{t('Smjer', 'Direction')}</dt><dd>Incel</dd></div>
+                <div><dt>{t('Stajalište', 'Stop')}</dt><dd>Ada</dd></div>
+              </dl>
+              <a href={linePath('20')} class="destination-card__link">{t('Otvori liniju 20', 'Open line 20')}<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            </div>
           </div>
         </article>
       </div>

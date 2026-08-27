@@ -662,12 +662,23 @@ export const ROUTE_DECOR_PRESETS: Record<RouteDecorPresetName, RouteDecorPreset>
             shapes: [
                 {
                     points: [
-                        [700, 210],
-                        [940, 210],
-                        [940, 80],
-                        [1540, 80],
+                        [680, 72],
+                        [1540, 72],
                     ],
-                    radius: 48,
+                    radius: 0,
+                    layer: 3,
+                    bands: [{ color: 4, width: 5, offset: 0 }],
+                    delay: 0.15,
+                    duration: 1.8,
+                },
+                {
+                    points: [
+                        [660, 224],
+                        [920, 224],
+                        [920, 136],
+                        [1540, 136],
+                    ],
+                    radius: 42,
                     layer: 1,
                     bands: [{ color: 2, width: 24, offset: 0, pulse: true }],
                     delay: 0.05,
@@ -677,10 +688,10 @@ export const ROUTE_DECOR_PRESETS: Record<RouteDecorPresetName, RouteDecorPreset>
                     points: [
                         [1540, 224],
                         [1220, 224],
-                        [1220, 80],
-                        [1080, 80],
+                        [1220, 174],
+                        [1040, 174],
                     ],
-                    radius: 42,
+                    radius: 28,
                     layer: 2,
                     bands: [{ color: 1, width: 19, offset: 0, arrow: 32, pulse: true, pulseDelay: 0.7 }],
                     delay: 0.4,
@@ -689,7 +700,7 @@ export const ROUTE_DECOR_PRESETS: Record<RouteDecorPresetName, RouteDecorPreset>
             ],
             nodes: [
                 {
-                    at: [1220, 80],
+                    at: [1220, 174],
                     layer: -1,
                     rings: [
                         { color: 2, r: 34 },
@@ -702,12 +713,10 @@ export const ROUTE_DECOR_PRESETS: Record<RouteDecorPresetName, RouteDecorPreset>
             movers: [
                 {
                     points: [
-                        [700, 210],
-                        [940, 210],
-                        [940, 80],
-                        [1540, 80],
+                        [680, 72],
+                        [1540, 72],
                     ],
-                    radius: 48,
+                    radius: 0,
                     color: 4,
                     size: 27,
                     delay: 2.5,
@@ -721,12 +730,23 @@ export const ROUTE_DECOR_PRESETS: Record<RouteDecorPresetName, RouteDecorPreset>
             shapes: [
                 {
                     points: [
-                        [-100, 216],
-                        [270, 216],
-                        [270, 68],
-                        [620, 68],
+                        [-80, 68],
+                        [500, 68],
                     ],
-                    radius: 40,
+                    radius: 0,
+                    layer: 3,
+                    bands: [{ color: 4, width: 4, offset: 0 }],
+                    delay: 0.15,
+                    duration: 1.6,
+                },
+                {
+                    points: [
+                        [-100, 220],
+                        [250, 220],
+                        [250, 124],
+                        [620, 124],
+                    ],
+                    radius: 38,
                     layer: 1,
                     bands: [{ color: 2, width: 21, offset: 0, pulse: true }],
                     delay: 0.05,
@@ -734,12 +754,12 @@ export const ROUTE_DECOR_PRESETS: Record<RouteDecorPresetName, RouteDecorPreset>
                 },
                 {
                     points: [
-                        [620, 220],
-                        [340, 220],
-                        [340, 68],
-                        [258, 68],
+                        [620, 224],
+                        [340, 224],
+                        [340, 164],
+                        [258, 164],
                     ],
-                    radius: 36,
+                    radius: 30,
                     layer: 2,
                     bands: [{ color: 1, width: 17, offset: 0, arrow: 27, pulse: true, pulseDelay: 0.7 }],
                     delay: 0.4,
@@ -748,7 +768,7 @@ export const ROUTE_DECOR_PRESETS: Record<RouteDecorPresetName, RouteDecorPreset>
             ],
             nodes: [
                 {
-                    at: [340, 68],
+                    at: [340, 164],
                     layer: -1,
                     rings: [
                         { color: 2, r: 27 },
@@ -760,12 +780,10 @@ export const ROUTE_DECOR_PRESETS: Record<RouteDecorPresetName, RouteDecorPreset>
             movers: [
                 {
                     points: [
-                        [-100, 216],
-                        [270, 216],
-                        [270, 68],
-                        [620, 68],
+                        [-80, 68],
+                        [500, 68],
                     ],
-                    radius: 40,
+                    radius: 0,
                     color: 4,
                     size: 23,
                     delay: 2.2,

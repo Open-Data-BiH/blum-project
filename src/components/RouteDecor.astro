@@ -64,7 +64,8 @@ if (config.narrow) {
         ) : item.kind === 'mover' ? (
           <g
             class="route-decor__mover"
-            style={`--rd-motion-path:path("${item.d}");--rd-delay:${item.delay}s;--rd-duration:${item.duration}s;color:${item.color}`}
+            style={`color:${item.color}`}
+            opacity="0"
           >
             <circle class="route-decor__mover-halo" r={item.size * 0.72} />
             <g transform={`scale(${item.size / 28})`}>
@@ -73,6 +74,21 @@ if (config.narrow) {
                 d="M 14 0 L 3 -4 L 0 -13 L -4 -13 L -3 -4 L -12 -2 L -12 2 L -3 4 L -4 13 L 0 13 L 3 4 Z"
               />
             </g>
+            <animateMotion
+              path={item.d}
+              begin={`${item.delay}s`}
+              dur={`${item.duration}s`}
+              repeatCount="indefinite"
+              rotate="auto"
+            />
+            <animate
+              attributeName="opacity"
+              values="0;1;1;0"
+              keyTimes="0;0.08;0.92;1"
+              begin={`${item.delay}s`}
+              dur={`${item.duration}s`}
+              repeatCount="indefinite"
+            />
           </g>
         ) : (
           <path

@@ -65,11 +65,6 @@
 
 .route-decor__mover {
     color: currentcolor;
-    opacity: 0;
-    offset-anchor: center;
-    offset-distance: 0;
-    offset-path: var(--rd-motion-path);
-    offset-rotate: auto;
 }
 
 .route-decor__mover-halo {
@@ -125,23 +120,6 @@
     }
 }
 
-@keyframes route-decor-move {
-    0% {
-        opacity: 0;
-        offset-distance: 0;
-    }
-
-    8%,
-    92% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-        offset-distance: 100%;
-    }
-}
-
 .route-decor.is-visible .route-decor__line {
     animation: route-decor-draw var(--rd-duration, 2.2s) cubic-bezier(0.32, 0.06, 0.2, 1) var(--rd-delay, 0s) forwards;
 }
@@ -162,10 +140,6 @@
     animation:
         route-decor-glow 1.4s ease-out var(--rd-delay, 0s) forwards,
         route-decor-travel var(--route-decor-travel-duration, 18s) linear var(--rd-delay, 0s) infinite;
-}
-
-.route-decor.is-visible .route-decor__mover {
-    animation: route-decor-move var(--rd-duration, 8s) linear var(--rd-delay, 0s) infinite;
 }
 
 .route-decor--hero {

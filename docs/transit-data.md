@@ -77,14 +77,18 @@ includes ordinary stopping and junction delay. Such routes use `timing: "geometr
 14B, 17 and 17A. The `~` marker and stop-wide notice remain essential: geometry timing is a
 planning estimate, not a published intermediate-stop time or live tracking.
 
-An estimate is shown only when the timetable direction can be matched to the route, the
-selected stop lies inside that route's nominal origin→destination slice, and every source
-sequence and timing segment from the nominal start to the stop is complete. Timetable notes
-describe branches, extensions, short turns, or alternate origins, but the source has no
-machine-readable mapping from those patterns to stops. A direction and service day containing
-an annotated departure is therefore treated as unavailable; skipping that departure could
-incorrectly promote a later regular trip as the next bus. Rows that do not meet these
-conditions say that an estimate is currently unavailable instead of inventing a time.
+An estimate is shown only when the timetable direction can be matched to the route and the
+selected stop lies inside that route's nominal origin→destination slice. Every source timing
+segment from the nominal start to the stop must be complete. When a reviewed manual correction
+inserts a stop between two consecutive operator records, the calculator splits the following
+record's published segment time in proportion to the distances between stop coordinates. The
+total operator travel time remains unchanged, while the inserted stop and all downstream stops
+retain usable estimates. Timetable notes describe branches, extensions, short turns, or
+alternate origins, but the source has no machine-readable mapping from those patterns to stops.
+The calculator can show verified full-route departures that arrive before the next annotated
+trip. Once an annotated trip could be the next bus, the row becomes unavailable rather than
+incorrectly promoting a later regular trip. Rows that do not meet these conditions say that an
+estimate is currently unavailable instead of inventing a time.
 
 The browser applies the same weekday/weekend and school-holiday schedule selection as the
 full timetable. It considers a late trip that crosses midnight and, after today's service is

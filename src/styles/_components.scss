@@ -267,9 +267,10 @@
     }
 
     .page-intro__symbol {
-        right: -1rem;
-        font-size: clamp(5rem, 28vw, 7rem);
-        opacity: 0.065;
+        right: clamp(-2.25rem, -5vw, -1.25rem);
+        font-size: clamp(6rem, 32vw, 8rem);
+        opacity: 0.08;
+        transform: translateY(-50%) rotate(-14deg);
     }
 }
 

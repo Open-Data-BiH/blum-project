@@ -1,5 +1,97 @@
-#timetable > .container {
-    max-width: calc(50rem + var(--layout-gutter) + var(--layout-gutter));
+body.has-timetable-modal {
+    overflow: hidden;
+}
+
+.timetable-modal {
+    width: min(62rem, calc(100vw - var(--space-8)));
+    max-width: none;
+    max-height: min(90dvh, 52rem);
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    box-shadow: var(--shadow-overlay);
+}
+
+.timetable-modal[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+.timetable-modal::backdrop {
+    background: rgba(5, 12, 11, 0.62);
+    backdrop-filter: blur(2px);
+}
+
+.timetable-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex: 0 0 auto;
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface);
+}
+
+.timetable-modal__heading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+}
+
+.timetable-modal__icon,
+.timetable-modal__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+
+.timetable-modal__icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--color-primary-border);
+    border-radius: var(--radius-md);
+    background: var(--color-primary-surface);
+    color: var(--color-primary-hover);
+}
+
+.timetable-modal__title {
+    margin: 0;
+    font-size: var(--font-size-xl);
+}
+
+.timetable-modal__description {
+    margin: var(--space-1) 0 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
+}
+
+.timetable-modal__close {
+    width: var(--touch-target);
+    height: var(--touch-target);
+    border-radius: var(--radius-full);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-lg);
+}
+
+.timetable-modal__close:hover {
+    background: var(--color-surface-tertiary);
+    color: var(--color-text-primary);
+}
+
+.timetable-modal__body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-5);
 }
 
 .line-selector-wrapper {
@@ -117,7 +209,8 @@
 
 .day-buttons {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    min-width: 0;
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
@@ -158,6 +251,34 @@
 .direction-btn {
     min-width: 0;
     white-space: normal;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.day-btn {
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.direction-btn__label {
+    color: var(--color-text-placeholder);
+    font-size: var(--font-size-micro);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+}
+
+.direction-btn__relation {
+    width: 100%;
+    min-width: 0;
+    font-size: var(--font-size-meta);
+    line-height: var(--line-height-snug);
+}
+
+.direction-btn.active .direction-btn__label {
+    color: var(--color-primary-hover);
 }
 
 .direction-btn.active,
@@ -192,20 +313,6 @@
     border-color: var(--color-warning-border);
     color: var(--color-warning);
     box-shadow: inset 0 -2px 0 var(--color-warning);
-}
-
-.day-label-short {
-    display: none;
-}
-
-@media (max-width: 768px) {
-    .day-label-full {
-        display: none;
-    }
-
-    .day-label-short {
-        display: inline;
-    }
 }
 
 .direction-btn:focus-visible,
@@ -312,6 +419,10 @@
     max-width: 800px;
 }
 
+.timetable-reduced-notice[hidden] {
+    display: none;
+}
+
 .timetable-reduced-notice i {
     font-size: var(--font-size-sm);
     flex-shrink: 0;
@@ -357,6 +468,7 @@
 }
 
 .hours-minutes-table tbody tr {
+    background-color: var(--color-surface);
     transition: background-color var(--transition-fast);
 }
 
@@ -364,17 +476,17 @@
     border-bottom: 1px solid var(--color-border);
 }
 
-.hours-minutes-table tbody tr:nth-child(even) {
+.hours-minutes-table tbody tr.past-hour {
     background-color: var(--color-surface-secondary);
 }
 
 .hours-minutes-table tbody tr.current-hour {
-    background-color: var(--color-surface-secondary);
+    background-color: var(--color-primary-surface);
 }
 
 .hours-minutes-table tbody tr.current-hour td {
-    border-top: 1px solid var(--color-border-strong);
-    border-bottom: 1px solid var(--color-border-strong);
+    border-top: 1px solid var(--color-primary-border);
+    border-bottom: 1px solid var(--color-primary-border);
 }
 
 .hour-cell {
@@ -390,6 +502,25 @@
     font-feature-settings: 'tnum' 1;
     border-right: 1px solid var(--color-border);
     position: relative;
+}
+
+.hours-minutes-table tbody tr.past-hour .hour-cell {
+    background-color: var(--color-surface-tertiary);
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-semibold);
+}
+
+.hours-minutes-table tbody tr.current-hour .hour-cell {
+    background-color: var(--color-primary-surface);
+    color: var(--color-primary-hover);
+}
+
+.hours-minutes-table tbody tr.current-hour .hour-cell::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background-color: var(--color-primary);
 }
 
 .minutes-cell {
@@ -425,11 +556,12 @@
         color var(--transition-fast) var(--ease-out);
 }
 
-/* De-emphasize past departures without reducing text contrast. */
+/* Past departures remain readable, but no longer compete with current service. */
 .minute-box.past {
     background-color: transparent;
-    color: var(--color-text-muted);
+    color: var(--color-text-placeholder);
     border-color: transparent;
+    font-weight: var(--font-weight-normal);
 }
 
 .minute-box.next {
@@ -559,7 +691,7 @@
     .direction-buttons {
         width: 100%;
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .direction-btn {
@@ -573,7 +705,7 @@
 
     .day-buttons {
         width: 100%;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .day-btn {
@@ -780,11 +912,15 @@
 }
 
 [data-theme='dark'] .hours-minutes-table tbody tr.current-hour td {
-    border-color: var(--color-border-strong);
+    border-color: var(--color-primary-border);
 }
 
-[data-theme='dark'] .hour-cell::before {
-    background-color: var(--color-primary-hover);
+[data-theme='dark'] .hours-minutes-table tbody tr.past-hour {
+    background-color: var(--color-surface-inverse);
+}
+
+[data-theme='dark'] .hours-minutes-table tbody tr.past-hour .hour-cell {
+    background-color: var(--color-background);
 }
 
 [data-theme='dark'] .minute-box {
@@ -828,4 +964,86 @@
 
 .hours-minutes-table tbody tr.current-hour {
     scroll-margin-top: 120px;
+}
+
+/* The modal keeps the scan-friendly table while fitting more departures on screen. */
+@media (min-width: 768px) {
+    .timetable-modal .line-selector-wrapper {
+        margin-bottom: var(--space-4);
+    }
+
+    .timetable-modal .timetable-controls {
+        margin-bottom: var(--space-4);
+    }
+
+    .timetable-modal .timetable-control-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-3);
+    }
+
+    .timetable-modal .direction-btn,
+    .timetable-modal .day-btn {
+        min-height: 2.25rem;
+        padding: var(--space-2) var(--space-3);
+    }
+
+    .timetable-modal .direction-swap-btn {
+        width: 2.25rem;
+        height: 2.25rem;
+    }
+
+    .timetable-modal .hours-minutes-table thead th {
+        padding: var(--space-2) var(--space-3);
+    }
+
+    .timetable-modal .hours-minutes-table thead th:first-child,
+    .timetable-modal .hour-cell {
+        width: 4rem;
+    }
+
+    .timetable-modal .hour-cell {
+        padding: var(--space-2);
+        font-size: var(--font-size-lg);
+    }
+
+    .timetable-modal .minutes-cell {
+        padding: var(--space-1) var(--space-3);
+    }
+
+    .timetable-modal .minutes-wrapper {
+        gap: var(--space-1);
+    }
+
+    .timetable-modal .minute-box {
+        min-width: 2.5rem;
+        min-height: 2.125rem;
+        padding: var(--space-1) var(--space-2);
+        font-size: var(--font-size-md);
+    }
+
+    .timetable-modal .minute-box.next {
+        min-width: 2.75rem;
+        min-height: 2.375rem;
+        font-size: var(--font-size-base);
+    }
+}
+
+@media (max-width: 600px) {
+    .timetable-modal {
+        width: 100%;
+        height: 100dvh;
+        max-height: none;
+        border: 0;
+        border-radius: 0;
+    }
+
+    .timetable-modal__header,
+    .timetable-modal__body {
+        padding: var(--space-4);
+    }
+
+    .timetable-modal__description {
+        display: none;
+    }
 }

@@ -71,7 +71,10 @@ const updateScheduleTimeHighlighting = (schedule: Element, now: Date, serviceDat
             return;
         }
 
-        row.classList.toggle('current-hour', isToday && hour === currentHour);
+        const isCurrentHour = isToday && hour === currentHour;
+        const isPastHour = !isFuture && (!isToday || hour < currentHour);
+        row.classList.toggle('current-hour', isCurrentHour);
+        row.classList.toggle('past-hour', isPastHour);
         row.querySelectorAll<HTMLElement>('.minute-box[data-minute]').forEach((minuteBox) => {
             const minute = Number.parseInt(minuteBox.dataset.minute ?? '', 10);
             if (!Number.isNaN(minute)) {

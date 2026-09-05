@@ -3,22 +3,10 @@
 import { debounce, normalizeForSearch } from '../../core/utils';
 import { getCurrentLanguage } from '../../core/i18n';
 
-export const scrollToTimetable = (lineId: string): void => {
-    // Preserve the selection until the lazy timetable module initializes.
+export const openTimetable = (lineId: string): void => {
+    // Preserve the selection while the timetable module loads on first open.
     sessionStorage.setItem('selectedLine', lineId);
-
-    const lineSelect = document.getElementById('line-select') as HTMLSelectElement | null;
-    if (lineSelect) {
-        lineSelect.value = lineId;
-        // Dispatch only after the timetable options are available.
-        if (lineSelect.value === lineId) {
-            lineSelect.dispatchEvent(new Event('change'));
-        }
-    }
-    const timetableElement = document.getElementById('timetable');
-    if (timetableElement) {
-        timetableElement.scrollIntoView({ behavior: 'smooth' });
-    }
+    document.dispatchEvent(new CustomEvent('timetable:open', { detail: { lineId } }));
 };
 
 const getLabels = (lang: string) => ({
@@ -147,7 +135,7 @@ export const initializeLinesEventListeners = (): void => {
         if (timetableBtn) {
             const lineId = timetableBtn.dataset.lineId;
             if (lineId) {
-                scrollToTimetable(lineId);
+                openTimetable(lineId);
             }
         }
     });

@@ -257,9 +257,7 @@ export function renderTimetable(timetable: TimetableEntry & { lineType?: string 
     const saturdayLabel = timetableDays?.saturday || 'Saturday';
     const sundayHolidayFull =
         timetableDays?.sundayHoliday || (lang === 'bhs' ? 'Nedjelja i praznik' : 'Sunday & Holiday');
-    const sundayHolidayShort = lang === 'bhs' ? 'Ned. / praznik' : 'Sun / Holiday';
-    const relationLabelText =
-        (typeof t?.relationLabel === 'string' ? t.relationLabel : null) || (lang === 'bhs' ? 'Relacija' : 'Direction');
+    const directionLabelText = lang === 'bhs' ? 'Smjer' : 'Direction';
     const timetableForLabelText =
         (typeof t?.timetableForLabel === 'string' ? t.timetableForLabel : null) ||
         (lang === 'bhs' ? 'Red vožnje' : 'Schedule');
@@ -271,6 +269,8 @@ export function renderTimetable(timetable: TimetableEntry & { lineType?: string 
     const directions = timetable.directions;
     const directionA = directions[lang][0] ?? directions.bhs[0] ?? '';
     const directionB = directions[lang][1] ?? directions.bhs[1] ?? '';
+    const directionALabel = lang === 'bhs' ? 'Smjer A' : 'Direction A';
+    const directionBLabel = lang === 'bhs' ? 'Smjer B' : 'Direction B';
     const relationLabels = {
         toLabel: lang === 'bhs' ? 'prema' : 'to',
         viaLabel: lang === 'bhs' ? 'preko' : 'via',
@@ -374,11 +374,17 @@ export function renderTimetable(timetable: TimetableEntry & { lineType?: string 
     <div class="timetable-controls">
       <div class="timetable-control-row">
         <div class="direction-toggle">
-          <p id="direction-label" class="timetable-control-label">${relationLabelText}</p>
+          <p id="direction-label" class="timetable-control-label">${directionLabelText}</p>
           <div class="direction-buttons-wrapper">
             <div class="direction-buttons" role="group" aria-labelledby="direction-label">
-              <button class="direction-btn active" data-direction="${escapeHTML(directionAId)}" aria-pressed="true" aria-label="${escapeHTML(formatSpokenRouteRelation(directionA, relationLabels))}">${renderRouteRelation(directionA, relationLabels)}</button>
-              <button class="direction-btn" data-direction="${escapeHTML(directionBId)}" aria-pressed="false" aria-label="${escapeHTML(formatSpokenRouteRelation(directionB, relationLabels))}">${renderRouteRelation(directionB, relationLabels)}</button>
+              <button class="direction-btn active" data-direction="${escapeHTML(directionAId)}" aria-pressed="true" aria-label="${escapeHTML(`${directionALabel}: ${formatSpokenRouteRelation(directionA, relationLabels)}`)}">
+                <span class="direction-btn__label">${directionALabel}</span>
+                <span class="direction-btn__relation">${renderRouteRelation(directionA, relationLabels)}</span>
+              </button>
+              <button class="direction-btn" data-direction="${escapeHTML(directionBId)}" aria-pressed="false" aria-label="${escapeHTML(`${directionBLabel}: ${formatSpokenRouteRelation(directionB, relationLabels)}`)}">
+                <span class="direction-btn__label">${directionBLabel}</span>
+                <span class="direction-btn__relation">${renderRouteRelation(directionB, relationLabels)}</span>
+              </button>
             </div>
             <button class="direction-swap-btn" aria-label="${swapDirectionLabel}" title="${swapDirectionLabel}">
               <i class="fas fa-exchange-alt"></i>
@@ -391,11 +397,7 @@ export function renderTimetable(timetable: TimetableEntry & { lineType?: string 
           <div class="day-buttons" role="group" aria-labelledby="day-label">
             ${buildDayButton('weekday', escapeHTML(weekdayLabel), weekdayLabel)}
             ${buildDayButton('saturday', escapeHTML(saturdayLabel), saturdayLabel)}
-            ${buildDayButton(
-                'sunday',
-                `<span class="day-label-full">${escapeHTML(sundayHolidayFull)}</span><span class="day-label-short">${escapeHTML(sundayHolidayShort)}</span>`,
-                sundayHolidayFull,
-            )}
+            ${buildDayButton('sunday', escapeHTML(sundayHolidayFull), sundayHolidayFull)}
           </div>
         </div>
       </div>
@@ -521,7 +523,11 @@ export function renderTimetable(timetable: TimetableEntry & { lineType?: string 
                     );
                     const hourValue = parseInt(hour, 10);
                     const isCurrentHour = isCurrentServiceDate && hourValue === currentHour;
-                    const rowClass = isCurrentHour ? 'current-hour' : '';
+                    const isPastHour =
+                        !isFutureServiceDate && (!isCurrentServiceDate || hourValue < currentHour);
+                    const rowClass = [isCurrentHour && 'current-hour', isPastHour && 'past-hour']
+                        .filter(Boolean)
+                        .join(' ');
                     const rowId = isCurrentHour ? `current-hour-row-${dayType}-${direction}` : '';
 
                     html += `
@@ -760,7 +766,10 @@ const updateTimeHighlighting = (): void => {
             const hourAttr = row.getAttribute('data-hour');
             if (hourAttr !== null) {
                 const rowHour = parseInt(hourAttr, 10);
-                row.classList.toggle('current-hour', isToday && rowHour === currentHour);
+                const isCurrentHour = isToday && rowHour === currentHour;
+                const isPastHour = !isFuture && (!isToday || rowHour < currentHour);
+                row.classList.toggle('current-hour', isCurrentHour);
+                row.classList.toggle('past-hour', isPastHour);
             }
         });
 

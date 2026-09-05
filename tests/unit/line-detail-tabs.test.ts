@@ -90,6 +90,8 @@ describe('line detail timetable tabs', () => {
                 panel.querySelector('.ldp-day-panel[data-day-panel="sunday"]')?.classList.contains('is-active'),
             ).toBe(true);
             expect(panel.querySelector('tr[data-hour="10"]')?.classList.contains('current-hour')).toBe(true);
+            expect(panel.querySelector('tr[data-hour="9"]')?.classList.contains('past-hour')).toBe(true);
+            expect(panel.querySelector('tr[data-hour="10"]')?.classList.contains('past-hour')).toBe(false);
             expect(panel.querySelector('.minute-box[data-minute="5"]')?.classList.contains('past')).toBe(true);
             expect(panel.querySelector('.minute-box[data-minute="20"]')?.classList.contains('next')).toBe(true);
             expect(panel.querySelector('.minute-box[data-minute="40"]')?.classList.contains('upcoming')).toBe(true);

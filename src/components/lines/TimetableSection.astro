@@ -9,31 +9,95 @@ interface Props {
 const { locale } = Astro.props;
 ---
 
-<section class="section section--wide" id="timetable">
-  <div class="container">
-    <h2 class="section__title" id="lines-timetable-title">{locale === 'en' ? 'Timetable' : 'Red vožnje'}</h2>
+<dialog
+  class="timetable-modal"
+  id="timetable"
+  aria-labelledby="lines-timetable-title"
+  aria-describedby="lines-timetable-description"
+>
+  <header class="timetable-modal__header">
+    <div class="timetable-modal__heading">
+      <span class="timetable-modal__icon" aria-hidden="true">
+        <i class="fas fa-clock"></i>
+      </span>
+      <div>
+        <h2 class="timetable-modal__title" id="lines-timetable-title">
+          {locale === 'en' ? 'Timetable' : 'Red vožnje'}
+        </h2>
+        <p class="timetable-modal__description" id="lines-timetable-description">
+          {locale === 'en'
+            ? 'Choose a direction and day to see departures.'
+            : 'Izaberite smjer i dan za pregled polazaka.'}
+        </p>
+      </div>
+    </div>
+    <button
+      class="timetable-modal__close"
+      type="button"
+      data-timetable-close
+      aria-label={locale === 'en' ? 'Close timetable' : 'Zatvori red vožnje'}
+    >
+      <i class="fas fa-xmark" aria-hidden="true"></i>
+    </button>
+  </header>
+
+  <div class="timetable-modal__body">
     <div class="line-selector-wrapper">
       <label for="line-select" class="visually-hidden">{locale === 'en' ? 'Select a line' : 'Izaberite liniju'}</label>
       <select id="line-select" aria-label={locale === 'en' ? 'Select a line' : 'Izaberite liniju'}></select>
     </div>
     <div id="timetable-display"></div>
   </div>
-</section>
+</dialog>
 
 <script>
-  const timetableEl = document.getElementById('timetable');
-  if (timetableEl) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          observer.disconnect();
-          import('../../scripts/features/lines/timetable').then(({ setupTimetableSelection }) => {
-            setupTimetableSelection();
-          });
-        }
-      },
-      { rootMargin: '400px' },
-    );
-    observer.observe(timetableEl);
+  const timetableModal = document.getElementById('timetable') as HTMLDialogElement | null;
+  const closeButton = timetableModal?.querySelector<HTMLButtonElement>('[data-timetable-close]');
+  let timetableInitialized = false;
+
+  const openTimetable = async (lineId: string) => {
+    if (!timetableModal) return;
+
+    sessionStorage.setItem('selectedLine', lineId);
+    if (!timetableModal.open) {
+      timetableModal.showModal();
+    }
+    document.body.classList.add('has-timetable-modal');
+
+    if (!timetableInitialized) {
+      timetableInitialized = true;
+      const { setupTimetableSelection } = await import('../../scripts/features/lines/timetable');
+      setupTimetableSelection();
+      return;
+    }
+
+    const lineSelect = document.getElementById('line-select') as HTMLSelectElement | null;
+    if (lineSelect) {
+      lineSelect.value = lineId;
+      if (lineSelect.value === lineId) {
+        lineSelect.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+  };
+
+  document.addEventListener('timetable:open', (event) => {
+    const lineId = (event as CustomEvent<{ lineId?: string }>).detail?.lineId;
+    if (lineId) void openTimetable(lineId);
+  });
+
+  closeButton?.addEventListener('click', () => timetableModal?.close());
+
+  timetableModal?.addEventListener('click', (event) => {
+    if (event.target === timetableModal) timetableModal.close();
+  });
+
+  timetableModal?.addEventListener('close', () => {
+    document.body.classList.remove('has-timetable-modal');
+  });
+
+  if (timetableModal) {
+    window.addEventListener('beforeunload', () => {
+      document.body.classList.remove('has-timetable-modal');
+    });
   }
 </script>

@@ -162,7 +162,13 @@ const isEnglish = lang === 'en';
 
             <div class="line-card__actions">
               {hasTimetable && (
-                <button class="btn--primary timetable-btn" data-line-id={safeLineId}>
+                <button
+                  class="btn--primary timetable-btn"
+                  data-line-id={safeLineId}
+                  aria-haspopup="dialog"
+                  aria-controls="timetable"
+                  aria-label={isEnglish ? `Timetable for line ${safeLineId}` : `Red vožnje za liniju ${safeLineId}`}
+                >
                   <i class="fas fa-clock" aria-hidden="true"></i> {isEnglish ? 'Timetable' : 'Red vožnje'}
                 </button>
               )}
@@ -180,8 +186,12 @@ const isEnglish = lang === 'en';
                   target="_blank"
                   rel="noopener noreferrer"
                   class="btn--link pdf-btn"
+                  aria-label={isEnglish
+                    ? `Official timetable PDF for line ${safeLineId}`
+                    : `Zvanični PDF red vožnje za liniju ${safeLineId}`}
                 >
-                  <i class="fas fa-file-pdf" aria-hidden="true"></i> PDF
+                  <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                  <span class="pdf-btn__label">PDF</span>
                 </a>
               )}
             </div>

@@ -36,73 +36,78 @@ const disclaimer =
 <div id="price-tables">
   <div class="price-tables">
     <div class="price-table-container">
-      <table class="unified-price-table">
-        <thead>
-          <tr>
-            <th>{l.ticketTypes}</th>
-            <th>{l.price} ({l.km})</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="category-header">
-            <td colspan="2">{singleDailyHeader}</td>
-          </tr>
-          <tr>
-            <td>
-              {t.single.name}
-              <div class="description">{t.single.description}</div>
-            </td>
-            <td>{t.single.price.toFixed(2)}</td>
-          </tr>
-          <tr>
-            <td>
-              {t.singleInSet.name}
-              <div class="description">{t.singleInSet.description}</div>
-            </td>
-            <td>{t.singleInSet.price.toFixed(2)}</td>
-          </tr>
-          <tr>
-            <td>
-              {t.daily.name}
-              <div class="description">{t.daily.description}</div>
-            </td>
-            <td>{t.daily.price.toFixed(2)}</td>
-          </tr>
+      <div class="price-table-frame">
+        <table class="unified-price-table">
+          <thead>
+            <tr>
+              <th scope="col">{l.ticketTypes}</th>
+              <th scope="col">{l.price} ({l.km})</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="category-header">
+              <td colspan="2">{singleDailyHeader}</td>
+            </tr>
+            <tr>
+              <td>
+                {t.single.name}
+                <div class="description">{t.single.description}</div>
+              </td>
+              <td>{t.single.price.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>
+                {t.singleInSet.name}
+                <div class="description">{t.singleInSet.description}</div>
+              </td>
+              <td>{t.singleInSet.price.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>
+                {t.daily.name}
+                <div class="description">{t.daily.description}</div>
+              </td>
+              <td>{t.daily.price.toFixed(2)}</td>
+            </tr>
 
-          <tr class="category-header">
-            <td colspan="2">{t.monthlyGroup.name}</td>
-          </tr>
-          <tr>
-            <td>{t.monthlyGroup.workers.name}</td>
-            <td>{t.monthlyGroup.workers.price.toFixed(2)}</td>
-          </tr>
-          <tr>
-            <td>{t.monthlyGroup.students.name}</td>
-            <td>{t.monthlyGroup.students.price.toFixed(2)}</td>
-          </tr>
-          <tr>
-            <td>{t.monthlyGroup.pensioners.name}</td>
-            <td>{t.monthlyGroup.pensioners.price.toFixed(2)}</td>
-          </tr>
+            <tr class="category-header">
+              <td colspan="2">{t.monthlyGroup.name}</td>
+            </tr>
+            <tr>
+              <td>{t.monthlyGroup.workers.name}</td>
+              <td>{t.monthlyGroup.workers.price.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>{t.monthlyGroup.students.name}</td>
+              <td>{t.monthlyGroup.students.price.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>{t.monthlyGroup.pensioners.name}</td>
+              <td>{t.monthlyGroup.pensioners.price.toFixed(2)}</td>
+            </tr>
 
-          <tr class="category-header">
-            <td colspan="2">{t.monthlyUnified.name}</td>
-          </tr>
-          <tr>
-            <td>{t.monthlyUnified.workers.name}</td>
-            <td>{t.monthlyUnified.workers.price.toFixed(2)}</td>
-          </tr>
-          <tr>
-            <td>{t.monthlyUnified.students.name}</td>
-            <td>{t.monthlyUnified.students.price.toFixed(2)}</td>
-          </tr>
-          <tr>
-            <td>{t.monthlyUnified.pensioners.name}</td>
-            <td>{t.monthlyUnified.pensioners.price.toFixed(2)}</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="price-disclaimer">{disclaimer}</p>
+            <tr class="category-header">
+              <td colspan="2">{t.monthlyUnified.name}</td>
+            </tr>
+            <tr>
+              <td>{t.monthlyUnified.workers.name}</td>
+              <td>{t.monthlyUnified.workers.price.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>{t.monthlyUnified.students.name}</td>
+              <td>{t.monthlyUnified.students.price.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>{t.monthlyUnified.pensioners.name}</td>
+              <td>{t.monthlyUnified.pensioners.price.toFixed(2)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="price-disclaimer">
+        <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+        <p>{disclaimer}</p>
+      </div>
     </div>
   </div>
 </div>

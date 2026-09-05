@@ -20,11 +20,11 @@
         },
         "sections": {
             "urban_lines": {
-                "title": "Urban Lines Map",
+                "title": "Banja Luka bus routes and timetables",
                 "map_note": "Use the mouse scroll wheel to zoom in and out, and drag the map to move around. You can also use the +, - buttons and the Home button to reset the view. On touch devices, zoom using pinch gestures, and move around by dragging with your finger."
             },
             "map": {
-                "title": "Interactive Transport Map",
+                "title": "Interactive public transport map",
                 "note": {
                     "title": "About the interactive map",
                     "description": "Markers on the map show key public transport points and other important locations across the city, including bus stops, the main bus station, railway stations, Nextbike stations, and the airport shuttle. Additional locations and features will be added over time.",
@@ -102,16 +102,16 @@
                 "timetableInfo": "Timetable Information:"
             },
             "prices": {
-                "title": "Ticket Prices"
+                "title": "Banja Luka bus ticket prices"
             },
             "faq": {
-                "title": "Frequently Asked Questions",
+                "title": "Banja Luka public transport FAQ",
                 "subtitle": "Find answers to the most common questions about public transport in Banja Luka",
                 "loading": "Loading FAQ...",
                 "error": "Sorry, we could not load the FAQ content at this time. Please try again later."
             },
             "updates": {
-                "title": "Updates",
+                "title": "Banja Luka bus service updates",
                 "subtitle": "Notices about transport changes, street closures, and timetable updates"
             },
             "home": {
@@ -157,11 +157,11 @@
         },
         "sections": {
             "urban_lines": {
-                "title": "Mapa gradskih linija",
+                "title": "Gradske autobuske linije i red vožnje",
                 "map_note": "Koristite točkić miša za zumiranje, a prevlačenjem miša pomjerajte mapu. Takođe, možete koristiti dugmad +, - za zumiranje i dugme \"Home\" za povratak na početni prikaz. Na pametnim uređajima, zumiranje vršite razdvajanjem ili približavanjem prstiju, a pomjeranje dodirom i prevlačenjem prsta po ekranu."
             },
             "map": {
-                "title": "Interaktivna mapa prevoza",
+                "title": "Interaktivna mapa gradskog prevoza",
                 "note": {
                     "title": "O interaktivnoj mapi",
                     "description": "Markeri na mapi prikazuju ključne tačke javnog prevoza i druge važne lokacije u gradu, uključujući autobuska stajališta, glavnu autobusku stanicu, željezničke stanice, Nextbike stanice i aerodromski transfer. Novi sadržaji i lokacije biće postepeno dodavani.",
@@ -239,16 +239,16 @@
                 "timetableInfo": "Informacije o redovima vožnje:"
             },
             "prices": {
-                "title": "Cjenovnik karata"
+                "title": "Cijene karata gradskog prevoza"
             },
             "faq": {
-                "title": "Često postavljana pitanja",
+                "title": "Česta pitanja o javnom prevozu",
                 "subtitle": "Pronađite odgovore na najčešća pitanja o javnom prevozu u Banjoj Luci",
                 "loading": "Učitavam FAQ...",
                 "error": "Izvinjavam se, nismo mogli učitati FAQ sadržaj u ovom trenutku. Molimo pokušajte kasnije."
             },
             "updates": {
-                "title": "Obavještenja",
+                "title": "Izmjene reda vožnje i obavještenja",
                 "subtitle": "Obavještenja o promjenama u prevozu, zatvaranjima ulica i izmjenama reda vožnje"
             },
             "home": {

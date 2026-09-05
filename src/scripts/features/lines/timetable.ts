@@ -523,8 +523,7 @@ export function renderTimetable(timetable: TimetableEntry & { lineType?: string 
                     );
                     const hourValue = parseInt(hour, 10);
                     const isCurrentHour = isCurrentServiceDate && hourValue === currentHour;
-                    const isPastHour =
-                        !isFutureServiceDate && (!isCurrentServiceDate || hourValue < currentHour);
+                    const isPastHour = !isFutureServiceDate && (!isCurrentServiceDate || hourValue < currentHour);
                     const rowClass = [isCurrentHour && 'current-hour', isPastHour && 'past-hour']
                         .filter(Boolean)
                         .join(' ');

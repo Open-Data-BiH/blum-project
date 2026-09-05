@@ -100,7 +100,9 @@ processedLines.sort(sortLinesByID);
   switchLanguagePath={getPagePath('lines', getSwitchLocale(locale))}
 >
   <PageIntro
-    title={translations.sections?.urban_lines?.title ?? (locale === 'en' ? 'Urban lines map' : 'Mapa gradskih linija')}
+    title={translations.sections?.urban_lines?.title ?? (locale === 'en'
+      ? 'Banja Luka bus routes and timetables'
+      : 'Gradske autobuske linije i red vožnje')}
     description={isEnglish
       ? 'Explore urban routes, stops, and timetables in one place.'
       : 'Istražite gradske trase, stajališta i redove vožnje na jednom mjestu.'}

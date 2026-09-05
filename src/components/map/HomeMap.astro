@@ -18,7 +18,9 @@ const mapPagePath = `${baseUrl}${getPagePath('map', locale).replace(/^\/+/, '')}
 
 <section class="section section--wide" id="map">
   <div class="container">
-    <h2 class="section__title" id="map-title">{locale === 'en' ? 'Interactive transport map' : 'Interaktivna mapa prevoza'}</h2>
+    <h2 class="section__title" id="map-title">
+      {locale === 'en' ? 'Interactive public transport map' : 'Interaktivna mapa gradskog prevoza'}
+    </h2>
 
     <MapContainer
       mapId="map-container"

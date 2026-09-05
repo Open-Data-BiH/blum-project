@@ -4,6 +4,7 @@ import HomeMap from '../../components/map/HomeMap.astro';
 import HomeUpdatesPreview from '../../components/HomeUpdatesPreview.astro';
 import RouteDecor from '../../components/RouteDecor.astro';
 import {
+  SITE_URL,
   addHashToPath,
   getAlternatePaths,
   getLocalizedMeta,
@@ -24,7 +25,39 @@ const heroNetworkBackgroundUrl = withBase('assets/images/public_transport_networ
 const meta = getLocalizedMeta('home', locale);
 const alternatePaths = getAlternatePaths('home');
 const linesTimetablePath = withBase(addHashToPath(getPagePath('lines', locale), 'timetable'));
+const linesPath = withBase(getPagePath('lines', locale));
+const mapPath = withBase(getPagePath('map', locale));
+const pricingPath = withBase(getPagePath('pricing', locale));
 const airportPath = withBase(getPagePath('airport', locale));
+const isEnglish = locale === 'en';
+
+const organizationId = `${SITE_URL}#organization`;
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE_URL}#website`,
+  url: SITE_URL,
+  name: 'BL Prevoz',
+  alternateName: 'BLPrevoz',
+  description: meta.description,
+  inLanguage: ['bs', 'en'],
+  publisher: { '@id': organizationId },
+};
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': organizationId,
+  name: 'BL Prevoz',
+  url: SITE_URL,
+  logo: new URL('assets/images/favicon/android-chrome-512x512.png', SITE_URL).toString(),
+  description: isEnglish
+    ? 'An independent platform for public transport information in Banja Luka.'
+    : 'Nezavisna platforma za informacije o javnom prevozu u Banjoj Luci.',
+  areaServed: {
+    '@type': 'City',
+    name: 'Banja Luka',
+  },
+};
 ---
 
 <BaseLayout
@@ -36,6 +69,9 @@ const airportPath = withBase(getPagePath('airport', locale));
   alternatePaths={alternatePaths}
   switchLanguagePath={getPagePath('home', getSwitchLocale(locale))}
 >
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+
   <section class="hero" style={`--hero-network-url: url("${heroNetworkBackgroundUrl}")`}>
     <RouteDecor preset="homeHero" />
     <div class="container hero__inner">
@@ -71,5 +107,96 @@ const airportPath = withBase(getPagePath('airport', locale));
 
   <HomeMap locale={locale} />
 
+  <section class="section section--narrow home-overview" aria-labelledby="home-overview-title">
+    <div class="container home-overview__inner">
+      <div class="home-overview__copy">
+        <h2 class="section__title" id="home-overview-title">
+          {isEnglish ? 'Plan your journey by bus' : 'Planirajte vožnju gradskim autobusom'}
+        </h2>
+        <p>
+          {isEnglish
+            ? 'Use BL Prevoz to check Banja Luka bus routes, timetables, stops and ticket prices. Choose a line, compare weekday and weekend departures, then follow its route on the map.'
+            : 'Na BL Prevozu možete provjeriti autobuske linije, red vožnje, stajališta i cijene karata u Banjoj Luci. Izaberite liniju, uporedite polaske radnim danom i vikendom, a zatim otvorite njenu trasu na mapi.'}
+        </p>
+      </div>
+      <nav class="home-overview__links" aria-label={isEnglish ? 'Public transport information' : 'Informacije o gradskom prevozu'}>
+        <a href={linesPath}>{isEnglish ? 'Bus routes and timetables' : 'Autobuske linije i red vožnje'}</a>
+        <a href={mapPath}>{isEnglish ? 'Public transport map' : 'Mapa gradskog prevoza'}</a>
+        <a href={pricingPath}>{isEnglish ? 'Bus ticket prices' : 'Cijene autobusnih karata'}</a>
+      </nav>
+    </div>
+  </section>
+
   <HomeUpdatesPreview locale={locale} />
 </BaseLayout>
+
+<style>
+  .home-overview {
+    padding-block: var(--space-8);
+  }
+
+  .home-overview__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(15rem, 0.8fr);
+    gap: clamp(var(--space-8), 5vw, var(--space-16));
+    align-items: start;
+    padding-block: var(--space-8);
+    border-block: 1px solid var(--color-border);
+  }
+
+  .home-overview__copy {
+    max-width: 44rem;
+  }
+
+  .home-overview__copy .section__title {
+    margin-bottom: var(--space-3);
+  }
+
+  .home-overview__copy p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .home-overview__links {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--color-border-strong);
+  }
+
+  .home-overview__links a {
+    display: flex;
+    align-items: center;
+    min-height: var(--touch-target);
+    padding-block: var(--space-3);
+    border-bottom: 1px solid var(--color-border-strong);
+    color: var(--color-text-link);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .home-overview__links a::after {
+    content: '\2192';
+    margin-left: auto;
+    padding-left: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  .home-overview__links a:hover {
+    color: var(--color-text-link-hover);
+  }
+
+  .home-overview__links a:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  @media (max-width: 760px) {
+    .home-overview__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+      padding-block: var(--space-6);
+    }
+  }
+</style>

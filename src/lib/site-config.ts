@@ -87,8 +87,8 @@ export const PAGE_META: Record<PageKey, { title: LocalizedText; description: Loc
     },
     guide: {
         title: {
-            bhs: 'Vodič za putnike | BL Prevoz',
-            en: 'Passenger Guide | BL Prevoz',
+            bhs: 'Vodič za gradski prevoz u Banjoj Luci | BL Prevoz',
+            en: 'Banja Luka Public Transport Guide | BL Prevoz',
         },
         description: {
             bhs: 'Kako planirati vožnju autobusom u Banjoj Luci: izbor linije i smjera, stajališta, procijenjeni dolasci, karte i korisni kontakti.',
@@ -107,8 +107,8 @@ export const PAGE_META: Record<PageKey, { title: LocalizedText; description: Loc
     },
     map: {
         title: {
-            bhs: 'Mapa javnog prevoza | BL Prevoz',
-            en: 'Public Transport Map | BL Prevoz',
+            bhs: 'Mapa gradskog prevoza Banja Luka | BL Prevoz',
+            en: 'Banja Luka Public Transport Map | BL Prevoz',
         },
         description: {
             bhs: 'Interaktivna mapa javnog prevoza u Banjoj Luci preko cijelog ekrana. Autobuska stajališta, trase linija, željezničke stanice i Nextbike stanice.',
@@ -117,8 +117,8 @@ export const PAGE_META: Record<PageKey, { title: LocalizedText; description: Loc
     },
     lines: {
         title: {
-            bhs: 'Red vožnje i autobuske linije | BL Prevoz',
-            en: 'Timetables & Bus Routes | BL Prevoz',
+            bhs: 'Red vožnje gradskog prevoza Banja Luka | BL Prevoz',
+            en: 'Banja Luka Bus Timetables & Routes | BL Prevoz',
         },
         description: {
             bhs: 'Sve autobuske linije i red vožnje javnog prevoza u Banjoj Luci. Mape trasa, polasci i stajališta na jednom mjestu.',
@@ -127,8 +127,8 @@ export const PAGE_META: Record<PageKey, { title: LocalizedText; description: Loc
     },
     pricing: {
         title: {
-            bhs: 'Cijene karata | BL Prevoz',
-            en: 'Ticket Prices | BL Prevoz',
+            bhs: 'Cijene karata gradskog prevoza Banja Luka | BL Prevoz',
+            en: 'Banja Luka Bus Ticket Prices | BL Prevoz',
         },
         description: {
             bhs: 'Aktuelne cijene karata, mjesečnih pretplata i đačkih markica za autobuski prevoz u Banjoj Luci.',
@@ -147,8 +147,8 @@ export const PAGE_META: Record<PageKey, { title: LocalizedText; description: Loc
     },
     faq: {
         title: {
-            bhs: 'Česta pitanja | BL Prevoz',
-            en: 'FAQ | BL Prevoz',
+            bhs: 'Javni prevoz Banja Luka – česta pitanja | BL Prevoz',
+            en: 'Banja Luka Public Transport FAQ | BL Prevoz',
         },
         description: {
             bhs: 'Odgovori na najčešća pitanja o autobuskim linijama, kartama i javnom prevozu u Banjoj Luci.',
@@ -157,8 +157,8 @@ export const PAGE_META: Record<PageKey, { title: LocalizedText; description: Loc
     },
     updates: {
         title: {
-            bhs: 'Obavještenja i izmjene reda vožnje | BL Prevoz',
-            en: 'Updates & Timetable Changes | BL Prevoz',
+            bhs: 'Izmjene reda vožnje Banja Luka | BL Prevoz',
+            en: 'Banja Luka Bus Service Updates | BL Prevoz',
         },
         description: {
             bhs: 'Najnovija obavještenja o izmjenama autobuskih linija, reda vožnje i radovima na javnom prevozu u Banjoj Luci.',

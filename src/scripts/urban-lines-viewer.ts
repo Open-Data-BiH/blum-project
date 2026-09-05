@@ -12,6 +12,7 @@ const VIEWER_CONFIG = {
         zoomSnap: 0.1,
         zoomDelta: 0.5,
         wheelPxPerZoomLevel: 100,
+        scrollWheelZoom: false,
         minZoom: -1,
         maxZoom: 2,
         maxBoundsViscosity: 1.0,
@@ -30,6 +31,18 @@ export const initUrbanLinesViewer = (): void => {
     viewer.replaceChildren();
 
     const map = L.map('urban-lines-viewer', VIEWER_CONFIG.MAP_OPTIONS);
+    const activationButton = viewer
+        .closest<HTMLElement>('.urban-lines-map')
+        ?.querySelector<HTMLButtonElement>('[data-urban-map-activate]');
+
+    activationButton?.addEventListener(
+        'click',
+        () => {
+            map.scrollWheelZoom.enable();
+            activationButton.hidden = true;
+        },
+        { once: true },
+    );
 
     const calculateImageBounds = (): L.LatLngBounds => {
         const { clientWidth: containerWidth, clientHeight: containerHeight } = viewer;

@@ -1,9 +1,32 @@
 ---
 import 'leaflet/dist/leaflet.css';
 import MapContainer from '../map/MapContainer.astro';
+import type { Locale } from '../../lib/site-config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 ---
 
-<MapContainer mapId="urban-lines-viewer" className="urban-lines-map" />
+<MapContainer
+  mapId="urban-lines-viewer"
+  className="urban-lines-map"
+  label={locale === 'en' ? 'Urban lines map' : 'Mapa gradskih linija'}
+>
+  <button
+    type="button"
+    class="urban-lines-map__activate"
+    data-urban-map-activate
+    aria-controls="urban-lines-viewer"
+  >
+    <span class="urban-lines-map__activate-label">
+      <i class="fas fa-hand-pointer" aria-hidden="true"></i>
+      {locale === 'en' ? 'Click to interact with the map' : 'Kliknite za korištenje mape'}
+    </span>
+  </button>
+</MapContainer>
 
 <script>
   const viewerEl = document.getElementById('urban-lines-viewer');

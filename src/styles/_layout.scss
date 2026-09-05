@@ -57,7 +57,7 @@ body[data-layout='app'] {
     color: var(--color-text-primary);
 }
 
-header {
+.site-header {
     background-color: var(--color-header-bg);
     box-shadow: none;
     position: sticky;
@@ -69,7 +69,7 @@ header {
         box-shadow var(--transition-normal) var(--ease-out);
 }
 
-header.header--scrolled {
+.site-header.header--scrolled {
     box-shadow: var(--shadow-sm);
 }
 

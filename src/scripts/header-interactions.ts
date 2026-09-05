@@ -71,7 +71,7 @@ function initializeMobileMenu(): void {
 }
 
 function initializeScrollShadow(): void {
-    const header = document.querySelector('header');
+    const header = document.querySelector<HTMLElement>('.site-header');
     if (!header) {
         return;
     }
@@ -96,7 +96,7 @@ function setupSmoothScrolling(): void {
                 return;
             }
 
-            const header = document.querySelector('header');
+            const header = document.querySelector<HTMLElement>('.site-header');
             const headerHeight = header ? header.offsetHeight : 0;
             const extraOffset = targetId === '#map' && window.innerWidth <= 768 ? 20 : 0;
 

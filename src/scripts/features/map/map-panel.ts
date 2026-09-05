@@ -322,13 +322,23 @@ export const createMapPanel = ({
             ${backButton()}
             <div class="map-detail__head" style="${lineAccentStyle(color)}">
                 <span class="map-badge map-badge--static">${escapeHtml(route.lineId)}</span>
-                <h2 class="map-detail__title" tabindex="-1" data-detail-title>${renderRouteRelation(
-                    `${titlePrefix}${formatRelation(route)}`,
-                    {
-                        ...relationLabels,
-                        parts: { origin: `${titlePrefix}${route.origin}`, destination: route.destination, via: [] },
-                    },
-                )}</h2>
+                <div class="map-detail__heading">
+                    <h2 class="map-detail__title" tabindex="-1" data-detail-title>${renderRouteRelation(
+                        `${titlePrefix}${formatRelation(route)}`,
+                        {
+                            ...relationLabels,
+                            parts: { origin: `${titlePrefix}${route.origin}`, destination: route.destination, via: [] },
+                        },
+                    )}</h2>
+                    <a
+                        class="map-detail__link"
+                        href="${escapeHtml(lineDetailHref(route.lineId))}"
+                        title="${escapeHtml(langText(`Otvori red vožnje linije ${route.lineId}`, `Open timetable for line ${route.lineId}`))}"
+                    >
+                        <i class="fas fa-clock" aria-hidden="true"></i>
+                        ${escapeHtml(langText('Red vožnje', 'Timetable'))}
+                    </a>
+                </div>
             </div>
             ${renderLineFacts(route.lineId, stops.length)}
             ${pathNote}
@@ -341,10 +351,6 @@ export const createMapPanel = ({
                     )
                     .join('')}
             </ol>
-            <a class="map-detail__link" href="${escapeHtml(lineDetailHref(route.lineId))}">
-                <i class="fas fa-clock" aria-hidden="true"></i>
-                ${escapeHtml(langText(`Red vožnje linije ${route.lineId}`, `Timetable for line ${route.lineId}`))}
-            </a>
         `;
 
         panel.dataset.detailType = 'route';

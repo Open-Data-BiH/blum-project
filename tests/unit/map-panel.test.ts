@@ -106,6 +106,12 @@ describe('map panel', () => {
             index.routeById.get(firstLine.routes[0])!.stops.length,
         );
 
+        const timetableLink = detail.querySelector<HTMLAnchorElement>('.map-detail__link');
+        expect(timetableLink).not.toBeNull();
+        expect(timetableLink?.getAttribute('href')).toContain(`/linija/${firstLine.id.toLowerCase()}/`);
+        expect(timetableLink?.textContent).toContain('Red vožnje');
+        expect(detail.querySelector('.map-detail__head')?.contains(timetableLink)).toBe(true);
+
         // The heading names the direction on screen, so only the other ones get a button.
         const directions = Array.from(detail.querySelectorAll<HTMLButtonElement>('.map-direction'));
         expect(directions).toHaveLength(firstLine.routes.length - 1);

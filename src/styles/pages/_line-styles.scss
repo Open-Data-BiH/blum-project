@@ -856,7 +856,7 @@ a.badge--line-number-link:focus-visible {
         justify-content: flex-end;
     }
 
-    .lines-list .line-card {
+    .lines-list .line-card:not([hidden]) {
         display: grid;
         grid-template-columns: minmax(0, 1fr) auto;
         grid-template-rows: auto auto auto;

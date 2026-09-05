@@ -67,31 +67,31 @@ const trapistiPlaces: TrapistiPlace[] = [
   {
     label: t('Samostan Marija Zvijezda', 'Marija Zvijezda Monastery'),
     note: t(
-      'Samostan trapističkog reda i crkva uz njega. Ovdje je nastao trapist sir.',
-      'A Trappist monastery with its church. Trappist cheese was created here.',
+      'Crkva i samostan po kojima je naselje dobilo ime - i mjesto gdje je nastao trapist sir.',
+      'The church and monastery that gave the neighbourhood its name - and where Trappist cheese was first made.',
     ),
     href: 'https://www.biskupija-banjaluka.org/vijesti-2018-godina/marija-zvijezda-i-trapisti/',
   },
   {
     label: t('Trim staza u Trapistima', 'Trapisti fitness trail'),
     note: t(
-      'Uređene staze za šetnju i trčanje, koje se nastavljaju sve do Banje Slatine.',
-      'Maintained walking and running trails that continue all the way to Banja Slatina.',
+      'Staza uz Vrbas za šetnju ili trčanje, s nastavkom prema Banji Slatini.',
+      'A walking and running trail beside the Vrbas, continuing towards Banja Slatina.',
     ),
   },
   {
     label: t('Stara hidrocentrala', 'Old hydroelectric plant'),
     note: t(
-      'Napuštena hidrocentrala s kraja 19. vijeka, danas tehnički spomenik uz Vrbas.',
-      'A disused late-19th-century power plant, today a technical monument beside the Vrbas.',
+      'Nekadašnja hidrocentrala uz Vrbas, danas tehnički spomenik iz vremena kada je grad dobijao struju.',
+      'A former power station on the Vrbas - a technical landmark from the city’s early days of electricity.',
     ),
     href: 'https://sr.wikipedia.org/wiki/Стара_хидроцентрала_у_Делибашином_селу',
   },
   {
     label: t('Banjalučka pivara', 'Banja Luka Brewery'),
     note: t(
-      'Osnovali su je trapisti 1873. i od tada radi na istom mjestu.',
-      'Founded by the Trappists in 1873 and still working on the same spot.',
+      'Trapisti su je osnovali 1873. godine; pivara i danas radi na istom mjestu.',
+      'Founded by the Trappists in 1873, the brewery still operates on the same site.',
     ),
     href: 'https://www.banjaluckapivara.com/',
   },
@@ -113,8 +113,8 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
   <PageIntro
     title={t('Banja Luka autobusom', 'Banja Luka by bus')}
     description={t(
-      'Do rijeke, zelenila i poznatih mjesta u okolini grada stiže se i bez automobila, gradskim autobusom.',
-      'The river, the parks and the best-known spots around the city are all reachable by city bus, without a car.',
+      'Sjednite na autobus i dođite do rijeke, šume, šetnice ili mjesta za kafu - bez traženja parkinga.',
+      'Take the bus to the river, the woods, a riverside walk or a good coffee - no parking required.',
     )}
     titleId="explore-title"
     icon="fa-solid fa-compass"
@@ -140,12 +140,12 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
       </figure>
 
       <div class="explore-lead__content">
-        <p class="explore-eyebrow">{t('Odakle početi', 'Where to start')}</p>
-        <h2 id="explore-start-title">{t('Pet izleta gradskim autobusom', 'Five trips by city bus')}</h2>
+        <p class="explore-eyebrow">{t('Ideja za slobodan dan', 'For a free afternoon')}</p>
+        <h2 id="explore-start-title">{t('Pet mjesta do kojih vodi autobus', 'Five places the bus can take you')}</h2>
         <p>
           {t(
-            'Izaberite gdje želite ići, provjerite smjer i pogledajte red vožnje prije nego krenete. Do Banj brda ne vozi gradska linija, nego poseban Banj Bus.',
-            'Pick where you want to go, check the direction, and look at the timetable before you set off. Banj Hill is not served by a city line but by the separate Banj Bus.',
+            'Ovdje su izleti koji stanu u jedno popodne. Odaberite odredište, provjerite smjer i red vožnje, pa krenite. Za Banj brdo umjesto gradske linije vozi Banj Bus.',
+            'These are outings that fit into an afternoon. Choose a destination, check the direction and timetable, then head out. Banj Hill is served by Banj Bus rather than a city line.',
           )}
         </p>
         <ul class="explore-route-pills" aria-label={t('Preporučena odredišta', 'Suggested destinations')}>
@@ -170,9 +170,9 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
   <section class="section explore-destinations" aria-labelledby="destinations-title">
     <div class="container">
       <div class="explore-section-heading">
-        <p class="explore-eyebrow">{t('Kuda autobusom', 'Where to go')}</p>
-        <h2 id="destinations-title">{t('Pet mjesta i linije do njih', 'Five places and the lines that get you there')}</h2>
-        <p>{t('Svi smjerovi i stajališta navedeni su za polazak iz centra grada.', 'All directions and stops below assume you are setting off from the city centre.')}</p>
+        <p class="explore-eyebrow">{t('Kuda na pauzu', 'Where to take a break')}</p>
+        <h2 id="destinations-title">{t('Pet prijedloga, s konkretnim polaskom', 'Five ideas, with the practical bus details')}</h2>
+        <p>{t('Smjerovi i stajališta u nastavku računaju na polazak iz centra grada.', 'The directions and stops below assume you are leaving from the city centre.')}</p>
       </div>
 
       <div class="destination-grid">
@@ -196,8 +196,8 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
             <h3>{t('Trapisti i samostan Marija Zvijezda', 'Trapisti and the Marija Zvijezda Monastery')}</h3>
             <p>
               {t(
-                'Trapistički monasi naselili su ovaj kraj krajem 19. vijeka i po njima je dobio ime. Ono što su za sobom ostavili obiđe se u jednoj šetnji uz Vrbas.',
-                'The Trappist monks settled here in the late 19th century and the area still carries their name. What they left behind fits into a single walk along the Vrbas.',
+                'Trapisti su kraj koji vrijedi obići polako: samostan, pivara, stara hidrocentrala i staza uz Vrbas nalaze se na istom potezu. Ime je dobio po monasima koji su se ovdje naselili krajem 19. vijeka.',
+                'Trapisti is best explored at an unhurried pace: the monastery, brewery, old power station and Vrbas trail all sit along the same stretch. The neighbourhood takes its name from the monks who settled here in the late 19th century.',
               )}
             </p>
             <ul class="destination-card__places">
@@ -230,8 +230,8 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
               </dl>
               <p class="destination-card__transit-note">
                 {t(
-                  'Siđite kod Pivare, a put između lokacija pogledajte na mapi.',
-                  'Get off at Pivara and check the walk between the locations on the map.',
+                  'Izađite kod Pivare; odatle su znamenitosti i staza nadohvat pješice.',
+                  'Get off at Pivara; the sights and trail are a short walk from there.',
                 )}
               </p>
               <a href={linePath('1')} class="destination-card__link">{t('Otvori liniju 1', 'Open line 1')}<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
@@ -259,8 +259,8 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
             <h3>{t('Banj brdo', 'Banj Hill')}</h3>
             <p>
               {t(
-                'Šumovito brdo iznad grada. Na vrhu su Spomenik palim borcima Krajine, rad Antuna Augustinčića, vidikovac nad Banjom Lukom i dolinom Vrbasa, te staze za šetnju i planinarenje.',
-                'A wooded hill above the city. At the top are the memorial to the fallen fighters of Krajina by Antun Augustinčić, a viewpoint over Banja Luka and the Vrbas valley, and trails for walking and hiking.',
+                'Kada želite pogled iznad grada, krenite na Banj brdo. Na vrhu vas čekaju spomenik palim borcima Krajine, djelo kipara Antuna Augustinčića, pogled prema gradu i dolini Vrbasa, te staze kroz šumu. Jedna od njih vodi prema Šeheru, odnosno banji Terme Banja Luka.',
+                'For a view above the city, head for Banj Hill. At the top you’ll find the memorial to the fallen fighters of Krajina by sculptor Antun Augustinčić, views over the city and Vrbas valley, and woodland trails. One of them leads towards Šeher and the Terme Banja Luka spa.',
               )}
             </p>
             <div class="destination-card__transit">
@@ -273,8 +273,8 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
               </dl>
               <p class="destination-card__transit-note">
                 {t(
-                  'Do Banj brda ne vozi gradska linija, nego poseban Banj Bus. Dane i polaske provjerite prije nego krenete. Do vrha se može i pješke, stazama iz grada.',
-                  'Banj Hill is served by the separate Banj Bus, not a city line. Check the days and departures before you set off, or walk up on the trails from town.',
+                  'Do Banj brda ne vozi gradska linija, nego poseban Banj Bus. Provjerite dane vožnje i polaske prije puta. Ako ste za uspon, do vrha vode i staze iz grada.',
+                  'Banj Hill is served by a separate Banj Bus, not a city line. Check the operating days and departures before you travel. If you prefer the climb, trails from town lead to the top.',
                 )}
               </p>
               <a href={banjBusUrl} class="destination-card__link" target="_blank" rel="noopener noreferrer">
@@ -304,8 +304,8 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
             <h3>{t('Plaža Vrućica', 'Vrućica Beach')}</h3>
             <p>
               {t(
-                'Gradska plaža na Vrbasu, u kraju poznatom po toplim termomineralnim izvorima. Ljeti je predah od vrućine, a zbog tople vode Srpske Toplice su živo mjesto i van sezone.',
-                'The city beach on the Vrbas, in a part of town known for its warm thermal-mineral springs. A break from the summer heat, and thanks to the warm water Srpske Toplice stays busy out of season too.',
+                'Vrućica je gradska plaža uz Vrbas, u Šeheru - kraju poznatom po termomineralnim izvorima. Ljeti se ovdje dolazi po osvježenje, a uz rijeku je lijepo svratiti i kada nema kupanja.',
+                'Vrućica is the city beach on the Vrbas in Šeher, a neighbourhood known for thermal-mineral springs. Come here for a summer swim, or simply a riverside stop when swimming is off the agenda.',
               )}
             </p>
             <div class="destination-card__transit">
@@ -365,8 +365,8 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
             </h3>
             <p>
               {t(
-                'Na nešto više od pet hektara raste oko 1500 biljnih vrsta, od trava i žbunja do starih stabala. Tu su ginko, Pančićeva omorika, japanska magnolija, judino drvo i carigradska lijeska, ali i obične korisne biljke poput pelina i šparoge. Bašta se naslanja na Univerzitetski kampus, pa se oboje obiđe u istoj šetnji.',
-                'Around 1,500 plant species grow on a little over five hectares, from grasses and shrubs to mature trees. Among them are ginkgo, Serbian spruce, Japanese magnolia, Judas tree and Turkish hazel, alongside everyday useful plants such as wormwood and asparagus. The garden adjoins the University Campus, so both fit into one walk.',
+                'Botanička bašta je miran dio Kampusa za šetnju među drvećem, cvijećem i više od 1.500 biljnih vrsta. Potražite ginko, Pančićevu omoriku ili japansku magnoliju, pa produžite kroz Univerzitetski kampus.',
+                'The Botanical Garden is a quiet corner of the campus for a walk among trees, flowers and more than 1,500 plant species. Look out for ginkgo, Serbian spruce and Japanese magnolia, then continue through the University Campus.',
               )}
             </p>
             <div class="destination-card__transit">
@@ -378,8 +378,8 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
               </dl>
               <p class="destination-card__transit-note">
                 {t(
-                  'Linija 20 staje na samom ulazu u Kampus, a linije 14B, 14 i 9B na obližnjim stajalištima, odakle je do bašte i kampusa svega nekoliko minuta hoda.',
-                  'Line 20 stops right at the campus entrance, and lines 14B, 14 and 9B at nearby stops, a few minutes on foot from the garden and the campus.',
+                  'Linija 20 staje na ulazu u Kampus. Sa stajališta linija 14B, 14 i 9B do bašte i kampusa treba tek nekoliko minuta hoda.',
+                  'Line 20 stops at the campus entrance. From the nearby stops served by 14B, 14 and 9B, the garden and campus are only a few minutes on foot.',
                 )}
               </p>
               <div class="destination-card__line-links" aria-label={t('Linije u blizini', 'Nearby lines')}>
@@ -415,8 +415,8 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
             <h3>{t('Park restoran Stara Ada', 'Stara Ada Park Restaurant')}</h3>
             <p>
               {t(
-                'Zelena ada na samom Vrbasu, sa šetnicom uz vodu i restoranom pod drvenim krovom. Mjesto za predah, kafu i šetnju bez izlaska iz grada.',
-                'A green river island on the Vrbas, with a waterside promenade and a restaurant under a timber roof. A place for a break, a coffee and a walk without leaving the city.',
+                'Na Staroj Adi možete sjesti uz Vrbas, prošetati kraj rijeke i napraviti pauzu za ručak ili kafu. Dovoljno je blizu da se uklopi u običan dan, a dovoljno mirno da predahnete od gradske gužve.',
+                'At Stara Ada, sit by the Vrbas, walk beside the river and stop for lunch or coffee. It is close enough to fit into an ordinary day, yet quiet enough for a break from the city bustle.',
               )}
             </p>
             <div class="destination-card__transit">
@@ -438,12 +438,12 @@ const credit = (source: string): string => `${t('Foto', 'Photo')}: ${source}`;
   <section class="section explore-plan" aria-labelledby="explore-plan-title">
     <div class="container explore-plan__card">
       <div>
-        <p class="explore-eyebrow">{t('Prije polaska', 'Before you leave')}</p>
-        <h2 id="explore-plan-title">{t('Provjerite red vožnje i smjer', 'Check the timetable and direction')}</h2>
+        <p class="explore-eyebrow">{t('Prije nego krenete', 'Before you go')}</p>
+        <h2 id="explore-plan-title">{t('Dva minuta pripreme, mirniji put', 'Two minutes of planning, an easier trip')}</h2>
         <p>
           {t(
-            'Polasci i trajanje vožnje znaju se promijeniti, a Banj Bus vozi sezonski. Provjerite liniju i mapu neposredno prije nego krenete.',
-            'Departures and journey times do change, and Banj Bus runs seasonally. Check the line and the map shortly before you set off.',
+            'Polasci i trajanje vožnje mogu se promijeniti, a Banj Bus vozi sezonski. Zato neposredno prije puta provjerite liniju, smjer i mapu stajališta.',
+            'Departures and journey times can change, and Banj Bus is seasonal. Before setting off, check the route, direction and stop map.',
           )}
         </p>
       </div>

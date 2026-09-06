@@ -569,7 +569,7 @@
 }
 
 @media (max-width: 900px) {
-    .explore-lead__grid,
+    .container.explore-lead__grid,
     .destination-card--wide {
         grid-template-columns: 1fr;
     }
@@ -584,7 +584,7 @@
         aspect-ratio: 16 / 9;
     }
 
-    .explore-plan__card {
+    .container.explore-plan__card {
         grid-template-columns: 1fr;
     }
 

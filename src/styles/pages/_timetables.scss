@@ -1029,6 +1029,50 @@ body.has-timetable-modal {
     }
 }
 
+@media (max-width: 767px) {
+    .timetable-modal .line-selector-wrapper,
+    .timetable-modal .timetable-controls {
+        margin-bottom: var(--space-4);
+    }
+
+    .timetable-modal .hours-minutes-table thead th {
+        padding: var(--space-2) var(--space-3);
+    }
+
+    .timetable-modal .hours-minutes-table thead th:first-child,
+    .timetable-modal .hour-cell {
+        width: 3rem;
+    }
+
+    .timetable-modal .hour-cell {
+        padding: var(--space-2) var(--space-1);
+        font-size: var(--font-size-base);
+    }
+
+    .timetable-modal .minutes-cell {
+        padding: var(--space-1) var(--space-2);
+    }
+
+    .timetable-modal .minutes-wrapper {
+        gap: var(--space-1);
+        justify-content: flex-start;
+    }
+
+    .timetable-modal .minute-box {
+        min-width: 2.5rem;
+        min-height: 2rem;
+        padding: 2px var(--space-2);
+        font-size: var(--font-size-md);
+    }
+
+    .timetable-modal .minute-box.next {
+        min-width: 2.75rem;
+        min-height: 2.25rem;
+        font-size: var(--font-size-base);
+        border-width: 1px;
+    }
+}
+
 @media (max-width: 600px) {
     .timetable-modal {
         width: 100%;

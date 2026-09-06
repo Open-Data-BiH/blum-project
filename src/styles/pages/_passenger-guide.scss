@@ -393,8 +393,12 @@
 }
 
 @media (max-width: 820px) {
-    .guide-overview__grid {
+    .container.guide-overview__grid {
         grid-template-columns: 1fr;
+    }
+
+    .guide-photo {
+        order: -1;
     }
 
     .guide-photo__image {
@@ -405,7 +409,7 @@
 }
 
 @media (max-width: 560px) {
-    .guide-content {
+    .section.guide-content {
         padding-top: var(--space-6);
     }
 

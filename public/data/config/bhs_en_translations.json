@@ -89,7 +89,7 @@
             "airport": {
                 "title": "Airport Transport",
                 "descriptionTitle": "Transfers to Banja Luka International Airport",
-                "price": "One-way ticket price is 10.00 KM",
+                "price": "One-way ticket: 12 BAM (€6). Payment is accepted in BAM or euros.",
                 "departureLocation": "All departures are from the Old Bus Station (Vidovdanska street) and Main (New) Bus Station.",
                 "moreInfo": "For more information about departures, visit the operator's website.",
                 "websiteLink": "Airport Transfers"
@@ -226,7 +226,7 @@
             "airport": {
                 "title": "Aerodromski prevoz",
                 "descriptionTitle": "Transferi do Međunarodnog aerodroma Banja Luka",
-                "price": "Cijena karte u jednom pravcu iznosi 10,00 KM",
+                "price": "Karta u jednom pravcu: 12 KM (6 €). Plaćanje je moguće u KM ili eurima.",
                 "departureLocation": "Svi polasci su sa Stare autobuske stanice (Vidovdanska ulica) i Glavne (Nove) autobuske stanice.",
                 "moreInfo": "Za više informacija o polascima posjetite internet stranicu prevoznika.",
                 "websiteLink": "Avio transferi"

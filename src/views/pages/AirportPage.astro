@@ -1,9 +1,9 @@
+error: bad fsmonitor version 2
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AirportMap from '../../components/AirportMap.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import {
-  addHashToPath,
   getAlternatePaths,
   getLocalizedMeta,
   getPagePath,
@@ -30,7 +30,7 @@ const airportFaqSchema = {
           name: 'How do I get from Banja Luka Airport to the city center?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Take the Smiljić shuttle bus for approximately 10 KM (30-45 minutes), or a taxi for 40-60 KM (30-35 minutes). The shuttle waits outside the terminal after each flight arrival and ends at the Old and Main Bus Station.',
+            text: 'Take the Smiljić shuttle bus for 12 BAM (€6; euro payments are accepted), or a taxi for 40-60 BAM. The shuttle journey takes 30-45 minutes, waits outside the terminal after each flight arrival, and ends at the Old and Main Bus Station.',
           },
         },
         {
@@ -38,7 +38,7 @@ const airportFaqSchema = {
           name: 'How much does the Banja Luka airport bus cost?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'The Smiljić airport shuttle costs approximately 10 KM one way. Tickets are purchased on the bus.',
+            text: 'The Smiljić airport shuttle costs 12 BAM one way. Tickets are purchased on the bus, where payment in euros is also accepted (€6).',
           },
         },
         {
@@ -56,7 +56,7 @@ const airportFaqSchema = {
           name: 'Kako doći od aerodroma Banja Luka do centra grada?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Shuttle autobusom kompanije Smiljić za oko 10 KM (30-45 min), ili taksijem za 40-60 KM (30-35 min). Autobus čeka ispred terminala nakon svakog leta i završava na Staroj i Glavnoj autobuskoj stanici.',
+            text: 'Shuttle autobusom kompanije Smiljić za 12 KM (6 €; plaćanje u eurima je moguće), ili taksijem za 40-60 KM. Vožnja shuttle autobusom traje 30-45 minuta, autobus čeka ispred terminala nakon svakog leta i završava na Staroj i Glavnoj autobuskoj stanici.',
           },
         },
         {
@@ -64,7 +64,7 @@ const airportFaqSchema = {
           name: 'Koliko kosta shuttle autobus od aerodroma Banja Luka?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Shuttle autobus kompanije Smiljić košta oko 10 KM (jedna vožnja). Karte se kupuju u autobusu.',
+            text: 'Shuttle autobus kompanije Smiljić košta 12 KM u jednom pravcu. Karte se kupuju u autobusu, gdje je moguće platiti i 6 €.',
           },
         },
         {
@@ -115,7 +115,7 @@ const airportShuttleSchema = {
 const meta = getLocalizedMeta('airport', locale);
 const alternatePaths = getAlternatePaths('airport');
 const linesPath = withBase(getPagePath('lines', locale));
-const timetablePath = withBase(addHashToPath(getPagePath('lines', locale), 'timetable'));
+const mapPath = withBase(getPagePath('map', locale));
 const pricingPath = withBase(getPagePath('pricing', locale));
 const isEnglish = locale === 'en';
 const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
@@ -144,299 +144,145 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
     variant="airport"
   />
 
-  <section class="section" id="airport-overview">
+  <section class="section airport-journey" id="airport-journey">
     <div class="container">
-      <p class="airport-intro" id="airport-intro">
-        {isEnglish
-          ? `Banja Luka International Airport (IATA: BNX) is located in Mahovljani, approximately
-          25 km north of the city center. The fastest access is via the E661 motorway (Banja Luka - Gradiška).
-          The airport is connected to the city by Smiljić shuttle bus, and taxi services are
-          also available. Below you'll find all the information you need to plan your arrival or departure.`
-          : `Međunarodni aerodrom Banja Luka (IATA: BNX) nalazi se u Mahovljanima, oko 25 km
-          sjeverno od centra grada. Najbrži pristup je autoputem E661 (Banja Luka - Gradiška).
-          Aerodrom je povezan sa gradom shuttle autobusom kompanije Smiljić, a dostupne su
-          i taksi usluge. Ispod su sve informacije potrebne za planiranje vašeg dolaska ili odlaska.`}
-      </p>
-
-      <div class="airport-fast-answer">
-        <div class="airport-fast-answer__header">
-          <i class="fa-solid fa-bolt" aria-hidden="true"></i>
-          <h2>{t('Kako od aerodroma do centra grada?', 'How to get from the airport to the city center?')}</h2>
+      <div class="direction-heading">
+        <div class="airport-journey-badge" aria-label={t('Veza aerodroma i grada', 'Airport and city connection')}>
+          <span class="airport-journey-badge__point airport-journey-badge__point--airport">
+            <i class="fa-solid fa-plane-departure" aria-hidden="true"></i>
+            <span>{t('Aerodrom', 'Airport')}</span>
+          </span>
+          <span class="airport-journey-badge__route" aria-hidden="true">
+            <i class="fa-solid fa-van-shuttle"></i>
+          </span>
+          <span class="airport-journey-badge__point airport-journey-badge__point--city">
+            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+            <span>{t('Grad', 'City')}</span>
+          </span>
         </div>
-        <div class="airport-fast-answer__options">
-          <div class="airport-fast-answer__option">
-            <i class="fa-solid fa-bus" aria-hidden="true"></i>
-            <div>
-              <strong>{t('Shuttle autobus', 'Shuttle bus')}</strong>
-              <span>~10 KM · 30-45 min</span>
-            </div>
-          </div>
-          <div class="airport-fast-answer__option">
-            <i class="fa-solid fa-taxi" aria-hidden="true"></i>
-            <div>
-              <strong>{t('Taksi', 'Taxi')}</strong>
-              <span>~40-60 KM · 30-35 min</span>
-            </div>
-          </div>
-          <div class="airport-fast-answer__option">
-            <i class="fa-solid fa-car" aria-hidden="true"></i>
-            <div>
-              <strong>Rent-a-car</strong>
-              <span>{t('Dostupno na aerodromu', 'Available at the airport')}</span>
-            </div>
-          </div>
-        </div>
-        <p class="airport-fast-answer__note">
-          {isEnglish ? (
-            <span>Distance from airport to city center: <strong>~25 km</strong> (E661 motorway, Mahovljani interchange)</span>
-          ) : (
-            <span>Udaljenost od aerodroma do centra: <strong>~25 km</strong> (autoput E661, petlja Mahovljani)</span>
+        <h2 class="section__title airport-section-title">{t('Prevoz između aerodroma i grada', 'Travel between the airport and city')}</h2>
+        <p class="direction-heading__subtitle">
+          {t(
+            'Iste opcije prevoza dostupne su u oba smjera. Ovdje su najvažnije informacije za izbor i planiranje puta.',
+            'The same transport options are available in both directions. Here is what you need to choose and plan your journey.',
           )}
         </p>
       </div>
-    </div>
-  </section>
 
-  <section class="section airport-quickfacts" id="airport-quickfacts">
-    <div class="container">
-      <h2 class="section__title airport-section-title">{t('Osnovne informacije', 'Quick Facts')}</h2>
-      <div class="quickfacts-grid">
-        <div class="quickfact-card">
-          <div class="quickfact-card__icon" aria-hidden="true">
-            <i class="fa-solid fa-road"></i>
-          </div>
-          <div class="quickfact-card__label">{t('Udaljenost', 'Distance')}</div>
-          <div class="quickfact-card__value">~25 km</div>
+      <div class="airport-route-facts" aria-label={t('Osnovne informacije o aerodromu', 'Airport quick facts')}>
+        <div class="airport-route-fact">
+          <i class="fa-solid fa-plane" aria-hidden="true"></i>
+          <span>
+            <small>{t('Oznaka aerodroma', 'Airport code')}</small>
+            <strong>BNX</strong>
+          </span>
         </div>
-        <div class="quickfact-card">
-          <div class="quickfact-card__icon" aria-hidden="true">
-            <i class="fa-solid fa-clock"></i>
-          </div>
-          <div class="quickfact-card__label">{t('Vrijeme vožnje', 'Travel time')}</div>
-          <div class="quickfact-card__value">30-45 min</div>
+        <div class="airport-route-fact">
+          <i class="fa-solid fa-road" aria-hidden="true"></i>
+          <span>
+            <small>{t('Udaljenost od centra', 'Distance from center')}</small>
+            <strong>~25 km</strong>
+          </span>
         </div>
-        <div class="quickfact-card">
-          <div class="quickfact-card__icon" aria-hidden="true">
-            <i class="fa-solid fa-money-bill-wave"></i>
-          </div>
-          <div class="quickfact-card__label">{t('Cijena autobusa', 'Bus price')}</div>
-          <div class="quickfact-card__value">~10 KM</div>
+        <div class="airport-route-fact">
+          <i class="fa-solid fa-route" aria-hidden="true"></i>
+          <span>
+            <small>{t('Najbrži pristup', 'Fastest access')}</small>
+            <strong>{t('Autoput E661', 'E661 motorway')}</strong>
+          </span>
         </div>
-        <div class="quickfact-card">
-          <div class="quickfact-card__icon" aria-hidden="true">
-            <i class="fa-solid fa-building"></i>
-          </div>
-          <div class="quickfact-card__label">{t('Prevoznik', 'Operator')}</div>
-          <div class="quickfact-card__value">Smiljić</div>
-        </div>
-        <div class="quickfact-card">
-          <div class="quickfact-card__icon" aria-hidden="true">
-            <i class="fa-solid fa-calendar-day"></i>
-          </div>
-          <div class="quickfact-card__label">{t('Učestalost', 'Frequency')}</div>
-          <div class="quickfact-card__value">{t('Prema redu letenja', 'Aligned with flight schedule')}</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="airport-to-city">
-    <div class="container">
-      <div class="direction-heading">
-        <div class="direction-heading__badge direction-heading__badge--arrival">
-          <i class="fa-solid fa-plane-arrival" aria-hidden="true"></i>
-          {t('Dolazak', 'Arrival')}
-        </div>
-        <h2 class="section__title airport-section-title">{t('Od aerodroma do grada', 'From the airport to the city')}</h2>
-        <p class="direction-heading__subtitle">{t('Sletjeli ste na aerodrom BNX i trebate doći do centra Banje Luke.', "You've landed at BNX Airport and need to get to downtown Banja Luka.")}</p>
       </div>
 
       <div class="transport-options-grid">
-        <div class="transport-option-card">
+        <article class="transport-option-card">
           <div class="transport-option-card__header">
             <div class="transport-option-card__icon" aria-hidden="true">
               <i class="fa-solid fa-bus"></i>
             </div>
             <h3>{t('Shuttle autobus (Smiljić)', 'Shuttle bus (Smiljić)')}</h3>
           </div>
+          <p class="transport-option-card__summary">{t('12 KM (6 €) · 30-45 min', '12 BAM (€6) · 30-45 min')}</p>
           <ul class="transport-option-card__details">
             <li>
-              <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              <span>{t('Vrijeme vožnje: 30-45 min', 'Travel time: 30-45 min')}</span>
-            </li>
-            <li>
-              <i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i>
-              <span>{t('Cijena: ~10 KM (jedna vožnja)', 'Price: ~10 KM (one way)')}</span>
-            </li>
-            <li>
               <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
-              <span>{t('Autobus čeka ispred terminala nakon dolaska leta', 'Bus waits in front of the terminal after flight arrival')}</span>
+              <span>{t('Povezuje aerodrom sa Starom i Glavnom autobuskom stanicom', 'Connects the airport with the Old and Main Bus Stations')}</span>
             </li>
             <li>
-              <i class="fa-solid fa-flag-checkered" aria-hidden="true"></i>
-              <span>{t('Završava na Staroj i Glavnoj autobuskoj stanici', 'Ends at Old and Main Bus Station')}</span>
+              <i class="fa-solid fa-plane-arrival" aria-hidden="true"></i>
+              <span>{t('Na aerodromu čeka ispred terminala nakon dolaska leta', 'At the airport, it waits outside the terminal after flight arrivals')}</span>
             </li>
             <li>
-              <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-              <span>{t('Karte se kupuju u autobusu', 'Tickets are purchased on the bus')}</span>
+              <i class="fa-solid fa-plane-departure" aria-hidden="true"></i>
+              <span>{t('Polasci iz grada usklađeni su sa redom letenja; dođite 15 min ranije', 'Departures from the city follow the flight schedule; arrive 15 min early')}</span>
             </li>
           </ul>
-        </div>
+        </article>
 
-        <div class="transport-option-card">
+        <article class="transport-option-card">
           <div class="transport-option-card__header">
             <div class="transport-option-card__icon" aria-hidden="true">
               <i class="fa-solid fa-taxi"></i>
             </div>
             <h3>{t('Taksi', 'Taxi')}</h3>
           </div>
+          <p class="transport-option-card__summary">~40-60 KM · 30-35 min</p>
           <ul class="transport-option-card__details">
             <li>
-              <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              <span>{t('Vrijeme vožnje: 30-35 min', 'Travel time: 30-35 min')}</span>
-            </li>
-            <li>
-              <i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i>
-              <span>{t('Cijena: ~40-60 KM', 'Price: ~40-60 KM')}</span>
-            </li>
-            <li>
               <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
-              <span>{t('Dostupno ispred terminala aerodroma', 'Available in front of the airport terminal')}</span>
+              <span>{t('Dostupan ispred terminala ili uz preuzimanje na adresi u gradu', 'Available outside the terminal or with pickup from your city address')}</span>
             </li>
             <li>
               <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-              <span>{t('Dogovorite cijenu prije ulaska u vozilo', 'Agree on the fare before getting in')}</span>
+              <span>{t('Dogovorite cijenu prije vožnje i rezervišite unaprijed kada idete na aerodrom', 'Agree on the fare before the ride and book ahead when travelling to the airport')}</span>
+            </li>
+            <li>
+              <i class="fa-solid fa-list" aria-hidden="true"></i>
+              <span>
+                <a
+                  href="https://www.banjaluka.rs.ba/gradjani/taksi-prevoz/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t('Spisak taksi prevoznika', 'List of city taxi operators')}
+                  <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                </a>
+              </span>
             </li>
           </ul>
-        </div>
+        </article>
 
-        <div class="transport-option-card">
+        <article class="transport-option-card">
           <div class="transport-option-card__header">
             <div class="transport-option-card__icon" aria-hidden="true">
               <i class="fa-solid fa-car"></i>
             </div>
-            <h3>Rent-a-car</h3>
+            <h3>{t('Automobil', 'Car')}</h3>
           </div>
+          <p class="transport-option-card__summary">30-35 min</p>
           <ul class="transport-option-card__details">
             <li>
-              <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              <span>{t('Vrijeme vožnje do centra: 30-35 min', 'Drive time to center: 30-35 min')}</span>
-            </li>
-            <li>
-              <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-              <span>{t('Preporučuje se unaprijed rezervisati online', 'Advance online booking recommended')}</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="city-to-airport">
-    <div class="container">
-      <div class="direction-heading">
-        <div class="direction-heading__badge direction-heading__badge--departure">
-          <i class="fa-solid fa-plane-departure" aria-hidden="true"></i>
-          {t('Odlazak', 'Departure')}
-        </div>
-        <h2 class="section__title airport-section-title">{t('Od grada do aerodroma', 'From the city to the airport')}</h2>
-        <p class="direction-heading__subtitle">{t('Putujete iz Banje Luke i trebate doći do aerodroma BNX.', "You're leaving Banja Luka and need to get to BNX Airport.")}</p>
-      </div>
-
-      <div class="transport-options-grid">
-        <div class="transport-option-card">
-          <div class="transport-option-card__header">
-            <div class="transport-option-card__icon" aria-hidden="true">
-              <i class="fa-solid fa-bus"></i>
-            </div>
-            <h3>{t('Shuttle autobus (Smiljić)', 'Shuttle bus (Smiljić)')}</h3>
-          </div>
-          <ul class="transport-option-card__details">
-            <li>
-              <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              <span>{t('Vrijeme vožnje: 30-45 min', 'Travel time: 30-45 min')}</span>
-            </li>
-            <li>
-              <i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i>
-              <span>{t('Cijena: ~10 KM (jedna vožnja)', 'Price: ~10 KM (one way)')}</span>
-            </li>
-            <li>
-              <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
-              <span>{t('Polazi od Stare i Glavne autobuske stanice', 'Departs from Old and Main Bus Station')}</span>
-            </li>
-            <li>
-              <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
-              <span>{t('Dođite barem 15 min prije polaska autobusa', 'Arrive at least 15 min before bus departure')}</span>
-            </li>
-            <li>
-              <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-              <span>{t('Karte se kupuju u autobusu', 'Tickets are purchased on the bus')}</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="transport-option-card">
-          <div class="transport-option-card__header">
-            <div class="transport-option-card__icon" aria-hidden="true">
-              <i class="fa-solid fa-taxi"></i>
-            </div>
-            <h3>{t('Taksi', 'Taxi')}</h3>
-          </div>
-          <ul class="transport-option-card__details">
-            <li>
-              <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              <span>{t('Vrijeme vožnje: 30-35 min', 'Travel time: 30-35 min')}</span>
-            </li>
-            <li>
-              <i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i>
-              <span>{t('Cijena: ~40-60 KM', 'Price: ~40-60 KM')}</span>
-            </li>
-            <li>
-              <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
-              <span>{t('Preuzimanje na vašoj adresi u gradu', 'Pickup from your address in the city')}</span>
-            </li>
-            <li>
-              <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-              <span>{t('Preporučujemo da naručite unaprijed ili koristite aplikaciju', 'We recommend booking in advance or using an app')}</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="transport-option-card">
-          <div class="transport-option-card__header">
-            <div class="transport-option-card__icon" aria-hidden="true">
-              <i class="fa-solid fa-car"></i>
-            </div>
-            <h3>{t('Sopstveni automobil', 'Own car')}</h3>
-          </div>
-          <ul class="transport-option-card__details">
-            <li>
-              <i class="fa-solid fa-clock" aria-hidden="true"></i>
-              <span>{t('Vrijeme vožnje: 30-35 min', 'Drive time: 30-35 min')}</span>
+              <i class="fa-solid fa-key" aria-hidden="true"></i>
+              <span>{t('Rent-a-car je dostupan na aerodromu; preporučuje se rezervacija unaprijed', 'Car rental is available at the airport; advance booking is recommended')}</span>
             </li>
             <li>
               <i class="fa-solid fa-square-parking" aria-hidden="true"></i>
-              <span>{t('Parking na aerodromu: od 3 KM/sat', 'Airport parking: from 3 KM/hour')}</span>
-            </li>
-            <li>
-              <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
               {isEnglish ? (
-                <span>See <a href="#airport-parking">parking details</a> below</span>
+                <span>Travelling in your own car? See <a href="#airport-parking">airport parking details</a>.</span>
               ) : (
-                <span>Pogledajte <a href="#airport-parking">detalje o parkingu</a> ispod</span>
+                <span>Putujete sopstvenim automobilom? Pogledajte <a href="#airport-parking">detalje parkinga na aerodromu</a>.</span>
               )}
             </li>
           </ul>
-        </div>
+        </article>
       </div>
 
-      <div class="airport-tip" style="margin-top: var(--space-5);">
+      <div class="airport-tip">
         <i class="fa-solid fa-lightbulb" aria-hidden="true"></i>
         <p>
           {isEnglish ? (
-            <span><strong>Tip:</strong> Many hotels in Banja Luka can arrange airport transfers for guests. Ask at reception during check-in.</span>
+            <span><strong>Tip:</strong> Many hotels in Banja Luka can arrange airport transfers for guests. Ask at reception.</span>
           ) : (
-            <span><strong>Savjet:</strong> Mnogi hoteli u Banjoj Luci mogu organizovati transfer do aerodroma za goste. Raspitajte se na recepciji prilikom prijave.</span>
+            <span><strong>Savjet:</strong> Mnogi hoteli u Banjoj Luci mogu organizovati transfer do aerodroma za goste. Raspitajte se na recepciji.</span>
           )}
         </p>
       </div>
@@ -459,13 +305,13 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
             <span>
               Banja Luka Airport uses an automated parking payment system with license plate
               recognition. Payment is available via SMS, at the payment terminal inside the
-              airport building, or through the <a href="#goparking">GoParking mobile app</a>.
+              airport building, or through the <strong>GoParking mobile app</strong>.
             </span>
           ) : (
             <span>
               Aerodrom Banja Luka koristi automatizovani sistem naplate parkinga sa prepoznavanjem
               registarskih tablica. Plaćanje je moguće putem SMS-a, na terminalu za naplatu u
-              zgradi aerodroma, ili putem <a href="#goparking">GoParking mobilne aplikacije</a>.
+              zgradi aerodroma, ili putem <strong>GoParking mobilne aplikacije</strong>.
             </span>
           )}
         </p>
@@ -489,23 +335,6 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
               <span class="parking-price-item__value">5 KM</span>
             </div>
           </div>
-        </div>
-
-        <div class="airport-tip">
-          <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-          <p>
-            {isEnglish ? (
-              <span>
-                A detailed parking price list is available on the
-                <a href="https://bnx.aero/en/home/" target="_blank" rel="noopener noreferrer"> official airport website</a>.
-              </span>
-            ) : (
-              <span>
-                Detaljan cjenovnik parking usluga dostupan je na
-                <a href="https://bnx.aero/en/home/" target="_blank" rel="noopener noreferrer"> službenoj stranici aerodroma</a>.
-              </span>
-            )}
-          </p>
         </div>
 
         <div class="goparking-box" id="goparking">
@@ -548,6 +377,25 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
             </a>
           </div>
         </div>
+
+        <div class="airport-tip">
+          <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+          <p>
+            {isEnglish ? (
+              <span>
+                Check the current detailed parking price list on the{' '}
+                <a href="https://bnx.aero/en/home/" target="_blank" rel="noopener noreferrer">official airport website</a>{' '}
+                or in the GoParking app.
+              </span>
+            ) : (
+              <span>
+                Aktuelni detaljan cjenovnik parking usluga provjerite na{' '}
+                <a href="https://bnx.aero/" target="_blank" rel="noopener noreferrer">službenoj stranici aerodroma</a>{' '}
+                ili u GoParking aplikaciji.
+              </span>
+            )}
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -562,15 +410,15 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
         <a href={linesPath} class="airport-link-card">
           <i class="fa-solid fa-route" aria-hidden="true"></i>
           <div>
-            <strong>{t('Autobuske linije', 'Bus lines')}</strong>
-            <span class="airport-link-card__desc">{t('Sve gradske linije i mapa stajališta', 'All city lines and stop maps')}</span>
+            <strong>{t('Autobuske linije i red vožnje', 'Bus lines and timetables')}</strong>
+            <span class="airport-link-card__desc">{t('Gradske linije, trase i polasci', 'City bus lines, routes, and departures')}</span>
           </div>
         </a>
-        <a href={timetablePath} class="airport-link-card">
-          <i class="fa-solid fa-clock" aria-hidden="true"></i>
+        <a href={mapPath} class="airport-link-card">
+          <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
           <div>
-            <strong>{t('Red vožnje', 'Timetables')}</strong>
-            <span class="airport-link-card__desc">{t('Polasci gradskih autobuskih linija', 'City bus line departures')}</span>
+            <strong>{t('Mapa stajališta', 'Bus stop map')}</strong>
+            <span class="airport-link-card__desc">{t('Autobuska stajališta i linije koje ih koriste', 'Bus stops and the routes serving them')}</span>
           </div>
         </a>
         <a href={pricingPath} class="airport-link-card">
@@ -584,44 +432,10 @@ const t = (bhs: string, en: string): string => (isEnglish ? en : bhs);
     </div>
   </section>
 
-  <section class="section" id="airport-links">
-    <div class="container">
-      <h2 class="section__title airport-section-title">{t('Korisni linkovi', 'Useful Links')}</h2>
-      <div class="airport-links-grid">
-        <a
-          href="https://bnx.aero/en/home/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="airport-link-card"
-        >
-          <i class="fa-solid fa-plane" aria-hidden="true"></i>
-          <div>
-            <strong>{t('Aerodrom Banja Luka', 'Banja Luka Airport')}</strong>
-            <span class="airport-link-card__url">bnx.aero</span>
-          </div>
-          <i class="fa-solid fa-arrow-up-right-from-square airport-link-card__arrow" aria-hidden="true"></i>
-        </a>
-        <a
-          href="https://smiljiccompany.ba/avio-transferi/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="airport-link-card"
-        >
-          <i class="fa-solid fa-van-shuttle" aria-hidden="true"></i>
-          <div>
-            <strong>{t('Smiljić - Avio transferi', 'Smiljić - Airport Transfers')}</strong>
-            <span class="airport-link-card__url">smiljiccompany.ba</span>
-          </div>
-          <i class="fa-solid fa-arrow-up-right-from-square airport-link-card__arrow" aria-hidden="true"></i>
-        </a>
-      </div>
-    </div>
-  </section>
-
   <div class="container">
     <p class="airport-last-updated">
       <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
-      {t('Informacije posljednji put provjerene: mart 2026.', 'Information last reviewed: March 2026.')}
+      {t('Informacije posljednji put provjerene: septembar 2026.', 'Information last reviewed: September 2026.')}
     </p>
   </div>
 </BaseLayout>

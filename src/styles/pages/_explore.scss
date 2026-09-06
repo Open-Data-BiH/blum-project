@@ -1,8 +1,8 @@
-.explore-lead {
+.section.explore-lead {
     padding-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
-.explore-lead__grid {
+.container.explore-lead__grid {
     display: grid;
     grid-template-columns: minmax(0, 1.25fr) minmax(19rem, 0.75fr);
     align-items: stretch;
@@ -113,6 +113,9 @@
 }
 
 .explore-route-pill > i {
+    --fa-display: grid;
+    --fa-width: 1.75rem;
+
     display: grid;
     width: 1.75rem;
     height: 1.75rem;
@@ -173,7 +176,7 @@
     outline-offset: var(--focus-ring-offset);
 }
 
-.explore-destinations {
+.section.explore-destinations {
     padding-top: clamp(2.5rem, 5vw, 4.5rem);
     background-color: var(--color-surface-secondary);
 }
@@ -304,6 +307,11 @@
     background-color: var(--color-primary);
     color: var(--color-on-primary);
     font-size: 0.7rem;
+}
+
+.destination-card__service > i {
+    --fa-display: grid;
+    --fa-width: 1.5rem;
 }
 
 .destination-card__area {
@@ -505,11 +513,11 @@
     text-decoration: none;
 }
 
-.explore-plan {
+.section.explore-plan {
     padding-block: clamp(2.5rem, 5vw, 4.5rem);
 }
 
-.explore-plan__card {
+.container.explore-plan__card {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;

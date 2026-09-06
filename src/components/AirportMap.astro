@@ -1,3 +1,4 @@
+error: bad fsmonitor version 2
 ---
 // The map module loads when the component enters the viewport.
 import 'leaflet/dist/leaflet.css';
@@ -20,10 +21,12 @@ const isEnglish = locale === 'en';
       </div>
       <div class="airport-info-block__content">
         <p class="airport-info-block__label">
-          {isEnglish ? 'Price' : 'Cijena'}
+          {isEnglish ? 'Tickets and payment' : 'Karte i plaćanje'}
         </p>
         <p id="airport-price" class="airport-info-block__value">
-          {isEnglish ? 'One-way ticket price is 10.00 KM' : 'Cijena karte u jednom pravcu iznosi 10,00 KM'}
+          {isEnglish
+            ? 'Tickets are purchased on the bus. Payment is accepted in BAM or euros.'
+            : 'Karte se kupuju u autobusu. Plaćanje je moguće u KM ili eurima.'}
         </p>
       </div>
     </div>
@@ -49,7 +52,14 @@ const isEnglish = locale === 'en';
       <a href="https://smiljiccompany.ba/avio-transferi/" target="_blank" rel="noopener noreferrer">
         {isEnglish ? "operator's website" : 'internet stranicu prevoznika'}
       </a>
-      .
+      {isEnglish ? '. For flight and airport information, visit the ' : '. Za informacije o letovima i aerodromu posjetite '}
+      <a
+        href={isEnglish ? 'https://bnx.aero/en/home/' : 'https://bnx.aero/'}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {isEnglish ? 'official airport website' : 'službenu stranicu aerodroma'}
+      </a>.
     </p>
   </div>
 

@@ -119,10 +119,10 @@ const severityLabel = (severity: Update['severity']): string => {
                 <div class="update-card__footer">
                   <div class="update-card__source">
                     {isEnglish ? 'Source:' : 'Izvor:'}
+                    {' '}
                     {update.sourceUrl
                       ? <a href={update.sourceUrl} target="_blank" rel="noopener noreferrer">
                           {update.source}
-                          <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                         </a>
                       : update.source
                     }

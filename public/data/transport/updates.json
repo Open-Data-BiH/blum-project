@@ -25,5 +25,44 @@
             }
         }
     ],
-    "updates": []
+    "updates": [
+        {
+            "id": "eastern-transit-roundabout-line-20-2026",
+            "type": "line_change",
+            "severity": "warning",
+            "title": {
+                "bhs": "Radovi na Istočnom tranzitu: Moguće izmjene na liniji 20",
+                "en": "Eastern Transit roadworks: Possible changes to line 20"
+            },
+            "description": {
+                "bhs": "Na Istočnom tranzitu izvode se radovi na izgradnji kružnog toka kod Audi servisa, zbog čega su moguće velike gužve, zastoji i privremene izmjene trase linije 20. Prema trenutnim najavama, radovi bi trebalo da budu završeni do sredine septembra.",
+                "en": "Construction of a roundabout near the Audi service center on the Eastern Transit is causing significant congestion and delays. Temporary route changes may affect line 20. According to current announcements, the work should be completed by mid-September."
+            },
+            "affectedLines": ["20"],
+            "datePublished": "2026-09-06",
+            "dateStart": "2026-09-06",
+            "dateExpiry": "2026-09-15",
+            "source": "Putevi RS",
+            "sourceUrl": ""
+        },
+        {
+            "id": "school-year-service-2026",
+            "type": "schedule_change",
+            "severity": "info",
+            "title": {
+                "bhs": "Početak nove školske godine: Veći broj polazaka u javnom prevozu",
+                "en": "Start of the new school year: More public transport departures"
+            },
+            "description": {
+                "bhs": "Od 1. septembra javni prevoz ponovo saobraća prema redovnom režimu, sa većim brojem polazaka nego tokom ljetnog perioda. Važeći redovi vožnje dostupni su na sajtu Grada.",
+                "en": "From 1 September, public transport returns to its regular service pattern, with more departures than during the summer period. Current timetables are available on the City website."
+            },
+            "affectedLines": [],
+            "datePublished": "2026-08-31",
+            "dateStart": "2026-09-01",
+            "dateExpiry": null,
+            "source": "Grad Banja Luka",
+            "sourceUrl": "https://www.banjaluka.rs.ba/gradjani/javni-prevoz/"
+        }
+    ]
 }

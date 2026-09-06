@@ -23,6 +23,11 @@ const baseUrl = import.meta.env.BASE_URL;
 const withBase = (path: string): string => `${baseUrl}${path.replace(/^\/+/, '')}`;
 const updatesBasePath = getPagePath('updates', locale);
 const isEnglish = locale === 'en';
+const severityLabel = (severity: Update['severity']): string => {
+  if (severity === 'warning') return isEnglish ? 'Warning' : 'Upozorenje';
+  if (severity === 'urgent') return isEnglish ? 'Urgent' : 'Hitno';
+  return 'Info';
+};
 ---
 
 <section class="section section--narrow" id="home-updates">
@@ -44,10 +49,15 @@ const isEnglish = locale === 'en';
             <a href={updateHref} class="home-update-card-link">
               <article class={`home-update-card home-update-card--${update.severity}`}>
                 <div class="home-update-card__header">
-                  <span class={`update-badge update-badge--${update.type}`}>
-                    <i class={`fas ${catIcon}`} aria-hidden="true"></i>
-                    {cat && cat.label[locale]}
-                  </span>
+                  <div class="home-update-card__badges">
+                    <span class={`update-badge update-badge--${update.type}`}>
+                      <i class={`fas ${catIcon}`} aria-hidden="true"></i>
+                      {cat && cat.label[locale]}
+                    </span>
+                    <span class={`update-badge update-badge--severity-${update.severity}`}>
+                      {severityLabel(update.severity)}
+                    </span>
+                  </div>
                   <span class="home-update-card__date">
                     {new Date(update.datePublished).toLocaleDateString(locale === 'en' ? 'en-BA' : 'bs-BA', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                   </span>

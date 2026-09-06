@@ -1,8 +1,8 @@
-.guide-overview {
+.section.guide-overview {
     padding-bottom: clamp(2rem, 4vw, 3.5rem);
 }
 
-.guide-overview__grid {
+.container.guide-overview__grid {
     display: grid;
     grid-template-columns: minmax(19rem, 0.86fr) minmax(0, 1.14fr);
     align-items: stretch;
@@ -146,12 +146,12 @@
     outline-offset: var(--focus-ring-offset);
 }
 
-.guide-content {
+.section.guide-content {
     padding-top: clamp(2.5rem, 5vw, 4rem);
     background-color: var(--color-background);
 }
 
-.guide-content__inner {
+.container.guide-content__inner {
     max-width: 76rem;
 }
 

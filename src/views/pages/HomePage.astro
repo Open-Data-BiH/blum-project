@@ -120,9 +120,21 @@ const organizationSchema = {
         </p>
       </div>
       <nav class="home-overview__links" aria-label={isEnglish ? 'Public transport information' : 'Informacije o gradskom prevozu'}>
-        <a href={linesPath}>{isEnglish ? 'Bus routes and timetables' : 'Autobuske linije i red vožnje'}</a>
-        <a href={mapPath}>{isEnglish ? 'Public transport map' : 'Mapa gradskog prevoza'}</a>
-        <a href={pricingPath}>{isEnglish ? 'Bus ticket prices' : 'Cijene autobusnih karata'}</a>
+        <a href={linesPath}>
+          <span class="home-overview__link-icon" aria-hidden="true"><i class="fa-solid fa-route"></i></span>
+          <span class="home-overview__link-label">{isEnglish ? 'Bus routes and timetables' : 'Autobuske linije i red vožnje'}</span>
+          <i class="fa-solid fa-chevron-right home-overview__link-arrow" aria-hidden="true"></i>
+        </a>
+        <a href={mapPath}>
+          <span class="home-overview__link-icon" aria-hidden="true"><i class="fa-solid fa-map-location-dot"></i></span>
+          <span class="home-overview__link-label">{isEnglish ? 'Public transport map' : 'Mapa gradskog prevoza'}</span>
+          <i class="fa-solid fa-chevron-right home-overview__link-arrow" aria-hidden="true"></i>
+        </a>
+        <a href={pricingPath}>
+          <span class="home-overview__link-icon" aria-hidden="true"><i class="fa-solid fa-ticket"></i></span>
+          <span class="home-overview__link-label">{isEnglish ? 'Bus ticket prices' : 'Cijene autobusnih karata'}</span>
+          <i class="fa-solid fa-chevron-right home-overview__link-arrow" aria-hidden="true"></i>
+        </a>
       </nav>
     </div>
   </section>
@@ -131,11 +143,11 @@ const organizationSchema = {
 </BaseLayout>
 
 <style>
-  .home-overview {
+  .section.home-overview {
     padding-block: var(--space-8);
   }
 
-  .home-overview__inner {
+  .container.home-overview__inner {
     display: grid;
     grid-template-columns: minmax(0, 1.6fr) minmax(15rem, 0.8fr);
     gap: clamp(var(--space-8), 5vw, var(--space-16));
@@ -159,32 +171,74 @@ const organizationSchema = {
   }
 
   .home-overview__links {
-    display: flex;
-    flex-direction: column;
-    border-top: 1px solid var(--color-border-strong);
+    display: grid;
+    gap: var(--space-2);
   }
 
   .home-overview__links a {
     display: flex;
     align-items: center;
-    min-height: var(--touch-target);
-    padding-block: var(--space-3);
-    border-bottom: 1px solid var(--color-border-strong);
-    color: var(--color-text-link);
+    gap: var(--space-3);
+    min-height: 3.5rem;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-semibold);
     text-decoration: none;
+    transition:
+      transform var(--transition-fast) var(--ease-out),
+      background-color var(--transition-fast) var(--ease-out),
+      border-color var(--transition-fast) var(--ease-out);
   }
 
-  .home-overview__links a::after {
-    content: '\2192';
-    margin-left: auto;
-    padding-left: var(--space-4);
+  .home-overview__link-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: 0 0 2.25rem;
+    border-radius: var(--radius-control);
+    background-color: var(--color-primary-surface);
+    color: var(--color-primary-hover);
+  }
+
+  .home-overview__links a:nth-child(2) .home-overview__link-icon {
+    background-color: var(--color-functional-surface);
+    color: var(--color-functional-hover);
+  }
+
+  .home-overview__links a:nth-child(3) .home-overview__link-icon {
+    background-color: var(--color-support-surface);
+    color: var(--color-support);
+  }
+
+  .home-overview__link-label {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .home-overview__link-arrow {
+    --fa-width: auto;
+
     color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    transition: transform var(--transition-fast) var(--ease-out);
   }
 
   .home-overview__links a:hover {
+    transform: translateX(var(--space-1));
+    background-color: var(--color-surface-secondary);
+    border-color: var(--color-primary-border);
     color: var(--color-text-link-hover);
+  }
+
+  .home-overview__links a:hover .home-overview__link-arrow {
+    transform: translateX(2px);
+    color: var(--color-primary-hover);
   }
 
   .home-overview__links a:focus-visible {
@@ -193,7 +247,7 @@ const organizationSchema = {
   }
 
   @media (max-width: 760px) {
-    .home-overview__inner {
+    .container.home-overview__inner {
       grid-template-columns: 1fr;
       gap: var(--space-6);
       padding-block: var(--space-6);

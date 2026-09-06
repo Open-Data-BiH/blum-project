@@ -141,8 +141,8 @@ export const PAGE_META: Record<PageKey, { title: LocalizedText; description: Loc
             en: 'Banja Luka Airport Bus & Shuttle (BNX) | BL Prevoz',
         },
         description: {
-            bhs: 'Kako doći do Aerodroma Banja Luka (BNX). Shuttle autobus oko 10 KM (30-45 min), taksi 40-60 KM. Polasci od Glavne stanice, parking i interaktivna mapa rute.',
-            en: 'How to get from Banja Luka Airport (BNX) to the city center. Shuttle bus around 10 KM (30-45 minutes), taxi 40-60 KM. Timetable, route map, and parking info.',
+            bhs: 'Kako doći do Aerodroma Banja Luka (BNX). Shuttle autobus 12 KM (6 €, moguće plaćanje u eurima), taksi 40-60 KM. Polasci, parking i mapa rute.',
+            en: 'How to get from Banja Luka Airport (BNX) to the city center. Shuttle bus 12 BAM (€6, euros accepted), taxi 40-60 BAM. Timetable, parking, and route map.',
         },
     },
     faq: {

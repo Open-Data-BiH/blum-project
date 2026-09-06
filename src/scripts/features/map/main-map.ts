@@ -23,6 +23,10 @@ export const initMainMap = async (): Promise<void> => {
         return;
     }
 
+    const activationButton = container
+        .closest<HTMLElement>('.map-container')
+        ?.querySelector<HTMLButtonElement>('[data-home-map-activate]');
+
     try {
         const [L, data] = await Promise.all([import('leaflet').then((mod) => mod.default), loadMapData()]);
 
@@ -39,10 +43,25 @@ export const initMainMap = async (): Promise<void> => {
             maxBounds: MAP_VIEW.BOUNDS,
             maxBoundsViscosity: 1.0,
             zoomControl: false,
+            scrollWheelZoom: false,
+            keyboard: false,
             minZoom: MAP_VIEW.MIN_ZOOM,
             maxZoom: MAP_VIEW.MAX_ZOOM,
             layers: [baseLayers[defaultBase]],
         });
+
+        container.inert = true;
+        activationButton?.addEventListener(
+            'click',
+            () => {
+                container.inert = false;
+                map.scrollWheelZoom.enable();
+                map.keyboard.enable();
+                activationButton.hidden = true;
+                map.getContainer().focus({ preventScroll: true });
+            },
+            { once: true },
+        );
 
         L.control.zoom({ position: 'bottomright' }).addTo(map);
 
@@ -81,6 +100,8 @@ export const initMainMap = async (): Promise<void> => {
         createLocateControl(L, map, busStops.getLayersForGeolocation);
     } catch (error) {
         console.error('Error initializing main map:', error);
+        activationButton?.setAttribute('hidden', '');
+        container.inert = false;
         container.innerHTML = `
       <div class="map-error">
         <i class="fas fa-exclamation-triangle"></i>

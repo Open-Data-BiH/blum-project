@@ -78,10 +78,13 @@ const isEnglish = lang === 'en';
         const nameBhs = typeof line.lineName === 'object' ? line.lineName.bhs : String(line.lineName);
         const nameEn = typeof line.lineName === 'object' ? line.lineName.en : String(line.lineName);
         const hasTimetable = true;
+        const hasScheduleSummary = Boolean(
+          line.schedule.firstBus || line.schedule.lastBus || line.schedule.avgFrequency,
+        );
 
         return (
           <div
-            class:list={['line-card', line.companyClass]}
+            class:list={['line-card', line.companyClass, hasScheduleSummary && 'line-card--has-schedule']}
             data-line-id={safeLineId}
             data-group={safeGroup}
             data-company={line.companyClass.replace('-line', '')}
@@ -134,7 +137,7 @@ const isEnglish = lang === 'en';
               </span>
             </div>
 
-            {(line.schedule.firstBus || line.schedule.lastBus || line.schedule.avgFrequency) && (
+            {hasScheduleSummary && (
               <div class="line-card__schedule">
                 {line.schedule.firstBus && (
                   <span class="schedule-item">

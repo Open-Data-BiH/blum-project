@@ -28,6 +28,18 @@ const mapPagePath = `${baseUrl}${getPagePath('map', locale).replace(/^\/+/, '')}
       role="application"
       live="polite"
     >
+      <button
+        type="button"
+        class="map-interaction-gate"
+        data-home-map-activate
+        aria-controls="map-container"
+        hidden
+      >
+        <span class="map-interaction-gate__label">
+          <i class="fas fa-hand-pointer" aria-hidden="true"></i>
+          {locale === 'en' ? 'Click to interact with the map' : 'Kliknite za korištenje mape'}
+        </span>
+      </button>
       <noscript class="map-note">
         <i class="map-note__icon fas fa-info-circle" aria-hidden="true"></i>
         <div class="map-note__content">
@@ -78,6 +90,11 @@ const mapPagePath = `${baseUrl}${getPagePath('map', locale).replace(/^\/+/, '')}
 <script>
   const mapSection = document.getElementById('map');
   if (mapSection) {
+    const activationButton = mapSection.querySelector<HTMLButtonElement>('[data-home-map-activate]');
+    if (activationButton) {
+      activationButton.hidden = false;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {

@@ -1043,6 +1043,7 @@
 
 .map-container,
 #map-container {
+    position: relative;
     width: 100%;
     height: 450px;
     border-radius: var(--radius-lg);
@@ -3204,7 +3205,7 @@ body[data-page='airport'] #airport-links {
     box-shadow: none;
 }
 
-.urban-lines-map__activate {
+.map-interaction-gate {
     position: absolute;
     inset: 0;
     z-index: 1001;
@@ -3222,20 +3223,20 @@ body[data-page='airport'] #airport-links {
     touch-action: pan-y;
 }
 
-.urban-lines-map__activate:hover {
+.map-interaction-gate:hover {
     background: rgba(6, 39, 35, 0.06);
 }
 
-.urban-lines-map__activate:focus-visible {
+.map-interaction-gate:focus-visible {
     outline: var(--focus-ring-width) solid var(--focus-ring-color);
     outline-offset: calc(-1 * var(--focus-ring-width));
 }
 
-.urban-lines-map__activate[hidden] {
+.map-interaction-gate[hidden] {
     display: none;
 }
 
-.urban-lines-map__activate-label {
+.map-interaction-gate__label {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
@@ -3250,7 +3251,7 @@ body[data-page='airport'] #airport-links {
     line-height: var(--line-height-snug);
 }
 
-.urban-lines-map__activate-label i {
+.map-interaction-gate__label i {
     color: var(--color-primary-hover);
 }
 

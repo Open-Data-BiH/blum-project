@@ -260,6 +260,10 @@
 }
 
 .updates-empty__icon {
+    /* Font Awesome 7 reads these variables after page CSS is bundled. */
+    --fa-display: grid;
+    --fa-width: 3rem;
+
     display: grid;
     place-items: center;
     width: 3rem;
